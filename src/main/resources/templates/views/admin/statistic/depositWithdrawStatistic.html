@@ -1,0 +1,134 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Money history')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<style>
+	#statisticData .sum {
+		background-color: #3988a552;
+	}
+	#moneylog-datatable .detail {
+		cursor: pointer;
+		font-weight: bold;
+		color: black;
+	}
+</style>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+        
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+            
+            <section role="main" class="content-body">
+            	<section class="panel" role="main">
+					<header class="panel-heading">
+						<h2 class="panel-title" th:text="#{admin.deposit.statistic}"></h2>
+					</header>
+					<div class="panel-body">
+						<form id="formSearch" th:action="@{${url}}" th:object="${searchForm}" class="form-inline search-form">
+							<div class="form-group">
+                                <label class="control-label">
+                                    <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                    <span th:text="#{admin.common.date}"></span>
+                                </label>
+                                <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control"  th:field="*{startDate}">
+                                    <span class="input-group-addon">~</span>
+                                    <input type="text" class="form-control" th:field="*{endDate}">
+                                </div>
+                                <button type="submit" class="btn btn-default">
+                                    <span th:text="#{admin.common.search}"></span>&nbsp;<i class="fa fa-search"></i>
+                                </button>
+                            </div>
+	                    </form>
+	                    <div class="table-responsive">
+							<table class="table table-bordered table-striped" id="moneylog-datatable">
+								<thead>
+									<tr>
+										<th th:text="#{admin.common.date}"></th>
+										<th th:text="#{admin.statistic.slot.betting}"></th>
+										<th th:text="#{admin.statistic.slot.winning}"></th>
+										<th th:text="#{admin.statistic.slot.revenue}"></th>
+										<th th:text="#{admin.statistic.baccarat.betting}"></th>
+										<th th:text="#{admin.statistic.baccarat.winning}"></th>
+										<th th:text="#{admin.statistic.baccarat.revenue}"></th>
+										<th th:text="#{admin.common.deposit}"></th>
+										<th th:text="#{admin.common.withdraw}"></th>
+										<th th:text="#{admin.statistic.distributor.deposit}"></th>
+										<th th:text="#{admin.statistic.distributor.withdraw}"></th>
+										<th th:text="#{admin.statistic.benefit}"></th>
+										<th th:text="#{admin.statistic.manager.deposit}"></th>
+										<th th:text="#{admin.statistic.manager.withdraw}"></th>
+										<th th:text="#{admin.statistic.point.deposit}"></th>
+										<th th:text="#{admin.statistic.point.withdraw}"></th>
+									</tr>
+								</thead>
+								<tbody id="statisticData">
+									<tr th:each="entity : ${list}" th:data-checkDay="${#dates.format(entity.dates, 'yyyy-MM-dd')}">
+										<td style="min-width: 130px;">
+											<span th:text="${#dates.format(entity.dates, 'yyyy-MM-dd')}"></span>
+											<span>(</span>
+											<span th:text="${#dates.format(entity.dates, 'E')}"
+											th:class="${#dates.format(entity.dates,'E')=='Sat'?'text-primary':#dates.format(entity.dates,'E')=='Sun'?'text-danger':''}"></span>
+											<span>)</span>
+										</td>
+										<td th:text="${#numbers.formatDecimal(entity.slotBet, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(entity.slotWin, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="text-primary" th:text="${#numbers.formatDecimal((entity.slotBet - entity.slotWin), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(entity.baccaratBet, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(entity.baccaratWin, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="text-primary" th:text="${#numbers.formatDecimal((entity.baccaratBet - entity.baccaratWin), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="memberDeposit detail" th:text="${#numbers.formatDecimal(entity.deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="memberWithdraw detail" th:text="${#numbers.formatDecimal(entity.withdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="distributorDeposit detail" th:text="${#numbers.formatDecimal(entity.distributorDeposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="distributorWithdraw detail" th:text="${#numbers.formatDecimal(entity.distributorWithdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="text-primary" th:text="${#numbers.formatDecimal((entity.deposit - entity.withdraw), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="managerDeposit detail" th:text="${#numbers.formatDecimal(entity.managerDeposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="managerWithdraw detail" th:text="${#numbers.formatDecimal(entity.managerWithdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="pointDeposit detail" th:text="${#numbers.formatDecimal(entity.pointDeposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="pointWithdraw detail" th:text="${#numbers.formatDecimal(entity.pointWithdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+									</tr>
+									<tr th:if="${list.size() > 0}" class="sum">
+										<td>sum</td>
+										<td th:text="${#numbers.formatDecimal(slotBetSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(slotWinSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(slotBetWinSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(baccaratBetSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(baccaratWinSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(baccaratBetWinSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(depositSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(withdrawSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(distributorDepositSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(distributorWithdrawSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(benefitSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(managerDepositSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(managerWithdrawSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(pointDepositSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(pointWithdrawSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(list)}">
+                                        <td class="text-center" colspan="16" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+                                    </tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+			</section>
+        </div>
+    </section>
+
+	<script type="text/javascript" th:inline="javascript">
+		var page = [[${page}]];
+		var url = [[@{${url}}]];
+	</script>
+
+    <script th:replace="template :: scripts"></script>
+    <script th:src="@{/assets/javascripts/money/money.statistic.js}"></script>
+</body>
+</html>

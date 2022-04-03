@@ -1,0 +1,77 @@
+#member-list th {
+    padding: 5px;
+    text-align: center;
+}
+
+#member-list td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 0;
+}
+
+#member-list td > p {
+    border-top: 1px solid #dadada;
+    padding: 5px;
+    margin: 0;
+}
+
+#member-list td a {
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+}
+
+#member-list td > p:first-child {
+    border-top: none;
+}
+
+#member-list .member-nickname {
+    white-space: nowrap;
+}
+
+#member-list .member-money {
+    white-space: nowrap;
+}
+
+#memberDetailModal .form-group {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+#deputyHeadquarterDetailModal .form-group {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+
+#partnerDistributorDetail .form-group {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+
+#partnerStoreDetail .form-group {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+#memberDetailModal .panel-heading {
+    padding: 10px;
+}
+
+#memo-list td a {
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    padding: 5px 10px;
+}
+
+#modifyHoldingMoneyModal .form-group {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+#member-list .member-id {
+    white-space: nowrap;
+}
+

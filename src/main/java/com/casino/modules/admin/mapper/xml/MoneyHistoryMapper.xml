@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casino.modules.admin.mapper.MoneyHistoryMapper">
+	<sql id="select">
+		mon.seq AS "seq",
+		mon.payer AS "payer",
+		mon.receiver AS "receiver",
+		mon.application_time AS "applicationTime",
+		mon.process_time AS "processTime",
+		IFNULL(mon.prev_amount, 0) AS "prevAmount",
+		IFNULL(mon.variable_amount, 0) AS "variableAmount",
+		IFNULL(mon.actual_amount, 0) AS "actualAmount",
+		IFNULL(mon.final_amount, 0) AS "finalAmount",
+		IFNULL(mon.bonus, 0) AS "bonus",
+		mon.status AS "status",
+		mon.reason_type AS "reasonType",
+		mon.reason AS "reason",
+		mon.charge_count AS "chargeCount",
+		mon.operation_type AS "operationType",
+		mon.money_or_point AS "moneyOrPoint",
+		mon.note AS "note",
+		mon.create_by AS "createBy",
+		mon.create_time AS "createTime",
+		mon.update_by AS "updateBy",
+		mon.update_time AS "updateTime",
+		mu.seq AS "member.seq",
+		mu.id AS "member.id",
+		mu.nickname AS "member.nickname",
+		mu.color AS "member.color",
+		mu.account_holder AS "member.accountHolder",
+		mu.level_seq AS "member.levelSeq",
+		l.level_name AS "member.level",
+		mu.bank_name AS "member.bankName",
+		mu.bank_number AS "member.bankNumber",
+		mh.seq AS "member.headQuarter.seq",
+		mh.id AS "member.headQuarter.id",
+		mh.nickname AS "member.headQuarter.nickname",
+		md.seq AS "member.distributor.seq",
+		md.id AS "member.distributor.id",
+		md.nickname AS "member.distributor.nickname",
+		ms.seq AS "member.store.seq",
+		ms.id AS "member.store.id",
+		ms.nickname AS "member.store.nickname"
+	</sql>
+
+	<sql id = "from">
+		money_history mon
+		INNER JOIN member mu ON mon.receiver = mu.seq
+		LEFT JOIN level l ON mu.level_seq = l.seq
+		LEFT JOIN member mh ON mu.sub_headquarter_seq = mh.seq
+		LEFT JOIN member md ON mu.distributor_seq = md.seq
+		LEFT JOIN member ms ON mu.store_seq = ms.seq
+	</sql>
+
+	<sql id = "where">
+		<where>
+			<if test="entity.member != null and entity.member.id != null and entity.member.id != ''">
+				AND mu.id = #{entity.member.id}
+			</if>
+			<if test="entity.member != null and entity.member.seq != null and entity.member.seq != ''">
+				AND mu.seq = #{entity.member.seq}
+			</if>
+			<if test="entity.checkDay != null and entity.checkDay != ''">
+				AND DATE(mon.process_time) = DATE(#{entity.checkDay})
+			</if>
+			<choose>
+				<when test="entity.searchType != null and entity.searchType == entity.searchTypeMember">
+					AND #{monStatusAdminEdit} > mon.status
+				</when>
+				<when test="entity.searchType != null and entity.searchType == entity.searchTypeAdminEdit">
+					AND #{monStatusAdminEdit} = mon.status
+				</when>
+				<when test="entity.searchType != null and entity.searchType == entity.searchTypeDistributor">
+					AND mu.user_type = #{userTypeDistributor}
+				</when>
+			</choose>
+			<if test="entity.status != null">
+				AND mon.status = #{entity.status}
+			</if>
+			<choose>
+				<when test="entity.checkTimeType != null and entity.checkTimeType == entity.checkTimeTypeApplication">
+					<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+						AND DATE(mon.application_time) >= DATE(#{entity.fromProcessTime})
+					</if>
+					<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+						AND DATE(#{entity.toProcessTime}) >= DATE(mon.application_time)
+					</if>
+				</when>
+				<when test="entity.checkTimeType != null and entity.checkTimeType == entity.checkTimeTypeProgress">
+					<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+						AND DATE(mon.process_time) >= DATE(#{entity.fromProcessTime})
+					</if>
+					<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+						AND DATE(#{entity.toProcessTime}) >= DATE(mon.process_time)
+					</if>
+				</when>
+			</choose>
+			<choose>
+				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameId">
+					<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+						AND mu.id LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+					</if>
+				</when>
+				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameNickName">
+					<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+						AND mu.nickname LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+					</if>
+				</when>
+				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameAccountHolder">
+					<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+						AND mu.account_holder LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+					</if>
+				</when>
+			</choose>
+			<if test="entity.operationType != null">
+				AND mon.operation_type = #{entity.operationType}
+			</if>
+			<choose>
+				<when test="entity.partnerOrMember != null and entity.partnerOrMember == entity.partnerOrMemberMember">
+					AND mu.user_type = #{userTypeMember}
+				</when>
+				<when test="entity.partnerOrMember != null and entity.partnerOrMember == entity.partnerOrMemberPartner">
+					AND mu.user_type > #{userTypeMember}
+				</when>
+			</choose>
+			<if test="entity.member != null and entity.member.store != null and entity.member.store.seq != null and entity.member.store.seq != ''">
+				AND mu.store_seq = #{entity.member.store.seq}
+			</if>
+			<if test="entity.member != null and entity.member.siteName != null and entity.member.siteName != ''">
+				AND mu.site_name = #{entity.member.siteName}
+			</if>
+			<if test="entity.reasonType != null">
+				AND mon.reason_type = #{entity.reasonType}
+			</if>
+		</where>
+	</sql>
+
+	<sql id = "order">
+		ORDER BY 
+		<if test="entity.orderType == null">
+			${column}
+			<if test = "order == 1">
+				DESC
+			</if>
+		</if>
+		<choose>
+			<when test="entity.orderType != null and entity.orderType == entity.orderTypeApplicationTime">
+				mon.application_time DESC
+			</when>
+			<when test="entity.orderType != null and entity.orderType == entity.orderTypeLevelUp">
+				l.level ASC
+			</when>
+			<when test="entity.orderType != null and entity.orderType == entity.orderTypeLevelDown">
+				l.level DESC
+			</when>
+		</choose>
+	</sql>
+
+	<sql id = "pagination">
+		LIMIT #{pageSize}
+		OFFSET #{pageOffset}
+	</sql>
+
+	<select id="findList" resultType="com.casino.modules.admin.common.entity.MoneyHistory">
+		SELECT
+			<include refid = "select" />
+		FROM <include refid = "from" />
+		<include refid = "where" />
+		<include refid = "order" />
+	</select>
+
+	<select id="findPartenerMoneyLogList" resultType="com.casino.modules.admin.common.entity.MoneyHistory">
+		SELECT
+			mh.process_time AS "processTime",
+			m.id AS "member.id",
+			m.nickname AS "member.nickname",
+			d.str_value AS "partnerName",
+			IFNULL(mh.prev_amount, 0) AS "prevAmount",
+			IFNULL(mh.variable_amount, 0) AS "variableAmount",
+			mh.operation_type AS "operationType",
+			IFNULL(mh.final_amount, 0) AS "finalAmount",
+			mh.reason AS "reason",
+			mh.reason_type AS "reasonType"
+		FROM
+			money_history mh
+			LEFT JOIN member m ON mh.receiver = m.seq
+			LEFT JOIN dict d ON m.user_type = d.dict_value AND d.dict_key = "USER_TYPE"
+		WHERE
+			m.user_type != #{userTypeAdmin}
+			AND m.user_type != #{userTypeNormal}
+			<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+				AND DATE(mh.process_time) >= DATE(#{entity.fromProcessTime})
+			</if>
+			<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+				AND DATE(#{entity.toProcessTime}) >= DATE(mh.process_time)
+			</if>
+			<if test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameId">
+				AND m.id LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+			</if>
+			<if test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameNickName">
+				AND m.nickname LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+			</if>
+			<if test="entity.reasonType != null and entity.reasonType != ''">
+				AND mh.reason_type = #{entity.reasonType}
+			</if>
+		<include refid="order" />
+	</select>
+
+	<sql id="calendar">
+		(SELECT DATE(v.eachDate) as dates
+		FROM
+			(SELECT ADDDATE(DATE(#{startDate}),
+				<if test="dayDiff > 1000">
+					t4.i*10000 +
+				</if>
+				<if test="dayDiff > 100">
+				t3.i*1000 +
+				</if>
+				<if test="dayDiff > 10">
+				t2.i*100 +
+				</if>
+				t1.i*10 + t0.i) as eachDate
+			  FROM
+			  (select 0 i UNION select 1 UNION select 2 UNION select 3 UNION select 4 UNION select 5 UNION select 6 UNION select 7 UNION select 8 UNION select 9) t0
+			  , (select 0 i UNION select 1 UNION select 2 UNION select 3 UNION select 4 UNION select 5 UNION select 6 UNION select 7 UNION select 8 UNION select 9) t1
+			  <if test="dayDiff > 10">
+			  , (select 0 i UNION select 1 UNION select 2 UNION select 3 UNION select 4 UNION select 5 UNION select 6 UNION select 7 UNION select 8 UNION select 9) t2
+			  </if>
+			  <if test="dayDiff > 100">
+			  , (select 0 i UNION select 1 UNION select 2 UNION select 3 UNION select 4 UNION select 5 UNION select 6 UNION select 7 UNION select 8 UNION select 9) t3
+			  </if>
+			  <if test="dayDiff > 1000">
+			  , (select 0 i UNION select 1 UNION select 2 UNION select 3 UNION select 4 UNION select 5 UNION select 6 UNION select 7 UNION select 8 UNION select 9) t4
+			  </if>
+			  ) AS v
+		  WHERE v.eachDate BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) ORDER BY dates ASC) AS cal
+	</sql>
+
+	<select id="depositWithdrawStatistic" resultType="com.casino.modules.admin.common.form.DepositWithdrawStatisticForm">
+		SELECT
+			cal.dates AS "dates",
+			COALESCE(ds.deposit, 0) AS "deposit",
+			COALESCE(ds.deposit_count, 0) AS "depositCount",
+			COALESCE(ws.withdraw, 0) AS "withdraw",
+			COALESCE(ws.withdraw_count, 0) AS "withdrawCount",
+			COALESCE(bet1.slot_bet, 0) AS "slotBet",
+			COALESCE(bet1.slot_win, 0) AS "slotWin",
+			COALESCE(bet2.baccarat_bet, 0) AS "baccaratBet",
+			COALESCE(bet2.baccarat_win, 0) AS "baccaratWin",
+			COALESCE(dds.distributor_deposit, 0) AS "distributorDeposit",
+			COALESCE(dws.distributor_withdraw, 0) AS "distributorWithdraw",
+			COALESCE(mds.manager_deposit, 0) AS "managerDeposit",
+			COALESCE(mws.manager_withdraw, 0) AS "managerWithdraw",
+			COALESCE(mids.mileage_deposit, 0) AS "pointDeposit",
+			COALESCE(miws.mileage_withdraw, 0) AS "pointWithdraw"
+		FROM <include refid="calendar"/>
+			<!-- member deposit statistic start -->
+			LEFT JOIN (
+				SELECT
+					DATE( mh.process_time ) AS dates,
+					SUM( mh.variable_amount ) AS deposit,
+					COUNT( * ) AS deposit_count
+				FROM
+					money_history mh
+				WHERE
+					#{monStatusAdminEdit} > mh.status
+					AND mh.operation_type = #{depositType} <!-- deposit type -->
+					AND DATE( mh.process_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( mh.process_time )) AS ds ON cal.dates = ds.dates
+				<!-- member deposit statistic end -->
+				<!-- member withdraw statistic start -->
+			LEFT JOIN (
+				SELECT
+					DATE( mh.process_time ) AS dates,
+					SUM( mh.variable_amount ) AS withdraw,
+					COUNT( * ) AS withdraw_count
+				FROM
+					money_history mh
+				WHERE
+					#{monStatusAdminEdit} > mh.status
+					AND mh.operation_type = #{withdrawType} <!-- withdraw type -->
+					AND DATE( mh.process_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( mh.process_time )) AS ws ON cal.dates = ws.dates
+				<!-- member withdraw statistic end -->
+				<!-- slot betting statistic start -->
+			LEFT JOIN (
+				SELECT
+					DATE( bts.check_time ) AS dates,
+					SUM( bts.betting_amount ) AS slot_bet,
+					SUM( bts.winning_amount ) AS slot_win
+				FROM
+					betting_summary bts
+				WHERE
+					bts.type = #{slotType} <!-- slot type -->
+					AND DATE( bts.check_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( bts.check_time )) AS bet1 ON cal.dates = bet1.dates
+				<!-- slot betting statistic end -->
+				<!-- baccarat betting statistic start -->
+			LEFT JOIN (
+				SELECT
+					DATE( bts.check_time ) AS dates,
+					SUM( bts.betting_amount ) AS baccarat_bet,
+					SUM( bts.winning_amount ) AS baccarat_win
+				FROM
+					betting_summary bts
+				WHERE
+					bts.type = #{baccaratType} <!-- baccarat type -->
+					AND DATE( bts.check_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( bts.check_time )) AS bet2 ON cal.dates = bet2.dates
+				<!-- baccarat betting statistic end -->
+				<!-- distributor deposit statistic start -->
+			LEFT JOIN(
+				SELECT
+					DATE( mh.process_time ) AS dates,
+					SUM( mh.variable_amount ) AS distributor_deposit,
+					COUNT( * ) AS distributor_deposit_count
+				FROM
+					money_history mh
+					LEFT JOIN member m ON mh.receiver = m.seq
+				WHERE
+					#{monStatusAdminEdit} > mh.STATUS
+					AND mh.operation_type = #{depositType} <!-- deposit type -->
+					AND m.user_type = #{userTypeDistributor} <!-- member distributor type -->
+					AND DATE( mh.process_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( mh.process_time )) AS dds ON cal.dates = dds.dates
+				<!-- distributor deposit statistic end -->
+				<!-- distributor withdraw statistic start -->
+			LEFT JOIN(
+				SELECT
+					DATE( mh.process_time ) AS dates,
+					SUM( mh.variable_amount ) AS distributor_withdraw,
+					COUNT( * ) AS distributor_withdraw_count
+				FROM
+					money_history mh
+					LEFT JOIN member m ON mh.receiver = m.seq
+				WHERE
+					#{monStatusAdminEdit} > mh.STATUS
+					AND mh.operation_type = #{withdrawType} <!-- withdraw type -->
+					AND m.user_type = #{userTypeDistributor} <!-- member distributor type -->
+					AND DATE( mh.process_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( mh.process_time )) AS dws ON cal.dates = dws.dates
+				<!-- distributor withdraw statistic end -->
+				<!-- manager deposit statistic start -->
+			LEFT JOIN(
+				SELECT
+					DATE( mh.process_time ) AS dates,
+					SUM( mh.variable_amount ) AS manager_deposit,
+					COUNT( * ) AS manager_deposit_count
+				FROM
+					money_history mh
+				WHERE
+					mh.STATUS = #{monStatusAdminEdit}
+					AND mh.operation_type = #{depositType} <!-- deposit type -->
+					AND DATE( mh.process_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( mh.process_time )) AS mds ON cal.dates = mds.dates
+				<!-- manager deposit statistic end -->
+				<!-- manager withdraw statistic start -->
+			LEFT JOIN(
+				SELECT
+					DATE( mh.process_time ) AS dates,
+					SUM( mh.variable_amount ) AS manager_withdraw,
+					COUNT( * ) AS manager_withdraw_count
+				FROM
+					money_history mh
+				WHERE
+					mh.STATUS = #{monStatusAdminEdit}
+					AND mh.operation_type = #{withdrawType} <!-- withdraw type -->
+					AND DATE( mh.process_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( mh.process_time )) AS mws ON cal.dates = mws.dates
+				<!-- manager withdraw statistic end -->
+				<!-- mileage deposit statistic start -->
+			LEFT JOIN(
+				SELECT
+					DATE( mh.process_time ) AS dates,
+					SUM( mh.variable_amount ) AS mileage_deposit,
+					COUNT( * ) AS mileage_deposit_count
+				FROM
+					mileage_history mh
+				WHERE
+					mh.operation_type = #{depositType} <!-- deposit type -->
+					AND DATE( mh.process_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( mh.process_time )) AS mids ON cal.dates = mids.dates
+				<!-- mileage deposit statistic end -->
+				<!-- mileage withdraw statistic start -->
+			LEFT JOIN(
+				SELECT
+					DATE( mh.process_time ) AS dates,
+					SUM( mh.variable_amount ) AS mileage_withdraw,
+					COUNT( * ) AS mileage_withdraw_count
+				FROM
+					mileage_history mh
+				WHERE
+					mh.operation_type = #{withdrawType} <!-- withdraw type -->
+					AND DATE( mh.process_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY
+					DATE( mh.process_time )) AS miws ON cal.dates = miws.dates
+				<!-- mileage withdraw statistic end -->
+			ORDER BY cal.dates ASC;
+	</select>
+
+	<select id="getSiteStatusList" resultType="com.casino.modules.admin.common.entity.SiteStatus">
+		SELECT
+			DATE(cal.dates) AS eachDate,
+			COALESCE(tmp_m.newMember, 0) AS newMember,
+			COALESCE(tmp_al.connectedMember, 0) AS connectedMember,
+			COALESCE(tmp_mh.depositMember, 0) AS depositMember,
+			COALESCE(tmp_bs.bettingMember, 0) AS bettingMember,
+			COALESCE(tmp_mhd.depositNumber, 0) AS depositNumber,
+			COALESCE(tmp_mhd.depositAmount, 0) AS depositAmount,
+			COALESCE(tmp_mhw.withdrawalNumber, 0) AS withdrawalNumber,
+			COALESCE(tmp_mhw.withdrawalAmount, 0) AS withdrawalAmount,
+			COALESCE(tmp_bss.slotBettingNumber, 0) AS slotBettingNumber,
+			COALESCE(tmp_bss.slotBettingAmount, 0) AS slotBettingAmount,
+			COALESCE(tmp_bsb.baccaratBettingNumber, 0) AS baccaratBettingNumber,
+			COALESCE(tmp_bsb.baccaratBettingAmount, 0) AS baccaratBettingAmount
+		FROM
+			<include refid="calendar"/>
+			LEFT JOIN (
+				SELECT
+					DATE(m.create_date) as createDate,
+					COUNT(*) AS newMember
+				FROM
+					member m
+				WHERE
+					DATE(m.create_date) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+				GROUP BY DATE(m.create_date)) AS tmp_m ON tmp_m.createDate = cal.dates
+			  LEFT JOIN (
+			  	SELECT
+			  		DATE(al.connection_date) AS connectionDate,
+			  		COUNT(DISTINCT(al.member_seq)) AS connectedMember
+		  		FROM
+		  			access_log al
+		  		WHERE
+		  			DATE(al.connection_date) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+	  			GROUP BY DATE(al.connection_date)) AS tmp_al ON tmp_al.connectionDate = cal.dates
+	  		  LEFT JOIN (
+	  		  	SELECT
+	  		  		DATE(mh.process_time) AS processDate,
+	  		  		COUNT(DISTINCT(mh.receiver)) AS depositMember
+  		  		FROM
+  		  			money_history AS mh
+  		  		WHERE
+  		  			mh.operation_type = #{depositType}
+  		  			AND DATE(mh.process_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+	  			GROUP BY DATE(mh.process_time)) AS tmp_mh ON tmp_mh.processDate = cal.dates
+	  		  LEFT JOIN (
+	  		  	SELECT
+	  		  		DATE(bs.check_time) AS checkDate,
+	  		  		COUNT(DISTINCT(bs.member_seq)) AS bettingMember
+  		  		FROM
+  		  			betting_summary AS bs
+  		  		WHERE
+  		  			DATE(bs.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+	  			GROUP BY DATE(bs.check_time)) AS tmp_bs ON tmp_bs.checkDate = cal.dates
+  		      LEFT JOIN (
+  		    	SELECT
+  		    		DATE(mhd.process_time) AS processDate,
+  		    		COUNT(*) AS depositNumber,
+  		    		SUM(mhd.variable_amount) AS depositAmount
+ 		    		FROM
+ 		    			money_history AS mhd
+    			WHERE
+    				mhd.operation_type = #{depositType}
+    				AND DATE(mhd.process_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+   				GROUP BY DATE(mhd.process_time)) AS tmp_mhd ON tmp_mhd.processDate = cal.dates
+			  LEFT JOIN (
+			    SELECT
+			    	DATE(mhw.process_time) AS processDate,
+			    	COUNT(*) AS withdrawalNumber,
+			    	SUM(mhw.variable_amount) AS withdrawalAmount
+		    	FROM
+		    		money_history AS mhw
+	    		WHERE
+	    			mhw.operation_type = #{withdrawType}
+	    			AND DATE(mhw.process_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+    			GROUP BY DATE(mhw.process_time)) AS tmp_mhw ON tmp_mhw.processDate = cal.dates
+    		  LEFT JOIN (
+    		  	SELECT
+    		  		DATE(bss.check_time) AS checkDate,
+    		  		COUNT(*) AS slotBettingNumber,
+    		  		SUM(bss.betting_amount) AS slotBettingAmount
+   		  		FROM
+   		  			betting_summary AS bss
+	  			WHERE
+	  				bss.type = #{slotType}
+	  				AND DATE(bss.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+  				GROUP BY DATE(bss.check_time)) AS tmp_bss ON tmp_bss.checkDate = cal.dates
+			  LEFT JOIN (
+			  	SELECT
+			  		DATE(bsb.check_time) AS checkDate,
+			  		COUNT(*) AS baccaratBettingNumber,
+			  		SUM(bsb.betting_amount) AS baccaratBettingAmount
+		  		FROM
+		  			betting_summary AS bsb
+	  			WHERE
+	  				bsb.type = #{baccaratType}
+	  				AND DATE(bsb.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+  				GROUP BY DATE(bsb.check_time)) AS tmp_bsb ON tmp_bsb.checkDate = cal.dates
+  			  ORDER BY cal.dates
+	</select>
+
+	<select id="getList" resultType="com.casino.modules.admin.common.entity.MoneyHistory">
+		SELECT
+		<include refid = "select" />
+		FROM <include refid = "from" />
+		<include refid = "where" />
+		ORDER BY mon.application_time DESC
+	</select>
+	
+	<select id="getTotalAmountByDateRange" resultType="Float" >
+		SELECT
+			COALESCE(SUM(mon.actual_amount), 0) AS totalAmount
+		FROM money_history mon
+		INNER JOIN member mu ON mon.receiver = mu.seq
+		<where>
+			<choose>
+				<when test="entity.checkTimeType != null and entity.checkTimeType == entity.checkTimeTypeApplication">
+					<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+						AND DATE(mon.application_time) >= DATE(#{entity.fromProcessTime})
+					</if>
+					<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+						AND DATE(#{entity.toProcessTime}) >= DATE(mon.application_time)
+					</if>
+				</when>
+				<when test="entity.checkTimeType != null and entity.checkTimeType == entity.checkTimeTypeProgress">
+					<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+						AND DATE(mon.process_time) >= DATE(#{entity.fromProcessTime})
+					</if>
+					<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+						AND DATE(#{entity.toProcessTime}) >= DATE(mon.process_time)
+					</if>
+				</when>
+			</choose>
+			<choose>
+				<when test="entity.partnerOrMember != null and entity.partnerOrMember == entity.partnerOrMemberMember">
+					AND mu.user_type = #{userTypeMember}
+				</when>
+				<when test="entity.partnerOrMember != null and entity.partnerOrMember == entity.partnerOrMemberPartner">
+					AND mu.user_type > #{userTypeMember}
+				</when>
+			</choose>
+			<choose>
+				<when test="entity.searchType != null and entity.searchType == entity.searchTypeMember">
+					AND #{monStatusAdminEdit} > mon.status
+				</when>
+				<when test="entity.searchType != null and entity.searchType == entity.searchTypeAdminEdit">
+					AND #{monStatusAdminEdit} = mon.status
+				</when>
+				<when test="entity.searchType != null and entity.searchType == entity.searchTypeDistributor">
+					AND mu.user_type = #{userTypeDistributor}
+				</when>
+			</choose>
+			<if test="entity.operationType != null">
+				AND mon.operation_type = #{entity.operationType}
+			</if>
+		</where>
+	</select>
+
+	<select id="getTodayMoneyHistory" resultType="java.util.Map">
+		SELECT
+		mh.seq,
+		m.seq AS memberSeq,
+		m.id AS memberId,
+		m.name AS memberName,
+		DATE_FORMAT(mh.application_time, '%T') AS applicationTime,
+		IFNULL(mh.actual_amount, 0) AS moneyAmount
+		FROM
+		money_history mh
+		INNER JOIN member m ON mh.receiver = m.seq
+		<where>
+			DATE(mh.application_time) = DATE(NOW())
+			<if test="status != null">
+				AND mh.status = #{status}
+			</if>
+			<if test="operationType != null">
+				AND mh.operation_type = #{operationType}
+			</if>
+			<if test="moneyOrPoint != null">
+				AND mh.money_or_point = #{moneyOrPoint}
+			</if>
+		</where>
+		ORDER BY mh.application_time DESC
+		LIMIT 5
+	</select>
+	
+	<select id="getMonthMoneyLogByMemberSeq" resultType="com.casino.modules.admin.common.entity.MoneyHistory">
+		SELECT mh.*, m.account_holder as 'accountHolder'
+		FROM money_history mh
+		LEFT JOIN member m ON m.seq = mh.receiver
+		<where>
+			mh.application_time BETWEEN NOW() - INTERVAL 1 MONTH AND NOW()
+			<if test="memberSeq != null and memberSeq != ''">
+				AND mh.receiver = #{memberSeq}
+			</if>
+			<if test="operationType != null">
+				AND mh.operation_type = #{operationType}
+			</if>
+		</where>
+		ORDER BY mh.application_time DESC
+	</select>
+</mapper>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (|#{admin.common.member}| + ' ' + |#{admin.common.registration}|)"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+<section class="body member-create">
+    <div class="row" id="memberAddModal">
+        <div role="main" class="col-md-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.common.member}]]&nbsp;[[#{admin.common.registration}]]
+                    </h4>
+                </header>
+                <div class="panel-body">
+                    <form id="member-add-form" class="form-horizontal form-bordered"
+                          name="member" th:action="@{/member/add}" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.site}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <select class="form-control" name="siteName">
+                                    <option th:each="site : ${siteList}" th:value="${site.siteName}" th:text="${site.siteName}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" data-data-maxl="10">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.id}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="id" class="form-control" required />
+                            </div>
+                            <label class="col-sm-2 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.nickname}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="nickname" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.accountHolder}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="accountHolder" class="form-control"/>
+                            </div>
+                            <label class="col-sm-2 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.password}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="password" name="password" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.phoneNumber}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="phoneNumber" class="form-control" required />
+                            </div>
+                            <label class="col-sm-2 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.email}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="email" name="emailAddress" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.nameOfBank}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="bankName" class="form-control" />
+                            </div>
+                            <label class="col-sm-2 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.accountNumber}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="bankNumber" class="form-control" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <footer class="panel-footer">
+                    <button class="btn btn-primary member-add" th:text="#{admin.common.registration}"></button>
+                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                </footer>
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+<script th:src="@{/assets/javascripts/member/add.js}"></script>
+</body>
+</html>

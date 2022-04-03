@@ -1,0 +1,82 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+<section class="body betting-summary">
+    <div th:fragment="bettingSummary" class="modal fade bs-modal-lg" id="bettingSummaryModal" data-backdrop="static" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.common.bettingSummary}]]
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form id="bettingSummaryForm" class="form-inline search-form" th:action="@{/log/slotloglist_ajax}" method="post" name="bettingSummaryForm">
+                        <input type="hidden" name="memberSeq" value="" />
+                        <input type="hidden" name="pageNo" value="1" />
+                        <input type="hidden" name="pageSize" value="10" />
+                        <div class="form-group">
+                            <label class="control-label">
+                                <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                <span th:text="#{admin.common.date}"></span>
+                            </label>
+                            <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                <input type="text" class="form-control"  name="fromProcessTime">
+                                <span class="input-group-addon">~</span>
+                                <input type="text" class="form-control" name="toProcessTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <a class="btn btn-primary search-betting-summary" style="float: right;">
+                                <span th:text="#{admin.common.search}"></span>&nbsp;<i class="fa fa-search"></i>
+                            </a>
+                        </div>
+                    </form>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="betting-list">
+                            <thead>
+                            <tr>
+                                <th class="text-center" th:text="#{admin.bettingSummary.checkTime}" style="min-width: 170px;"></th>
+                                <th class="text-center" th:text="#{admin.common.id}" style="min-width: 100px;">ID</th>
+                                <th class="text-center" th:text="#{admin.common.nickname}" style="min-width: 100px;">Nickname</th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.playingGame}" style="min-width: 120px;"></th>
+                                <th class="text-center" th:text="#{admin.common.type}">Type</th>
+                                <th class="text-center" th:text="#{admin.common.betAmount}" style="min-width: 120px;">Bet Amount</th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.winningAmount}" style="min-width: 150px;"></th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.numberOfBets}" style="min-width: 120px;">Number of</th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.pointsRate}" style="min-width: 120px;">Points</th>
+                                <th class="text-center" th:text="#{admin.common.store.id}" style="min-width: 120px;">Store ID</th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.storeSettlementRate}" style="min-width: 170px;"></th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.amountOfStoreRolling}" style="min-width: 170px;"></th>
+                                <th class="text-center" th:text="#{admin.common.distributor.id}" style="min-width: 130px;"></th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.distributorSettlementRate}" style="min-width: 200px;"></th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.amountOfDistributorRolling}" style="min-width: 215px;"></th>
+                                <th class="text-center" th:text="#{admin.common.subHeadquarter.id}" style="min-width: 170px;"></th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.subHeadquarterSettlementRate}" style="min-width: 230px;"></th>
+                                <th class="text-center" th:text="#{admin.bettingSummary.amountOfSubHeadquarterRolling}" style="min-width: 250px;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center" colspan="18" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.close}">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.popup.title})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+<section class="body member-betting-summary">
+    <div class="row" id="bettingSummaryModal">
+        <div role="main" class="col-md-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.common.slotsCasinoBettingSummary}]]
+                    </h4>
+                </header>
+                <div class="panel-body">
+                    <form id="formSearch" class="form-inline search-form" style="display: none;" th:action="@{/member/popup_bet}" method="get" th:object="${bettingSummaryForm}">
+                        <input type="hidden" name="mem_sn" th:value="${memberSeq}" />
+                    </form>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="betting-list">
+                            <thead>
+                            <tr>
+                                <th th:text="#{admin.bettingSummary.checkTime}"></th>
+                                <th th:text="#{admin.common.id}"></th>
+                                <th th:text="#{admin.common.nickname}"></th>
+                                <th th:text="#{admin.bettingSummary.playingGame}"></th>
+                                <th th:text="#{admin.common.type}"></th>
+                                <th th:text="#{admin.common.betAmount}"></th>
+                                <th th:text="#{admin.bettingSummary.winningAmount}"></th>
+                                <th th:text="#{admin.bettingSummary.numberOfBets}"></th>
+                                <th th:text="#{admin.bettingSummary.pointsRate}"></th>
+                                <th th:text="#{admin.common.store.id}"></th>
+                                <th th:text="#{admin.bettingSummary.storeSettlementRate}"></th>
+                                <th th:text="#{admin.bettingSummary.amountOfStoreRolling}"></th>
+                                <th th:text="#{admin.common.distributor.id}"></th>
+                                <th th:text="#{admin.bettingSummary.distributorSettlementRate}"></th>
+                                <th th:text="#{admin.bettingSummary.amountOfDistributorRolling}"></th>
+                                <th th:text="#{admin.common.subHeadquarter.id}"></th>
+                                <th th:text="#{admin.bettingSummary.subHeadquarterSettlementRate}"></th>
+                                <th th:text="#{admin.bettingSummary.amountOfSubHeadquarterRolling}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}" th:data-key="${entity.seq}">
+                                <td class="text-center">
+                                    <p th:text="${#dates.format(entity.checkTime, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p>
+                                        <a class="member-id" th:data-key="${entity.memberSeq}" th:text="${entity.memberID}"></a>
+                                    </p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="${entity.memberNickname}"></p>
+                                </td>
+                                <td class="text-center" th:text="${entity.playingGame}"></td>
+                                <td class="text-center">
+                                    <p>slot</p>
+                                    <p>baccarat</p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="${entity.type == 0 ? #numbers.formatDecimal(entity.bettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                    <p th:text="${entity.type == 1 ? #numbers.formatDecimal(entity.bettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="${entity.type == 0 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                    <p th:text="${entity.type == 1 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="${entity.type == 0 ? entity.betCount : 0}"></p>
+                                    <p th:text="${entity.type == 1 ? entity.betCount : 0}"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="${entity.memberSlotRate}"></p>
+                                    <p th:text="${entity.memberBaccaratRate}"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="${entity.storeID}"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="|${entity.storeSlotRate}| + '%'"></p>
+                                    <p th:text="|${entity.storeBaccaratRate}| + '%'"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p>[[${entity.type == 0 ? #numbers.formatDecimal(entity.storeRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                    <p>[[${entity.type == 1 ? #numbers.formatDecimal(entity.storeRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="${entity.distributorID}"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="|${entity.distributorSlotRate}| + '%'"></p>
+                                    <p th:text="|${entity.distributorBaccaratRate}| + '%'"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p>[[${entity.type == 0 ? #numbers.formatDecimal(entity.distributorRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                    <p>[[${entity.type == 1 ? #numbers.formatDecimal(entity.distributorRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="${entity.subHeadquarterID}"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p th:text="|${entity.subHeadquarterSlotRate}| + '%'"></p>
+                                    <p th:text="|${entity.subHeadquarterBaccaratRate}| + '%'"></p>
+                                </td>
+                                <td class="text-center">
+                                    <p>[[${entity.type == 0 ? #numbers.formatDecimal(entity.subHeadquarterRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                    <p>[[${entity.type == 1 ? #numbers.formatDecimal(entity.subHeadquarterRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(pageList.records)}">
+                                <td class="text-center" colspan="18" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab_cont customPage w99 t_center ptb15"></div>
+                </div>
+                <footer class="panel-footer">
+                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                </footer>
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var url = [[${url}]];
+    var page = [[${pageList}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    createPagenation(page, url);
+</script>
+</body>
+</html>

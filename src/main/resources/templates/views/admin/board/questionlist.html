@@ -1,0 +1,180 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	<head th:replace="template :: head ('Customer Service Center')">
+	</head>
+	<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/board.css}"/>
+	<body>
+		<section class="body">
+	        <header th:replace="template :: header" class="header"></header>
+	
+	        <div class="inner-wrapper">
+	            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+	
+	            <section role="main" class="content-body">
+	            	<section class="panel" role="main">
+						<header class="panel-heading">
+							<h2 class="panel-title" th:text="#{admin.board.customerServiceCenter}">Customer Service Center</h2>
+						</header>
+						<div class="panel-body" id="questionlist">
+							<div class="tabs tabs-primary">
+								<ul class="nav nav-tabs">
+									<li>
+										<a th:href="@{/board/list?province=2}" th:text="#{admin.board.freeBoard}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/list?province=0}" th:text="#{admin.common.notice}"></a>
+									</li>
+									<li class="active">
+										<a href="#questionlist" th:text="#{admin.board.customerServiceCenter}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/write}" th:text="#{admin.board.writePost}"></a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div id="questionlist" class="tab-pane active">
+										<form id="formSearch" th:action="@{/board/questionlist}" method="get" th:object="${form}" class="form-inline search-form">
+											<div class="form-group">
+												<div class="d-inline-block">
+													<select id="site" name="site" class="form-control">
+														<option value="0" th:text="#{admin.common.all}">all</option>
+												  	</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<i class="fa fa-search search-print"></i>
+												<label for="print" th:text="#{admin.common.print}"></label>
+					                            <input type="text" class="form-control input-print" id="pageSize" name="pageSize" th:value="${pageSize}">
+											</div>
+											<div class="form-group">
+												<div class="d-inline-block">
+													<select id="selectType" name="selectType" class="form-control" th:field="*{selectType}">
+														<option value="0" th:text="#{admin.common.id}">ID</option>
+														<option value="1" th:text="#{admin.common.title}">Title</option>
+														<option value="2" th:text="#{admin.common.writer}">Writer</option>
+												  	</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="input-group input-search">
+													<span class="input-group-btn">
+														<button type="button" class="btn btn-default">
+															<i class="fa fa-search"></i>
+														</button>
+													</span>
+													<input type="text" class="form-control input-keyword" id="keyword" name="keyword" th:field=*{keyword} />
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="d-flex align-items-center justify-content-center">
+													<button class="btn btn-default mr-2 text-nowrap d-table-cell align-middle" type="submit">
+														<i class="fa fa-search"></i>
+														<span class="d-table-cell align-middle" th:text="#{admin.common.search}">Search</span>
+													</button>
+												</div>
+											</div>
+										</form>
+										<div class="table-responsive">
+											<table class="table table-bordered table-striped">
+												<thead>
+													<tr>
+														<th class="text-center">
+						                                    <div class="checkbox-custom checkbox-default checkbox-inline">
+						                                        <input type="checkbox" class="group-checkable" id="allCheck"
+						                                        	data-set="#member-datatable .checkboxes" onclick="allCheck()"><label></label>
+						                                    </div>
+						                                </th>
+														<th class="text-center" th:text="#{admin.common.number}"> number </th>
+														<th class="text-center" th:text="#{admin.common.title}"> title </th>
+														<th class="text-center" th:text="#{admin.common.writer}"> Writer </th>
+														<th class="text-center" th:text="#{admin.common.id}"> ID </th>
+														<th class="text-center" th:text="#{admin.common.level}"> Level </th>
+														<th class="text-center" th:text="#{admin.common.memberSince}"> Member since </th>
+														<th class="text-center" th:text="#{admin.common.accountHolder}"> Account Holder </th>
+														<th class="text-center" th:text="#{admin.common.nameOfBank}"> Bank </th>
+														<th class="text-center" th:text="#{admin.common.distributor}"> Distributor </th>
+														<th class="text-center" th:text="#{admin.common.date}"> date </th>
+														<th class="text-center" th:text="#{admin.common.result}"> result </th>
+														<th class="text-center" th:text="#{admin.common.status}"> state </th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr class="odd gradeX text-center question" th:each="question, stat: ${pageList.records}" 
+														th:data-seq="${question.seq}" th:style="${'background:' + question.color + ';'}">
+														<td>
+															<div class="checkbox-custom checkbox-default checkbox-inline">
+																<input class="checkboxes" type="checkbox" th:name="${question.seq}"><label></label>
+															</div>
+														</td>
+														<td th:text="${stat.index + 1}"></td>
+														<td th:text="${question.title}"></td>
+														<td th:text="${question.name}"></td>
+														<td th:text="${question.mId}"></td>
+														<td th:text="${question.levelName}"></td>
+														<td th:text="${(question.sendTime != null ? #dates.format(question.registerDate, 'yyyy-MM-dd hh:MM:ss') : '')}"></td>
+														<td th:text="${question.accountHolder}"></td>
+														<td th:text="${question.bankName}"></td>
+														<td th:text="${question.nickname}"></td>
+														<td th:text="${(question.sendTime != null ? #dates.format(question.sendTime, 'yyyy-MM-dd') : '')}"></td>
+														<td>
+															<span th:if="${question.answerStatus == 1}" th:text="#{admin.status.replied}"> </span>
+														</td>
+														<td>
+															<span th:if="${question.recommendStatus == 0}" th:text="#{admin.status.unrecommend}"> </span>
+															<span th:if="${question.recommendStatus == 1}" th:text="#{admin.status.recommend}"> </span>
+														</td>
+													</tr>
+													<tr th:if="${pageList.total == 0}">
+														<td colSpan="13" class="text-center" th:text="#{admin.common.noData}">No Data</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="tab_cont customPage w99 t_center ptb15"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<div class="select-delete">
+								<a class="btn btn-default modal-member-delete" data-toggle="modal" href="#batchDelete" th:text="#{admin.common.selectDelete}"></a>
+								<div class="modal fade" id="batchDelete" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
+					                <div class="modal-dialog">
+					                    <div class="modal-content">
+					                        <div class="modal-header">
+					                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					                            <h4 class="modal-title" th:text="#{admin.common.delete}"></h4>
+					                        </div>
+					                        <div class="modal-body">
+					                            <p th:text="#{admin.common.deleteMsg}"></p>
+					                        </div>
+					                        <div class="modal-footer">
+					                            <button class="btn btn-primary" onclick="batchDelete();" th:text="#{admin.common.confirm}"></button>
+					                            <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+							</div>
+						</div>
+					</section>
+	            </section>
+	        </div>
+	    </section>
+
+		<script type="text/javascript" th:inline="javascript">
+			var page = [[${page}]];
+			var url = [[@{/}]] + [[${url}]];
+		</script>
+
+	    <script th:replace="template :: scripts"></script>
+
+	    <script th:src="@{/assets/javascripts/board/board.js}"></script>
+	    
+	    <script type="text/javascript" th:inline="javascript">
+			createPagenation(page, url);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,294 @@
+/* Add here all your CSS customizations */
+@media only screen and (min-width: 768px) {
+    .header {
+        background-image: -webkit-linear-gradient(#566e8a 0%, #040e29 70%);
+        background-image: linear-gradient(#566e8a 0%, #040e29 70%);
+        border-top: none;
+    }
+
+    .header-right {
+        height: 70px;
+    }
+
+    .header .separator {
+        background-image: -webkit-linear-gradient(#516884 60%, #415672);
+        background-image: linear-gradient(#516884 60%, #415672);
+    }
+}
+
+.sidebar-left {
+    width: 260px;
+}
+.content-body {
+    padding: 0;
+}
+
+.form-control {
+    padding: 0;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #eff2f7;
+}
+
+.search-form.form-inline {
+    padding: 10px 10px 0 10px;
+    border: 1px solid #DADADA;
+    margin-bottom: 10px;
+}
+
+.search-form .form-group {
+    margin-bottom: 10px !important;
+}
+
+.search-form .checkbox-inline input[type="checkbox"]:checked + label:before {
+    background: #0088cc;
+    border-color: #0077b3;
+}
+
+.search-form .checkbox-inline input[type="checkbox"]:checked + label:after {
+    color: #fff;
+}
+
+.search-form .checkbox-custom {
+    margin-top: 5px;
+}
+
+.search-form .checkbox-custom:last-child {
+    margin-top: -1px;
+}
+
+.search-form div.calendar {
+	width: 120px;
+	display: inline-block;
+}
+
+.search-form i.search-icon {
+	background-color: #0088cc;
+	color: white;
+	padding: 2px;
+}
+
+.control-label {
+    text-align: left !important;
+}
+
+section[class*=member] form .radio-custom {
+    margin:5px 5px 0 0;
+    display: inline-block;
+}
+
+.input-group.color span {
+    display: inline;
+    background: none;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    background: #dddddd;
+    padding: 5px;
+}
+
+#betting-list th {
+    text-align: center;
+}
+
+#betting-list td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 0;
+}
+
+#betting-list td > p {
+    border-top: 1px solid #dadada;
+    padding: 8px;
+    margin: 0;
+}
+
+#betting-list td a {
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+}
+
+#betting-list td > p:first-child {
+    border-top: none;
+}
+
+#betting-list .betting-summary-nickname {
+    white-space: nowrap;
+}
+
+table.table-bordered th {
+    color: white;
+    background: #5e7c9a;
+    text-align: center;
+    padding: 5px;
+}
+
+div[class*=datetimepicker] .switch {
+    display: table-cell;
+}
+
+a.text-default {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.sidebar-left {
+    background: #929eac;
+    box-shadow: none;
+}
+
+.nav-menu {
+    margin: 0 15px;
+    background: #ecf5fe;
+}
+
+.nav-menu:first-child {
+    margin-top: 15px;
+}
+
+.nav-menu:last-child {
+    margin-bottom: 15px;
+}
+
+.nav-menu .head {
+    background: #41556e;
+}
+
+.nav-menu .head a i {
+    color: white;
+}
+
+.nav-menu li a {
+    padding: 5px 10px;
+    display: block;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.title-pink {
+    color: #f189d4;
+}
+
+.title-white {
+    color: white;
+}
+
+.title-green {
+    color: #22e275;
+}
+
+.title-dark-red {
+    color: #c5676b;
+}
+
+.title-white-blue {
+    color: #6fecec;
+}
+
+.blank {
+    margin: 5px;
+}
+
+html body .tabs-primary .nav-tabs li.active a, html.dark body .tabs-primary .nav-tabs li.active a, html body .tabs-primary .nav-tabs.nav-justified li.active a, html.dark body .tabs-primary .nav-tabs.nav-justified li.active a, html body .tabs-primary .nav-tabs li.active a:hover, html.dark body .tabs-primary .nav-tabs li.active a:hover, html body .tabs-primary .nav-tabs.nav-justified li.active a:hover, html.dark body .tabs-primary .nav-tabs.nav-justified li.active a:hover, html body .tabs-primary .nav-tabs li.active a:focus, html.dark body .tabs-primary .nav-tabs li.active a:focus, html body .tabs-primary .nav-tabs.nav-justified li.active a:focus, html.dark body .tabs-primary .nav-tabs.nav-justified li.active a:focus {
+    border-top-color: transparent;
+    color: white;
+    background: #5e81b9;
+}
+
+html body .tabs-primary .nav-tabs li a:hover, html.dark body .tabs-primary .nav-tabs li a:hover, html body .tabs-primary .nav-tabs.nav-justified li a:hover, html.dark body .tabs-primary .nav-tabs.nav-justified li a:hover {
+    border-top-color: transparent;
+}
+
+html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs li a, html body .tabs-primary .nav-tabs.nav-justified li a, html.dark body .tabs-primary .nav-tabs.nav-justified li a, html body .tabs-primary .nav-tabs li a:hover, html.dark body .tabs-primary .nav-tabs li a:hover, html body .tabs-primary .nav-tabs.nav-justified li a:hover, html.dark body .tabs-primary .nav-tabs.nav-justified li a:hover {
+    color: #000000;
+    background: #dae1eb;
+}
+
+.table-striped.diff-color > tbody > tr:nth-of-type(odd) {
+    background-color: #ffffcd;
+}
+
+.bg-white-yellow {
+    background: #ffffcd;
+}
+
+.bg-white-grey {
+    background: #e0eafe;
+}
+
+.sidebar-widget {
+    margin: 0 15px;
+    background: #ecf5fe;
+}
+
+.sidebar-widget:first-child {
+    margin-top: 15px;
+}
+
+.sidebar-widget:last-child {
+    margin-bottom: 15px;
+}
+
+.sidebar-widget .widget-header {
+    padding: 10px;
+    background: #41556e;
+}
+
+.sidebar-widget .widget-header h6 {
+    text-transform: inherit;
+}
+
+.sidebar-widget .widget-header h6 i {
+    color: white;
+}
+
+.sidebar-widget .widget-content ul {
+    padding: 0 10px 10px 10px;
+}
+
+.sidebar-widget .widget-content ul li a {
+    padding: 0;
+    display: block;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+@media only screen and (min-width: 768px) {
+    .alarm-info {
+        margin-top: 5px;
+        border-bottom: 2px solid #54647c;
+    }
+
+    .alarm-info:last-child {
+        border-bottom: none;
+    }
+}
+
+.header-context-info {
+    margin-right: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.text-white {
+    color: white;
+}
+
+.text-dark-yellow {
+    color: #ff961d;
+}
+
+.money-green {
+	color: #4afc41;
+}
+
+.menu-li{
+    display: flex;
+}
+.menu-li a.w-50{
+    width: 50%;
+}

@@ -1,0 +1,98 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.popup.popupSetting})"></head>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+        
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+            
+            <section role="main" class="content-body">
+            	<section class="panel" role="main">
+					<header class="panel-heading">
+						<h2 class="panel-title" th:text="#{admin.popup.popupSetting}"></h2>
+					</header>
+					<div class="panel-body">
+						<form id="formSearch" th:action="@{${url}}" class="form-inline search-form" style="display:none;">
+	                    </form>
+						<div class="mb-md">
+							<button type="button" class="btn btn-default" th:text="#{admin.popup.popupWindow}"></button>
+							<a class="btn btn-primary addPopupBut" th:text="#{admin.popup.addPopupWindow}"></a>
+						</div>
+						<div class="table-responsive">
+							<table class="table table-bordered table-striped" id="popupsetting-datatable">
+								<thead>
+									<tr>
+									 	<th class="text-center" th:text="#{admin.common.site}"></th>
+			                            <th class="text-center" th:text="#{admin.common.type}"></th>
+			                            <th class="text-center" th:text="#{admin.common.title}"></th>
+			                            <th class="text-center" th:text="#{admin.common.location}"></th>
+			                            <th class="text-center" th:text="#{admin.popup.additionalDate}"></th>
+			                            <th class="text-center" th:text="#{admin.popup.expirationPeriod}"></th>
+			                            <th class="text-center" th:text="#{admin.popup.process}"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="item, stat : ${page.records}">
+										<input type="hidden" th:value="${item.seq}"/>
+										<td class="text-center" th:text="${item.siteSeq}"></td>
+										<td class="text-center" th:text="${item.type}"></td>
+										<td class="text-center" th:text="${item.title}"></td>
+										<td class="text-center" th:text="${item.location}"></td>
+										<td class="text-center" th:text="${#dates.format(item.additionalDate, 'yyyy-MM-dd')}"></td>
+										<td class="text-center">
+											<span th:text="${#dates.format(item.expirationStart, 'yyyy-MM-dd')}"></span>~<span th:text="${#dates.format(item.expirationEnd, 'yyyy-MM-dd')}"></span>
+										</td>
+										<td class="actions text-center">
+											<a class="editPopupBut btn btn-default"><i class="fa fa-pencil"></i></a>
+											<a class="deleteModal btn btn-default" data-toggle="modal" href="#modalDelete"><i class="fa fa-trash-o"></i></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="tab_cont customPage w99 t_center ptb15"></div>
+					</div>
+				</section>
+				<div>
+					<div class="modal fade" id="modalDelete" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
+		                <div class="modal-dialog">
+		                    <div class="modal-content">
+		                        <div class="modal-header">
+		                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		                            <h4 class="modal-title">
+		                                <h2 class="panel-title" th:text="#{admin.popup.popupSetting}"></h2>
+		                            </h4>
+		                        </div>
+		                        <div class="modal-body">
+		                        	<p th:text="#{admin.common.deleteMsg}"></p>
+		                        </div>
+		                        <div class="modal-footer">
+		                        	<input type="hidden" name="modalSeq"/>
+		                            <button class="btn btn-primary" onclick="popupDelete();" th:text="#{admin.common.confirm}"></button>
+		                            <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}">Close</button>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+				</div>				
+			</section>
+        </div>
+    </section>
+
+	<script type="text/javascript" th:inline="javascript">
+	    var page = [[${page}]];
+		var url = [[@{${url}}]];
+	</script>
+
+    <script th:replace="template :: scripts"></script>
+    
+    <script type="text/javascript" th:inline="javascript">
+		createPagenation(page, url);
+	</script>
+	<script th:src="@{/assets/javascripts/config/popup.js}"></script>
+</body>
+</html>

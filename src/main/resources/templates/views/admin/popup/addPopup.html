@@ -1,0 +1,88 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.popup.popupSetting})"></head>
+<body>
+    <section class="body addPopupPage">
+        <div class="row">
+        	<div role="main" class="col-md-12">
+	            <section class="panel">
+		            <header class="panel-heading">
+		               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		                <h4 class="modal-title">
+		                   <h2 class="panel-title" th:text="#{admin.popup.popupSetting}"></h2>
+		                </h4>
+		            </header>
+		            <div class="panel-body">
+		                <form id="popupAddForm" class="form-horizontal form-bordered" name="popup" th:action="@{/config/addPopup}" method="post">
+		                    <div class="form-group">
+		                        <label class="col-sm-3 control-label" th:text="#{admin.common.site}"></label>
+		                        <div class="col-sm-9">
+		                            <select name="siteSeq" class="form-control">
+		                                <option value="all">all</option>
+		                                <option value="gadget">gadget</option>
+		                            </select>
+		                        </div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label class="col-sm-3 control-label" th:text="#{admin.common.type}"></label>
+								<div class="col-sm-9">
+									<input type="text" name="type" class="form-control" required/>
+								</div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label class="col-sm-3 control-label" th:text="#{admin.common.title}"></label>
+								<div class="col-sm-9">
+									<input type="text" name="title" class="form-control"/>
+								</div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label class="col-sm-3 control-label" th:text="#{admin.common.location}"></label>
+								<div class="col-sm-9">
+									<input type="text" name="location" class="form-control" required/>
+								</div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label class="col-sm-3 control-label" th:text="#{admin.popup.additionalDate}"></label>
+								<div class="col-sm-9">
+									<div class="input-group">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span>
+										<input type="text" data-plugin-datepicker class="form-control" name="additionalDate" data-date-format= "yyyy-mm-dd" required/>
+									</div>
+								</div>
+		                    </div>
+		                    <div class="form-group">
+								<label class="col-sm-3 control-label" th:text="#{admin.popup.expirationPeriod}"></label>
+								<div class="col-sm-9">
+									<div class="input-daterange input-group" data-plugin-datepicker data-date-format= "yyyy-mm-dd">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span>
+										<input type="text" class="form-control" name="expirationStart"/>
+										<span class="input-group-addon">~</span>
+										<input type="text" class="form-control" name="expirationEnd"/>
+									</div>
+								</div>
+							</div>
+		                </form>
+	             	</div>
+					<footer class="panel-footer">
+		                <button class="btn btn-primary popupAddBut" th:text="#{admin.common.save}"></button>
+		                <a href="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></a>
+		            </footer>
+				</section>
+			</div>
+        </div>
+    </section>
+
+	<script type="text/javascript" th:inline="javascript">
+		var url = [[${url}]];
+	</script>
+
+    <script th:replace="template :: scripts"></script>
+	<script th:src="@{/assets/javascripts/config/popup.js}"></script>
+</body>
+</html>

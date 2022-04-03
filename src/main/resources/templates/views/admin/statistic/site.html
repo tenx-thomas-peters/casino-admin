@@ -1,0 +1,133 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.statistic.siteStatus})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<style>
+	#statisticData .blue {
+		color: blue;
+	}
+	#statisticData .red {
+		color: red;
+	}
+	#statisticData .sum {
+		background-color: #3988a552;
+	}	
+	.equalWidth {
+		width: 100px;
+	}
+</style>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+        
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+            
+            <section role="main" class="content-body">
+            	<section class="panel" role="main">
+					<header class="panel-heading">
+						<h2 class="panel-title" th:text="#{admin.statistic.siteStatus}"></h2>
+					</header>
+					<div class="panel-body">
+						<form id="formSearch" th:action="@{${url}}" th:object="${siteStatus}" class="form-inline search-form">
+							<div class="form-group">
+								<label class="control-label">
+                                    <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                    <span th:text="#{admin.common.date}"></span>
+                                </label>
+                                <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control"  th:field="*{startDate}">
+                                    <span class="input-group-addon">~</span>
+                                    <input type="text" class="form-control" th:field="*{endDate}">
+                                </div>
+                                <button type="submit" class="btn btn-default">
+                                    <span th:text="#{admin.common.search}"></span>&nbsp;<i class="fa fa-search"></i>
+                                </button>
+                            </div>
+	                    </form>
+	                    <div class="table-responsive">
+							<table class="table table-bordered table-striped" id="moneylog-datatable">
+								<thead>
+									<tr>
+										<th class="center" th:text="#{admin.common.date}" style="vertical-align: middle;"></th>
+										<th class="center" th:text="#{admin.statistic.newMember}"></th>
+										<th class="center" th:text="#{admin.statistic.connectedMember}"></th>
+										<th class="center" th:text="#{admin.statistic.depositMember}"></th>
+										<th class="center" th:text="#{admin.statistic.bettingMember}"></th>
+										<th class="center" th:text="#{admin.statistic.deposit}" colSpan="2"></th>
+										<th class="center" th:text="#{admin.statistic.withdrawal}" colSpan="2"></th>
+										<th class="center" th:text="#{admin.statistic.slotBetting}" colSpan="2"></th>
+										<th class="center" th:text="#{admin.statistic.baccaratBetting}" colSpan="2"></th>
+									</tr>
+								</thead>
+								<tbody id="statisticData">
+									<tr th:each="entity : ${list}">
+										<td style="min-width: 130px;" class="center">
+											<span th:text="${#dates.format(entity.eachDate, 'yyyy-MM-dd')}"></span>
+											<span>(</span>
+											<span th:text="${#dates.format(entity.eachDate, 'E')}"
+											th:class="${#dates.format(entity.eachDate,'E')=='Sat'?'text-primary':#dates.format(entity.eachDate,'E')=='Sun'?'text-danger':''}"></span>
+											<span>)</span>
+										</td>
+										<td class="center" th:text="${#numbers.formatDecimal(entity.newMember, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(entity.connectedMember, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+										<td class="center" th:text="${#numbers.formatDecimal((entity.depositMember), 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(entity.bettingMember, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+										
+										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(entity.depositAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="blue text-center equalWidth" th:text="${#numbers.formatDecimal(entity.depositNumber, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										
+										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(entity.withDrawalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="blue text-center equalWidth" th:text="${#numbers.formatDecimal(entity.withDrawalNumber, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+
+										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(entity.slotBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="blue text-center equalWidth" th:text="${#numbers.formatDecimal(entity.slotBettingNumber, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										
+										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(entity.baccaratBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="blue text-center equalWidth" th:text="${#numbers.formatDecimal(entity.baccaratBettingNumber, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										
+									</tr>
+									<tr th:if="${list.size() > 0}" >
+										<td class="center" th:text="#{admin.common.sum}"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(newMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(connetedMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(depositMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(bettingMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+
+										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(depositAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="blue text-center" th:text="${#numbers.formatDecimal(depositNumberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+
+										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(withdarwalAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="blue text-center" th:text="${#numbers.formatDecimal(withdarwalNumberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+
+										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(slotBettingAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="blue text-center" th:text="${#numbers.formatDecimal(slotBettingNumberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+
+										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(baccaratBettingAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="blue text-center" th:text="${#numbers.formatDecimal(baccaratBettingNumberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(list)}">
+                                        <td class="text-center" colspan="16" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+                                    </tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+			</section>
+        </div>
+    </section>
+
+	<script type="text/javascript" th:inline="javascript">
+        var page = [[${page}]];
+		var url = [[@{${url}}]];
+    </script>
+
+	<script th:replace="template :: scripts"></script>
+</body>
+</html>

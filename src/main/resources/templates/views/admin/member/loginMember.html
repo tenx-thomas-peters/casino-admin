@@ -1,0 +1,73 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (|#{admin.common.member}| + ' ' + |#{admin.common.bettingSummary}|)"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/betting-summary.css}"/>
+<body>
+    <section class="body">
+
+        <div>
+            <section role="main" class="content-body">
+                <section class="panel">
+                <header class="panel-heading">
+                		<h2 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.common.currentMemberList}]]
+                    	</h2>
+					</header>
+                    <div class="panel-body">
+                        
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped" id="betting-list">
+                                <thead>
+                                <tr>
+                                    <th th:text="#{admin.common.id}"></th>
+                                    <th th:text="#{admin.common.nickname}"></th>
+                                    <th th:text="#{admin.common.ranking}"></th>
+                                    <th th:text="#{admin.common.holdingAmount}"></th>
+                                    <th th:text="#{admin.common.lookup}"></th>
+                                    <th th:text="#{admin.accessLog.connectionIp}"></th>
+                                    <th th:text="#{admin.accessLog.accessDomain}"></th>
+                                    <th th:text="#{admin.common.logout}"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item : ${pageList.records}">
+		                                <input type="hidden" th:value="${item.seq}" name="seq"/>
+		                                <input type="hidden" th:data-key="${item.memberSeq}" name="memberSeq"/>
+                                    <td class="text-center" th:text="${item.id}"></td>
+                                    <td class="text-center" th:text="${item.nickname}"></td>
+                                    <td class="text-center" th:text="${item.level}"></td>
+                                    <td class="text-center" th:text="${item.moneyAmount}"></td>
+                                    <td class="text-center">0</td>
+                                    <td class="text-center" th:text="${item.connectionIp}"></td>
+                                    <td class="text-center" th:text="${item.connectionDomain}"></td>
+                                    <td class="text-center" th:text="#{admin.common.logout}"></td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(pageList.records)}">
+                                    <td class="text-center" colspan="18" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab_cont customPage w99 t_center ptb15"></div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </section>
+
+    <script type="text/javascript" th:inline="javascript">
+        var page = [[${pageList}]];
+        var url = [[${url}]];
+    </script>
+
+	<script th:replace="template :: scripts"></script>
+    <script th:src="@{/assets/javascripts/bettingsummary/betting.summary.js}"></script>
+
+    <script type="text/javascript" th:inline="javascript">
+        createPagenation(page, url);
+    </script>
+</body>
+</html>

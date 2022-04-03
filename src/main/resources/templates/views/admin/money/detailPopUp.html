@@ -1,0 +1,65 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.popup.title})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+    <section class="body">
+        <div class="row">
+            <div role="main" class="col-md-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <h4 class="panel-title">
+                            <i class="fa fa-caret-square-o-right text-primary"></i>
+                            [[#{admin.member.money.detail.title}]]
+                        </h4>
+                    </header>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th th:text="#{admin.common.approvalDate}"></th>
+									<th th:text="#{admin.common.id}"></th>
+									<th th:text="#{admin.common.nickname}"></th>
+									<th th:text="#{admin.common.accountHolder}"></th>
+									<th th:text="#{admin.common.distributor}"></th>
+									<th th:text="#{admin.money.log.prevamount}"></th>
+									<th th:text="#{admin.money.log.variableAmount}"></th>
+									<th th:text="#{admin.money.log.finalAmount}"></th>
+									<th th:text="#{admin.common.reason}"></th>
+								</tr>
+							</thead>
+							<tbody class="tableBody">
+								<tr th:each="item : ${list}">
+									<td th:text="${#dates.format(item.processTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+									<td th:text="${item.member.id}"></td>
+									<td th:text="${item.member.nickname}"></td>
+									<td th:text="${item.member.accountHolder}"></td>
+									<td th:text="${item.member.store==null?'independent':item.member.store.id}"></td>
+									<td th:text="${#numbers.formatDecimal(item.prevAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+									<td th:text="${#numbers.formatDecimal(item.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+									<td th:text="${#numbers.formatDecimal(item.finalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+									<td th:text="${item.reason}"></td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(list)}">
+                                    <td class="text-center" colspan="16" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+                                </tr>
+							</tbody>
+						</table>
+                    </div>
+                    <footer class="panel-footer">
+                        <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                    </footer>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <script type="text/javascript" th:inline="javascript">
+        var url = [[${url}]];
+    </script>
+
+    <script th:replace="template :: scripts"></script>
+</body>
+</html>

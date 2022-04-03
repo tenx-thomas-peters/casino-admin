@@ -1,0 +1,36 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Preference')">
+</head>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+            <section role="main" class="content-body">
+	            <section class="panel" role="main">
+	               	<header class="panel-heading">
+						<h2 class="panel-title" th:text="#{admin.db.extraction}"><i class="text-primary fa fa-youtube-play"></i> DB Extraction</h2>
+					</header>
+	               	<div class="panel-body">
+	               		<button type="button" class="btn btn-default" th:text="#{admin.btn.backup}" onclick="backup()">DB Backup</button>
+					</div>
+					<footer class="panel-footer">
+					</footer>
+				</section>
+			</section>
+      	</div>
+    </section>
+
+	<script type="text/javascript" th:inline="javascript">
+		var url = [[${url}]];
+	</script>
+	
+    <script th:replace="template :: scripts"></script>
+
+    <script th:src="@{/assets/javascripts/config/backup.js}"></script>
+</body>
+</html>

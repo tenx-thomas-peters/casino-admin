@@ -1,0 +1,320 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+<section class="body member-detail">
+    <div th:fragment="memberDetail" class="modal fade bs-modal-lg member" id="memberDetailModal" data-backdrop="static" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.common.member}]]&nbsp;[[#{admin.common.details}]]
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form id="member-update-form" name="member" class="form-horizontal form-bordered" th:action="@{/member/update}" method="post">
+                        <input type="hidden" name="seq" />
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.id}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="id"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.password}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="password" class="form-control" name="password" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.nickname}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="nickname" style="display: inline-block; width: auto;" />
+                                <div class="input-group color" data-color="#ff0000" data-plugin-colorpicker style="display: inline-block;">
+                                    <span class="input-group-addon">
+                                        <i></i>
+                                    </span>
+                                    <input name="color" type="text" class="form-control" style="display: none;" />
+                                </div>
+                                <a class="btn btn-default erase-color" th:text="#{admin.member.eraseColor}"></a>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.name}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="name"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.reservedAmount}]]&nbsp;/&nbsp;[[#{admin.common.mileage}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" style="display: inline-block; width: auto;" name="moneyAmount"></p>
+                                &nbsp;/&nbsp;
+                                <p class="control-label" style="display: inline-block; width: auto;" name="mileageAmount"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.betAmount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="betAmount">[[#{admin.common.won}]]</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.nameOfBank}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="bankName" />
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.accountHolder}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="accountHolder" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.accountNumber}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="bankNumber" />
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.exchangePassword}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="password" class="form-control" name="exchangePassword" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.memberSince}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="registerDate"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.recentDate}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="recentDate"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.signUpIp}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="connectionIP"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.loginIp}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="connectionIP"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.signUpDomain}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="connectionDomain"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.store}]]/[[#{admin.common.distributor}]]/[[#{admin.common.subHeadquarter}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6 partner-info">
+                                <select class="form-control" name="storeSeq" style="display: inline-block; width: auto;">
+                                    <option value="1">1</option>
+                                </select>&nbsp;/&nbsp;
+                                <p class="control-label" name="distributorID" style="display: inline-block;"></p>&nbsp;/&nbsp;
+                                <p class="control-label" name="subHeadquarterID" style="display: inline-block;"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.numberOfDeposit}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="depositCount" style="display: inline-block;"></p>&nbsp;
+                                [[#{admin.common.times}]]
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.numberOfWithdrawal}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="withdrawalCount" style="display: inline-block;"></p>&nbsp;
+                                [[#{admin.common.times}]]
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.totalDeposit}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="deposit" style="display: inline-block;"></p>&nbsp;
+                                [[#{admin.common.won}]]
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.totalWithdrawal}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="withdrawal" style="display: inline-block;"></p>&nbsp;
+                                [[#{admin.common.won}]]
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.membershipLevel}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <select class="form-control" name="levelSeq"></select>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.status}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <select class="form-control" name="status"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.email}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="emailAddress"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.phoneNumber}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="phoneNumber" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.memberRevenue}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="memberRevenue"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.recommender}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="recommender"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.slotRatePoints}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="number" class="form-control" name="slotRate" style="display: inline-block; width: auto;" required />%
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.baccaratRatePoints}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="number" class="form-control" name="baccaratRate" style="display: inline-block; width: auto;" required />%
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.betting}]]&nbsp;[[#{admin.common.possible}]]&nbsp;/&nbsp;[[#{admin.common.notPossible}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="radio-custom radio-primary">
+                                    <input type="radio" id="bettingPossibleOn" name="bettingPossible">
+                                    <label for="bettingPossibleOn" th:text="#{admin.member.on}">On</label>
+                                </div>
+                                <div class="radio-custom radio-primary">
+                                    <input type="radio" id="bettingPossibleOff" name="bettingPossible">
+                                    <label for="bettingPossibleOff" th:text="#{admin.member.off}">Off</label>
+                                </div>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.recommendable}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="radio-custom radio-primary">
+                                    <input type="radio" id="recommendableOn" name="recommendable">
+                                    <label for="recommendableOn" th:text="#{admin.member.on}">On</label>
+                                </div>
+                                <div class="radio-custom radio-primary">
+                                    <input type="radio" id="recommendableOff" name="recommendable">
+                                    <label for="recommendableOff" th:text="#{admin.member.off}">Off</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.memo}]]
+                            </label>
+                            <div class="col-md-10 col-sm-6">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped" id="memo-list">
+                                        <thead>
+                                        <th class="text-center" style="width: 20%;" th:text="#{admin.common.hour}"></th>
+                                        <th class="text-center" style="width: 60%;" th:text="#{admin.common.contents}"></th>
+                                        <th class="text-center" style="width: 20%;" th:text="#{admin.common.process}"></th>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary update-member" th:text="#{admin.common.save}">Save</button>
+                    <button type="button" class="btn btn-default close-detail-modal" th:text="#{admin.common.close}">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

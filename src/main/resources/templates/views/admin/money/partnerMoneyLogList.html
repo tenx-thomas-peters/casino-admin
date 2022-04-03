@@ -1,0 +1,114 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.log.partnerMoneyLogListTitle})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+        
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+            
+            <section role="main" class="content-body">
+            	<section class="panel" role="main">
+					<header class="panel-heading">
+						<h2 class="panel-title" th:text="#{admin.log.partnerMoneyLogListTitle}"></h2>
+					</header>
+					<div class="panel-body">
+						<form id="formSearch" th:action="@{${url}}" th:object="${moneyHistory}" class="form-inline search-form" method="post">
+							<div class="form-group">
+								<label class="control-label">
+                                    <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                    <span th:text="#{admin.common.date}"></span>
+                                </label>
+                                <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control"  th:field="*{fromProcessTime}">
+                                    <span class="input-group-addon">~</span>
+                                    <input type="text" class="form-control" th:field="*{toProcessTime}">
+                                </div>
+							</div>
+							<div class="form-group">
+								<select class="form-control" th:field="*{IDOrNickname}">
+									<option value=""></option>
+									<option value="0" th:text="#{admin.common.id}"></option>
+									<option value="1" th:text="#{admin.common.nickname}"></option>
+								</select>
+								<input class="form-control" type="text" th:field="*{IDOrNickNameValue}">
+							</div>
+							<div class="form-group">
+								<select class="form-control" th:field="*{reasonType}">
+									<option value="" th:text="#{admin.log.partnerDetail.reasonForMoney}"></option>
+									<option th:each="moneyForReason : ${moneyForReasonList}" th:text="#{${moneyForReason.strKey}}"
+										th:value="${moneyForReason.dictValue}" th:selected="${moneyForReason.dictValue == reasonType}" 
+										th:inline="text">
+									</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-default" type="submit">
+									<span th:text="#{admin.common.search}"></span>
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-default" type="submit" th:text="#{admin.log.partnerDetail.yesterday}" onclick="yesterdaySubmit()"></button>
+								<button class="btn btn-default" type="submit" th:text="#{admin.log.partnerDetail.today}" onclick="todaySubmit()"></button>
+							</div>
+	                    </form>
+	                    <div class="table-responsive">
+							<table class="table table-bordered table-striped" id="moneylog-datatable">
+								<thead>
+									<tr>
+										<th class="text-center" th:text="#{admin.money.log.pause}"></th>
+										<th class="text-center" th:text="#{admin.common.id}"></th>
+										<th class="text-center" th:text="#{admin.common.nickname}"></th>
+										<th class="text-center" th:text="#{admin.common.partner}"></th>
+										<th class="text-center" th:text="#{admin.money.log.prevAmount}"></th>
+										<th class="text-center" th:text="#{admin.money.log.variableAmount}"></th>
+										<th class="text-center"th:text="#{admin.money.log.finalAmount}"></th>
+										<th class="text-center" th:text="#{admin.common.reason}"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="entity : ${page.records}">
+										<td class="text-center" th:text="${#dates.format(entity.processTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+										<td class="text-center" th:text="${entity.member.id}"></td>
+										<td class="text-center" th:text="${entity.member.nickname}"></td>
+										<td class="text-center" th:text="${entity.partnerName}"></td>
+										<td class="text-center" th:text="${#numbers.formatDecimal(entity.prevAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:class="${entity.operationType==0?'text-primary text-center':'text-danger text-center'}" th:text="${(entity.operationType==0?'':entity.variableAmount!=0?'-':'') + #numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="text-center" th:text="${#numbers.formatDecimal(entity.finalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="text-center" th:text="${entity.reason}"></td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(page.records)}">
+                                        <td class="text-center" colspan="16" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+                                    </tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="tab_cont customPage w99 t_center ptb15"></div>
+					</div>
+				</section>
+			</section>
+		</div>
+
+    </section>
+
+	<script type="text/javascript" th:inline="javascript">
+		var page = [[${page}]];
+		var url = [[${url}]];
+	</script>
+
+    <script th:replace="template :: scripts"></script>
+    
+    <script type="text/javascript" th:inline="javascript">
+		createPagenation(page, url);
+	</script>
+</body>
+</html>

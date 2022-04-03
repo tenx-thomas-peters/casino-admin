@@ -1,0 +1,332 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Preference')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/write.css}"/>
+<link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-fileupload/bootstrap-fileupload.min.css}"/>
+<link rel="stylesheet" th:href="@{/assets/vendor/magnific-popup/magnific-popup.css}"/>
+<body>
+<section class="body">
+    <header th:replace="template :: header" class="header"></header>
+    <div class="tabs tabs-primary">
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+
+            <section class="content-body">
+                <header class="panel-heading">
+                    <h2 class="panel-title" th:text="#{admin.write.writeAPost}">
+						<i class="text-primary fa fa-youtube-play"></i>
+					</h2>
+                </header>
+                <div class="panel-body">
+                    <div class="tabs">
+                        <ul class="nav nav-tabs">
+                            <li>
+                                <a th:href="@{/board/list?province=2}" th:text="#{admin.board.freeBoard}"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/board/list?province=0}" th:text="#{admin.common.notice}"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/board/questionlist}" th:text="#{admin.board.customerServiceCenter}"></a>
+                            </li>
+                            <li class="active">
+                                <a href="#write" th:text="#{admin.board.writePost}"></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="write" class="tab-pane active">
+                                <form id="writeForm" th:object="${note}" name="writeForm" class="form-horizontal">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                                <i class="fa fa-plus-square text-primary"></i>&nbsp;
+												<span th:text="#{admin.write.withBet}"></span>:
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="button" value="with bet" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                                <i class="fa fa-plus-square text-primary"></i>&nbsp;
+												<span th:text="#{admin.write.title}"></span>:
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" id="title" name="title" class="form-control" required/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                                <i class="fa fa-plus-square text-primary"></i>&nbsp;
+												<span th:text="#{admin.common.classification}"></span>:
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="col-sm-5">
+                                                    <div class="d-inline-block">
+                                                        <select id="classification" name="classification" class="form-control">
+                                                            <option th:text="#{admin.common.classificationSelection}"></option>
+                                                            <option value="0" th:text="#{admin.common.notice}"></option>
+                                                            <option value="1" th:text="#{admin.common.faq}"></option>
+                                                            <option value="2" th:text="#{admin.board.freeBoard}"></option>
+                                                            <option value="3" th:text="#{admin.common.event}"></option>
+                                                            <option value="4" th:text="#{admin.common.customerService}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-7">
+                                                    <div class="d-inline-block">
+                                                        <select id="site" name="site" class="form-control"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                                <i class="fa fa-plus-square text-primary"></i>&nbsp;
+												<span th:text="#{admin.common.writer}"></span>:
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <div class="col-sm-3">
+                                                        <input type="text" class="form-control" name="nickname" required/>
+                                                        <input type="hidden" name="sender" value="" />
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="d-inline-block">
+                                                            <select class="form-control" name="levelList" id="levelList">
+                                                                <option value=></option>
+                                                                <option th:each="item : ${levelList}"
+                                                                        th:value="${item.seq}"
+                                                                        th:text="${item.levelName}"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="d-inline-block">
+                                                            <select class="form-control" name="writer" id="writer"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                                <i class="fa fa-plus-square text-primary"></i>&nbsp;
+												<span th:text="#{admin.common.date}"></span>:
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <input type="text" data-plugin-datepicker=""
+                                                               class="form-control" name="sendTime"
+                                                               data-date-format="yyyy-mm-dd" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                                <i class="fa fa-plus-square text-primary"></i>&nbsp;
+												<span th:text="#{admin.common.lookup}"></span>:
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <input id="lookup" name="lookup" type="number" class="form-control" min="0"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                                <i class="fa fa-plus-square text-primary"></i>&nbsp;
+												<span th:text="#{admin.write.suggestion}"></span>:
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <div class="col-sm-3 radio-custom radio-primary notRecommended">
+                                                        <input id="notRecommendStatus" name="recommendStatus" type="radio" value="0" checked>
+                                                        <label for="notRecommendStatus" th:text="#{admin.write.notRecommended}"></label>
+                                                    </div>
+                                                    <div class="col-sm-8 radio-custom radio-primary">
+                                                        <input id="recommendStatus" name="recommendStatus" type="radio" value="1">
+                                                        <label for="recommendStatus" th:text="#{admin.write.recommendation}"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                                <i class="fa fa-plus-square text-primary"></i>&nbsp;
+												<span th:text="#{admin.common.contents}"></span>:
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <textarea name="content" id="content" class="content"
+                                                                  data-plugin-summernote
+                                                                  data-plugin-options='{ "height": 180, "codemirror": { "theme": "ambiance" }, "maximumImageFileSize": "1KB" }'></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="btnGroup">
+                                    <button class="btn btn-default enroll" th:text="#{admin.write.enrollment}"></button>
+                                    <a th:href="@{/board/write}" class="btn btn-default" th:text="#{admin.write.format}"></a>
+                                    <a class="btn btn-default" data-toggle="modal" href="#upload">Excel Upload</a>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <form id="answerForm" th:object="${note}">
+                                            <div class="panel-body">
+                                                <div class="col-md-4">
+                                                    <input name="sender" type="text" class="form-control" value="admin"/>
+                                                    <select id="receiverList" name="receiver" class="form-control manager">
+                                                        <option th:each="item : ${receiverList}"
+																th:value="${item.seq}"
+                                                                th:text="${item.nickname}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <textarea class="form-control" name="content"
+															  style="height:88px"
+                                                              required></textarea>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary answer"
+                                                style="margin-top: 35px; margin-left: 30px;"
+                                                th:text="#{admin.common.answer}"></button>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="comment" th:each="comment : ${commentList}"
+                                     style="margin-top:20px;">
+                                    <input type="hidden" th:value="${comment.seq}" name="seq" id="commentSeq"/>
+                                    <span th:text="${comment.receiver}"
+                                          style="margin-left:30px; margin-bottom:10px; color:blue;"></span><br/>
+                                    <span th:text="${comment.sender}"
+                                          style="float:left; margin-top:15px; margin-left:30px;"></span>
+                                    <div class="col-md-8" style="margin-left:15px;">
+                                        <textarea th:text="${comment.content}"
+                                                  style="width: 100%; background-color:white;border-radius:4px;"
+                                                  disabled></textarea>
+                                    </div>
+                                    <div class="col-md-2" style="margin-top:10px;">
+                                        <a class="update-memo" th:text="#{admin.common.edit}"
+                                           style="cursor:pointer;text-decoration:none"></a>
+                                        <a class="delete-memo" data-toggle="modal" data-target="#deleteModal"
+                                           th:text="#{admin.common.delete}"
+                                           style="cursor:pointer; text-decoration:none;"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="myModalLabel"
+                             aria-hidden="true" data-backdrop="static">
+                            <!-- Change class .modal-sm to change the size of the modal -->
+
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" th:text="#{admin.common.delete}"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container">
+                                            <div id="message" class="row">
+                                                <div class="input-item-div col-xs-12 message">
+                                                    <span th:text="#{admin.common.deleteMsg}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer text-center">
+                                        <button class="btn btn-primary" type="button" data-dismiss="modal"
+                                                onclick="deleteById();">
+                                            <span class="d-table-cell align-middle"
+                                                  th:text="#{admin.common.confirm}"></span>
+                                        </button>
+                                        <button class="btn btn-default" type="button" data-dismiss="modal">
+                                            <span class="d-table-cell align-middle"
+                                                  th:text="#{admin.common.cancel}"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="modal fade" id="upload" data-backdrop="static" tabindex="-1" role="basic"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true"></button>
+                                            <h4 class="modal-title">File Upload</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal form-bordered upload-box"
+                                                  enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="fileupload fileupload-new"
+                                                             data-provides="fileupload">
+                                                            <div class="input-append">
+                                                                <div class="uneditable-input">
+                                                                    <i class="fa fa-file fileupload-exists"></i>
+                                                                    <span class="fileupload-preview"></span>
+                                                                </div>
+                                                                <span class="btn btn-default btn-file">
+																		<span class="fileupload-exists">Change</span>
+																		<span class="fileupload-new">Select file</span>
+																		<input type="file" id="uploadPath"
+                                                                               name="uploadPath"/>
+																	</span>
+                                                                <a href="#" class="btn btn-default fileupload-exists"
+                                                                   data-dismiss="fileupload">Remove</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary uploadFile"
+                                                    th:text="#{admin.common.confirm}"></button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                                                    th:text="#{admin.common.cancel}"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="panel-footer">
+                            <p th:text="#{admin.write.footer}"></p>
+                        </footer>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" th:inline="javascript">
+    	var url = [[@{/}]] + [[${url}]];
+
+</script>
+<script th:replace="template :: scripts"></script>
+<script th:src="@{/assets/javascripts/board/write.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap-fileupload/bootstrap-fileupload.min.js}"></script>
+<script th:src="@{/assets/vendor/magnific-popup/magnific-popup.js}"></script>
+</body>
+</html>

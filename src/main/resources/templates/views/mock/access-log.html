@@ -1,0 +1,144 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.popup.title})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+<section class="body access-log">
+    <div class="row">
+        <div role="main" class="col-md-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        Access Log
+                    </h4>
+                </header>
+                <div class="panel-body">
+                    <form id="accessLog" th:object="${accessLog}" class="form-horizontal form-bordered" th:action="@{/mock/member/addAccessLog}" method="post">
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Member
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <select class="form-control" th:field="*{memberSeq}" required>
+                                    <option th:each="member : ${memberList}"
+                                            th:value="${member.seq}"
+                                            th:text="${member.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Site
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+<!--                                <select class="form-control" th:field="*{site}" required>-->
+<!--                                    <option th:each="site : ${siteList}"-->
+<!--                                            th:value="${site.siteName}"-->
+<!--                                            th:text="${site.siteName}"></option>-->
+<!--                                </select>-->
+                                <input type="text" class="form-control" th:field="*{site}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Connection IP
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <input type="text" class="form-control" th:field="*{connectionIp}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Connection Domain
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+<!--                                <select class="form-control" th:field="*{connectionDomain}" required>-->
+<!--                                    <option th:each="site : ${siteList}"-->
+<!--                                            th:value="${site.siteDomain}"-->
+<!--                                            th:text="${site.siteDomain}"></option>-->
+<!--                                </select>-->
+                                <input type="text" class="form-control" th:field="*{connectionDomain}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Status
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <select class="form-control" th:field="*{status}" required>
+                                    <option value="0">Log-in Success</option>
+                                    <option value="1">Wrong password</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <footer class="panel-footer">
+                    <button class="btn btn-primary save">Save</button>
+                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                </footer>
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    $(document).ready(function () {
+        let success = [[${success}]];
+        let save = [[${save}]];
+
+        let form = $('#accessLog');
+
+        if (success && save) {
+            new PNotify({
+                title: 'Success!',
+                text: 'Success!',
+                type: 'success',
+                buttons: {
+                    closer: true,
+                    sticker: false
+                }
+            });
+
+            $('#accessLog')[0].reset();
+        } else if (!success && save) {
+            new PNotify({
+                title: 'Error!',
+                text: 'Error!',
+                type: 'error',
+                buttons: {
+                    closer: true,
+                    sticker: false
+                }
+            });
+        }
+
+        $('.save').click(function () {
+            if (!form.valid())
+                return;
+
+            form.submit();
+        });
+
+        $('.clear').click(function () {
+            $('#accessLog')[0].reset();
+        });
+    });
+</script>
+
+</body>
+</html>

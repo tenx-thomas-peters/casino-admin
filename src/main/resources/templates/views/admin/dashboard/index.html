@@ -1,0 +1,226 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Dashboard')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/dashboard.css}"/>
+<body>
+<section class="body member">
+    <header th:replace="template :: header" class="header"></header>
+
+    <div class="inner-wrapper">
+        <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+
+        <section role="main" class="content-body">
+            <section class="panel" role="main">
+				<header class="panel-heading">
+					<h2 class="panel-title" th:text="#{admin.admin.adminMain}"></h2>
+				</header>
+				<div class="panel-body">
+					<form id="formSearch" th:action="@{${url}}" class="form-inline search-form" method="POST">
+						<div class="table-responsive">
+							<table class="table table-bordered table-striped" id="popupsetting-datatable">
+								<thead>
+									<tr>
+									 	<th class="text-center" th:text="#{admin.common.id}"></th>
+			                            <th class="text-center" th:text="#{admin.common.nickname}"></th>
+			                            <th class="text-center" th:text="#{admin.top.distributor}"></th>
+			                            <th class="text-center" th:text="#{admin.common.domain}"></th>
+			                            <th class="text-center" th:text="#{admin.common.id}"></th>
+			                            <th class="text-center" th:text="#{admin.admin.numberOfConnections}"></th>
+			                            <th class="text-center" th:text="#{admin.admin.amountCharged}"></th>
+			                            <th class="text-center" th:text="#{admin.admin.withdrawalAmount}"></th>
+			                            <th class="text-center" th:text="#{admin.admin.amountWon}"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="entity : ${page.records}">
+										<td class="text-center" th:text="${entity.id}"></td>
+										<td class="text-center" th:text="${entity.nickname}"></td>
+										<td class="text-center" th:text="${entity.topDistributor}"></td>
+										<td class="text-center" th:text="${entity.domain}"></td>
+										<td class="text-center" th:text="${entity.topDistributorId}"></td>
+										<td class="text-center" th:text="${entity.connections}"></td>
+										<td class="text-center" th:text="${#numbers.formatDecimal(entity.chargedAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="text-center" th:text="${#numbers.formatDecimal(entity.withdrawalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="text-center" th:text="${#numbers.formatDecimal(entity.wonAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(page.records)}">
+	                                    <td class="text-center" colspan="16" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+	                                </tr>
+								</tbody>
+							</table>
+						</div>
+					</form>
+					
+					<div class="tab_cont customPage w99 t_center ptb15"></div>
+					
+				</div>
+			</section>
+			<section class="panel" role="main">
+				<form class="form-inline search-form" id="dashboardFormSearch" style="background-color:#fdfdfd;">
+					<div class="form-group">
+						<label>
+							<i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;border-radius:3px;"></i>
+							<span th:text="#{admin.common.name}"></span>
+						</label>
+						<div class="input-group input-group-icon" style="width: 200px; display: inline-block;">
+							<span class="input-group-addon">
+								<span class="icon"><i class="fa fa-search"></i></span>
+							</span>
+							<input type="text" class="form-control" id="search-input" required/>
+						</div>
+						<a class="btn btn-default dashboardSearch">
+							<span th:text="#{admin.common.search}"></span>&nbsp;<i class="fa fa-search"></i>
+						</a>
+					</div>
+				</form>
+
+				<div class="panel-body">
+					<h2 class="panel-title text-center" th:text="#{admin.common.search.result}"></h2>
+					<form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.id}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="id" disabled/>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[|#{admin.common.winning}| + ' ' + |#{admin.common.amount}|]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="winningAmount" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.nickname}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                            	<input class="control-label adminSearchResult" name="nickname" disabled/>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.headquarter.losingAmount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="losingAmount" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.ranking}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="ranking" disabled/>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.admin.rechargeAmount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                            	<input class="control-label adminSearchResult" name="rechargeAmount" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.admin.totalBet}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="totalBet" disabled/>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[|#{admin.common.withdrawal}| + ' ' + |#{admin.common.amount}|]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="withdrawalAmount" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.phoneNumber}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="phoneNumber" disabled/>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.admin.managerCorrection}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="managerCorrection" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.distributor}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="distributor" disabled/>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.admin.rechargeBonusAmount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="rechargeBonusAmount" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.holdingAmount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="moneyAmount" disabled/>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.admin.lotteryBonusPayment}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input class="control-label adminSearchResult" name="lotteryBonusPayment" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.admin.ownedMileage}]]
+                            </label>
+                            <div class="col-md-2 col-sm-6">
+                                <input class="control-label adminSearchResult" name="mileageAmount" disabled/>
+                            </div>
+                        </div>
+                    </form>
+				</div>
+			</section>	
+    		</section>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+	var page = [[${page}]];
+	var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+
+<script type="text/javascript" th:inline="javascript">
+	createPagenation(page, url);
+</script>
+
+<script th:src="@{/assets/javascripts/dashboard/dashboard.js}"></script>
+
+
+
+</body>
+</html>

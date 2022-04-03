@@ -1,0 +1,76 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('add')"></head>
+<body>
+    <section class="body">        
+        <div class="inner-wrapper">            
+            <section role="main" class="content-body">
+				<section class="panel" role="main">
+					<div class="body add-detail">          		
+	            		<div class="row" id="addFormModal" >
+			                <div role="main" class="col-md-12">
+		                        <div class="modal-body">
+									<form id="level-addForm" th:action="@{/config/add_detail}" name="level" class="form-horizontal mb-lg" method="post" novalidate="novalidate">
+										<header class="panel-heading">
+											<h2 class="panel-title" th:text="#{admin.common.add.level}"></h2>
+										</header>
+										<div class="panel-body">
+											<div class="form-group mt-lg">
+												<label class="col-sm-3" style="text-align: right;" th:text="#{admin.common.level}"></label>
+												<div class="col-sm-9">
+													<input style="display: inline-block; width: inherit;" type="number" name="levelNo" class="form-control" required/>
+												</div>
+											</div>
+											<div class="form-group mt-lg">
+												<label class="col-sm-3" style="text-align: right;" th:text="#{admin.common.level.name}"></label>
+												<div class="col-sm-9">
+													<input style="display: inline-block; width: inherit;" type="text" name="levelName" class="form-control" required/>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3" style="text-align: right;" th:text="#{admin.common.firstInsect}"></label>
+												<div class="col-sm-9">
+													<input style="display: inline-block; width: inherit;" type="number" name="firstInsect" class="form-control" required/>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3" style="text-align: right;" th:text="#{admin.common.caterpillar}"></label>
+												<div class="col-sm-9">
+													<input style="display: inline-block; width: inherit;" type="number" name="caterpillar" class="form-control" required/>
+												</div>
+											</div>
+										</div>
+										<footer class="panel-footer">
+											<div class="row">
+												<div class="col-md-12 text-right">
+													<button type="submit" class="btn btn-primary levelAdd" th:text="#{admin.common.add}"></button>
+													<a href="javascript: window.close();" class="btn btn-primary" th:text="#{admin.common.cancel}"></a>
+												</div>
+											</div>
+										</footer>
+									</form>
+		                        </div>
+			                </div>
+			            </div>
+					</div>
+				</section>
+			</section>
+        </div>        
+    </section>
+
+	<script type="text/javascript" th:inline="javascript">
+
+		var url = [[${url}]];
+	</script>
+
+    <script th:replace="template :: scripts"></script>
+    
+	<script th:src="@{/assets/javascripts/config/level.js}"></script>
+	
+	<script type="text/javascript" th:inline="javascript">
+
+	</script>
+</body>
+</html>

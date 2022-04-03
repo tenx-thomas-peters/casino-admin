@@ -1,0 +1,1218 @@
+{
+  "data": [
+    {
+      "id": 496519454,
+      "type": "bet",
+      "amount": -1000,
+      "before": 7021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928308467,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:45:00",
+      "referer_id": null,
+      "created_at": "2022-03-07 08:45:00",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263907317,
+        "detail": {
+          "data": {
+            "id": "16da0ccaa5ad0a4614edde71",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 949.73,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 946.33,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Even",
+                  "color": "Black",
+                  "number": "20"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:45:14.680Z",
+            "startedAt": "2022-03-07 08:44:38.259Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:45:00",
+                    "description": "Red",
+                    "transactionId": "646201340360663421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0ccaa5ad0a4614edde71-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496520452,
+      "type": "win",
+      "amount": 0,
+      "before": 6021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928308467,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:45:15",
+      "referer_id": 496519454,
+      "created_at": "2022-03-07 08:45:15",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263909105,
+        "detail": {
+          "data": {
+            "id": "16da0ccaa5ad0a4614edde71",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 949.73,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 946.33,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Even",
+                  "color": "Black",
+                  "number": "20"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:45:14.680Z",
+            "startedAt": "2022-03-07 08:44:38.259Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:45:00",
+                    "description": "Red",
+                    "transactionId": "646201340360663421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0ccaa5ad0a4614edde71-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496522507,
+      "type": "bet",
+      "amount": -1000,
+      "before": 6021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928311119,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:45:40",
+      "referer_id": null,
+      "created_at": "2022-03-07 08:45:40",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263912721,
+        "detail": {
+          "data": {
+            "id": "16da0cd3dcb565a5293f972f",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 959.94,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 1114.89,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Odd",
+                  "color": "Black",
+                  "number": "11"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:46:01.106Z",
+            "startedAt": "2022-03-07 08:45:17.837Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:45:39.888Z",
+                    "description": "Red",
+                    "transactionId": "646201340361738421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0cd3dcb565a5293f972f-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496523978,
+      "type": "win",
+      "amount": 0,
+      "before": 5021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928311119,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:46:01",
+      "referer_id": 496522507,
+      "created_at": "2022-03-07 08:46:01",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263915551,
+        "detail": {
+          "data": {
+            "id": "16da0cd3dcb565a5293f972f",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 959.94,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 1114.89,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Odd",
+                  "color": "Black",
+                  "number": "11"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:46:01.106Z",
+            "startedAt": "2022-03-07 08:45:17.837Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:45:39.888Z",
+                    "description": "Red",
+                    "transactionId": "646201340361738421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0cd3dcb565a5293f972f-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496525795,
+      "type": "bet",
+      "amount": -1000,
+      "before": 5021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928313991,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:46:26",
+      "referer_id": null,
+      "created_at": "2022-03-07 08:46:26",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263918750,
+        "detail": {
+          "data": {
+            "id": "16da0cdeab515aa7b0496767",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 928.19,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 1040.81,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Odd",
+                  "color": "Black",
+                  "number": "13"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:46:44.695Z",
+            "startedAt": "2022-03-07 08:46:04.253Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:46:26.429Z",
+                    "description": "Red",
+                    "transactionId": "646201340363063421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0cdeab515aa7b0496767-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496527159,
+      "type": "win",
+      "amount": 0,
+      "before": 4021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928313991,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:46:45",
+      "referer_id": 496525795,
+      "created_at": "2022-03-07 08:46:45",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263921343,
+        "detail": {
+          "data": {
+            "id": "16da0cdeab515aa7b0496767",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 928.19,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 1040.81,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Odd",
+                  "color": "Black",
+                  "number": "13"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:46:44.695Z",
+            "startedAt": "2022-03-07 08:46:04.253Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:46:26.429Z",
+                    "description": "Red",
+                    "transactionId": "646201340363063421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0cdeab515aa7b0496767-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496528957,
+      "type": "bet",
+      "amount": -1000,
+      "before": 4021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928316925,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:47:10",
+      "referer_id": null,
+      "created_at": "2022-03-07 08:47:10",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263924755,
+        "detail": {
+          "data": {
+            "id": "16da0ce8d19a7dc905fc7d9f",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 898.33,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 449.73,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Even",
+                  "color": "Red",
+                  "number": "30"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:47:21.550Z",
+            "startedAt": "2022-03-07 08:46:47.845Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 2000,
+                    "placedOn": "2022-03-07 08:47:10.070Z",
+                    "description": "Red",
+                    "transactionId": "646201340364506421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0ce8d19a7dc905fc7d9f-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496529735,
+      "type": "win",
+      "amount": 2000,
+      "before": 3021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928316925,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:47:21",
+      "referer_id": 496528957,
+      "created_at": "2022-03-07 08:47:21",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263926266,
+        "detail": {
+          "data": {
+            "id": "16da0ce8d19a7dc905fc7d9f",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 898.33,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 449.73,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Even",
+                  "color": "Red",
+                  "number": "30"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:47:21.550Z",
+            "startedAt": "2022-03-07 08:46:47.845Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 2000,
+                    "placedOn": "2022-03-07 08:47:10.070Z",
+                    "description": "Red",
+                    "transactionId": "646201340364506421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0ce8d19a7dc905fc7d9f-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496531595,
+      "type": "bet",
+      "amount": -1000,
+      "before": 5021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928319322,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:47:47",
+      "referer_id": null,
+      "created_at": "2022-03-07 08:47:47",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263929793,
+        "detail": {
+          "data": {
+            "id": "16da0cf164f636aafcf64f62",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 909.67,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 685.94,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Odd",
+                  "color": "Red",
+                  "number": "1"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:47:53.876Z",
+            "startedAt": "2022-03-07 08:47:24.677Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Black",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:47:46.705Z",
+                    "description": "Black",
+                    "transactionId": "646201340365410421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0cf164f636aafcf64f62-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496532190,
+      "type": "win",
+      "amount": 0,
+      "before": 4021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928319322,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:47:54",
+      "referer_id": 496531595,
+      "created_at": "2022-03-07 08:47:54",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263930841,
+        "detail": {
+          "data": {
+            "id": "16da0cf164f636aafcf64f62",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 909.67,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 685.94,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Odd",
+                  "color": "Red",
+                  "number": "1"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:47:53.876Z",
+            "startedAt": "2022-03-07 08:47:24.677Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Black",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:47:46.705Z",
+                    "description": "Black",
+                    "transactionId": "646201340365410421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0cf164f636aafcf64f62-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496534165,
+      "type": "bet",
+      "amount": -500,
+      "before": 4021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928321530,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:48:19",
+      "referer_id": null,
+      "created_at": "2022-03-07 08:48:19",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263934384,
+        "detail": null
+      }
+    },
+    {
+      "id": 496535539,
+      "type": "win",
+      "amount": 0,
+      "before": 3521,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928321530,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:48:38",
+      "referer_id": 496534165,
+      "created_at": "2022-03-07 08:48:38",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263937027,
+        "detail": null
+      }
+    },
+    {
+      "id": 496537378,
+      "type": "bet",
+      "amount": -1500,
+      "before": 3521,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928324526,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:49:04",
+      "referer_id": null,
+      "created_at": "2022-03-07 08:49:04",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263940554,
+        "detail": {
+          "data": {
+            "id": "16da0d035cd4bfbe473428af",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 628.87,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 537.41,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Even",
+                  "color": "Black",
+                  "number": "22"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:49:22.288Z",
+            "startedAt": "2022-03-07 08:48:41.851Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_19Red",
+                    "stake": 500,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:49:03.907Z",
+                    "description": "19 Red",
+                    "transactionId": "646201340367729421"
+                  },
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:49:03.907Z",
+                    "description": "Red",
+                    "transactionId": "646201340367729421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0d035cd4bfbe473428af-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496538960,
+      "type": "win",
+      "amount": 0,
+      "before": 2021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928324526,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:49:22",
+      "referer_id": 496537378,
+      "created_at": "2022-03-07 08:49:22",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263943477,
+        "detail": {
+          "data": {
+            "id": "16da0d035cd4bfbe473428af",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 628.87,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 537.41,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Even",
+                  "color": "Black",
+                  "number": "22"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:49:22.288Z",
+            "startedAt": "2022-03-07 08:48:41.851Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_19Red",
+                    "stake": 500,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:49:03.907Z",
+                    "description": "19 Red",
+                    "transactionId": "646201340367729421"
+                  },
+                  {
+                    "code": "ROU_Red",
+                    "stake": 1000,
+                    "payout": 0,
+                    "placedOn": "2022-03-07 08:49:03.907Z",
+                    "description": "Red",
+                    "transactionId": "646201340367729421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0d035cd4bfbe473428af-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496540616,
+      "type": "bet",
+      "amount": -500,
+      "before": 2021,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928327579,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:49:47",
+      "referer_id": null,
+      "created_at": "2022-03-07 08:49:47",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263946852,
+        "detail": {
+          "data": {
+            "id": "16da0d0d7f6bd73783efd689",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 327.66,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 329.55,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Even",
+                  "color": "Black",
+                  "number": "4"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:50:00.275Z",
+            "startedAt": "2022-03-07 08:49:25.380Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Black",
+                    "stake": 500,
+                    "payout": 1000,
+                    "placedOn": "2022-03-07 08:49:47.552Z",
+                    "description": "Black",
+                    "transactionId": "646201340369010421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0d0d7f6bd73783efd689-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    },
+    {
+      "id": 496541519,
+      "type": "win",
+      "amount": 1000,
+      "before": 1521,
+      "status": "success",
+      "details": {
+        "game": {
+          "id": "16001",
+          "type": "roulette",
+          "round": 12928327579,
+          "title": "Roulette",
+          "vendor": "evolution"
+        }
+      },
+      "processed_at": "2022-03-07 08:50:00",
+      "referer_id": 496540616,
+      "created_at": "2022-03-07 08:50:00",
+      "user_id": 351900,
+      "user_username": "testuser_api",
+      "external": {
+        "id": 16263948634,
+        "detail": {
+          "data": {
+            "id": "16da0d0d7f6bd73783efd689",
+            "table": {
+              "id": "vctlz20yfnmp1ylr",
+              "name": "Roulette"
+            },
+            "wager": 327.66,
+            "dealer": {
+              "uid": "tts122342_______",
+              "name": "Hilma"
+            },
+            "payout": 329.55,
+            "result": {
+              "outcomes": [
+                {
+                  "type": "Even",
+                  "color": "Black",
+                  "number": "4"
+                }
+              ]
+            },
+            "status": "Resolved",
+            "currency": "EUR",
+            "gameType": "roulette",
+            "settledAt": "2022-03-07 08:50:00.275Z",
+            "startedAt": "2022-03-07 08:49:25.380Z",
+            "gameProvider": "evolution",
+            "participants": [
+              {
+                "bets": [
+                  {
+                    "code": "ROU_Black",
+                    "stake": 500,
+                    "payout": 1000,
+                    "placedOn": "2022-03-07 08:49:47.552Z",
+                    "description": "Black",
+                    "transactionId": "646201340369010421"
+                  }
+                ],
+                "casinoId": "timelesstech0001",
+                "currency": "KRW",
+                "playMode": "RealMoney",
+                "playerId": "1518767",
+                "sessionId": "p2l54etu2zfgzmb3p5ryzm2rm7wbpcof69ba7a81",
+                "screenName": "nick",
+                "betCoverage": {
+                  "simple": 0.49
+                },
+                "playerGameId": "16da0d0d7f6bd73783efd689-p2l54etu2zfgzmb3",
+                "configOverlays": [],
+                "casinoSessionId": "SlfIdZ8hIpZYUDNpGFXCCaCBdEw35VX54ncQqhxU"
+              }
+            ]
+          },
+          "type": "json",
+          "success": true
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Money history')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/money/money-history.css}"/>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+        
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+            
+            <section role="main" class="content-body">
+            	<section class="panel" role="main">
+					<header class="panel-heading">
+						<h2 class="panel-title" th:text="#{admin.partner.deposit.log.title}"></h2>
+					</header>
+					<div class="panel-body">
+						<div class="tabs tabs-primary">
+							<ul class="nav nav-tabs">
+								<li class="active">
+									<a href="#deposit" id="pdepositTabBtn" data-toggle="tab" th:text="#{admin.partner.deposit.str}"></a>
+								</li>
+								<li>
+									<a href="#withdraw" id="pwithdrawTabBtn" data-toggle="tab" th:text="#{admin.partner.withdraw.str}"></a>
+								</li>
+							</ul>
+							<div class="tab-content">
+								<div id="deposit" class="tab-pane active">
+									<form id="formSearch" th:action="@{${url}}" th:object="${moneyHistory}" method="post" class="form-inline search-form">
+										<div class="form-group">
+											<label>
+				                                <i class="fa fa-search search-icon"></i>
+				                                <span th:text="#{admin.common.processing.status}"></span>
+				                           	</label>
+			                                <select class="form-control status-select" th:field="*{status}">
+			                                    <option value="" th:text="#{admin.money.status.all}"></option>
+			                                    <option value="0" th:text="#{admin.money.status.inProgress}"></option>
+			                                    <option value="1" th:text="#{admin.money.status.completed}"></option>
+			                                    <option value="2" th:text="#{admin.money.status.cancelled}"></option>
+			                                </select>
+										</div>
+										<div class="form-group">
+			                                <label class="control-label">
+			                                    <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+			                                    <span th:text="#{admin.common.date}"></span>
+			                                </label>
+			                                <select class="form-control time-type" th:field="*{checkTimeType}">
+			                                    <option value="0" th:text="#{admin.common.applicationDate}"></option>
+			                                    <option value="1" th:text="#{admin.common.processDate}"></option>
+			                                </select>
+			                                <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
+			                                    <span class="input-group-addon">
+			                                        <i class="fa fa-calendar"></i>
+			                                    </span>
+			                                    <input type="text" class="form-control"  th:field="*{fromProcessTime}">
+			                                    <span class="input-group-addon">~</span>
+			                                    <input type="text" class="form-control" th:field="*{toProcessTime}">
+			                                </div>
+			                            </div>
+										<div class="form-group">
+			                                <select class="form-control status-select" th:field="*{IDOrNickname}">
+			                                    <option value="0" th:text="#{admin.common.id}"></option>
+			                                    <option value="1" th:text="#{admin.common.nickname}"></option>
+			                                </select>
+											<div class="input-group input-group-icon search-key">
+												<span class="input-group-addon">
+													<span class="icon"><i class="fa fa-search"></i></span>
+												</span>
+												<input type="text" class="form-control" th:field="*{IDOrNickNameValue}">
+											</div>
+										</div>
+										<div class="form-group">
+											<button type="submit" class="btn btn-default">
+												<span th:text="#{admin.common.search}"></span>
+												<i class="fa fa-search"></i>
+											</button>
+											<button class="btn btn-default" th:text="#{admin.log.partnerDetail.yesterday}" onclick="yesterdaySubmit()"></button>
+											<button class="btn btn-default" th:text="#{admin.log.partnerDetail.today}" onclick="todaySubmit()"></button>
+										</div>
+				                    </form>
+				                    <div>
+				                    	<p class="statistic-info">
+					                    	<span th:text="${moneyHistory.fromProcessTime}" ></span>
+					                    	<span th:if="${moneyHistory.fromProcessTime != null || moneyHistory.toProcessTime != null}">~</span>
+					                    	<span th:text="${moneyHistory.toProcessTime}" ></span>
+					                    	<span></span>
+					                    	[[#{admin.common.totalDeposit}]]:
+					                    	<span class='text-primary' th:text="${'KRW ' + #numbers.formatDecimal(totalDeposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+					                    	[[#{admin.common.totalWithdrawal}]]:
+					                    	<span class='text-primary' th:text="${'KRW ' + #numbers.formatDecimal(totalWithdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+					                    	[[#{admin.common.difference}]]:
+					                    	<span class='text-primary' th:text="${'KRW ' + #numbers.formatDecimal((totalDeposit - totalWithdraw), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+					                    </p>
+				                    </div>
+				                    <div class="table-responsive">
+				                    	<table class="table table-bordered table-striped" id="moneylog-datatable">
+											<thead>
+												<tr>
+													<th class="time-field" th:text="#{admin.common.applicationDate}"></th>
+													<th class="time-field" th:text="#{admin.common.processDate}"></th>
+													<th th:text="#{admin.common.partner}"></th>
+													<th th:text="#{admin.common.id}"></th>
+													<th th:text="#{admin.common.nickname}"></th>
+													<th th:text="#{admin.money.log.prevAmount}"></th>
+													<th th:text="#{admin.deposit.log.applicationAmount}"></th>
+													<th th:text="#{admin.deposit.log.moneyAmount}"></th>
+													<th th:text="#{admin.deposit.log.bonus}"></th>
+													<th th:text="#{admin.common.accountHolder}"></th>
+													<th th:text="#{admin.common.status}" class="control-button"></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="entity : ${page.records}">
+													<td th:text="${#dates.format(entity.applicationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+													<td th:text="${#dates.format(entity.processTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+													<td th:text="${entity.member.store!=null?entity.member.store.id:'independent'}"></td>
+													<td class='memberId' th:data-key="${entity.member.seq}" th:text="${entity.member.id}"></td>
+													<td th:text="${entity.member.nickname}"></td>
+													<td th:text="${#numbers.formatDecimal(entity.prevAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+													<td class='applicationAmount' th:data-val="${entity.variableAmount}" th:text="${#numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+													<td th:text="${#numbers.formatDecimal(entity.finalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+													<td th:text="${entity.bonus}"></td>
+													<td th:text="${entity.member.accountHolder}"></td>
+													<td class="text-center">
+														<div th:if="${entity.status == 0}">
+															<a href="#" class="acceptBtn btn btn-sm btn-default text-danger" th:if="${entity.status == 0}" th:data-seq="${entity.seq}" th:text="#{admin.common.btn.accept}"></a>&nbsp;
+															<a href="#" class="declineBtn btn btn-sm btn-default" th:if="${entity.status == 0}" th:data-seq="${entity.seq}" th:text="#{admin.common.btn.decline}"></a>
+														</div>
+														<span class="text-primary" th:if="${entity.status == 1}" th:text="#{admin.money.status.completed}"></span>
+														<span class="text-danger" th:if="${entity.status == 2}" th:text="#{admin.money.status.cancelled}"></span>
+														<span th:if="${entity.status == 3}" th:text="#{admin.common.partnerPayment}"></span>
+													</td>
+												</tr>
+												<tr th:if="${#lists.isEmpty(page.records)}">
+			                                        <td class="text-center" colspan="16" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+			                                    </tr>
+											</tbody>
+										</table>
+				                    </div>
+									
+									<div class="tab_cont customPage w99 t_center ptb15"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</section>
+        </div>
+    </section>
+    
+    <div th:replace="views/admin/common/moneyHistoryDetail :: declineConfirmModal"></div>
+
+	<script type="text/javascript" th:inline="javascript">
+		var page = [[${page}]];
+		var url = [[@{${url}}]];
+	</script>
+
+    <script th:replace="template :: scripts"></script>
+
+    <script th:src="@{/assets/javascripts/money/money.history.js}"></script>
+</body>
+</html>

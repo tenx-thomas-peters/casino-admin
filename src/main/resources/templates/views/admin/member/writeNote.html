@@ -1,0 +1,80 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.popup.title})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+<section class="body member-note">
+    <div class="row" id="memberNoteModal">
+        <div role="main" class="col-md-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.member.writeNote}]]
+                    </h4>
+                </header>
+                <div class="panel-body">
+                    <form id="member-note-form" name="note" class="form-horizontal form-bordered" th:action="@{/member/writeNote}" method="post">
+                        <input type="hidden" name="sender" value="" />
+                        <input type="hidden" name="receiver" th:value="${member.seq}" />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.sender}]]
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="sender" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.recipient}]]
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="recipient" th:value="${member.id}" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.title}]]
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="title" maxlength="128" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.contents}]]
+                            </label>
+                            <div class="col-md-9 col-sm-9">
+                                <div class="checkbox-custom checkbox-default checkbox-inline">
+                                    <input type="checkbox" id="sms" name="sms" />
+                                    <label for="sms">[[#{admin.member.onlySms}]]</label>
+                                </div>
+                                <textarea class="form-control" name="content" data-plugin-textarea-autosize required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <footer class="panel-footer text-center">
+                    <button type="button" class="btn btn-primary write-member-note" th:text="#{admin.common.send}">Send</button>
+                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                </footer>
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+        var url = [[${url}]];
+    </script>
+
+<script th:replace="template :: scripts"></script>
+<script th:src="@{/assets/javascripts/member/writeNote.js}"></script>
+</body>
+</html>

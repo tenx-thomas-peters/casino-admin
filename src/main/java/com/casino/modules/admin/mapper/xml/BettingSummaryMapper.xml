@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casino.modules.admin.mapper.BettingSummaryMapper">
+    <select id="getBettingSummaryList" resultType="com.casino.modules.admin.common.form.BettingSummaryForm">
+        SELECT
+        m1.seq AS memberSeq,
+        m1.id AS memberID,
+        m1.nickname AS memberNickname,
+        IFNULL(m1.slot_rate, 0) AS memberSlotRate,
+        IFNULL(m1.baccarat_rate, 0) AS memberBaccaratRate,
+        m2.seq AS storeSeq,
+        m2.id AS storeID,
+        IFNULL(m2.slot_rate, 0) AS storeSlotRate,
+        IFNULL(m2.baccarat_rate, 0) AS storeBaccaratRate,
+        (bs.betting_amount * (IFNULL(m2.slot_rate, 0) / 100)) AS storeRollingAmount,
+        m3.seq AS distributorSeq,
+        m3.id AS distributorID,
+        IFNULL(m3.slot_rate, 0) AS distributorSlotRate,
+        IFNULL(m3.baccarat_rate, 0) AS distributorBaccaratRate,
+        (bs.betting_amount * (IFNULL(m3.slot_rate, 0) / 100) - bs.betting_amount * (IFNULL(m2.slot_rate, 0) / 100)) AS distributorRollingAmount,
+        m4.seq AS subHeadquarterSeq,
+        m4.id AS subHeadquarterID,
+        IFNULL(m4.slot_rate, 0) AS subHeadquarterSlotRate,
+        IFNULL(m4.baccarat_rate, 0) AS subHeadquarterBaccaratRate,
+        (bs.betting_amount * (IFNULL(m4.slot_rate, 0) / 100)
+             - (bs.betting_amount * (IFNULL(m3.slot_rate, 0) / 100) - bs.betting_amount * (IFNULL(m2.slot_rate, 0) / 100))
+             - (bs.betting_amount * (IFNULL(m2.slot_rate, 0) / 100))) AS subHeadquarterRollingAmount,
+        bs.*
+        FROM
+        betting_summary bs
+        LEFT JOIN member m1 ON m1.seq = bs.member_seq
+        LEFT JOIN member m2 ON m2.seq = bs.store_seq
+        LEFT JOIN member m3 ON m3.seq = bs.distributor_seq
+        LEFT JOIN member m4 ON m4.seq = bs.headquarter_seq
+        <where>
+            <if test="entity.userType != null">
+                AND m1.user_type = #{entity.userType}
+            </if>
+            <if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+                AND DATE(bs.check_time) >= DATE(#{entity.fromProcessTime})
+            </if>
+            <if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+                AND DATE(#{entity.toProcessTime}) >= DATE(bs.check_time)
+            </if>
+            <if test="entity.storeSeq != null and entity.storeSeq != ''">
+                AND m2.seq = #{entity.storeSeq}
+            </if>
+            <if test="entity.searchValue != null and entity.searchValue != ''">
+                AND m1.${entity.searchField} LIKE CONCAT('%', #{entity.searchValue}, '%')
+            </if>
+            <if test="entity.memberSeq != null and entity.memberSeq != ''">
+                AND bs.member_seq = #{entity.memberSeq}
+            </if>
+        </where>
+        ORDER BY bs.check_time DESC
+    </select>
+</mapper>

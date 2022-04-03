@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casino.modules.admin.mapper.BoardMapper">
+	
+	<resultMap id="noticeListEntity" type="com.casino.modules.admin.common.entity.Note">
+		<id column="seq" property="seq"/>
+        <result column="sender" property="sender" />
+        <result column="receiver" property="receiver" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="send_time" property="sendTime" />
+        <result column="lookup" property="lookUp" />
+        <result column="read_status" property="readStatus" />
+        <result column="answer" property="answer" />
+        <result column="answer_status" property="answerStatus" />
+        <result column="recommend_status" property="recommendStatus" />
+        <result column="type" property="type"/>
+        <result column="classification" property="classification"/>
+        <result column="site" property="site" />
+        <result column="id" property="mId" />
+        <result column="register_date" property="registerDate" />
+        <result column="account_holder" property="accountHolder" />
+        <result column="bank_name" property="bankName" />
+        <result column="nickname" property="nickname" />
+        <result column="color" property="color" />
+        <result column="level_name" property="levelName" />
+    </resultMap>
+    
+    <sql id="noteWhere">
+	  	<where>
+	  		n.classification = #{form.province}
+	  		<choose>
+	  			<when test="form.selectType == selectType1">
+	  				AND n.title LIKE CONCAT('%',#{form.keyword},'%')
+	  			</when>
+	  			<when test="form.selectType == selectType2">
+	  				AND n.content LIKE CONCAT('%',#{form.keyword},'%')
+	  			</when>
+	  			<when test="form.selectType == selectType3">
+	  				AND n.sender LIKE CONCAT('%',#{form.keyword},'%')
+	  			</when>
+	  			<when test = "form.sendTimeFrom != null and form.sendTimeFrom != ''">
+	  				AND n.send_time >= DATE(#{form.sendTimeFrom})
+	  			</when >
+	  			<when test = "form.sendTimeTo != null and form.sendTimeTo != ''">
+	  				AND DATE(#{form.sendTimeTo}) >= DATE(n.send_time)  
+	  			</when>
+	  			<when test = "form.province == classificationMPost">
+	  				AND DATE(n.send_time) = CURRENT_DATE()
+	  			</when >
+	  		</choose>	
+		</where>
+	</sql>
+    
+	<select id="getNotePageList" resultMap="noticeListEntity">
+        SELECT n.*, m.name
+        FROM note n
+        LEFT JOIN member m ON m.seq = n.receiver
+        <include refid="noteWhere"/>
+        ORDER BY n.send_time DESC
+  	</select>
+  	
+  	<sql id="questionWhere">
+  		<where>
+  			n.classification = #{classification}
+  			<choose>
+				<when test="form.selectType == selectType0">
+					 AND m.id LIKE CONCAT('%',#{form.keyword},'%')
+				</when>
+				<when test="form.selectType == selectType1">
+					 AND n.title LIKE CONCAT('%',#{form.keyword},'%')
+				</when>
+				<when test="form.selectType == selectType2">
+					 AND n.sender LIKE CONCAT('%',#{form.keyword},'%')
+				</when>
+			</choose>
+  		</where>
+  	</sql>
+  
+  	<select id="getQuestionPageList" resultMap="noticeListEntity">
+	  	SELECT n.seq, n.title, n.sender, m.id, m.register_date, n.recommend_status, n.answer,
+				m.account_holder, m.bank_name, m.name, m2.nickname, m.color,
+				n.send_time, n.read_status, l.level_name, n.answer_status
+		FROM note n
+		LEFT JOIN member m ON m.seq = n.sender
+		LEFT JOIN member m2 ON m2.seq = m.distributor_seq
+		LEFT JOIN level l ON l.seq = m.level_seq
+		<include refid="questionWhere"/>
+        ORDER BY n.send_time DESC
+  	</select>
+  	
+  	<select id="getQuestionBySeq" resultType="com.casino.modules.admin.common.entity.Note">
+  		SELECT n.*, m.id as "mId", m.register_date, m.account_holder, m.bank_name, m.name, m2.nickname, m.color, l.level_name
+		FROM note n
+		LEFT JOIN member m ON m.seq = n.sender
+		LEFT JOIN member m2 ON m2.seq = m.distributor_seq
+		LEFT JOIN level l ON l.seq = m.level_seq
+		WHERE n.seq = #{seq}
+  	</select>
+  	
+  	<select id="getReceiverList" resultMap="noticeListEntity">
+  		SELECT m.seq, m.nickname
+        FROM member m
+  	</select>
+  	
+  	<select id="getCommentList" resultMap="noticeListEntity">
+  		SELECT n.seq as seq, n.content as content, n.sender as sender,  m.nickname as receiver
+  		FROM note n
+  		LEFT JOIN member m ON n.receiver=m.seq 
+  		WHERE n.answer_status = 1
+  		ORDER BY n.send_time DESC
+  	</select>
+  	
+  	<select id="getCommentById" resultMap="noticeListEntity">
+  		SELECT n.seq, n.content as content, n.sender as sender,  m.nickname as receiver
+  		FROM note n
+  		LEFT JOIN member m ON n.receiver=m.seq 
+  		WHERE n.seq = #{seq}
+  	</select>
+</mapper>

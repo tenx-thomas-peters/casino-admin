@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casino.modules.admin.mapper.DashboardMapper">
+	
+	<select id="searchDashboard" resultType="com.casino.modules.admin.common.form.DashboardForm">
+		SELECT 
+			m.seq AS "seq",
+			m.id AS "id", 
+			m.nickname AS "nickname", 
+			l.level_name AS "ranking", 
+			COALESCE(SUM(bs.betting_amount), 0) AS "totalBet", 
+			m.phone_number AS "phoneNumber", 
+			md.id AS "distributor",
+			IFNULL(m.money_amount, 0) AS "moneyAmount",
+			IFNULL(m.mileage_amount, 0) AS "mileageAmount",
+			COALESCE(SUM(bs.winning_amount), 0) AS "winningAmount",
+			COALESCE(SUM(bs.lost_amount), 0) AS "losingAmount",
+			COALESCE(SUM(mhd.actual_amount), 0) AS "rechargeAmount",
+			COALESCE(SUM(mhw.actual_amount), 0) AS "withdrawalAmount",
+			COALESCE(SUM(mhd.bonus), 0) AS "rechargeBonusAmount"
+		FROM member m
+			LEFT JOIN member md ON m.distributor_seq = md.seq
+			LEFT JOIN level l ON m.level_seq = l.seq
+			LEFT JOIN betting_summary bs ON m.seq = bs.member_seq
+			LEFT JOIN money_history mhd ON m.seq = mhd.receiver AND mhd.operation_type = 0 AND mhd.status = 1
+			LEFT JOIN money_history mhw ON m.seq = mhw.receiver AND mhw.operation_type = 1 AND mhw.status = 1
+		WHERE
+			m.id = #{name}
+				
+    </select>
+    
+    <select id="getMembers" resultType="com.casino.modules.admin.common.entity.Dashboard">
+    	SELECT
+			mem.seq AS "seq", 
+			mem.id AS "id", 
+			mem.nickname AS "nickname", 
+			mem.topDistributor AS "topDistributor", 
+			mem.domain AS "domain", 
+			mem.distributorId AS "topDistributorId",
+			connections,
+			IFNULL(chargedAmount, 0) AS chargedAmount,
+			IFNULL(withdrawalAmount, 0) AS withdrawalAmount,
+			IFNULL(wonAmount, 0) AS wonAmount
+		FROM (SELECT 
+				m.seq AS seq, 
+				m.id AS id, 
+				m.nickname AS nickname, 
+				m1.nickname AS topDistributor, 
+				m1.site_domain AS domain, 
+				m1.id AS distributorId
+			FROM member m
+				LEFT JOIN member m1 ON m.distributor_seq = m1.seq) AS mem
+			LEFT JOIN (
+				SELECT al.member_seq, COALESCE ( COUNT( al.seq ), 0 ) as "connections"	FROM access_log al LEFT JOIN member mem ON al.member_seq = mem.seq 
+				WHERE	WEEK ( al.connection_date ) = WEEK ( NOW()) GROUP BY mem.seq) AS al_mem ON al_mem.member_seq = mem.seq
+			LEFT JOIN (
+				SELECT mh.receiver AS "member_seq", COALESCE(SUM(mh.actual_amount), 0) AS "chargedAmount" FROM money_history mh LEFT JOIN member mem ON mh.receiver = mem.seq 
+				WHERE	WEEK(mh.process_time) = WEEK(NOW()) AND mh.operation_type = 0 AND mh.status = 1 GROUP BY mem.seq) AS mh_mem ON mh_mem.member_seq = mem.seq
+			LEFT JOIN (
+				SELECT mh.receiver AS "member_seq", COALESCE(SUM(mh.actual_amount), 0) AS "withdrawalAmount" FROM money_history mh LEFT JOIN member mem ON mh.receiver = mem.seq 
+				WHERE	WEEK(mh.process_time) = WEEK(NOW()) AND mh.operation_type = 1 AND mh.status = 1 GROUP BY mem.seq) AS mh1_mem ON mh1_mem.member_seq = mem.seq
+			LEFT JOIN (
+				SELECT bs.member_seq, COALESCE(SUM(bs.winning_amount), 0) AS "wonAmount" FROM betting_summary bs LEFT JOIN member mem ON bs.member_seq = mem.seq 
+				WHERE	WEEK(bs.check_time) = WEEK(NOW()) GROUP BY mem.seq) AS bs_mem ON bs_mem.member_seq = mem.seq
+    </select>
+	
+	<select id="getAccessData" resultType="java.util.Map">
+		SELECT 
+			member_judge_login,
+			member_login,
+			store_login,
+			distributor_login,
+			member_deposit_cnt,
+			IFNULL(member_deposit_sum,0) AS member_deposit_sum,
+			member_withdraw_cnt,
+			IFNULL(member_withdraw_sum,0) AS member_withdraw_sum,
+			partner_deposit_cnt,
+			IFNULL(partner_deposit_sum,0) AS partner_deposit_sum,
+			partner_withdraw_cnt,
+			IFNULL(p_send,0) AS p_send,
+			IFNULL(p_collect,0) AS p_collect,
+			IFNULL(partner_withdraw_sum,0) AS partner_withdraw_sum,
+			m_post,
+			m_customer_service,
+			p_note,
+			bs
+		FROM (SELECT DATE(NOW()) AS today) AS cal
+		LEFT JOIN (
+			SELECT COUNT(al.seq) AS member_judge_login, DATE(NOW()) AS today
+			FROM access_log al
+			INNER JOIN member m ON m.seq = al.member_seq 
+			WHERE m.user_type = 0 AND m.status = 3 AND DATE(al.connection_date) = DATE(NOW())) AS memJudgeLogin ON cal.today = memJudgeLogin.today
+		
+		LEFT JOIN (
+			SELECT COUNT(al.seq) AS member_login, DATE(NOW()) AS today
+			FROM access_log al
+			INNER JOIN member m ON m.seq = al.member_seq 
+			WHERE m.user_type = 0 AND DATE(al.connection_date) = DATE(NOW())) AS memLogin ON cal.today = memLogin.today
+		
+		LEFT JOIN (
+			SELECT COUNT(al.seq) AS store_login, DATE(NOW()) AS today
+			FROM access_log al
+			INNER JOIN member m ON m.seq = al.member_seq 
+			WHERE m.user_type = 1 AND DATE(al.connection_date) = DATE(NOW())) AS storeLogin ON cal.today = storeLogin.today
+			
+		LEFT JOIN (
+			SELECT COUNT(al.seq) AS distributor_login, DATE(NOW()) AS today
+			FROM access_log al
+			INNER JOIN member m ON m.seq = al.member_seq 
+			WHERE m.user_type = 2 AND DATE(al.connection_date) = DATE(NOW())) AS distributorLogin ON cal.today = distributorLogin.today
+		
+		LEFT JOIN (
+			SELECT COUNT(mh.seq) AS member_deposit_cnt, DATE(NOW()) AS today
+			FROM money_history mh
+			INNER JOIN member m ON m.seq = mh.receiver 
+			WHERE mh.status = 0 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 0 AND m.user_type = 0) AS mDeposit1 ON cal.today = mDeposit1.today
+			
+		LEFT JOIN (
+			SELECT SUM(mh.variable_amount) AS member_deposit_sum, DATE(NOW()) AS today
+			FROM money_history mh
+			INNER JOIN member m ON m.seq = mh.receiver 
+			WHERE mh.status = 1 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 0 AND m.user_type = 0) AS mDeposit2 ON cal.today = mDeposit2.today
+			
+		LEFT JOIN (
+			SELECT COUNT(mh.seq) AS member_withdraw_cnt, DATE(NOW()) AS today
+			FROM money_history mh
+			INNER JOIN member m ON m.seq = mh.receiver 
+			WHERE mh.status = 0 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 1 AND m.user_type = 0) AS mWithdraw1 ON cal.today = mWithdraw1.today
+			
+		LEFT JOIN (
+			SELECT SUM(mh.variable_amount) AS member_withdraw_sum, DATE(NOW()) AS today
+			FROM money_history mh
+			INNER JOIN member m ON m.seq = mh.receiver 
+			WHERE mh.status = 1 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 1 AND m.user_type = 0) AS mWithdraw2 ON cal.today = mWithdraw2.today
+			
+		LEFT JOIN (
+			SELECT COUNT(mh.seq) AS partner_deposit_cnt, SUM(mh.variable_amount) AS partner_deposit_sum, DATE(NOW()) AS today
+			FROM money_history mh
+			INNER JOIN member m ON m.seq = mh.receiver 
+			WHERE mh.status = 0 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 0 AND m.user_type > 0) AS pDeposit ON cal.today = pDeposit.today
+			
+		LEFT JOIN (
+			SELECT COUNT(mh.seq) AS partner_withdraw_cnt, SUM(mh.variable_amount) AS partner_withdraw_sum, DATE(NOW()) AS today
+			FROM money_history mh
+			INNER JOIN member m ON m.seq = mh.receiver 
+			WHERE mh.status = 0 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 1 AND m.user_type > 0) AS pWithdraw ON cal.today = pWithdraw.today
+			
+		LEFT JOIN (
+			SELECT SUM(mh.variable_amount) AS p_send, DATE(NOW()) AS today
+			FROM money_history mh
+			INNER JOIN member m1 ON m1.seq = mh.receiver 
+			INNER JOIN member m2 ON m2.seq = mh.payer 
+			WHERE DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 2 AND m1.user_type = 0 AND m2.user_type > 0) AS pSend ON cal.today = pSend.today
+			
+		LEFT JOIN (
+			SELECT SUM(mh.variable_amount) AS p_collect, DATE(NOW()) AS today
+			FROM money_history mh
+			INNER JOIN member m1 ON m1.seq = mh.receiver 
+			INNER JOIN member m2 ON m2.seq = mh.payer 
+			WHERE DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 2 AND m1.user_type > 0 AND m2.user_type = 0) AS pCollect ON cal.today = pCollect.today
+			
+		LEFT JOIN (
+			SELECT COUNT(n.seq) AS m_post, DATE(NOW()) AS today
+			FROM note n
+			WHERE n.read_status = 0 AND n.type = 2 AND n.classification = 2 AND DATE(n.send_time) = DATE(NOW())) AS mPost ON cal.today = mPost.today
+			
+		LEFT JOIN (
+			SELECT COUNT(n.seq) AS m_customer_service, DATE(NOW()) AS today
+			FROM note n
+			INNER JOIN member m ON n.sender = m.seq
+			WHERE n.read_status = 0 AND n.type = 2 AND n.classification = 4 AND m.user_type = 0 AND DATE(n.send_time) = DATE(NOW())) AS mCustomerService ON cal.today = mCustomerService.today	
+			
+		LEFT JOIN (
+			SELECT COUNT(n.seq) AS p_note, DATE(NOW()) AS today
+			FROM note n
+			INNER JOIN member m ON n.sender = m.seq
+			WHERE n.read_status = 0 AND n.type = 1 AND m.user_type > 0 AND DATE(n.send_time) = DATE(NOW())) AS pNote ON cal.today = pNote.today	
+			
+		LEFT JOIN (
+			SELECT COUNT(bs.seq) AS bs, DATE(NOW()) AS today
+			FROM betting_summary bs
+			WHERE DATE(bs.check_time) = DATE(NOW())) AS bs ON cal.today = bs.today
+	</select>
+	
+	<select id="getTotalMoneyInfo" resultType="java.util.Map">
+		SELECT 
+		IFNULL(SUM(money_amount), 0) AS total_money,
+		IFNULL(SUM(mileage_amount), 0) AS total_mileage,
+		(SELECT IFNULL(SUM(money_amount), 0) FROM member where user_type > 0) AS ptotal_money
+		FROM member
+		WHERE user_type = 0
+	</select>
+</mapper>

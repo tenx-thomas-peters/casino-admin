@@ -1,0 +1,190 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (|#{admin.common.sub}| + ' ' + |#{admin.common.member}| + ' ' + |#{admin.common.list}|)"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/store.css}"/>
+	<body>
+		<section class="body store">
+		    <div class="main" id="memberListModal">
+		    	<section role="main" class="content-body">
+		    		<section class="panel" role="main">
+			    		<header class="pannel-heading">
+	                        <i class="fa fa-caret-square-o-right text-primary"></i>
+	                        <span id="headquarterId" th:text="${Id}"></span>
+	                        [[#{admin.common.sub}]] [[#{admin.common.member}]]&nbsp;[[#{admin.common.list}]]
+		                </header>
+	                	<div class="panel-body">
+		                	<form class="form-inline search-form" th:action="@{/partner2/Member}" id="formSearch" method="get" th:object="${member}">
+		                        <div class="form-group">
+		                        	<input type="hidden" class="headquarterSearchSeq" name="seq" th:field="*{seq}"/>
+		                        	<input type="hidden" name="userType" th:value="${userType}"/>
+		                            <label class="control-label">
+		                                <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+		                                <span th:text="#{admin.headquarter.queryDate}"></span>
+		                            </label>
+		                            <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
+	                                    <span class="input-group-addon">
+	                                        <i class="fa fa-calendar"></i>
+	                                    </span>
+		                                <input type="text" class="form-control"  name="fromApplicationTime" th:field="*{fromApplicationTime}">
+		                                <span class="input-group-addon">~</span>
+		                                <input type="text" class="form-control" name="toApplicationTime" th:field="*{toApplicationTime}">
+		                            </div>
+		                       </div>
+		                       <div class="form-group">
+		                           <button class="btn btn-default searchDistributorList">
+		                           	   <span th:text="#{admin.common.search}"></span> 
+		                               <i class="fa fa-search"></i>
+		                           </button>
+		                       </div>
+		                   	</form>
+							<div class="table-responsive">
+		                       <table class="table table-bordered table-striped store-list" id="store-modal-list">
+		                           <thead>
+		                           	<tr>
+		                            	<th th:text="#{admin.common.partner.id}"> Partner ID </th>
+		                                <th th:text="#{admin.common.partner.nickname}"> Partner Nickname </th>
+										<th th:text="#{admin.common.partner.level}"> Partner Level </th>
+										<th th:text="#{admin.common.id}"> ID </th>
+										<th th:text="#{admin.common.nickname}"> Nickname </th>
+										<th th:text="#{admin.common.holdingAmount}"> Holding Amount </th>
+										<th th:text="#{admin.common.membershipLevel}"> Membership level </th>
+										<th th:text="#{admin.common.status}"> Status </th>
+										<th th:text="#{admin.common.deposit}"> Deposit </th>
+										<th th:text="#{admin.common.withdraw}"> Withdraw </th>
+										<th th:text="#{admin.member.differenceOfDepositAndWithdraw}"> Difference between Deposit and Withdraw </th>
+										<th th:text="#{admin.common.type}"> type </th>
+										<th th:text="#{admin.common.betAmount}"> Bet Amount </th>
+										<th th:text="#{admin.bettingSummary.winningAmount}" > Winning Amount </th>
+										<th th:text="#{admin.common.lost.amount}"> Lost Amount </th>
+										<th th:text="#{admin.common.bettingSummary}">Betting Summary</th>
+	                        	   	</tr>
+		                           </thead>
+		                           <tbody>
+		                           	<tr th:each="entity, stat : ${memberList}">
+		                           		<input type="hidden" class="member-seq" th:data-key="${entity.seq}"/>
+	                                   	<td th:text="${entity.partnerId}"></td>
+	                                   	<td th:text="${entity.partnerNickname}"></td>
+										<td th:text="${entity.partnerLevel}"></td>
+										<td th:text="${entity.id}"></td>
+										<td th:text="${entity.nickname}"></td>
+										<td> 
+											[[${#numbers.formatDecimal(entity.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+											<span class="text-danger">[</span>
+                                            <span class="text-danger">
+                                                [[${#numbers.formatDecimal(entity.deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                            </span>
+                                            <span class="text-danger">]</span>
+										</td>
+										<td th:text="${entity.levelName}"></td>
+										<td th:if="${entity.status == '0'}" th:text="#{admin.common.normal}">normal</td>
+										<td th:if="${entity.status == '1'}" th:text="#{admin.common.stop}">stop</td>
+										<td th:if="${entity.status == '2'}" th:text="#{admin.common.test}">test</td>
+										<td th:if="${entity.status == '3'}" th:text="#{admin.common.judge}">judge</td>
+										<td th:if="${entity.status == '4'}" th:text="#{admin.common.withdrawal}">withdrawal</td>
+										<td th:text="${#numbers.formatDecimal(entity.deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(entity.withdrawal, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal((entity.deposit-entity.withdrawal), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td>
+											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="#{admin.common.slot}">slot</span>
+											</p>
+											<p class="bg-white-grey" >
+												<span th:text="#{admin.common.baccarat}">baccarat</span>
+											</p>
+										</td>
+										<td>
+											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.betAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+											<p class="bg-white-grey">
+												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.betAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+										</td>
+										<td>
+											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+											<p class="bg-white-grey">
+												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+										</td>
+										<td>
+											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.lostAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+											<p class="bg-white-grey">
+												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.lostAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+										</td>
+										<td>
+											<button class="progress-bet btn btn-sm btn-default"
+												th:text="#{admin.common.bettingSummary}">Betting Summary</button>
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(memberList)}">
+										<td colSpan="16" class="text-center" th:text="#{admin.common.noData}">No Data</td>
+									</tr>
+									<tr th:if="${not #lists.isEmpty(memberList)}" class="background-primary text-default" style="background-color: #cfe7ff; color: #004675;">
+										<td colSpan="5" th:text="#{admin.common.sum}">Sum</td>
+										<td th:text="${#numbers.formatDecimal(moneyAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td>-</td>
+										<td>-</td>
+										<td th:text="${#numbers.formatDecimal(depositSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(withdrawalSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal((depositSum - withdrawalSum), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="#{admin.common.slot}">slot</span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span th:text="#{admin.common.baccarat}">baccarat</span>
+											</div>
+										</td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${#numbers.formatDecimal(slotBetAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span th:text="${#numbers.formatDecimal(baccaratBetAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+										</td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${#numbers.formatDecimal(slotWinningAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span th:text="${#numbers.formatDecimal(baccaratWinningAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+										</td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${#numbers.formatDecimal(slotLostAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span th:text="${#numbers.formatDecimal(baccaratLostAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+										</td>
+										<td>-</td>
+									</tr>
+		                           </tbody>
+		                        </table>
+		                    </div>		                        
+		                </div>
+	                	<div class="panel-footer">
+		                    <a href="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></a>
+		                </div>
+		    		</section>
+		    	</section>
+		    </div>
+		</section>
+		
+		<script type="text/javascript" th:inline="javascript">
+		    var url = [[${url}]];
+		</script>
+		
+	    <script th:replace="template :: scripts"></script>
+	    <script th:src="@{/assets/javascripts/partner/memberModalList.js}"></script>
+	</body>
+</html>

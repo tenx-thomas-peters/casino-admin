@@ -1,0 +1,119 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Level')"></head>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+        
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+            
+            <section role="main" class="content-body">
+				<section class="panel" role="main">
+					<header class="panel-heading">
+						<div class="panel-actions">
+							<a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>
+							<a href="#" class="panel-action panel-action-dismiss" data-panel-dismiss></a>
+						</div>
+						<h2 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                       		 [[#{admin.common.setAmountByLevel}]]
+                    	</h2>
+					</header>
+					<div class="panel-body">	
+						<form id="formSearch" th:action="@{/config/level}" class="form-inline search-form" style="display: none;">
+	                    </form>
+	                    <div class="table-responsive">
+							<table class="table table-bordered table-striped" id="level-datatable">
+								<thead>
+									<tr>
+										<th class="text-center">
+											<div class="checkbox-custom checkbox-default checkbox-inline">
+												<input type="checkbox" class="group-checkable" id="allCheck" data-set="#member-datatable .checkboxes" onclick="allCheck()">
+												<label for="checkboxExample1"></label>
+											</div>
+		                                </th>
+										<th style="text-align: center;" th:text="#{admin.common.level}"></th>
+										<th style="text-align: center;" th:text="#{admin.common.level.name}"></th>
+										<th style="text-align: center;" th:text="#{admin.common.firstInsect.pro}"></th>
+										<th style="text-align: center;" th:text="#{admin.common.caterpillar.pro}"></th>
+										<th style="text-align: center;" th:text="#{admin.common.correction}"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="level : ${pageList.records}">
+										<form id="applyForm" th:action="@{/config/applyLevel}" class="form-horizontal mb-lg" method="post" novalidate="novalidate">
+											<input type="hidden" name="seq" th:value="${level.seq}"/>
+											<input type="hidden" name="levelNo" th:value="${level.levelNo}"/>
+											<td class="text-center">
+												<div class="checkbox-custom checkbox-default checkbox-inline">
+													<input class="checkboxes" type="checkbox" th:name="${level.seq}"/>
+													<label for="checkboxExample1"></label>
+												</div>
+											</td>
+											<td th:text="${level.levelNo}"  style="text-align: center;"></td>
+											<td style="text-align: center;"><input type="text" class="form-control levelInput" name="levelName" style="display: inline-block; width: auto; text-align: center;" th:value="${level.levelName}" /></td>
+											<td style="text-align: center;"><input type="text" class="form-control levelInput" name="firstInsect" style="display: inline-block; width: auto; text-align: center;" th:value="${level.firstInsect}" />%</td>
+											<td style="text-align: center;"><input type="text" class="form-control levelInput" name="caterpillar" style="display: inline-block; width: auto; text-align: center;" th:value="${level.caterpillar}" />%</td>
+											<td style="text-align: center;"><button type="submit" class="btn btn-default levelApply" th:text="#{admin.common.apply}"></button></td>
+										</form>
+									</tr>
+								</tbody>							
+							</table>	                    
+	                    </div>
+						<div class="tab_cont customPage w99 t_center ptb15"></div>
+					</div> 					
+            		<!-- Modal Form -->
+            		<div class="panel-footer">          			
+	            		<div class="select-add-delete">
+	            			<a class="btn btn-primary add-level" th:text="#{admin.common.add}"></a>
+	    					<a id="delete" class="btn btn-primary" data-toggle="modal" href="#deleteModal" th:text="#{admin.common.delete}"></a>
+	            		</div>
+			            <div id="deleteModal" class="modal fade" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title" th:text="#{admin.common.delete}"></h4>
+									</div>
+									<div class="modal-body">
+										<div class="container">
+											<div id="message" class="row">
+												<div class="input-item-div col-xs-12 message">
+													<span th:text="#{admin.common.deleteMsg}"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer text-center">
+										<button class="btn btn-primary modal-dismiss" type="button" onclick="batchLevelDelete();">
+											<span class="d-table-cell align-middle" th:text="#{admin.common.confirm}"></span>
+										</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">
+											<span class="d-table-cell align-middle" th:text="#{admin.common.cancel}"></span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</section>
+        </div>        
+    </section>
+
+	<script type="text/javascript" th:inline="javascript">
+		var page = [[${pageList}]];
+		var url = [[${url}]];
+	</script>
+
+    <script th:replace="template :: scripts"></script>
+    
+	<script th:src="@{/assets/javascripts/config/level.js}"></script>
+	
+	<script type="text/javascript" th:inline="javascript">
+		createPagenation(page, url);
+	</script>
+</body>
+</html>

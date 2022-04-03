@@ -1,0 +1,127 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.popup.title})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+<section class="body access-log">
+    <div class="row">
+        <div role="main" class="col-md-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        Member Edit
+                    </h4>
+                </header>
+                <div class="panel-body">
+                    <form id="memberEdit" th:object="${member}" class="form-horizontal form-bordered" th:action="@{/mock/member/editMember}" method="post">
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Member
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <select class="form-control" th:field="*{seq}" required>
+                                    <option th:each="member : ${memberList}"
+                                            th:value="${member.seq}"
+                                            th:text="${member.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Sign up IP
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <input type="text" class="form-control" th:field="*{signupIp}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Site Domain
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <input type="text" class="form-control" th:field="*{siteDomain}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Site Name
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <input type="text" class="form-control" th:field="*{siteName}" required />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <footer class="panel-footer">
+                    <button class="btn btn-primary save">Save</button>
+                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                </footer>
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    $(document).ready(function () {
+        let form = $('#memberEdit');
+
+        $('.save').click(function () {
+            if (!form.valid())
+                return;
+
+            $.ajax({
+                url: CONTEXT_ROOT + 'mock/member/editMember',
+                type: 'POST',
+                data: form.serialize(),
+                success: function (res) {
+                    if (res.success) {
+                        new PNotify({
+                            title: 'Success!',
+                            text: 'Success!',
+                            type: 'success',
+                            buttons: {
+                                closer: true,
+                                sticker: false
+                            }
+                        });
+
+                        $('#memberEdit')[0].reset();
+                    } else {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Error!',
+                            type: 'error',
+                            buttons: {
+                                closer: true,
+                                sticker: false
+                            }
+                        });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        $('.clear').click(function () {
+            $('#accessLog')[0].reset();
+        });
+    });
+</script>
+
+</body>
+</html>

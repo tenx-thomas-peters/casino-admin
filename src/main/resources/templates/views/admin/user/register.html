@@ -1,0 +1,140 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.signUp})"></head>
+<body>
+    <!-- start: page -->
+    <section class="body-sign">
+        <div class="center-sign">
+            <a th:href="@{/}" class="logo pull-left">
+                <img src="assets/images/logo.png" height="54" alt="GM Admin" />
+            </a>
+
+            <div class="panel panel-sign">
+                <div class="panel-title-sign mt-xl text-right">
+                    <h2 class="title text-uppercase text-bold m-none">
+                        <i class="fa fa-user mr-xs"></i>&nbsp;
+                        <span th:text="#{admin.common.signUp}"></span>
+                    </h2>
+                </div>
+                <div class="panel-body">                	
+                    <form id="formRegister" th:action="@{/register}" th:object="${sysUser}" method="POST" onSubmit="return checkSubmit()">
+                        <div class="form-group mb-lg">
+                            <label th:text="#{admin.common.id}"></label>
+                            <div class="input-group input-group-icon">
+                                <input th:field="*{userId}" type="text" class="form-control input-lg" required/>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-lg">
+                            <label th:text="#{admin.common.name}"></label>
+                            <div class="input-group input-group-icon">
+                                <input th:field="*{userName}"type="text" class="form-control input-lg" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-none">
+							<div class="row">
+								<div class="col-sm-6 mb-lg">
+									<label th:text="#{admin.common.password}"></label>
+									<input th:field="*{password}" type="password" class="form-control input-lg" required/>
+								</div>
+								<div class="col-sm-6 mb-lg">
+									<label th:text="#{admin.common.passwordConfirm}"></label>
+									<input id="pwd_confirm" type="password" class="form-control input-lg" required/>
+								</div>
+							</div>
+						</div>
+
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="checkbox-custom checkbox-default">
+                                    <input id="RememberMe" name="rememberme" type="checkbox"/>
+                                    <label for="RememberMe" th:text="#{admin.login.rememberMe}"></label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 text-right">
+                                <button type="submit" class="btn btn-primary hidden-xs" th:text="#{admin.common.signUp}"></button>
+                            </div>
+                        </div>
+
+                        <span class="mt-lg mb-lg line-thru text-center text-uppercase">
+                            <span th:text=#{admin.common.or}></span>
+                        </span>
+
+                        <div class="mb-xs text-center">
+                            <a class="btn btn-facebook mb-md ml-xs mr-xs" th:text="#{admin.login.connectWith}">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                            <a class="btn btn-twitter mb-md ml-xs mr-xs" th:text="#{admin.login.connectWith}">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        </div>
+
+                        <p class="text-center">
+                            <span th:text="#{admin.common.signUpComment}"></span>
+                            <a th:href="@{/}" th:text="#{admin.common.signIn}"></a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <p class="text-center text-muted mt-md mb-md">&copy; Copyright 2022. All Rights Reserved.</p>
+        </div>
+    </section>
+    
+    <script th:replace="template :: scripts"></script>
+    
+    <script type="text/javascript" th:inline="javascript">
+	    $(document).ready(function(){
+	    	let resType = [[${resType}]];
+	    	let msg = [[${msg}]];
+	    	if (resType != null && resType != '') {
+	    		if (resType == 'success') {
+	    			new PNotify({
+						title: 'Error!',
+	                    text: msg,
+	                    type: 'error',
+	                    buttons: {
+	                        closer: true,
+	                        sticker: false
+	                    }
+	                });
+	    		} else if (resType == 'error') {
+	    			new PNotify({
+						title: 'Error!',
+	                    text: msg,
+	                    type: 'error',
+	                    buttons: {
+	                        closer: true,
+	                        sticker: false
+	                    }
+	                });
+	    		}
+	    	}
+	    });
+	    
+    	function checkSubmit() {
+    		let pwd = $('#password').val();
+    		let pwdConfirm = $('#pwd_confirm').val();
+    		
+    		if (pwd == pwdConfirm) {
+    			return true;
+    		} else {
+    			new PNotify({
+					title: 'Error!',
+                    text: 'Please confirm password!',
+                    type: 'error',
+                    buttons: {
+                        closer: true,
+                        sticker: false
+                    }
+                });
+    			return false;
+    		}
+    	}
+    </script>
+    <!-- end: page -->
+</body>
+</html>

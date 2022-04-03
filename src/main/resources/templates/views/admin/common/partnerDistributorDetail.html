@@ -1,0 +1,227 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (|#{admin.common.partner}| + ' ' + |#{admin.common.details}|)">
+	<style>
+	    #deputyHeadquarterDetailModal .form-group {
+	        margin-bottom: 5px;
+	        padding-bottom: 5px;
+	    }
+	</style>
+</head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+<section class="body member-detail">
+	<div class="member" id="partnerDistributorDetail">
+		<div role="main" class="col-md-12">
+			<section class="panel">
+				<header class="panel-heading">
+					<h4 class="panel-title">
+						<i class="fa fa-caret-square-o-right text-primary"></i>[[#{admin.common.partner}]] [[#{admin.common.details}]]
+					</h4>
+				</header>
+				<div class="panel-body">
+					<form id="partner-distributor-update-form" name="partner-distributor" class="form-horizontal form-bordered" 
+						th:action="@{/member/update}" method="post" th:object="${memberForm}">
+                        <input type="hidden" name="seq" th:field="*{seq}" />
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.affiliated}]] [[#{admin.common.headquarter}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                            	<select class="form-control" th:field="*{subHeadquarterSeq}"  required>
+                            		<option th:each="subHeadquarter : ${subHeadquarterList}" th:text="${subHeadquarter.id}"
+                            			th:value="${subHeadquarter.seq}"  th:selected="${subHeadquarter.seq == subHeadquarterSeq}" th:inline="text"></option>
+                            	</select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.id}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                 <input type="text" class="form-control" th:field="*{id}" style="display: inline-block; width: auto;" required />
+                                 <div class="input-group color" th:data-color="*{color}" data-color-format="rgb" data-plugin-colorpicker style="display: inline-block;">
+                                    <span class="input-group-addon">
+                                        <i></i>
+                                    </span>
+                                    <input name="color" type="text" class="form-control" th:field="*{color}" style="display: none;" />
+                                </div>
+                                <a class="btn btn-default erase-color" th:text="#{admin.member.eraseColor}"></a>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.password}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" th:field="*{password}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                             <label class="col-sm-2 control-label"><i class="fa fa-plus-square text-primary"></i>
+                             [[#{admin.common.settlement}]]&nbsp;&nbsp;[[#{admin.common.rate}]] </label>
+                             <div class="col-sm-4">
+                             	<label th:text="#{admin.common.slot}">slot</label>
+                                 <input type="number" name="slotRate" class="form-control" th:value="${#numbers.formatDecimal(memberForm.slotRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"
+                                 	style="width:70px; display:inline-block;" required>
+                                 <span>%</span>
+                                 <label th:text="#{admin.common.baccarat}">baccarat</label>
+                                 <input type="number" name="baccaratRate" class="form-control" style="width:70px; display:inline-block;" th:value="${#numbers.formatDecimal(memberForm.baccaratRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"  required="">
+                                 <span>%</span>
+                             </div>
+                         </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.nickname}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="nickname" th:field="*{nickname}" />
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.nameOfBank}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="bankName" th:field="*{bankName}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.accountHolder}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="accountHolder" th:field="*{accountHolder}" />
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.accountNumber}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="bankNumber" th:field="*{bankNumber}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.total}]]&nbsp;&nbsp;[[#{admin.common.deposit}]]&nbsp;&nbsp;[[#{admin.common.amount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="deposit" th:text="${#numbers.formatDecimal(memberForm.deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' ' + #{admin.common.won}"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.total}]]&nbsp;&nbsp;[[#{admin.common.withdraw}]]&nbsp;&nbsp;[[#{admin.common.amount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="withdrawal" th:text="${#numbers.formatDecimal(memberForm.withdrawal, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' ' + #{admin.common.won}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                       		 <label class="col-md-2 col-sm-6 control-label">
+							    <i class="fa fa-plus-square text-primary"></i>
+							    [[#{admin.common.holding}]]&nbsp;&nbsp;[[#{admin.common.money}]]
+							</label>
+							<div class="col-md-4 col-sm-6">
+							    <input type="number" class="form-control" name="moneyAmount" th:value="${#numbers.formatDecimal(memberForm.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}" />
+							</div>
+                           
+							<label class="col-md-2 col-sm-6 control-label">
+							    <i class="fa fa-plus-square text-primary"></i>
+							    Join Date
+							</label>
+							<div class="col-md-4 col-sm-6">
+							    <p class="control-label" th:text="*{#dates.format(registerDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+							</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.members}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" th:text="*{memberCount}+' '+#{admin.common.people}"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                number of depositors
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" th:text="*{depositCount}+' '+#{admin.common.people}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.email}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="emailAddress" th:field="*{emailAddress}">
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.phoneNumber}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="phoneNumber" th:field="*{phoneNumber}" />
+                            </div>
+                          </div>
+                         <div class="form-group">
+	                         <label class="col-md-2 col-sm-6 control-label">
+								    <i class="fa fa-plus-square text-primary"></i>
+							    [[#{admin.common.settlement}]] [[#{admin.common.member}]] [[#{admin.common.id}]]
+							</label>
+							<div class="col-md-4 col-sm-6">
+							    <input type="text" class="form-control" name="settlementMemberId" />
+							</div>
+							 <label class="col-md-2 col-sm-6 control-label">
+								    <i class="fa fa-plus-square text-primary"></i>
+							</label>
+							<div class="col-md-4 col-sm-6">
+							</div>
+                        </div>
+                        <div class="form-group vertical-aign-center">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.memo}]]
+                            </label>
+                            <div class="col-md-10 col-sm-6">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped" id="memo-list">
+                                        <tbody>
+                                         <tr class="json-data" th:each="memo : *{memoList}">
+                                             <td>
+                                                 <textarea name="content" style="width: 100%;" th:text="${memo.contents}"></textarea>
+                                             </td>
+                                         </tr>
+                                         <tr class="json-data" th:if="${#lists.isEmpty(memberForm.memoList)}">
+                                         	<td><textarea name="content" style="width: 100%;"></textarea></td>
+                                         </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+				</div>
+				<div class="panel-footer">
+					<div class="row text-center">
+	                    <button type="button" class="btn btn-primary update-partner-distributor-member" >Correction</button>
+	                </div>
+				</div>
+			</section>
+		</div>
+	</div>
+</section>
+<script type="text/javascript" th:inline="javascript">
+        var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+<script th:src="@{/assets/javascripts/partner/partnerDistributorDetail.js}"></script>
+</body>
+</html>   

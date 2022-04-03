@@ -1,0 +1,191 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (|#{admin.common.member}| + ' ' + |#{admin.common.bettingSummary}|)"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/betting-summary.css}"/>
+<body>
+    <section class="body betting-summary">
+        <header th:replace="template :: header" class="header"></header>
+
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+
+            <section role="main" class="content-body">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <h2 class="panel-title" th:text="#{admin.common.memberBettingSummary}"></h2>
+                    </header>
+                    <div class="panel-body">
+                        <form id="formSearch" class="form-inline search-form" th:action="@{/log/slotloglist}" method="post" th:object="${bettingSummaryForm}">
+                            <div class="form-group">
+                                <label for="pageSize">
+                                    <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                    <span th:text="#{admin.common.print}"></span>
+                                </label>
+                                <input type="text" class="form-control" id="pageSize" name="pageSize" th:value="${pageSize}">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">
+                                    <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                    <span th:text="#{admin.common.date}"></span>
+                                </label>
+                                <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control"  th:field="*{fromProcessTime}">
+                                    <span class="input-group-addon">~</span>
+                                    <input type="text" class="form-control" th:field="*{toProcessTime}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" th:field="*{storeSeq}">
+                                    <option value="">[[#{admin.common.partner}]]</option>
+                                    <option th:each="partner : ${partnerList}" th:value="${partner.seq}" th:text="${partner.id}"></option>
+                                </select>
+                                <select class="form-control" th:field="*{searchField}">
+                                    <option value="id">[[#{admin.common.id}]]</option>
+                                    <option value="nickname">[[#{admin.common.nickname}]]</option>
+                                </select>
+                                <div class="input-group input-group-icon" style="width: auto; display: inline-block;">
+                                    <span class="input-group-addon">
+                                        <span class="icon"><i class="fa fa-search"></i></span>
+                                    </span>
+                                    <input type="text" class="form-control" th:field="*{searchValue}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-default" onclick="todaySubmit()" style="float: right; margin-left: 10px;">
+                                    <span th:text="#{admin.log.partnerDetail.today}"></span>
+                                </button>
+                                <button type="button" class="btn btn-default" onclick="yesterdaySubmit()" style="float: right; margin-left: 10px;">
+                                    <span th:text="#{admin.log.partnerDetail.yesterday}"></span>
+                                </button>
+                                <button type="submit" class="btn btn-default" style="float: right;">
+                                    <span th:text="#{admin.common.search}"></span>&nbsp;<i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped" id="betting-list">
+                                <thead>
+                                <tr>
+                                    <th th:text="#{admin.bettingSummary.checkTime}"></th>
+                                    <th th:text="#{admin.common.id}"></th>
+                                    <th th:text="#{admin.common.nickname}"></th>
+                                    <th th:text="#{admin.bettingSummary.playingGame}"></th>
+                                    <th th:text="#{admin.common.type}"></th>
+                                    <th th:text="#{admin.common.betAmount}"></th>
+                                    <th th:text="#{admin.bettingSummary.winningAmount}"></th>
+                                    <th th:text="#{admin.bettingSummary.numberOfBets}"></th>
+                                    <th th:text="#{admin.bettingSummary.pointsRate}"></th>
+                                    <th th:text="#{admin.common.store.id}|"></th>
+                                    <th th:text="#{admin.bettingSummary.storeSettlementRate}"></th>
+                                    <th th:text="#{admin.bettingSummary.amountOfStoreRolling}"></th>
+                                    <th th:text="#{admin.common.distributor.id}"></th>
+                                    <th th:text="#{admin.bettingSummary.distributorSettlementRate}"></th>
+                                    <th th:text="#{admin.bettingSummary.amountOfDistributorRolling}"></th>
+                                    <th th:text="#{admin.common.subHeadquarter.id}|"></th>
+                                    <th th:text="#{admin.bettingSummary.subHeadquarterSettlementRate}"></th>
+                                    <th th:text="#{admin.bettingSummary.amountOfSubHeadquarterRolling}"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}" th:data-key="${entity.seq}">
+                                    <td class="text-center">
+                                        <p th:text="${#dates.format(entity.checkTime, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>
+                                            <a class="member-id" th:data-key="${entity.memberSeq}" th:text="${entity.memberID}"></a>
+                                        </p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p th:text="${entity.memberNickname}"></p>
+                                    </td>
+                                    <td class="text-center" th:text="${entity.playingGame}"></td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow">slot</p>
+                                        <p class="bg-white-grey">baccarat</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow" th:text="${entity.type == 0 ? #numbers.formatDecimal(entity.bettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                        <p class="bg-white-grey" th:text="${entity.type == 1 ? #numbers.formatDecimal(entity.bettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow" th:text="${entity.type == 0 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                        <p class="bg-white-grey" th:text="${entity.type == 1 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow" th:text="${entity.type == 0 ? entity.betCount : 0}"></p>
+                                        <p class="bg-white-grey" th:text="${entity.type == 1 ? entity.betCount : 0}"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow" th:text="${entity.memberSlotRate}"></p>
+                                        <p class="bg-white-grey" th:text="${entity.memberBaccaratRate}"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p th:text="${entity.storeID}"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow" th:text="|${entity.storeSlotRate}| + '%'"></p>
+                                        <p class="bg-white-grey" th:text="|${entity.storeBaccaratRate}| + '%'"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow">[[${entity.type == 0 ? #numbers.formatDecimal(entity.storeRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                        <p class="bg-white-grey">[[${entity.type == 1 ? #numbers.formatDecimal(entity.storeRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p th:text="${entity.distributorID}"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow" th:text="|${entity.distributorSlotRate}| + '%'"></p>
+                                        <p class="bg-white-grey" th:text="|${entity.distributorBaccaratRate}| + '%'"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow">[[${entity.type == 0 ? #numbers.formatDecimal(entity.distributorRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                        <p class="bg-white-grey">[[${entity.type == 1 ? #numbers.formatDecimal(entity.distributorRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p th:text="${entity.subHeadquarterID}"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow" th:text="|${entity.subHeadquarterSlotRate}| + '%'"></p>
+                                        <p class="bg-white-grey" th:text="|${entity.subHeadquarterBaccaratRate}| + '%'"></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="bg-white-yellow">[[${entity.type == 0 ? #numbers.formatDecimal(entity.subHeadquarterRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                        <p class="bg-white-grey">[[${entity.type == 1 ? #numbers.formatDecimal(entity.subHeadquarterRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(pageList.records)}">
+                                    <td class="text-center" colspan="18" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab_cont customPage w99 t_center ptb15"></div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </section>
+
+    <script type="text/javascript" th:inline="javascript">
+        var page = [[${pageList}]];
+        var url = [[${url}]];
+        var txtAdd = [[#{admin.member.addition}]];
+        var txtEdit = [[#{admin.common.edit}]];
+        var txtDelete = [[#{admin.common.delete}]];
+    </script>
+
+    <script th:replace="template :: scripts"></script>
+
+    <script th:src="@{/assets/javascripts/bettingsummary/betting.summary.js}"></script>
+
+    <script type="text/javascript" th:inline="javascript">
+        createPagenation(page, url);
+    </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+#title{
+	width:100%;
+}
+#levelList{
+	width:100px;
+}
+.notRecommended{
+	margin-left:20px;
+}
+.btnGroup{
+	margin-top:20px; 
+	margin-bottom:20px;
+}
+.manager{
+	margin-top:20px;
+}
+
+.answerField{
+	height:90px;
+}
+.answerbtn{
+	margin-top:35px;
+	margin-left:80px;
+}

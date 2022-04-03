@@ -1,0 +1,272 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.popup.title})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+    <section class="body">
+        <div class="row">
+            <div role="main" class="col-md-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <h4 class="panel-title">
+                            <i class="fa fa-caret-square-o-right text-primary"></i>
+                            Partner money
+                        </h4>
+                    </header>
+                   	<div class="tabs tabs-primary">
+						<ul class="nav nav-tabs">
+							<li class="active">
+								<a href="#deposit" data-toggle="tab" th:text="#{admin.common.deposit}"></a>
+							</li>
+							<li>
+								<a href="#withdraw" data-toggle="tab" th:text="#{admin.common.withdraw}"></a>
+							</li>
+							<li>
+								<a href="#transfer" data-toggle="tab" th:text="#{admin.common.transfer}"></a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div id="deposit" class="tab-pane active">
+								<div class="panel-body">
+									<form class="form-horizontal form-bordered"
+			                              method="post" id="deposit-form">
+			                            <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Member ID
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <select class="form-control" name="memberSeq">
+				                                    <option th:each="member : ${partnerList}" th:value="${member.seq}" th:text="${member.id}"></option>
+				                                </select>
+					                        </div>
+					                    </div>
+					                    <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Money Amount
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <input type="number" class="form-control" name="moneyAmount" required />
+					                        </div>
+					                    </div>
+					                    <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Note
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <textarea  class="form-control" name="note" ></textarea>
+					                        </div>
+					                    </div>
+			                        </form>
+								</div>
+							 	<footer class="panel-footer">
+			                        <button class="btn btn-primary submit-btn" data-type="deposit">Deposit</button>
+			                        <button class="btn btn-default clear-btn">Clear</button>
+		                    	</footer>
+							</div>
+							<div id="withdraw" class="tab-pane">
+								<div class="panel-body">
+									<form class="form-horizontal form-bordered"
+			                              method="post" id="withdraw-form">
+			                            <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Member ID
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <select class="form-control" name="memberSeq">
+				                                    <option th:each="member : ${partnerList}" th:value="${member.seq}" th:text="${member.id}"></option>
+				                                </select>
+					                        </div>
+					                    </div>
+					                    <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Money Amount
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <input type="number" class="form-control" name="moneyAmount" required />
+					                        </div>
+					                    </div>
+					                    <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Note
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <textarea  class="form-control" name="note" ></textarea>
+					                        </div>
+					                    </div>
+			                        </form>
+								</div>
+							 	<footer class="panel-footer">
+			                        <button class="btn btn-primary submit-btn" data-type="withdraw">Withdraw</button>
+			                        <button class="btn btn-default clear-btn">Clear</button>
+		                    	</footer>
+							</div>
+							<div id="transfer" class="tab-pane">
+								<div class="panel-body">
+									<form class="form-horizontal form-bordered"
+			                              method="post" id="transfer-form">
+			                            <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Payer
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <select class="form-control" name="payerSeq">
+				                                    <option th:each="member : ${memberList}" th:value="${member.seq}" th:text="${member.id}"></option>
+				                                </select>
+					                        </div>
+					                    </div>
+					                    <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Receiver
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <select class="form-control" name="receiverSeq">
+				                                    <option th:each="member : ${memberList}" th:value="${member.seq}" th:text="${member.id}"></option>
+				                                </select>
+					                        </div>
+					                    </div>
+					                    <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Money Amount
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <input type="number" class="form-control" name="moneyAmount" required />
+					                        </div>
+					                    </div>
+					                    <div class="form-group">
+					                        <label class="col-md-3 col-sm-6 control-label">
+					                            <i class="fa fa-plus-square text-primary"></i>
+					                            Note
+					                        </label>
+					                        <div class="col-md-4 col-sm-6">
+					                            <textarea  class="form-control" name="note" ></textarea>
+					                        </div>
+					                    </div>
+			                        </form>
+								</div>
+							 	<footer class="panel-footer">
+			                        <button class="btn btn-primary" id="transfer-btn">Transfer</button>
+			                        <button class="btn btn-default clear-btn">Clear</button>
+		                    	</footer>
+							</div>
+						</div>
+					</div>
+                </section>
+            </div>
+        </div>
+    </section>
+    
+    <script type="text/javascript" th:inline="javascript">
+        var url = [[${url}]];
+    </script>
+
+    <script th:replace="template :: scripts"></script>
+    <script>
+    	$(document).ready(function() {
+    		$(".submit-btn").on("click", function(e) {
+    			e.preventDefault();
+    			let operationType = $(this).data("type");
+    			var url = CONTEXT_ROOT;
+    			var formData;
+    			if(operationType == "deposit") {
+    				url += "mock/money/deposit";
+    				if(!$("#deposit-form").valid()) {
+    					return;
+    				}
+    				formData = $("#deposit-form").serialize();
+    			}else {
+    				url += "mock/money/withdraw";
+    				if(!$("#withdraw-form").valid()) {
+    					return;
+    				}
+    				formData = $("#withdraw-form").serialize();
+    			}
+    			
+    			$.ajax({
+    	            url: url,
+    	            type: 'post',
+    	            data: formData,
+    	            success: function(res) {
+    	                if (res.success) {
+    	                    new PNotify({
+    	                        title: 'Success!',
+    	                        text: res.message,
+    	                        type: 'success',
+    	                        buttons: {
+    	                            closer: true,
+    	                            sticker: false
+    	                        }
+    	                    });
+    	                } else {
+    	                    new PNotify({
+    	                        title: 'Error!',
+    	                        text: res.message,
+    	                        type: 'error',
+    	                        buttons: {
+    	                            closer: true,
+    	                            sticker: false
+    	                        }
+    	                    });
+    	                }
+    	            },
+    	            error: function(err) {
+    	                console.log(err);
+    	            }
+    	        });
+    		});
+    		
+    		$(".clear-btn").on("click", function(e) {
+    			e.preventDefault();
+    			$(".panel-body form input,textarea").val("");
+    		});
+    		
+    		$("#transfer-btn").on("click", function(e) {
+    			e.preventDefault();
+    			var formData = $("#transfer-form").serialize();
+    			var url = CONTEXT_ROOT + "mock/money/transfer";
+    			$.ajax({
+    	            url: url,
+    	            type: 'post',
+    	            data: formData,
+    	            success: function(res) {
+    	                if (res.success) {
+    	                    new PNotify({
+    	                        title: 'Success!',
+    	                        text: res.message,
+    	                        type: 'success',
+    	                        buttons: {
+    	                            closer: true,
+    	                            sticker: false
+    	                        }
+    	                    });
+    	                } else {
+    	                    new PNotify({
+    	                        title: 'Error!',
+    	                        text: res.message,
+    	                        type: 'error',
+    	                        buttons: {
+    	                            closer: true,
+    	                            sticker: false
+    	                        }
+    	                    });
+    	                }
+    	            },
+    	            error: function(err) {
+    	                console.log(err);
+    	            }
+    	        });
+    		});
+    	});
+    </script>
+</body>
+</html>

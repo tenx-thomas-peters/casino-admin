@@ -1,0 +1,64 @@
+@charset "ISO-8859-1";
+@media (min-width: 992px) {
+    #deputyHeadquarterDetailModal .modal-lg {
+        width: 60% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #partnerDistributorDetailModal .modal-lg {
+        width: 60% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #storeListModal .modal-lg {
+        width: 80% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #distributorListModal .modal-lg {
+        width: 80% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #memberListModal .modal-lg {
+        width: 80% !important;
+    }
+}
+.search-form.form-inline {
+    padding: 10px 10px 0 10px;
+    border: 1px solid #DADADA;
+    margin-bottom: 10px;
+}
+.search-form .form-group {
+    margin-bottom: 10px !important;
+}
+
+.distributor .distributor-list th {
+    text-align: center;
+}
+
+.distributor .distributor-list td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 0;
+}
+
+.distributor-list td > p {
+    border-top: 1px solid #dadada;
+    padding: 8px;
+    margin: 0;
+}
+
+.distributor-list td > a {
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+}
+
+.distributor .distributor-list .text-blue {
+	color: blue;
+}

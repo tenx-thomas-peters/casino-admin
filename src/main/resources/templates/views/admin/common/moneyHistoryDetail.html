@@ -1,0 +1,24 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+<section class="body">
+    <!-- start: money decline popup -->
+    <div th:fragment="declineConfirmModal" class="modal fade bs-modal-md" id="declineConfirmModal" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                	<h4 th:text="#{admin.money.status.declineConfirm}"></h4>
+                </div>
+             <div class="modal-footer">
+	             <button class="btn btn-default" th:text="#{admin.common.confirm}" id="confirmBtn" ></button>
+	             <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
+             </div>
+            </div>
+        </div>
+    </div>
+    <!-- end: money decline popup -->
+</section>
+</body>
+</html>

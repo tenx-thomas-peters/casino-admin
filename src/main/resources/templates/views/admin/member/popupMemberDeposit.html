@@ -1,0 +1,135 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.popup.title})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/money/money-history.css}"/>
+<body>
+<section class="body member-detail">
+    <div class="row" id="memberDetailModal">
+        <div role="main" class="col-md-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.deposit.log.title}]]
+                    </h4>
+                </header>
+                <div class="panel-body">
+                    <form id="formSearch" th:action="@{${url}}" th:object="${moneyHistory}" method="post" class="form-inline search-form">
+                        <div class="form-group">
+                            <label>
+                                <i class="fa fa-search search-icon"></i>
+                                <span th:text="#{admin.common.date}"></span>
+                            </label>
+                            <select class="form-control time-type" th:field="*{checkTimeType}">
+                                <option value="0" th:text="#{admin.common.applicationDate}"></option>
+                                <option value="1" th:text="#{admin.common.processDate}"></option>
+                            </select>
+                            <div class="input-group input-group-icon calendar">
+                                <span class="input-group-addon">
+                                    <span class="icon"><i class="fa fa-search"></i></span>
+                                </span>
+                                <input data-plugin-datepicker class="form-control" data-date-format="yyyy-mm-dd" th:field="*{fromProcessTime}">
+                            </div>
+                            <span>~</span>
+                            <div class="input-group input-group-icon calendar">
+                                <span class="input-group-addon">
+                                    <span class="icon"><i class="fa fa-search"></i></span>
+                                </span>
+                                <input data-plugin-datepicker class="form-control" data-date-format="yyyy-mm-dd" th:field="*{toProcessTime}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control status-select" th:field="*{IDOrNickname}">
+                                <option value="0" th:text="#{admin.common.id}"></option>
+                                <option value="1" th:text="#{admin.common.nickname}"></option>
+                                <option value="2" th:text="#{admin.common.accountHolder}"></option>
+                            </select>
+                            <div class="input-group input-group-icon search-key">
+                                <span class="input-group-addon">
+                                    <span class="icon"><i class="fa fa-search"></i></span>
+                                </span>
+                                <input type="text" class="form-control" th:field="*{IDOrNickNameValue}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <span th:text="#{admin.common.search}"></span>
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="moneylog-datatable">
+                            <thead>
+                            <tr>
+                                <th class="time-field" th:text="#{admin.common.applicationDate}"></th>
+                                <th class="time-field" th:text="#{admin.common.processDate}"></th>
+                                <th th:text="#{admin.common.id}"></th>
+                                <th th:text="#{admin.common.nickname}"></th>
+                                <th class="direct-field" th:text="#{admin.common.direct}" ></th>
+                                <th th:text="#{admin.common.level}"></th>
+                                <th th:text="#{admin.money.log.prevAmount}"></th>
+                                <th th:text="#{admin.deposit.log.moneyAmount}"></th>
+                                <th th:text="#{admin.deposit.log.applicationAmount}"></th>
+                                <th th:text="#{admin.deposit.log.realAmount}"></th>
+                                <th th:text="#{admin.deposit.log.bonus}"></th>
+                                <th th:text="#{admin.common.accountHolder}"></th>
+                                <th th:text="#{admin.common.partner}"></th>
+                                <th th:text="#{admin.common.status}" class="control-button"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="entity : ${page.records}">
+                                <td th:text="${#dates.format(entity.applicationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td th:text="${#dates.format(entity.processTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td class='memberId' th:data-key="${entity.member.seq}" th:text="${entity.member.id}"></td>
+                                <td th:text="${entity.member.nickname}"></td>
+                                <td class="text-center" >
+                                    <button class="btn btn-sm btn-primary progress-bet"
+                                            th:data-memberSeq="${entity.member.seq}"
+                                            th:data-date="${#dates.format(entity.applicationTime, 'yyyy-MM-dd')}"
+                                            th:text="#{admin.common.bettingSummary}"></button>
+                                </td>
+                                <td th:text="${entity.member.level}"></td>
+                                <td th:text="${#numbers.formatDecimal(entity.prevAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+                                <td th:text="${#numbers.formatDecimal(entity.finalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+                                <td class='applicationAmount' th:data-val="${entity.variableAmount}" th:text="${#numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+                                <td th:text="${#numbers.formatDecimal(entity.actualAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+                                <td th:text="${entity.bonus}"></td>
+                                <td th:text="${entity.member.accountHolder}"></td>
+                                <td th:text="${entity.member.store != null?entity.member.store.id:'independent'}"></td>
+                                <td class="text-center" >
+                                    <div th:if="${entity.status == 0}">
+                                        <a href="#" class="acceptBtn btn btn-sm btn-primary" th:if="${entity.status == 0}" th:data-seq="${entity.seq}" th:text="#{admin.common.btn.accept}"></a>&nbsp;
+                                        <a href="#" class="declineBtn btn btn-sm btn-danger" th:if="${entity.status == 0}" th:data-seq="${entity.seq}" th:text="#{admin.common.btn.decline}"></a>
+                                    </div>
+                                    <span class="text-primary" th:if="${entity.status == 1}" th:text="#{admin.money.status.completed}"></span>
+                                    <span class="text-danger" th:if="${entity.status == 2}" th:text="#{admin.money.status.cancelled}"></span>
+                                    <span th:if="${entity.status == 3}" th:text="#{admin.common.partnerPayment}"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab_cont customPage w99 t_center ptb15"></div>
+                </div>
+                <footer class="panel-footer">
+                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                </footer>
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var page = [[${page}]];
+    var url = [[@{${url}}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+
+<script th:src="@{/assets/javascripts/money/money.history.js}"></script>
+</body>
+</html>

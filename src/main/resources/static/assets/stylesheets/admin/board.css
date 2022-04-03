@@ -1,0 +1,37 @@
+.search-print {
+	background-color: #0088cc;
+	color: white;
+	padding: 2px;
+	border-radius: 3px; 
+	margin-right: 5px;
+}
+
+.input-print {
+	display: inline-block;
+	width: 70%;
+}
+
+.input-keyword {
+	border-radius: 4px !important;
+}
+
+.mt-30 {
+	margin-top: 30px;
+}
+
+.mt-7 {
+	margin-top: 7px;
+}
+
+.table > thead > tr > th {
+	text-align: center;
+}
+
+.input-search {
+	width: 200px;
+	display: inline-block !important;
+}
+
+.noteTitle {
+    cursor: 'pointer';
+}

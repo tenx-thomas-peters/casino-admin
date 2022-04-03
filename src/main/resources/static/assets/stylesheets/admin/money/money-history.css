@@ -1,0 +1,58 @@
+.modal form .control-label {
+    text-align: left !important;
+}
+#moneylog-datatable thead .time-field {
+	min-width: 140px;
+}
+#moneylog-datatable thead .direct-field {
+	min-width: 135px;
+}
+#moneylog-datatable thead .control-button {
+	min-width: 150px;
+}
+#moneylog-datatable tbody td {
+	vertical-align: middle;
+}
+#formSearch .form-group {
+	margin-left: 10px;
+}
+#formSearch i.search-icon {
+	background-color: #0088cc;
+	color: white;
+	padding: 2px;
+}
+#formSearch div.calendar {
+	width: 120px; 
+	display: inline-block;
+}
+#formSearch select.order-select {
+	width: 250px;
+}
+#formSearch select.status-select {
+	width: 120px;
+}
+#formSearch select.time-type {
+	width: 160px;
+}
+#formSearch .search-key {
+	width: 200px; 
+	display: inline-block;
+}
+#formSearch .money-reason-select {
+	width: 200px; 
+}
+.panel-body .statistic-info {
+	float: right;
+}
+td.status-field {
+	width: 125px;
+}
+.table-responsive {
+	display: inline-block;
+	width: 100%;
+}
+td.memberId {
+    cursor: pointer;
+    font-weight: bold;
+    color: black;
+}

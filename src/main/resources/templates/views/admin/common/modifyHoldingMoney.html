@@ -1,0 +1,112 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+<section class="body member-holding-money">
+    <div th:fragment="modifyHoldingMoney" class="modal fade" id="modifyHoldingMoneyModal" data-backdrop="static" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.member.modifyMemberHoldingMoney}]]
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form id="member-holding-money-form" name="adminDeposit" class="form-horizontal form-bordered"
+                          th:action="@{/member/updateHoldingMoney}" method="post">
+                        <input type="hidden" name="memberSeq" value="" />
+                        <div class="form-group">
+                            <label class="col-md-5 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.id}]]
+                            </label>
+                            <div class="col-md-7 col-sm-6">
+                                <p class="control-label" name="id"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.classification}]]
+                            </label>
+                            <div class="col-md-7 col-sm-6">
+                                <div class="radio-custom radio-primary">
+                                    <input type="radio" id="classificationMoney" name="classification" value="0" checked />
+                                    <label class="text-primary" for="classificationMoney" th:text="#{admin.common.money}">Money</label>
+                                </div>
+                                <div class="radio-custom radio-primary">
+                                    <input type="radio" id="classificationPoint" name="classification" value="1">
+                                    <label class="text-success" for="classificationPoint" th:text="#{admin.common.point}">Point</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.transactionClassification}]]
+                            </label>
+                            <div class="col-md-7 col-sm-6">
+                                <div class="radio-custom radio-primary">
+                                    <input type="radio" id="transactionInc" name="transactionClassification" value="0" checked />
+                                    <label for="transactionInc" th:text="#{admin.member.increase}">Increase</label>
+                                </div>
+                                <div class="radio-custom radio-primary">
+                                    <input type="radio" id="transactionDec" name="transactionClassification" value="1" />
+                                    <label class="text-danger" for="transactionDec" th:text="#{admin.member.decrease}">Deduction</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.amountOfMoney}]]
+                            </label>
+                            <div class="col-md-7 col-sm-6">
+                                <input type="number" class="form-control" name="prevMoneyAmount" style="width: auto; display: inline-block;" required />
+                                <span for="prevAmount" class="help-block help-block-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.amountOfMileage}]]
+                            </label>
+                            <div class="col-md-7 col-sm-6">
+                                <input type="number" class="form-control" name="prevMileageAmount" style="width: auto; display: inline-block;" required />
+                                <span for="mileageAmount" class="help-block help-block-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.member.increaseDecrease}]]
+                            </label>
+                            <div class="col-md-7 col-sm-6">
+                                <input type="number" class="form-control" name="variableAmount" style="width: auto; display: inline-block;" required />
+                                <span for="variableAmount" class="help-block help-block-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.reason}]]
+                            </label>
+                            <div class="col-md-7 col-sm-6">
+                                <textarea class="form-control" name="reason" data-plugin-textarea-autosize></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary update-holding-money" th:text="#{admin.common.save}">Save</button>
+                    <button type="button" class="btn btn-default close-holding-money-modal" th:text="#{admin.common.close}">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

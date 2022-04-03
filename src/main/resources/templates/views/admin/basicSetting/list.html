@@ -1,0 +1,944 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Preference')">
+</head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/basic-setting.css}"/>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+	
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+                <div class="page-content-wrapper">
+                <form id="form1"  th:action="@{/config/saveGlobalconfig}" method="post">
+                	<header class="panel-heading">
+                		<h2 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                       		 [[#{admin.basic.setting}]]
+                    	</h2>
+					</header>
+	                	<div class="panel-body">
+							<div class="table-responsive">
+								<table class="table table-bordered mb-none">
+										<thead>
+										</thead>
+										<tbody>
+											  <tr class="row">
+												    <td class="col-md-3">
+												    	<i class="toggle text-primary fa fa-plus-square"></i>
+												    	<label th:text="#{admin.jackpot.amount}"></label>
+												    </td>
+												    <td class="col-md-10">
+													   <div class="form-group">
+															<div class="col-sm-3">
+																<input type="text" name="jackpotAmount" th:value="${basicSetting.jackpotAmount}" class="form-control">
+															</div>
+														    <label class="control-label pt2" th:text="#{admin.common.won}"></label>
+													   </div>
+													</td>
+											  </tr>
+			
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.house.money}"></label>
+											    </td>
+											    <td class="col-md-10">
+													   <div class="form-group">
+														
+															<div class="col-sm-3">
+																<input type="text" name="houseMoney" th:value="${basicSetting.houseMoney}" class="form-control">
+															</div>
+														    <label class="control-label pt2" th:text="#{admin.common.won}"></label>
+													   </div>
+												</td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.weeklyWithdrawalRankingTop1ID}"></label>
+											    </td>
+											    <td class="col-md-10">
+													   <div class="form-group">
+														
+															<div class="col-sm-3">
+																<input type="text" name="weeklyWithdrawalRankingTop1Id" th:value="${basicSetting.weeklyWithdrawalRankingTop1Id}" class="form-control">
+															</div>
+														    <label class="control-label pt2" th:text="#{admin.common.won}"></label>
+													   </div>
+												</td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.weeklyWithdrawalRankingTop1Money}"></label>
+											    </td>
+											    <td class="col-md-10">
+													   <div class="form-group">
+															<div class="col-sm-3">
+																<input type="text" name="weeklyWithdrawalRankingTop1Money" th:value="${basicSetting.weeklyWithdrawalRankingTop1Money}" class="form-control">
+															</div>
+														    <label class="control-label pt2" th:text="#{admin.common.won}"></label>
+													   </div>
+												</td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.baccarat.check}"></label>
+											    	<input type="hidden" name="baccaratCheck" th:value="${basicSetting.baccaratCheck}">
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4 justified">
+											    	<div class="check-list">
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.evolution}"></span>
+											    			</div>
+											    			<div class="row">
+											    				<div class="col-sm-4 radio-custom radio-primary">
+																	<input id="evolution1" name="evolution" type="radio" value="1" checked>
+																	<label for="evolution1" th:text="#{admin.common.service}"></label>
+																</div>
+											    				<div class="col-sm-8 radio-custom radio-primary">
+																	<input id="evolution2" name="evolution" type="radio" value="0" >
+																	<label for="evolution2" th:text="#{admin.under.inspection}"></label>
+																</div>
+											    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.common.olvet}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="olvet1" name="olvet" type="radio" value="1" checked>
+																		<label for="olvet1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="olvet2" name="olvet" type="radio" value="0">
+																		<label for="olvet2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.dream.gaming}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="dreamGaming1" name="dreamGaming" type="radio" value="1" checked>
+																		<label for="dreamGaming1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="dreamGaming2" name="dreamGaming" type="radio" value="0">
+																		<label for="dreamGaming2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.microgaming}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="microgaming1" name="microgaming" type="radio" value="1" >
+																		<label for="microgaming1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="microgaming2" name="microgaming" type="radio" value="0" checked>
+																		<label for="microgaming2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    		</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.sexy.gaming}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="sexygaming1" name="sexygaming" type="radio" value="1" checked>
+																		<label for="sexygaming1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="sexygaming2" name="sexygaming" type="radio" value="0">
+																		<label for="sexygaming2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.asia.gaming}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="asiaGaming2_1" name="asiaGaming" type="radio" value="1" checked>
+																		<label for="asiaGaming2_1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="asiaGaming2_2" name="asiaGaming" type="radio" value="0">
+																		<label for="asiaGaming2_2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.oriental.plus}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="orientalPlus1" name="orientalPlus" type="radio" value="1" checked>
+																		<label for="orientalPlus1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="orientalPlus2" name="orientalPlus" type="radio" value="0">
+																		<label for="orientalPlus2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.bbin}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="bbin1" name="bbin" type="radio" value="1" checked>
+																		<label for="bbin1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="bbin2" name="bbin" type="radio" value="0">
+																		<label for="bbin2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.vivo.gaming}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="vivoGaming1" name="vivoGaming" type="radio" value="1" checked>
+																		<label for="vivoGaming1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="vivoGaming2" name="vivoGaming" type="radio" value="0">
+																		<label for="vivoGaming2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.pragmatic}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="pragmatic1" name="pragmatic" type="radio" value="1" >
+																		<label for="pragmatic1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="pragmatic2" name="pragmatic" type="radio" value="0" checked>
+																		<label for="pragmatic2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.taishan}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="taishan1" name="taishan" type="radio"  value="1">
+																		<label for="taishan1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="taishan2" name="taishan" type="radio" value="0" checked>
+																		<label for="taishan2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.lotus}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="lotus1" name="lotus" type="radio" value="1" checked>
+																		<label for="lotus1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="lotus2" name="lotus" type="radio" value="0">
+																		<label for="lotus2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.vm.casino}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="vmCasino1" name="vmCasino" type="radio" value="1" checked>
+																		<label for="vmCasino1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="vmCasino2" name="vmCasino" type="radio" value="0">
+																		<label for="vmCasino2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+												    </div>								    
+											    </td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.slot.check}"></label>
+											    	<input type="hidden" name="slotCheck" th:value="${basicSetting.slotCheck}">
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+											    	<div>
+												    	<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.vm.casino}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="vmCasino2_1" name="vmCasino2" type="radio" value="1" checked>
+																		<label for="vmCasino2_1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="vmCasino2_2" name="vmCasino2" type="radio" value="0">
+																		<label for="vmCasino2_2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+													    <div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.programmatic.play}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="programmaticPlay1" name="programmaticPlay" type="radio" value="1" checked>
+																		<label for="programmaticPlay1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="programmaticPlay2" name="programmaticPlay" type="radio" value="0">
+																		<label for="programmaticPlay2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+											    			<div class="text-center">
+											    				<span class="text-center" th:text="#{admin.booungo}"></span>
+											    			</div>
+											    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="booungo1" name="booungo" type="radio" value="1" checked>
+																		<label for="booungo1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="booungo2" name="booungo" type="radio" value="0">
+																		<label for="booungo2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+											    		</div>
+														<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.real.time.gaming}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="realTimeGaming1" name="realTimeGaming" type="radio" value="1" checked>
+																		<label for="realTimeGaming1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="realTimeGaming2" name="realTimeGaming" type="radio" value="0">
+																		<label for="realTimeGaming2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.bb.tech}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="bbTech1" name="bbTech" type="radio" value="1" checked>
+																		<label for="bbTech1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="bbTech2" name="bbTech" type="radio" value="0">
+																		<label for="bbTech2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.microgaming}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="microgaming1_1" name="microgaming1" type="radio" value="1" checked>
+																		<label for="microgaming1_1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="microgaming1_2" name="microgaming1" type="radio" value="0">
+																		<label for="microgaming1_2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.asia.gaming}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="asiaGaming1" name="asiaGaming1" type="radio" value="1">
+																		<label for="asiaGaming1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="asiaGaming2" name="asiaGaming1" type="radio" value="0" checked>
+																		<label for="asiaGaming2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.habanero}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="habanero1" name="habanero" type="radio" value="1" checked>
+																		<label for="habanero1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="habanero2" name="habanero" type="radio" value="0">
+																		<label for="habanero2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.evo.play}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="evoplay1" name="evoplay" type="radio" value="1" checked>
+																		<label for="evoplay1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="evoplay2" name="evoplay" type="radio" value="0">
+																		<label for="evoplay2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+												    	<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.play.star}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="playstar1" name="playstar" type="radio" value="1" checked>
+																		<label for="playstar1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="playstar2" name="playstar" type="radio" value="0">
+																		<label for="playstar2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+												    	<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.game.art}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="gameart1" name="gameart" type="radio" value="1">
+																		<label for="gameart1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="gameart2" name="gameart" type="radio" value="0" checked>
+																		<label for="gameart2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.genesis}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="genesis1" name="genesis" type="radio" value="1" checked>
+																		<label for="genesis1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="genesis2" name="genesis" type="radio" value="0">
+																		<label for="genesis2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.top.trend}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="topTrend1" name="topTrend" type="radio" value="1" checked>
+																		<label for="topTrend1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="topTrend2" name="topTrend" type="radio" value="0">
+																		<label for="topTrend2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.star.game}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="stargame1" name="stargame" type="radio" value="1" checked>
+																		<label for="stargame1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="stargame2" name="stargame" type="radio" value="0">
+																		<label for="stargame2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.non.gaming}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="nonGaming1" name="nonGaming" type="radio" value="1" checked>
+																		<label for="nonGaming1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="nonGaming2" name="nonGaming" type="radio" value="0">
+																		<label for="nonGaming2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.dream.tech}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="dreamTech1" name="dreamTech" type="radio" value="1" checked>
+																		<label for="dreamTech1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="dreamTech2" name="dreamTech" type="radio" value="0">
+																		<label for="dreamTech2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.benesoft}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="benesoft1" name="benesoft" type="radio" value="1" checked>
+																		<label for="benesoft1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="benesoft2" name="benesoft" type="radio" value="0">
+																		<label for="benesoft2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.fiji.soft}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="fijiSoft1" name="fijiSoft" type="radio" value="1" checked>
+																		<label for="fijiSoft1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="fijiSoft2" name="fijiSoft" type="radio" value="0">
+																		<label for="fijiSoft2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+												    	<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.tpg}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="tpg1" name="tpg" type="radio" value="1" checked>
+																		<label for="tpg1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="tpg2" name="tpg" type="radio" value="0">
+																		<label for="tpg2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+												    	<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.playengo}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="playengo1" name="playengo" type="radio" value="1" checked>
+																		<label for="playengo1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="playengo2" name="playengo" type="radio" value="0">
+																		<label for="playengo2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.aritocrat}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="aritocrat1" name="aritocrat" type="radio" value="1" checked>
+																		<label for="aritocrat1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="aritocrat2" name="aritocrat" type="radio" value="0">
+																		<label for="aritocrat2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>
+											    		<div class="checkbox-item col-md-3 col-sm-12">
+												    			<div class="text-center">
+												    				<span class="text-center" th:text="#{admin.playson}"></span>
+												    			</div>
+												    			<div class="row">
+												    				<div class="col-sm-4 radio-custom radio-primary">
+																		<input id="playson1" name="playson" type="radio" value="1" checked>
+																		<label for="playson1" th:text="#{admin.common.service}"></label>
+																	</div>
+												    				<div class="col-sm-8 radio-custom radio-primary">
+																		<input id="playson2" name="playson" type="radio" value="0">
+																		<label for="playson2" th:text="#{admin.under.inspection}"></label>
+																	</div>
+												    			</div>
+												    	</div>								    		
+											    </td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.common.serviceInspection}"></label>
+											    	<input type="hidden" name="serviceInspectionCheck" th:value="${basicSetting.serviceInspection}">
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+											    	<div >
+									    				<div class="col-sm-2 radio-custom radio-primary">
+															<input id="serviceinspection1" name="serviceInspection" type="radio" value="1"  checked>
+															<label for="serviceinspection1" th:text="#{admin.common.service}"></label>
+														</div>
+									    				<div class="col-sm-2 radio-custom radio-primary">
+															<input id="serviceinspection2" name="serviceInspection" type="radio" value="0">
+															<label for="serviceinspection2" th:text="#{admin.under.inspection}"></label>
+														</div>
+									    			</div>
+											    </td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.inspection.comment}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea name="inspectionComment" th:text="${basicSetting.inspectionComment}" class="form-control" rows="3"></textarea>
+														 </div>
+											    </td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.adminAccessibleIP}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea name="adminAccessibleIp" th:text="${basicSetting.adminAccessibleIp}" class="form-control" rows="3"></textarea>
+														 </div>
+											    </td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.maximumAmountOfCurrencyExchange}"></label>
+											    </td>
+											    
+											    <td class="col-md-10">
+											    	<div class="col-sm-3 form-group">
+														<input type="text" name="minimunAmountOfCurrencyExchange" th:value="${basicSetting.minimunAmountOfCurrencyExchange}" class="form-control">
+											   		</div>
+											   	</td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.maximumAmountOfExchangeAtOneTime}"></label>
+											    </td>
+											    <td class="col-md-10">
+											    	<div class="form-group">
+														<div class="col-sm-3">
+															<input type="text" th:value="${basicSetting.maximumAmountOfExchangeAtOneTime}" name="maximumAmountOfExchangeAtOneTime" class="form-control">
+														</div>
+													    <label class="control-label pt2" th:text="#{admin.common.won}"></label>
+												   </div>
+												</td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.maximumExchangeRatePerDay}"></label>
+											    </td>
+											    <td class="col-md-10">
+											    	<div class="form-group">
+														<div class="col-sm-3">
+															<input type="text" th:value="${basicSetting.maximumExchangeRatePerDay}" class="form-control" name="maximumExchangeRatePerDay">
+														</div>
+													    <label class="control-label pt2" th:text="#{admin.common.won}"></label>
+												   </div>
+											    </td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.bankAccount}"></label>
+											    	<input type="hidden" name="bankAccount" th:value="${basicSetting.bankAccount}">
+											    </td>
+											    <td class="row col-md-10">
+											    	<div class="row col-md-4">
+										    			<div class="form-group">
+															<label class="col-sm-6 control-label pt2" th:text="#{admin.name.of.bank}"></label>
+															<div class="col-sm-6">
+																<input type="text" class="form-control" value="1" name="nameOfBank">
+															</div>
+														</div>
+											    	</div>
+											    	<div class="row col-md-4">
+											    		<div class="form-group">
+															<label class="col-sm-6 control-label pt2" th:text="#{admin.account.number}"></label>
+															<div class="col-sm-6">
+																<input type="text" class="form-control" value="0" name="accountNumber">
+															</div>
+														</div>
+													</div>
+													<div class="row col-md-4">
+											    		<div class="form-group">
+															<label class="col-sm-6 control-label pt2" th:text="#{admin.common.accountHolder}"></label>
+															<div class="col-sm-6">
+																<input type="text" class="form-control" value="1" name="accountHolder">
+															</div>
+														</div>
+													</div>
+											    </td>
+											  </tr>
+											<tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.recommenderAtTheTimeOfMemberRegistration}"></label>
+											    	<input type="hidden" name="recommenderAtTheTimeOfMemberRegistration" th:value="${basicSetting.recommenderAtTheTimeOfMemberRegistration}">
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+											    	<div>
+									    				<div class="col-sm-2 radio-custom radio-primary">
+															<input id="input1" name="inputRequired" type="radio" value="1" Checked>
+															<label for="input1" th:text="#{admin.input.required}"></label>
+														</div>
+									    				<div class="col-sm-2 radio-custom radio-primary">
+															<input id="input2" name="inputRequired" type="radio" value="0">
+															<label for="input2" th:text="#{admin.not.required}"></label>
+														</div>
+									    			</div>
+											    </td>
+											 </tr>
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.memberLineAdvertisement}"></label>
+											    </td>
+											    <td class="col-md-10">
+											    	<div class="col-sm-6 form-group">
+														<input type="text" th:value="${basicSetting.memberLineAdvertisement}" class="form-control" name="memberLineAdvertisement">
+											   		</div>
+											   	</td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.singleLineNotice}"></label>
+											    </td>
+											    <td class="col-md-10">
+											    	<div class="col-sm-6 form-group">
+														<input type="text" th:value="${basicSetting.singleLineNotice}" class="form-control" name="singleLineNotice">
+											   		</div>
+											    </td>
+											  </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.signupMessageTitle}"></label>
+											    </td>
+											    <td class="col-md-10">
+											    	<div class="col-sm-3 form-group">
+														<input type="text" th:value="${basicSetting.signupMessageTitle}" class="form-control" name="signupMessageTitle">
+											   		</div>
+											    </td>
+											  </tr>
+											<tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.setTheSignupMessageText}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.signupMessageContent}" rows="3" name="signupMessageContent"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.ccLevel1DownAccount}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.ccLevel1DownAccount}" rows="3" name="ccLevel1DownAccount"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.ccLevel2UpAccount}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.ccLevel2UpAccount}" rows="3" name="ccLevel2UpAccount"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.ccLevel3UpAccount}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.ccLevel3UpAccount}" rows="3" name="ccLevel3UpAccount"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.ccLevel45UpAccount}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+												    
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.ccLevel45UpAccount}" rows="3" name="ccLevel45UpAccount"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.cRequestProcessingCompleted}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.cRequestProcessingCompleted}" rows="3" name="cRequestProcessingCompleted"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.ccReLoginRatingUp}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.ccReLoginRatingUp}" rows="3" name="ccReLoginRatingUp"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											  <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.ccRecommendationFromAcquaintances}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.ccRecommendationFromAcquaintances}" rows="3" name="ccRecommendationFromAcquaintances"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.ccLadderBettingX}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.ccLadderBettingX}" rows="3" name="ccLadderBettingX"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											 
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.ccGameErrorReport}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+												    
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.ccGameErrorReport}" rows="3" name="ccGameErrorReport"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+											 
+											 <tr class="row">
+											    <td class="col-md-3">
+											    	<i class="toggle text-primary fa fa-plus-square"></i>
+											    	<label th:text="#{admin.ccRepaymentInformation}"></label>
+											    </td>
+											    <td class="col-md-2 col-md-6 col-lg-4">
+														 <div class="form-group">
+															 <textarea class="form-control" th:text="${basicSetting.ccRepaymentInformation}" rows="3"  name="ccRepaymentInformation"></textarea>
+														 </div>
+											    </td>
+											 </tr>
+										</tbody>
+									</table>
+									<footer class="panel-footer">
+										<button id="saveGlobalconfig" class="btn btn-primary" type="submit" th:text="#{admin.common.save}"></button>
+									</footer>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+    </section>
+	<script type="text/javascript" th:inline="javascript">
+
+	var url = [[@{/}]] + [[${url}]];
+	</script>
+    <script th:replace="template :: scripts"></script>
+	<script th:src="@{/assets/javascripts/basicsetting/basicsetting.js}"></script>
+</body>
+	
+</html>

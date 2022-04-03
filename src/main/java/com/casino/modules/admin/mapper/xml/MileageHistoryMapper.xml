@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casino.modules.admin.mapper.MileageHistoryMapper">
+	<sql id="select">
+		mil.seq AS "seq",
+		mil.member_seq AS "memberSeq",
+		mil.process_time AS "processTime",
+		IFNULL(mil.prev_amount, 0) AS "prevAmount",
+		IFNULL(mil.variable_amount, 0) AS "variableAmount",
+		IFNULL(mil.final_amount, 0) AS "finalAmount",
+		mil.reason_type AS "reasonType",
+		mil.reason AS "reason",
+		mil.operation_type AS "operationType",
+		mil.note AS "note",
+		mil.create_by AS "createBy",
+		mil.create_time AS "createTime",
+		mil.update_by AS "updateBy",
+		mil.update_time AS "updateTime",
+		mu.seq AS "member.seq",
+		mu.id AS "member.id",
+		mu.nickname AS "member.nickname",
+		mu.account_holder AS "member.accountHolder",
+		mh.seq AS "member.headQuarter.seq",
+		mh.id AS "member.headQuarter.id",
+		mh.nickname AS "member.headQuarter.nickname",
+		md.seq AS "member.distributor.seq",
+		md.id AS "member.distributor.id",
+		md.nickname AS "member.distributor.nickname",
+		ms.seq AS "member.store.seq",
+		ms.id AS "member.store.id",
+		ms.nickname AS "member.store.nickname"
+	</sql>
+
+	<sql id = "from">
+		mileage_history mil
+		INNER JOIN member mu ON mil.member_seq = mu.seq
+		LEFT JOIN member mh ON mu.sub_headquarter_seq = mh.seq
+		LEFT JOIN member md ON mu.distributor_seq = md.seq
+		LEFT JOIN member ms ON mu.store_seq = ms.seq
+	</sql>
+	
+	<sql id = "where">
+		<where>
+			<if test="entity.member != null and entity.member.id != null and entity.member.id != ''">
+				AND mu.id = #{entity.member.id}
+			</if>
+			<if test="entity.member != null and entity.member.seq != null and entity.member.seq != ''">
+				AND mu.seq = #{entity.member.seq}
+			</if>
+			<if test="entity.checkDay != null and entity.checkDay != ''">
+				AND DATE(mil.process_time) = DATE(#{entity.checkDay})
+			</if>
+			<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+				AND DATE(mil.process_time) >= DATE(#{entity.fromProcessTime})
+			</if>
+			<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+				AND DATE(#{entity.toProcessTime}) >= DATE(mil.process_time)
+			</if>
+			<if test="entity.IDOrNickname != null and entity.IDOrNickname == 0">
+				<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+					AND mu.id LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+				</if>
+			</if>
+			<if test="entity.IDOrNickname != null and entity.IDOrNickname == 1">
+				<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+					AND mu.nickname LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+				</if>
+			</if>
+			<if test="entity.IDOrNickname != null and entity.IDOrNickname == 2">
+				<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+					AND mu.account_holder LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+				</if>
+			</if>
+			<if test="entity.member != null and entity.member.store != null and entity.member.store.seq != null and entity.member.store.seq != ''">
+				AND mu.store_seq = #{entity.member.store.seq}
+			</if>
+			<if test="entity.reasonType != null">
+				AND mil.reason_type = #{entity.reasonType}
+			</if>
+			<if test="entity.operationType != null">
+				AND mil.operation_type = #{entity.operationType}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id = "order">
+		ORDER BY ${column}
+		<if test = "order == 1">
+			DESC
+		</if>
+	</sql>
+	
+	<sql id = "pagination">
+		LIMIT #{pageSize}
+		OFFSET #{pageOffset}
+	</sql>
+
+	<select id="findList" resultType="com.casino.modules.admin.common.entity.MileageHistory">
+		SELECT 
+			<include refid = "select" />
+		FROM <include refid = "from" />
+		<include refid = "where" />
+		<include refid = "order" />
+	</select>
+	
+	<select id="getList" resultType="com.casino.modules.admin.common.entity.MileageHistory">
+		SELECT 
+			<include refid = "select" />
+		FROM <include refid = "from" />
+		<include refid = "where" />
+		ORDER BY mil.process_time DESC
+	</select>
+	
+</mapper>

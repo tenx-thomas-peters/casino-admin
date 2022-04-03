@@ -1,0 +1,167 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.popup.title})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+<section class="body betting-summary">
+    <div class="row">
+        <div role="main" class="col-md-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.common.bettingSummary}]]
+                    </h4>
+                </header>
+                <div class="panel-body">
+                    <form id="bettingSummary" th:object="${bettingSummary}" class="form-horizontal form-bordered" th:action="@{/mock/member/addBettingSummary}" method="post">
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Member
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <select class="form-control" th:field="*{memberSeq}" required>
+                                    <option th:each="member : ${memberList}"
+                                            th:value="${member.seq}"
+                                            th:text="${member.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Type
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <select class="form-control" th:field="*{type}">
+                                    <option value="0">slot</option>
+                                    <option value="1">baccarat</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Check Time
+                            </label>
+                            <div class="col-md-8 col-sm-6 partner-info">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+<!--                                    <input type="text" data-plugin-datepicker data-date-format="yyyy-mm-dd" class="form-control">-->
+                                    <input name="checkTime" type="text" data-plugin-datetimepicker data-date-format="yyyy-mm-dd hh:ii:ss" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Playing Game
+                            </label>
+                            <div class="col-md-8 col-sm-6">
+                                <input type="text" class="form-control" th:field="*{playingGame}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Betting Amount
+                            </label>
+                            <div class="col-md-8 col-sm-6">
+                                <input type="number" class="form-control" th:field="*{bettingAmount}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Winning Amount
+                            </label>
+                            <div class="col-md-8 col-sm-6">
+                                <input type="number" class="form-control" th:field="*{winningAmount}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Lost Amount
+                            </label>
+                            <div class="col-md-8 col-sm-6">
+                                <input type="number" class="form-control" th:field="*{lostAmount}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Bat Rolling
+                            </label>
+                            <div class="col-md-8 col-sm-6">
+                                <input type="number" class="form-control" th:field="*{batRolling}" required />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <footer class="panel-footer">
+                    <button class="btn btn-primary save">Save</button>
+                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                </footer>
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    $(document).ready(function () {
+        let success = [[${success}]];
+        let save = [[${save}]];
+
+        let form = $('#bettingSummary');
+
+        if (success && save) {
+            new PNotify({
+                title: 'Success!',
+                text: 'Success!',
+                type: 'success',
+                buttons: {
+                    closer: true,
+                    sticker: false
+                }
+            });
+        } else if (!success && save) {
+            new PNotify({
+                title: 'Error!',
+                text: 'Error!',
+                type: 'error',
+                buttons: {
+                    closer: true,
+                    sticker: false
+                }
+            });
+        }
+
+        $("[data-plugin-datetimepicker]").datetimepicker({
+            autoclose: true,
+            format: "yyyy-mm-dd hh:ii:ss",
+            todayBtn: true
+        });
+
+        $('.save').click(function () {
+            if (!form.valid())
+                return;
+
+            form.submit();
+        });
+    });
+</script>
+
+</body>
+</html>

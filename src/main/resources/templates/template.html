@@ -1,0 +1,464 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      class="fixed">
+    <head th:fragment="head (title)">
+        <!-- Basic -->
+        <meta charset="UTF-8">
+
+        <title th:text="${title}"></title>
+        <meta name="keywords" content="Casino Admin" />
+        <meta name="description" content="Casino Admin">
+
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <!-- Vendor CSS -->
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap/css/bootstrap.css}" />
+
+        <link rel="stylesheet" th:href="@{/assets/vendor/font-awesome/css/font-awesome.css}" />
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-datepicker/css/datepicker3.css}" />
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css}" />
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" />
+
+        <!-- Specific Page Vendor CSS -->
+        <link rel="stylesheet" th:href="@{/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css}"/>
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css}"/>
+        <link rel="stylesheet" th:href="@{/assets/vendor/morris/morris.css}"/>
+        <link rel="stylesheet" th:href="@{/assets/vendor/summernote/summernote.css}" />
+        <link rel="stylesheet" th:href="@{/assets/vendor/summernote/summernote-bs3.css}" />
+
+        <!-- Specific Page Vendor CSS -->
+		<link rel="stylesheet" th:href="@{/assets/vendor/select2/select2.css}" />
+		<link rel="stylesheet" th:href="@{/assets/vendor/pnotify/pnotify.custom.css}" />
+
+        <!-- Theme CSS -->
+        <link rel="stylesheet" th:href="@{/assets/stylesheets/theme.css}" />
+
+        <!-- Skin CSS -->
+        <link rel="stylesheet" th:href="@{/assets/stylesheets/skins/default.css}" />
+
+        <!-- Theme Custom CSS -->
+        <link rel="stylesheet" th:href="@{/assets/stylesheets/theme-custom.css}">
+
+        <!-- Head Libs -->
+        <script th:src="@{/assets/vendor/modernizr/modernizr.js}"></script>
+
+        <link th:href="@{/assets/stylesheets/page.css}" rel="stylesheet" type="text/css" />
+    </head>
+<body>
+    <!-- start: header -->
+    <header th:fragment="header" class="header">
+        <div class="logo-container">
+            <a class="logo visible-xs" href="../">
+                <img th:src="@{/assets/images/logo.png}" height="35" alt="GM Admin" />
+            </a>
+            <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+                <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+            </div>
+        </div>
+        <!-- start: search & user box -->
+        <div class="header-right" >
+            <span class="separator"></span>
+            <div id="languagebox" class="languagebox">
+                <a href="#" data-toggle="dropdown">
+                    <div class="profile-info">
+                        <span class="name">Language</span>
+                    </div>
+                    <i class="fa custom-caret"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <ul class="list-unstyled">
+                        <li class="divider"></li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" th:href="@{/setLocale?lang=en}">English</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" th:href="@{/setLocale?lang=ko}">korean</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" th:href="@{/setLocale?lang=zh}">中文</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- end: search & user box -->
+
+        <div class="form-inline alarm-info visible-lg">
+            <div class="form-group" style="vertical-align: top;">
+                <label style="margin-left: 30px; padding: 3px; background-color: #f9fa0f; color: #35654d;">
+                    [[#{admin.header.alarmInfo}]]
+                </label>
+            </div>
+            <div class="form-group" style="padding-left: 10px;">
+                <div>
+                    <p class="header-context-info text-white m-login-member">
+                        [[#{admin.header.mLoginMember}]][<span class="m-login-member">0</span>]
+                    </p>
+                    <p class="header-context-info text-white m-deposit">
+                        [[#{admin.header.mDeposit}]][<span class="m-deposit">0</span>]
+                    </p>
+                    <p class="header-context-info text-white m-withdraw">
+                        [[#{admin.header.mWithdraw}]][<span class="m-withdraw">0</span>]
+                    </p>
+                    <p class="header-context-info text-white m-posts">
+                        [[#{admin.header.mPosts}]][<span class="m-posts">0</span>]
+                    </p>
+                    <p class="header-context-info text-white m-customer-service">
+                        [[#{admin.header.mCustomerService}]][<span class="m-customer-service">0</span>]
+                    </p>
+                    <p class="header-context-info text-white m-betting-summary">
+                        [[#{admin.header.bettingSummary}]][<span class="m-betting-summary">0</span>]
+                    </p>
+                </div>
+                <div>
+                    <p class="header-context-info text-dark-yellow p-distributor">
+                        [[#{admin.header.pDistributor}]][<span class="p-distributor">0</span>]
+                    </p>
+                    <p class="header-context-info text-dark-yellow p-store">
+                        [[#{admin.header.pStore}]][<span class="p-store">0</span>]
+                    </p>
+                    <p class="header-context-info text-dark-yellow p-deposit">
+                        [[#{admin.header.pDeposit}]][<span class="p-deposit">0</span>]
+                    </p>
+                    <p class="header-context-info text-dark-yellow p-withdraw">
+                        [[#{admin.header.pWithdraw}]][<span class="p-withdraw">0</span>]
+                    </p>
+                    <p class="header-context-info text-dark-yellow p-send-collect">
+                        [[#{admin.header.pSendCollect}]][<span class="p-send-collect">0 / 0</span>]
+                    </p>
+                    <p class="header-context-info text-dark-yellow p-note">
+                        [[#{admin.header.pNote}]][<span class="p-note">0</span>]
+                    </p>
+                </div>
+            </div>
+            <div class="form-group mr-md" style="float: right;">
+                <a class="text-danger mr-md mt-md" style="display: inline-block;">[[#{admin.common.ipBlockManagement}]]</a>
+                <a class="text-danger mr-md mt-md" style="display: inline-block;">[[#{admin.common.passwordManagement}]]</a>
+                <a class="text-danger mt-md" style="display: inline-block;">[[#{admin.common.logout}]]</a>
+            </div>
+            <div class="form-group mr-md" style="float: right;">
+                <button class="btn btn-default btn-lg">[[#{admin.common.save}]]</button>
+            </div>
+            <div class="form-group mr-md" style="float: right;">
+                <textarea name="note" class="form-control input-lg"></textarea>
+            </div>
+        </div>
+
+        <div class="form-inline alarm-info visible-lg">
+            <div class="form-group">
+                <label style="margin-left: 30px; padding: 3px; background-color: #1792d4; color: white;">
+                    [[#{admin.header.currentInfo}]]
+                </label>
+            </div>
+            <div class="form-group" style="padding-left: 10px;">
+                <div>
+                    <p class="header-context-info text-white">
+                        •&nbsp;[[#{admin.common.member}]]
+                    </p>
+                    <p class="header-context-info text-white m-today-deposit">
+                        •&nbsp;[[#{admin.header.mTodayDeposit}]]&nbsp;<span class="m-today-deposit money-green">0</span>&nbsp;[[#{admin.common.won}]]
+                    </p>
+                    <p class="header-context-info text-white m-today-withdraw">
+                        •&nbsp;[[#{admin.header.mTodayWithdraw}]]&nbsp;<span class="m-today-withdraw money-green">0</span>&nbsp;[[#{admin.common.won}]]
+                    </p>
+                    <p class="header-context-info text-white m-total-money">
+                        •&nbsp;[[#{admin.header.totalMoney}]]&nbsp;<span class="m-total-money money-green">0</span>&nbsp;[[#{admin.common.won}]]
+                    </p>
+                    <p class="header-context-info text-white m-total-point">
+                        •&nbsp;[[#{admin.header.mTotalPoint}]]&nbsp;<span class="m-total-point money-green">0</span>&nbsp;[[#{admin.common.won}]]
+                    </p>
+                    <p class="header-context-info text-white login-member-link">
+                        •&nbsp;[[#{admin.header.loginMember}]][<span class="login-member-link">0</span>]
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-inline alarm-info visible-lg">
+            <div class="form-group" style="padding-left: 10px; margin-left: 90px;">
+                <div>
+                    <p class="header-context-info text-dark-yellow">•&nbsp;[[#{admin.common.partner}]]</p>
+                    <p class="header-context-info text-dark-yellow p-today-deposit">
+                        •&nbsp;[[#{admin.header.pTodayDeposit}]]&nbsp;<span class="p-today-deposit money-green">0</span>&nbsp;[[#{admin.common.won}]]
+                    </p>
+                    <p class="header-context-info text-dark-yellow p-today-withdraw">
+                        •&nbsp;[[#{admin.header.pTodayWithdraw}]]&nbsp;<span class="p-today-withdraw money-green">0</span>&nbsp;[[#{admin.common.won}]]
+                    </p>
+                    <p class="header-context-info text-dark-yellow p-total-money">
+                        •&nbsp;[[#{admin.header.pTotalMoney}]]&nbsp;<span class="p-total-money money-green">0</span>&nbsp;[[#{admin.common.won}]]
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- end: header -->
+
+    <!-- start: sidebar -->
+    <aside th:fragment="sidebar" id="sidebar-left" class="sidebar-left">
+        <div class="nano">
+            <div class="nano-content">
+                <div class="sidebar-widget">
+                    <div class="widget-header">
+                        <h6>
+                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                            <span class="title-pink" th:text="|#{admin.menu.member.management}|"></span>
+                        </h6>
+                    </div>
+                    <div class="widget-content">
+                        <ul>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/member/list}">
+                                    <span th:text="|#{admin.menu.member.list}|"></span>
+                                </a>
+                                <a th:href="@{/log/slotloglist}">
+                                    <span th:text="|#{admin.menu.member.betsummary}|"></span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/log/depositloglist}">
+                                    <span class="text-danger" th:text="|#{admin.menu.member.deposit}|"></span>
+                                </a>
+                                <a th:href="@{/log/withdrawloglist}">
+                                    <span class="text-primary" th:text="|#{admin.menu.member.withdraw}|"></span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/log/moneyloglist}">
+                                    <span th:text="|#{admin.menu.member.moneyHistory}|"></span>
+                                </a>
+                                <a th:href="@{/log/mileageloglist}">
+                                    <span th:text="|#{admin.menu.member.mileageHistory}|"></span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/member/loginlist}">
+                                    <span th:text="|#{admin.menu.member.connectionRecord}|"></span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/memo/sendlist}">
+                                    <span th:text="|#{admin.menu.member.noteManagement}|"></span>
+                                </a>
+                                <a th:href="@{/memo/popup_adminwrite}">
+                                    <span th:text="#{admin.menu.member.WriteNote}"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <div class="widget-header">
+                        <h6>
+                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                            <span class="title-white" th:text="#{admin.menu.board.bulletinBoard}"></span>
+                        </h6>
+                    </div>
+                    <div class="widget-content">
+                        <ul>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/board/list?province=2}">
+                                    <span th:text="#{admin.menu.board.freeBoard}">Free Board</span>
+                                </a>
+                                <a th:href="@{/board/list?province=0}">
+                                    <span th:text="#{admin.menu.board.notice}">Notice</span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/board/questionlist}">
+                                    <span th:text="#{admin.menu.board.customerService}">Customer Service Center</span>
+                                </a>
+                                <a th:href="@{/board/write}">
+                                    <span th:text="#{admin.menu.board.writePost}">Write a Post</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-widget">
+                    <div class="widget-header">
+                        <h6>
+                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                            <span class="title-green" th:text="|#{admin.menu.partner.management}|"></span>
+                        </h6>
+                    </div>
+                    <div class="widget-content">
+                        <ul>
+                            <li class="menu-li">
+                                <a  class="text-success w-50" th:href="@{/partner2/list_top}">
+                                    <span th:text="|#{admin.menu.partner.headquarter}|"></span>
+                                </a>
+                                <a class="text-success" th:href="@{/partner2/list}">
+                                    <span th:text="|#{admin.menu.partner.distributor}|"></span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a  class="text-success w-50" th:href="@{/partner2/list_store}">
+                                    <span th:text="|#{admin.menu.partner.store}|"></span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a  class="text-danger w-50" th:href="@{/log/partner/depositloglist}">
+                                    <span th:text="|#{admin.menu.partner.deposit}|"></span>
+                                </a>
+                                <a class="text-primary" th:href="@{/log/partner/withdrawloglist}">
+                                    <span th:text="|#{admin.menu.partner.withdraw}|"></span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a  class="text-success w-50" th:href="@{/log/partner_moneyloglist}">
+                                    <span th:text="|#{admin.menu.partner.detail}|"></span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a  class="text-success w-50" th:href="@{/memo/sendPList}">
+                                    <span th:text="|#{admin.menu.partner.note}|"></span>
+                                </a>
+                                <a class="text-success" th:href="@{/partner2/popup_memoadd}">
+                                    <span th:text="|#{admin.menu.partner.writeNote}|"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <div class="widget-header">
+                        <h6>
+                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                            <span class="title-dark-red" th:text="#{admin.menu.statistics}"></span>
+                        </h6>
+                    </div>
+                    <div class="widget-content">
+                        <ul>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/stat/site}">
+                                    <span th:text="|#{admin.menu.statistics.siteStatus}|"></span>
+                                </a>
+                                <a th:href="@{/stat/money}">
+                                    <span th:text="|#{admin.menu.statistics.deposit.withdraw}|"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <div class="widget-header">
+                        <h6>
+                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                            <span class="title-white-blue" th:text="|#{admin.menu.system.management}|"></span>
+                        </h6>
+                    </div>
+                    <div class="widget-content">
+                        <ul>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/config/globalconfig}">
+                                    <span th:text="|#{admin.menu.system.preference}|"></span>
+                                </a>
+                                <a th:href="@{/config/level}">
+                                    <span th:text="|#{admin.menu.system.level}|"></span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a class="w-50" th:href="@{/config/popuplist}">
+                                    <span th:text="|#{admin.menu.system.popup}|"></span>
+                                </a>
+                                <a th:href="@{/config/dbOption}">
+                                    <span th:text="#{admin.menu.system.DB}"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <div class="widget-header">
+                        <h6>
+                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                            <span style="color: white;">Mock</span>
+                        </h6>
+                    </div>
+                    <div class="widget-content">
+                        <ul>
+                            <li class="menu-li">
+                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/member/popupEditMember', 'Member Edit', 'width=1200,height=700')" class="nav-link ">
+                                    <span class="title">Member Edit</span>
+                                </a>
+                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/member/money', 'Member Money', 'width=1200,height=700')" class="nav-link ">
+                                    <span class="title">Member Money</span>
+                                </a>
+                            </li>
+                            <li class="menu-li">
+                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/partner/money', 'Partner Money', 'width=1200,height=700')" class="nav-link ">
+                                    <span class="title">Partner Money</span>
+                                </a>
+                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/member/bettingSummary', 'Betting Summary', 'width=1200,height=700')" class="nav-link ">
+                                    <span class="title">Betting Summary</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/member/accessLog', 'Access Log', 'width=1200,height=700')" class="nav-link ">
+                                    <span class="title">
+                                        Access Log
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <!-- end: sidebar -->
+
+
+    <div th:fragment="scripts">
+        <script type="text/javascript" th:inline="javascript">
+        	var CONTEXT_ROOT = [[@{/}]];
+
+            var txtAdd = [[#{admin.member.addition}]];
+            var txtEdit = [[#{admin.common.edit}]];
+            var txtDelete = [[#{admin.common.delete}]];
+
+            var width = screen.availWidth;
+            var height = screen.availHeight;
+            var top = 100;
+            var left = 100;
+            var features = "width=" + width * 5 / 6 + ", height=" + (height - 50) + ", top=" + top + ", left=" + left;
+        </script>
+        <!-- Vendor -->
+        <script th:src="@{/assets/vendor/jquery/jquery.js}"></script>
+        <script th:src="@{/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js}"></script>
+        <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.js}"></script>
+        <script th:src="@{/assets/vendor/nanoscroller/nanoscroller.js}"></script>
+        <script th:src="@{/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
+        <script th:src="@{/assets/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js}"></script>
+        <script th:src="@{/assets/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js}"></script>
+        <script th:src="@{/assets/vendor/jquery-placeholder/jquery.placeholder.js}"></script>
+        <script th:src="@{/assets/vendor/jquery-validation/jquery.validate.js}"></script>
+        <script th:src="@{/assets/vendor/pnotify/pnotify.custom.js}"></script>
+        <script th:src="@{/assets/vendor/fullcalendar/lib/moment.min.js}"></script>
+        <script th:src="@{/assets/vendor/summernote/summernote.js}"></script>
+        <script th:src="@{/assets/vendor/select2/select2.js}"></script>
+
+        <!-- Theme Base, Components and Settings -->
+        <script th:src="@{/assets/javascripts/theme.js}"></script>
+
+        <!-- Theme Custom -->
+        <script th:src="@{/assets/javascripts/theme.custom.js}"></script>
+
+        <!-- Theme Initialization Files -->
+        <script th:src="@{/assets/javascripts/theme.init.js}"></script>
+
+        <script th:src="@{/assets/javascripts/customPagenation.js}"></script>
+        <script th:src="@{/assets/javascripts/commonDetails.js}"></script>
+        <script th:src="@{/assets/javascripts/headerHandler.js}"></script>
+    </div>
+</body>
+</html>

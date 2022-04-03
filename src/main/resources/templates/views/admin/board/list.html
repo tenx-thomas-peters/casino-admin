@@ -1,0 +1,228 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	<head th:replace="template :: head ('Note List')"></head>
+	<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/board.css}"/>
+	<body>
+		<section class="body">
+	        <header th:replace="template :: header" class="header"></header>
+	        <div class="inner-wrapper">
+	            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+	            <section role="main" class="content-body">
+	            	<section class="panel" role="main">
+	            		<header class="panel-heading" th:if = "${form.province == 2 || form.province == 5}">
+							<h2 class="panel-title" th:text="#{admin.board.freeBoard}"></h2>
+						</header>
+						<header class="panel-heading" th:if = "${form.province == 0}">
+							<h2 class="panel-title" th:text="#{admin.common.notice}"></h2>
+						</header>
+						<div class="panel-body">
+							<div class="tabs tabs-primary">
+								<ul class="nav nav-tabs" th:if="${form.province == 2 || form.province == 5}">
+									<li class="active">
+										<a th:href="@{/board/list?province=2}" th:text="#{admin.board.freeBoard}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/list?province=0}" th:text="#{admin.common.notice}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/questionlist}" th:text="#{admin.board.customerServiceCenter}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/write}" th:text="#{admin.board.writePost}"></a>
+									</li>
+								</ul>
+								<ul class="nav nav-tabs" th:if="${form.province == 0}">
+									<li>
+										<a th:href="@{/board/list?province=2}" th:text="#{admin.board.freeBoard}"></a>
+									</li>
+									<li class="active">
+										<a th:href="@{/board/list?province=0}" th:text="#{admin.common.notice}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/questionlist}" th:text="#{admin.board.customerServiceCenter}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/write}" th:text="#{admin.board.writePost}"></a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active">
+										<form id="noteListForm" th:action="@{/board/list}" method="get" th:object="${form}" class="form-inline search-form">
+											<input type="hidden" th:field="*{province}"/>
+											<div class="form-group" th:if="${form.province == 2 || form.province == 5}">
+												<i class="fa fa-search search-print"></i>
+												<label class="control-label" th:text = "#{admin.common.date}"></label>
+												<div class="input-daterange input-group">
+													<span class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													</span>
+													<input type="text" class="form-control" data-date-format="yyyy-mm-dd" th:field="*{sendTimeFrom}" data-plugin-datepicker>
+													<span class="input-group-addon" th:text="#{admin.common.to}">to</span>
+													<input type="text" class="form-control" data-date-format="yyyy-mm-dd" th:field= "*{sendTimeTo}" data-plugin-datepicker>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="d-inline-block">	
+													<select id="selectType" name="selectType" class="form-control" th:field="*{selectType}">
+														<option value="0" th:text = "#{admin.common.all}"></option>
+														<option value="1" th:text = "#{admin.common.title}"></option>
+														<option value="2" th:text = "#{admin.common.content}"></option>
+														<option value="3" th:text = "#{admin.common.writer}"></option>
+												  	</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="input-group input-search">
+													<span class="input-group-btn">
+														<button type="button" class="btn btn-default">
+															<i class="fa fa-search"></i>	
+														</button>
+													</span>
+													<input type="text" class="form-control input-keyword" id="keyword" name="keyword" th:field="*{keyword}"/>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="d-flex align-items-center justify-content-center">
+													<button class="btn btn-default mr-2 text-nowrap d-table-cell align-middle" type="submit">
+														<i class="fa fa-search"></i>
+														<span class="d-table-cell align-middle" th:text = "#{admin.common.search}"></span>
+													</button>
+												</div>
+											</div>
+										</form>
+										<div class="table-responsive">
+											<table class="table table-bordered table-striped">
+												<thead>
+													<tr>
+														<th class="text-center">
+						                                    <div class="checkbox-custom checkbox-default checkbox-inline">
+						                                        <input type="checkbox" class="group-checkable" id="allCheck"
+						                                        	data-set="#member-datatable .checkboxes" onclick="allCheck()"><label></label>
+						                                    </div>
+						                                </th>
+														<th class="text-center" th:text = "#{admin.common.id}"></th>
+														<th class="text-center" th:text = "#{admin.common.site}"></th>
+														<th class="text-center" th:text = "#{admin.common.classification}"></th>
+														<th class="text-center" th:text = "#{admin.common.writer}"></th>
+														<th class="text-center" th:text = "#{admin.common.title}"></th>
+														<th class="text-center" th:text = "#{admin.common.date}"></th>
+														<th class="text-center" th:text = "#{admin.common.status}"></th>
+														<th class="text-center" th:text = "#{admin.common.lookup}"></th>
+														<th class="text-center" th:text = "#{admin.common.process}"> </th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr class="odd gradeX text-center" th:each="note: ${pageList.records}">
+														<td>
+															<div class="checkbox-custom checkbox-default checkbox-inline">
+																<input class="checkboxes" type="checkbox" th:name="${note.seq}"><label></label>
+															</div>
+														</td>
+														<input type="hidden" th:value="${note.seq}" name="seq"/>
+														<td th:text="${note.name}"></td>
+														<td th:text="${note.site}"></td>
+														<td>
+															<span th:if="${note.classification == 0}" th:text="#{admin.common.notice}"> </span>
+															<span th:if="${note.classification == 1}" th:text="#{admin.common.faq}"> </span>
+															<span th:if="${note.classification == 2 || note.classification == 5}" th:text="#{admin.board.freeBoard}"> </span>
+															<span th:if="${note.classification == 3}" th:text="#{admin.common.event}"> </span>
+															<span th:if="${note.classification == 4}" th:text="#{admin.common.customerService}"> </span>
+														</td>
+														<td th:text="${note.sender}"></td>
+														<td th:text="${note.title}"></td>
+														<td th:text="${(note.sendTime != null ? #dates.format(note.sendTime, 'yyyy-MM-dd') : '')}"></td>
+														<td>
+															<span th:if="${note.recommendStatus == 0}" th:text="#{admin.status.unrecommend}"> </span>
+															<span th:if="${note.recommendStatus == 1}" th:text="#{admin.status.recommend}"> </span>
+														</td>
+														<td th:text="${note.lookUp}"></td>
+														<td>
+															<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#deleteModal" th:text="#{admin.common.delete}"></button>
+															
+														</td>
+													</tr>
+													<tr th:if="${pageList.total == 0}">
+														<td colSpan="12" class="text-center" th:text = "#{admin.common.noData}"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="tab_cont customPage w99 t_center ptb15"></div>
+									</div>
+								</div>
+							</div>							
+						</div>
+						<div class="panel-footer">
+							<div class="select-delete">
+								<div class="modal fade" id="batchDelete" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
+					                <div class="modal-dialog">
+					                    <div class="modal-content">
+					                        <div class="modal-header">
+					                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					                            <h4 class="modal-title" th:text="#{admin.common.delete}"></h4>
+					                        </div>
+					                        <div class="modal-body">
+					                            <p th:text="#{admin.common.deleteMsg}"></p>
+					                        </div>
+					                        <div class="modal-footer">
+					                            <button class="btn btn-primary" onclick="batchNoteDelete();" th:text="#{admin.common.confirm}"></button>
+					                            <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+								<a class="btn btn-default modal-member-delete" data-toggle="modal" href="#batchDelete" th:text="#{admin.common.selectDelete}"></a>
+								<button class="btn btn-default" type="button" onClick = "hits();" th:text = "#{admin.common.hits}">Hits</button>
+							</div>
+						</div>
+						<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+						<!-- Change class .modal-sm to change the size of the modal -->
+						
+						<div class="modal-dialog modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" th:text="#{admin.common.delete}"></h4>
+								</div>
+								<div class="modal-body">
+									<div class="container">
+										<div id="message" class="row">
+											<div class="input-item-div col-xs-12 message">
+												<span th:text="#{admin.common.deleteMsg}"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer text-center">
+									<button class="btn btn-primary" type="button" data-dismiss="modal" onclick="deleteById();">
+										<span class="d-table-cell align-middle" th:text="#{admin.common.confirm}"></span>
+									</button>
+									<button class="btn btn-default" type="button" data-dismiss="modal">
+										<span class="d-table-cell align-middle" th:text="#{admin.common.cancel}"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					</section>
+				</section>
+	        </div>
+	    </section>
+		<script type="text/javascript" th:inline="javascript">
+		    var page = [[${page}]];
+			var url = [[@{/}]] + [[${url}]];
+		</script>
+
+	    <script th:replace="template :: scripts"></script>
+
+	    <script th:src="@{/assets/javascripts/board/board.js}"></script>
+	    
+	    <script type="text/javascript" th:inline="javascript">
+			createPagenation(page, url);
+		</script>
+	</body>
+</html>

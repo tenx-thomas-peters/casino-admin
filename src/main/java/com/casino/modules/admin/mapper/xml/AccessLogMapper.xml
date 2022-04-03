@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casino.modules.admin.mapper.AccessLogMapper">
+
+	<select id="getAccessLogList" resultType="com.casino.modules.admin.common.entity.AccessLog">
+		SELECT 
+			accessLog.seq, 
+			accessLog.site, 
+			accessLog.member_seq, 
+			accessLog.id, 
+			accessLog.nickname, 
+			accessLog.account_holder, 
+			level.level_name as level,
+			IFNULL(accessLog.money_amount, 0) AS moneyAmount,
+			accessLog.connection_ip, 
+			accessLog.connection_domain, 
+			accessLog.status, 
+			member.id as distributor,
+			accessLog.connection_date
+		FROM access_log as accessLog
+		LEFT JOIN member AS member ON accessLog.distributor = member.seq
+		LEFT JOIN level AS level ON accessLog.level = level.seq
+		<where>
+			<if test="accessLogEntity.connectionDate != null">
+				AND accessLog.connection_date BETWEEN NOW() - INTERVAL 3 HOUR AND NOW()
+			</if>
+			<if test="accessLogEntity.site != null and accessLogEntity.site != ''">
+                AND accessLog.site = #{accessLogEntity.site}
+            </if>
+            <if test="accessLogEntity.searchValue != null and accessLogEntity.searchValue != ''">
+				<if test="accessLogEntity.searchField != null and accessLogEntity.searchField == 0">
+					AND accessLog.id LIKE CONCAT('%',#{accessLogEntity.searchValue},'%')
+				</if>
+				<if test="accessLogEntity.searchField != null and accessLogEntity.searchField == 1">
+					AND accessLog.nickname LIKE CONCAT('%',#{accessLogEntity.searchValue},'%')
+				</if>
+				<if test="accessLogEntity.searchField != null and accessLogEntity.searchField == 2">
+					AND accessLog.account_holder LIKE CONCAT('%',#{accessLogEntity.searchValue},'%')
+				</if>
+				<if test="accessLogEntity.searchField != null and accessLogEntity.searchField == 3">
+					AND accessLog.connection_ip LIKE CONCAT('%',#{accessLogEntity.searchValue},'%')
+				</if>
+			</if>
+            <if test="accessLogEntity.distributor != null and accessLogEntity.distributor != ''">
+                AND accessLog.distributor = #{accessLogEntity.distributor}
+            </if>
+            <if test="checkStatus != null">
+            	AND accessLog.status = #{checkStatus}
+            </if>
+            <if test="accessLogEntity.connectionDomain != null and accessLogEntity.connectionDomain != ''">
+            	AND accessLog.connection_domain = #{accessLogEntity.connectionDomain}
+            </if>
+            <if test="checkStatus != null and checkStatus == 0">
+            	AND DATE(accessLog.connection_date) = CURRENT_DATE()
+            </if>
+        </where>
+        ORDER BY accessLog.${column}
+        <if test="order == 1">
+            DESC
+        </if>
+	</select>
+	
+	<update id="deleteBySeq">
+		DELETE FROM access_log
+		WHERE seq = #{deleteSeq}
+	</update>
+	
+	<update id="batchDelete">
+		DELETE FROM	access_log
+		<where>
+			seq IN
+			<foreach item="item" index="index" collection="ids" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</where>
+	</update>
+
+</mapper>

@@ -1,0 +1,62 @@
+.search-form.form-inline {
+    padding: 10px 10px 0 10px;
+    border: 1px solid #DADADA;
+    margin-bottom: 10px;
+}
+.search-form .form-group {
+    margin-bottom: 10px !important;
+}
+
+.headquarter .headquarter-list th {
+    text-align: center;
+}
+
+.headquarter .headquarter-list td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 0;
+}
+
+.headquarter-list td > p {
+    border-top: 1px solid #dadada;
+    padding: 8px;
+    margin: 0;
+}
+
+.headquarter-list td > a {
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+}
+
+@media (min-width: 992px) {
+    #memberDetailModal .modal-lg {
+        width: 80% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #storeListModal .modal-lg {
+        width: 80% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #distributorListModal .modal-lg {
+        width: 80% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #memberListModal .modal-lg {
+        width: 80% !important;
+    }
+}
+
+.vertical-center {
+	vertical-align: middle !important
+}
+
+.headquarter .headquarter-list .text-blue {
+	color: blue;
+}

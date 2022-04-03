@@ -1,0 +1,347 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (|#{admin.common.member}| + ' ' + |#{admin.common.list}|)"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+<section class="body member">
+    <header th:replace="template :: header" class="header"></header>
+
+    <div class="inner-wrapper">
+        <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+
+        <section role="main" class="content-body">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h2 class="panel-title">
+                        <span th:text="#{admin.common.member.list}"></span>
+                        (
+                        &nbsp;
+                        <p th:text="${pageList.total}" style="color: red; display: inline-block; margin-bottom: 0;"></p>
+                        &nbsp;
+                        <span th:text="#{admin.member.peopleInTotal}"></span>
+                        &nbsp;
+                        )
+                    </h2>
+                </header>
+                <div class="panel-body">
+                    <form id="formSearch" class="form-inline search-form" th:action="@{/member/list}" method="post"
+                          th:object="${memberForm}">
+                        <div class="form-group">
+                            <label>
+                                <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                <span th:text="#{admin.common.site}"></span>
+                            </label>
+                            <select class="form-control" th:field="*{siteName}">
+                                <option value="">[[#{admin.common.all}]]</option>
+                                <option th:each="site : ${siteList}" th:value="${site.siteName}"
+                                        th:text="${site.siteName}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pageSize">
+                                <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                <span th:text="#{admin.common.print}"></span>
+                            </label>
+                            <input type="text" class="form-control" id="pageSize" name="pageSize" th:value="${pageSize}">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="column" name="column">
+                                <option value="create_date">::[[#{admin.common.sort}]]</option>
+                                <option value="register_date" th:selected="${column == 'register_date'}">[[#{admin.member.joinDate}]]</option>
+                                <option value="nickname" th:selected="${column == 'nickname'}">[[#{admin.member.holdingMoney}]]</option>
+                                <!--                                <option value="2">member revenue</option>-->
+                                <!--                                <option value="3">number of connections</option>-->
+                                <!--                                <option value="3">recently accessed</option>-->
+                            </select>
+                            <select class="form-control" id="order" name="order">
+                                <option value="0" th:selected="${order == 0}">↑</option>
+                                <option value="1" th:selected="${order == 1}">↓</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" th:field="*{subHeadquarterSeq}">
+                                <option value="">[[#{admin.common.partner}]]</option>
+                                <option th:each="partner : ${partnerList}" th:value="${partner.seq}"
+                                        th:text="${partner.id}"></option>
+                            </select>
+                            <select class="form-control" th:field="*{searchField}">
+                                <option value="id">[[#{admin.common.id}]]</option>
+                                <option value="nickname">[[#{admin.common.nickname}]]</option>
+                            </select>
+                            <div class="input-group input-group-icon" style="width: 200px; display: inline-block;">
+                                <span class="input-group-addon">
+                                    <span class="icon"><i class="fa fa-search"></i></span>
+                                </span>
+                                <input type="text" class="form-control" th:field="*{searchValue}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default">
+                                <span th:text="#{admin.common.search}"></span>&nbsp;<i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                        <br/>
+                        <div class="border-bottom"></div>
+                        <div class="form-group" style="margin-right: 10px;">
+                            <label>
+                                <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                <span th:text="#{admin.common.status}"></span>
+                            </label>
+                            <div th:each="status : ${statusList}"
+                                 class="checkbox-custom checkbox-default checkbox-inline">
+                                <input type="checkbox" th:id="${status.strValue}" name="state"
+                                       th:value="${status.dictValue}"
+                                       th:checked="${state.indexOf(status.dictValue.toString()) != -1}"/>
+                                <label th:for="${status.strValue}" th:text="${status.strValue}"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <i class="fa fa-search"
+                                   style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                <span th:text="#{admin.common.grade}"></span>
+                            </label>
+                            <div th:each="level : ${levelList}"
+                                 class="checkbox-custom checkbox-default checkbox-inline">
+                                <input type="checkbox" th:id="${level.seq}" name="levels"
+                                       th:value="${level.seq}" th:checked="${levels.indexOf(level.seq) != -1}"/>
+                                <label th:for="${level.seq}" th:text="${level.levelName}"></label>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped diff-color" id="member-list">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <div class="checkbox-custom checkbox-default checkbox-inline">
+                                        <input type="checkbox" class="group-checkable"
+                                               data-set="#member-list .checkboxes"><label></label>
+                                    </div>
+                                </th>
+                                <th th:text="#{admin.common.site.id}">Site/ID</th>
+                                <th th:text="#{admin.common.name.nickname}">Name/Nickname
+                                </th>
+                                <th>
+                                    [[#{admin.common.reservedMoney}]]&nbsp;/&nbsp;<br/>[[#{admin.common.mileage}]]
+                                </th>
+                                <th th:text="#{admin.common.ranking}">Ranking</th>
+                                <th>
+                                    [[#{admin.common.deposit}]]
+                                    &nbsp;/&nbsp;<br/>
+                                    [[#{admin.common.withdrawal}]]
+                                </th>
+                                <th th:text="#{admin.member.progressBet}"></th>
+                                <th th:text="#{admin.member.differenceOfDepositAndWithdraw}"></th>
+                                <th th:text="#{admin.common.status}">Status</th>
+                                <th th:text="#{admin.common.signUp.date.domain}"></th>
+                                <th th:text="#{admin.common.recent.date.domain}"></th>
+                                <th th:text="#{admin.common.connection.ip.domain}"></th>
+                                <th th:text="#{admin.member.recommender}"></th>
+                                <th>
+                                    [[#{admin.common.store}]]&nbsp;/&nbsp;
+                                    [[#{admin.common.distributor}]]&nbsp;/&nbsp;
+                                    [[#{admin.common.subHeadquarter}]]
+                                </th>
+                                <th th:text="#{admin.common.recommendable}">Recommendable</th>
+                                <th th:text="#{admin.member.correction}">Correction</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
+                            	<input type="hidden" th:value="entity.seq" name="seq"/>
+                                <td>
+                                    <div class="checkbox-custom checkbox-default checkbox-inline">
+                                        <input type="checkbox" class="checkboxes" th:data-key="${entity.seq}"><label></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p th:text="${entity.siteName}"></p>
+                                    <p>
+                                        <a class="member-id" th:text="${entity.id}"></a>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p th:text="${entity.name}"></p>
+                                    <p th:style="${'background:' + entity.color + ';'}">
+                                        <a class="member-nickname" th:text="${entity.nickname}"></a>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="money-history-link" th:data-seq="${entity.seq}">
+                                        <a class="member-money text-success">
+                                            [[${#numbers.formatDecimal(entity.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                            <span class="text-danger">[</span>
+                                            <span class="text-danger">
+                                                [[${#numbers.formatDecimal(entity.deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                            </span>
+                                            <span class="text-danger">]</span>
+                                        </a>
+                                    </p>
+                                    <p class="mileage-history-link" th:data-seq="${entity.seq}">
+                                        <a class="member-mileage text-default"
+                                           th:text="${#numbers.formatDecimal(entity.mileageAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></a>
+                                    </p>
+                                </td>
+                                <td>
+                                    <select class="form-control input-sm" name="levelSeq">
+                                        <option th:each="level : ${levelList}"
+                                                th:value="${level.seq}"
+                                                th:selected="${level.seq == entity.levelSeq}"
+                                                th:text="${level.levelName}">
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <p>
+                                        <a class="member-deposit text-primary">
+                                            [[${#numbers.formatDecimal(entity.deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                        </a>
+                                    </p>
+                                    <p>
+                                        <a class="member-withdrawal text-danger">
+                                            [[${#numbers.formatDecimal(entity.withdrawal, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                        </a>
+                                    </p>
+                                </td>
+                                <td>
+                                    <a class="progress-bet text-default">
+                                        [[${#numbers.formatDecimal(entity.betAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                    </a>
+                                </td>
+                                <td class="text-primary">
+                                    [[${#numbers.formatDecimal(entity.deposit - entity.withdrawal, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                </td>
+                                <td>
+                                    <select class="form-control input-sm" name="status">
+                                        <option th:each="status : ${statusList}"
+                                                th:value="${status.dictValue}"
+                                                th:selected="${status.dictValue.toString() == entity.status.toString()}"
+                                                th:text="${status.strValue}">
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <p style="white-space: nowrap;" th:text="${#dates.format(entity.registerDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                    <p th:text="${entity.siteDomain != null ? entity.siteDomain : ''}"></p>
+                                </td>
+                                <td>
+                                    <p style="white-space: nowrap;" th:text="${#dates.format(entity.recentDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                    <p th:text="${entity.recentDomain != null ? entity.recentDomain : ''}"></p>
+                                </td>
+                                <td>
+                                    <p>
+                                        <a class="connection-ip text-default">[[${entity.signupIP}]]</a>
+                                    </p>
+                                    <p style="padding: 0;">
+<!--                                        <select class="form-control input-sm" name="siteDomain">-->
+<!--                                            <option th:each="site : ${siteList}"-->
+<!--                                                    th:value="${site.siteDomain}"-->
+<!--                                                    th:text="${site.siteDomain}"-->
+<!--                                                    th:selected="${entity.siteDomain == site.siteDomain}"></option>-->
+<!--                                        </select>-->
+                                    </p>
+                                </td>
+                                <td th:text="${entity.distributorID}"></td>
+                                <td>
+                                    <span th:text="${entity.storeID}"></span> /
+                                    <span th:text="${entity.distributorID}"></span> /
+                                    <span th:text="${entity.subHeadquarterID}"></span>
+                                </td>
+                                <td th:text="${entity.recommendable == 0} ? #{admin.member.on} : #{admin.member.off}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-sm member-update" th:text="#{admin.common.apply}"></button>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(pageList.records)}">
+                                <td class="text-center" colspan="16" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab_cont customPage w99 t_center ptb15"></div>
+                </div>
+                <footer class="panel-footer">
+                    <a class="btn btn-default modal-member-add"
+                       th:text="#{admin.common.member.registration}"></a>
+                    <a class="btn btn-default open-modal" data-toggle="modal" href="#memberStopModal"
+                       th:text="#{admin.common.stop.member}"></a>
+                    <a class="btn btn-default open-modal" href="#memberWithdrawalForm"
+                       th:text="#{admin.common.withdrawal.member}"></a>
+                    <a class="btn btn-default modal-member-delete" data-toggle="modal" href="#memberDeleteModal"
+                       th:text="#{admin.common.member.delete}"></a>
+                </footer>
+            </section>
+        </section>
+
+        <!-- Modal Form -->
+        <div class="modal fade" id="memberDeleteModal" data-backdrop="static" tabindex="-1" role="memberDeleteModal"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">
+                            <h2 class="panel-title"
+                                th:text="#{admin.common.member.delete}"></h2>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p th:text="#{admin.common.deleteMsg}"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary member-delete btn-sm" th:text="#{admin.common.delete}">Delete
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"
+                                th:text="#{admin.common.cancel}">Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="memberStopModal" data-backdrop="static" tabindex="-1" role="memberStopModal"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">
+                            <h2 class="panel-title"
+                                th:text="#{admin.common.member.stop}"></h2>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p th:text="#{admin.common.deleteMsg}"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary member-stop btn-sm" th:text="#{admin.common.stop}">Stop</button>
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"
+                                th:text="#{admin.common.cancel}">Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="views/admin/common/memberNote :: memberNote"></div>
+        <div th:replace="views/admin/common/bettingSummary :: bettingSummary"></div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var page = [[${pageList}]];
+    var url = [[@{/}]] + [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    createPagenation(page, url);
+</script>
+<script th:src="@{/assets/javascripts/member/list.js}"></script>
+
+</body>
+</html>

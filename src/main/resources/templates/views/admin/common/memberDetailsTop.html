@@ -1,0 +1,194 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Preference')">
+</head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/basic-setting.css}"/>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+	
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+                <div class="page-content-wrapper">
+                <form id="form1"  th:action="@{/member/memberDetailsTop}" method="post">
+               	<header class="panel-heading">
+               		<h2 class="panel-title">
+                       <i class="fa fa-caret-square-o-right text-primary"></i>
+                      		deputy headquarter details
+                   	</h2>
+				</header>
+	                <div class="panel-body">
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.affiliated}]] [[#{admin.common.headquarter}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                            	<select class="form-control" name="subHeadquarterID" required>
+                            		
+                            	</select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.id}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                 <input type="text" class="form-control" name="id" style="display: inline-block; width: auto;"required />
+                                 <div class="input-group color" data-color="#ff0000" data-plugin-colorpicker style="display: inline-block;">
+                                    <span class="input-group-addon">
+                                        <i></i>
+                                    </span>
+                                    <input name="color" type="text" class="form-control" style="display: none;" />
+                                </div>
+                                <a class="btn btn-default erase-color" th:text="#{admin.member.eraseColor}"></a>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.password}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="password" class="form-control" name="password" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                             <label class="col-sm-2 control-label"><i class="fa fa-plus-square text-primary"></i>
+                             [[#{admin.common.settlement}]]&nbsp;&nbsp;[[#{admin.common.rate}]] </label>
+                             <div class="col-sm-4">
+                             	<label th:text="#{admin.common.slot}">slot</label>
+                                 <input type="number" name="slotRate" class="form-control" style="width:70px; display:inline-block;" required="">
+                                 <span>%</span>
+                                 <label th:text="#{admin.common.baccarat}">baccarat</label>
+                                 <input type="number" name="baccaratRate" class="form-control" style="width:70px; display:inline-block;" required="">
+                                 <span>%</span>
+                             </div>
+                         </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.nickname}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="nickname" />
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.settlement}]] [[#{admin.common.member}]] [[#{admin.common.id}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="settlementMemberId" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.nameOfBank}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="bankName" />
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.accountNumber}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="bankNumber" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.accountHolder}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="accountHolder" />
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                Join Date
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="registerDate"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.total}]]&nbsp;&nbsp;[[#{admin.common.deposit}]]&nbsp;&nbsp;[[#{admin.common.amount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="deposit"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.total}]]&nbsp;&nbsp;[[#{admin.common.withdraw}]]&nbsp;&nbsp;[[#{admin.common.amount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="withdrawal"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.member}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="memberCount"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                number of depositors
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" name="depositCount"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.email}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="emailAddress">
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.phoneNumber}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="phoneNumber" />
+                            </div>
+                        </div>
+                        <div class="form-group vertical-aign-center">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.memo}]]
+                            </label>
+                            <div class="col-md-10 col-sm-6">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped" id="memo-list">
+                                        <thead>
+                                        <th class="text-center" style="width: 20%;" th:text="#{admin.common.hour}"></th>
+                                        <th class="text-center" style="width: 60%;" th:text="#{admin.common.contents}"></th>
+                                        <th class="text-center" style="width: 20%;" th:text="#{admin.common.process}"></th>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                	<div class="row text-center">
+	                    <button type="button" class="btn btn-primary update-partner-distributor-member" >Correction</button>
+	                </div>
+                </div>
+            </div>            
+</section>
+</body>
+</html>   

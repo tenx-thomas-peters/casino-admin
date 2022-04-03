@@ -1,0 +1,103 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('#{admin.member.writeNote}')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+        
+        <div class="inner-wrapper">
+            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+            
+            <section role="main" class="content-body">
+	            	<section class="panel" role="main">
+						<header class="panel-heading">
+							<h2 class="panel-title" th:text="#{admin.write.partnerWriteANote}">P write a note</h2>
+						</header>
+						<div class="panel-body">
+							<div class="tabs tabs-primary">
+								<ul class="nav nav-tabs">
+									<li>
+										<a href="#popular" data-toggle="tab" th:text="#{admin.common.inbox}">inbox</a>
+									</li>
+									<li>
+										<a th:href="@{/memo/sendPList}"  th:text="#{admin.common.sentInbox}"></a>
+									</li>
+									<li class="active">
+										<a href="#memoAdd" data-toggle="tab" th:text="#{admin.member.writeNote}">write a note</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div id="popular" class="tab-pane">
+										<p>inbox</p>
+									</div>
+									<div id="memoAdd" class="tab-pane active">
+										<form method="post" th:action="@{/partner2/memoadd}" th:object="${note}" id="pNoteForm">
+											<div class="form-group">
+												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.title}"></span>:
+												</div>
+												<div class="col-sm-8">
+													<input type="text" name="title" class="form-control" required>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.recipient}"></span>:
+												</div>
+												<div class="col-sm-8">
+													<select data-plugin-selectTwo class="form-control populate" name="userType" required>
+														<option value="" th:text="#{admin.partner.partnerSelection}">Partner Selection</option>
+														<option value="1" th:text="#{admin.common.store}">store</option>
+														<option value="2" th:text="#{admin.common.distributor}">distributor</option>
+														<option value="3" th:text="#{admin.common.subHeadquarter}">sub headquarter</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.date}"></span>:
+												</div>
+												<div class="col-sm-8">
+													<input type="text" data-plugin-datepicker class="form-control" name="sendTime" th:value="${today}"
+														data-date-format= "yyyy-mm-dd" required/>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.contents}"></span>:
+												</div>
+												<div class="col-sm-8">
+													<textarea name="content" rows="5" class="form-control" required></textarea>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-9 text-center">
+													<button class="btn btn-primary memo-add"><span th:text="#{admin.common.send}"></span></button>
+													<a th:href="@{/partner2/popup_memoadd}" class="btn btn-default" th:text="#{admin.common.reset}"></a>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<footer class="panel-footer">
+						</footer>
+					</section>
+			</section>
+        </div>
+    </section>
+
+	<script type="text/javascript" th:inline="javascript">
+		var page = [[${page}]];
+		var url = [[@{/}]] + [[${url}]];
+	</script>
+
+    <script th:replace="template :: scripts"></script>
+
+    <script th:src="@{/assets/javascripts/note/note.js}"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('loginlist')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/accessLog.css}"/>
+<body>
+	<section class="body accessLog">
+
+		<header th:replace="template :: header" class="header"></header>
+
+		<div class="inner-wrapper">
+			<!-- sidebar -->
+			<aside th:replace="template :: sidebar" id="sidebar-left"
+				class="sidebar-left"></aside>
+
+			<section role="main" class="content-body">
+				<section class="panel">
+					<header class="panel-heading loginlist">
+						<h2 class="panel-title">
+							<span  th:text="#{admin.common.accessLogList}"></span>
+						</h2>
+					</header>
+					<div class="panel-body">
+						<!-- search form -->
+						<form class="form-inline" id="formSearch" style="padding-bottom: 10px;" th:action="@{${url}}" method="post" th:object="${accessLog}">
+							<input type="hidden" value="" name="hour" />
+							<div class="form-group">
+								<label for="site">
+									<i class="fa fa-search" style="background-color: #0088cc; color: white; padding: 2px;"></i>
+									<span th:text="#{admin.common.site}"></span>
+								</label> 
+								<select class="form-control site" th:field="*{site}" id="site">
+									<option value="" th:text="#{admin.common.all}"></option>
+									<option th:each="site, row : ${siteList}" th:value="${site.siteName}" th:text="${site.siteName}"></option>
+								</select> 
+								<label for="pageSize">
+                                    <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
+                                    <span th:text="#{admin.common.print}"></span>
+                                </label>
+                                <input type="text" class="form-control" id="pageSize" name="pageSize" th:value="${pageSize}" style="width: 50px;">
+                                <select class="form-control member" th:field="*{distributor}">
+                                	<option value="" th:text="#{admin.common.all}"></option>
+                                	<option th:each="partner, row : ${partnerList}" th:value="${partner.seq}" th:text="${partner.id}"></option>
+                                </select>
+                                <select class="form-control domain" th:field="*{connectionDomain}">
+                                	<option value="" th:text="#{admin.common.all}"></option>
+                                	<option th:each="domain, row : ${siteList}" th:value="${domain.siteDomain}" th:text="${domain.siteDomain}"></option>
+                                </select>
+								<div class="checkbox-custom checkbox-default checkbox-inline">
+									<input type="checkbox" id="checkStatus" name="checkStatus" class="checkbox" th:checked = "${checkStatus == 1 ? true : false}"/>
+									<label for="checkStatus">
+										<span th:text="#{admin.accessLog.loginFailed}"></span>
+									</label>
+								</div> 
+                                <select class="form-control" th:field="*{searchField}">
+                                    <option value="0" th:text="#{admin.common.id}"></option>
+                                    <option value="1" th:text="#{admin.common.nickname}"></option>
+                                    <option value="2" th:text="#{admin.common.accountHolder}"></option>
+                                    <option value="3" th:text="#{admin.member.loginIp}"></option>
+                                </select>
+								<div class="input-group input-group-icon" style="width: 200px; display: inline-block;">
+                                    <span class="input-group-addon">
+                                        <span class="icon"><i class="fa fa-search"></i></span>
+                                    </span>
+                                    <input type="text" class="form-control" th:field="*{searchValue}">
+                                </div>
+								<button type="button" class="btn btn-default" onClick="searchSubmit()">
+									[[#{admin.common.search}]]&nbsp;<i class="fa fa-search"></i>
+								</button>
+								<button type="reset" class="btn btn-default" onClick="resetSearch()" th:text="#{admin.accessLog.viewAll}"></button>
+								<button class="btn btn-default" onClick="hourSearch(3)" th:text="#{admin.common.lastHours}"></button>
+							</div>
+						</form>
+						<!-- datatable -->
+						<div class="table-responsive">
+							<table class="table table-bordered table-striped" id="loginlist">
+								<thead>
+									<tr>
+										<th>
+											<div class="checkbox-custom checkbox-default checkbox-inline">
+												<input type="checkbox" data-set=".checkboxes" class="group-checkable" id="checkAll" onClick="checkAll()"><label></label>
+											</div>
+										</th>
+										<th th:text="#{admin.common.site}"></th>
+										<th th:text="#{admin.common.id}"></th>
+										<th th:text="#{admin.common.name}"></th>
+										<th th:text="#{admin.common.accountHolder}"></th>
+										<th th:text="#{admin.common.ranking}"></th>
+										<th th:text="#{admin.common.holdingAmount}"></th>
+										<th th:text="#{admin.common.accessTime}"></th>
+										<th th:text="#{admin.accessLog.connectionIp}"></th>
+										<th th:text="#{admin.accessLog.accessDomain}"></th>
+										<th th:text="#{admin.common.status}"></th>
+										<th th:text="#{admin.common.distributor}"></th>
+										<th th:text="#{admin.common.process}"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:if="${not #lists.isEmpty(page.records)}" th:each="item : ${page.records}">
+										<td>
+											<div class="checkbox-custom checkbox-default checkbox-inline">
+												<input type="checkbox" class="group-checkable checkboxes" th:name="${item.seq}"><label></label>
+											</div>
+										</td>
+										<input type="hidden" th:value="${item.seq}" name="seq"/>
+										<input type="hidden" th:data-key="${item.memberSeq}" name="memberSeq"/>
+										<td th:text="${item.site}"></td>
+										<td>
+											<a class="member-seq text-default" th:text="${item.id}"></a>
+										</td>
+										<td th:text="${item.nickname}"></td>
+										<td th:text="${item.accountHolder}"></td>
+										<td th:text="${item.level}"></td>
+										<td th:text="${#numbers.formatDecimal(item.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#dates.format(item.connectionDate, 'yyyy-MM-dd hh:mm:ss')}"></td>
+										<td th:text="${item.connectionIp}"></td>
+										<td th:text="${item.connectionDomain}"></td>
+										<div th:if="${item.status} == 0">
+											<td th:text="#{admin.common.loginSuccess}"></td>
+										</div>
+										<div th:if="${item.status} == 1">
+											<td style="color: red;" th:text="#{admin.common.wrongPassword}"></td>
+										</div>
+										<td th:text="${(item.distributor == '' || item.distributor == null)} ? #{admin.common.independent} : ${item.distributor}"></td>
+										<td style="padding: 5px;">
+											<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#deleteModal" th:text="#{admin.common.delete}"></button>
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(page.records)}">
+										<td colspan="15" style="padding: 20px; text-align:center;" th:text="#{admin.common.noData}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- pagenation -->
+						<div class="tab_cont customPage w99 t_center ptb15"></div>
+					</div>
+					<div class="panel-footer">
+						<div class="select-delete">
+							<button class="btn btn-default" type="button" data-toggle="modal" data-target="#batchDeleteModal" th:text="#{admin.common.selectDelete}"></button>
+							<div class="modal fade" id="batchDeleteModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+	
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<h4 class="modal-title" th:text="#{admin.common.delete}"></h4>
+										</div>
+										<div class="modal-body">
+											<div class="container">
+												<div id="message" class="row">
+													<div class="input-item-div col-xs-12 message">
+														<span th:text="#{admin.common.deleteMsg}"></span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer text-center">
+											<button class="btn btn-primary" type="button" data-dismiss="modal" onclick="batchDelete();">
+												<span class="d-table-cell align-middle" th:text="#{admin.common.confirm}"></span>
+											</button>
+											<button class="btn btn-default" type="button" data-dismiss="modal">
+												<span class="d-table-cell align-middle" th:text="#{admin.common.cancel}"></span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+						<!-- Change class .modal-sm to change the size of the modal -->
+						<div class="modal-dialog modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" th:text="#{admin.common.delete}"></h4>
+								</div>
+								<div class="modal-body">
+									<div class="container">
+										<div id="message" class="row">
+											<div class="input-item-div col-xs-12 message">
+												<span th:text="#{admin.common.deleteMsg}"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer text-center">
+									<button class="btn btn-primary" type="button" data-dismiss="modal" onclick="logDelete();">
+										<span class="d-table-cell align-middle" th:text="#{admin.common.confirm}"></span>
+									</button>
+									<button class="btn btn-default" type="button" data-dismiss="modal">
+										<span class="d-table-cell align-middle" th:text="#{admin.common.cancel}"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</section>
+		</div>
+	</section>
+
+	<script type="text/javascript" th:inline="javascript">
+		var txtAdd = [[#{admin.member.addition}]];
+		var txtEdit = [[#{admin.common.edit}]];
+		var txtDelete = [[#{admin.common.delete}]];
+		var page = [[${page}]];
+		var url = [[${url}]];
+	</script>
+
+	<script th:replace="template :: scripts"></script>
+	
+	<script th:src="@{/assets/javascripts/member/accessLog.js}"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+		createPagenation(page, url);
+	</script>
+</body>
+</html>

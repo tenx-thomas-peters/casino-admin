@@ -1,0 +1,146 @@
+server:
+  port: 9091
+  servlet:
+    context-path: /casino
+    compression:
+      enabled: true
+      mime-types: application/javascript,application/json,application/xml,text/html,text/xml,text/plain,text/css,image/*,font/*,audio/*
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics,httptrace
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    cache: false
+    mode: HTML5
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+    static-locations: classpath:/static/,classpath:/public/,file:/uploads
+
+  ## quartz transaction, use database mode
+  #  quartz:
+  #    job-store-type: jdbc
+
+  #json datetime format
+  jackson:
+    date-format:   yyyy-MM-dd HH:mm:ss
+    time-zone:   GMT+8
+  aop:
+    proxy-target-class: true
+
+  # freemarker settings
+  freemarker:
+    suffix: .ftl
+    content-type: text/html
+    charset: UTF-8
+    cache: false
+    template-loader-path:
+      - classpath:/templates
+  # static path setting，js,css ...
+
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+    druid:
+      stat-view-servlet:
+        loginUsername: admin
+        loginPassword: 123456
+    dynamic:
+      druid:
+        initial-size: 5
+        min-idle: 5
+        maxActive: 20
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        filters: stat,wall,slf4j
+        connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      datasource:
+        master:
+          url: jdbc:mysql://localhost:3306/casino_admin?characterEncoding=UTF-8&useUnicode=true&useSSL=false
+          username: root
+          password:
+          driver-class-name: com.mysql.jdbc.Driver
+  messages:
+    basename: messages/messages
+    encoding: UTF-8
+# redis settings
+#  redis:
+#    database: 0
+#    host: 192.168.7.222
+#    lettuce:
+#      pool:
+#        max-active: 8   #最大连接数据库连接数,设 0 为没有限制
+#        max-idle: 8     #最大等待连接中的数量,设 0 为没有限制
+#        max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+#        min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
+#      shutdown-timeout: 100ms
+#    password: ''
+#    port: 6379
+
+# mybatis plus setting
+mybatis-plus:
+  mapper-locations: classpath*:com/casino/modules/**/xml/*Mapper.xml
+  typeAliasesPackage: com.casino.modules.admin.common.entity
+  #typeEnumsPackage: com.baomidou.springboot.entity.enums
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      db-type: mysql
+    refresh: true
+      #meta-object-handler: com.baomidou.springboot.xxx
+  #sql-injector: com.baomidou.mybatisplus.extension.injector.LogicSqlInjector
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+
+casino :
+  path :
+    upload: /uploads
+    webapp: /webapp
+    apiLog: /apiLog
+  schedule:
+    delay: "0 */2 * * * *"
+    
+# mysql
+mysql-url: 'C:\\Program Files\\MySQL\MySQL Server 5.7\\bin'
+mysql-dump: 'C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysqldump'
+database: casino_admin
+host: 192.168.7.135
+port: 3306
+password: root
+db-username: root
+backup-root: C:\\temp\\
+uploadPath: /uploads
+
+mock:
+  baccarat: "/static/assets/mock/baccarat.json"
+  slot: "/static/assets/mock/slot.json"
+  roulette: "/static/assets/mock/roulette.json"
+
+gameServer:
+  # url: "http://localhost:9091/casino"
+  url: "https://api.honorlink.org/api"
+  apiKey: "Bearer Jv49qGTvgDGYZPtTrVSMJpYaNx2NR95W5x3q8E8M"

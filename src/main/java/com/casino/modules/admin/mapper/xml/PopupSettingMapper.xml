@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casino.modules.admin.mapper.PopupSettingMapper">
+	<sql id="select">
+		ps.seq AS "seq",
+		ps.site_seq AS "siteSeq",
+		ps.type AS "type",
+		ps.title AS "title",
+		ps.location AS "location",
+		ps.additional_date AS "additionalDate",
+		ps.expiration_start AS "expirationStart",
+		ps.expiration_end AS "expirationEnd"
+	</sql>
+	<sql id = "from">
+		popup_setting ps
+	</sql>
+	
+	<sql id = "order">
+		ORDER BY ${column}
+		<if test = "order == 1">
+			DESC
+		</if>
+	</sql>
+	
+	<sql id = "pagination">
+		LIMIT #{pageSize}
+		OFFSET #{pageOffset}
+	</sql>
+	
+	<select id="getList" resultType="com.casino.modules.admin.common.entity.PopupSetting">
+		SELECT 
+			<include refid = "select" />
+		FROM <include refid = "from" />
+		<include refid = "order" />
+	</select>
+</mapper>

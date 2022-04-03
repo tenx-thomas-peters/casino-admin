@@ -1,0 +1,1244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casino.modules.admin.mapper.MemberMapper">
+
+	<sql id="headquarterWhere">
+		<if test="headquarter.userType != null">
+             AND m.user_type = #{headquarter.userType}
+        </if>
+        
+		<choose>
+			<when test="headquarter.selectType == selectType1">
+				 AND m.id LIKE CONCAT('%',#{headquarter.keyword},'%')
+			</when>
+			
+			<when  test="headquarter.selectType == selectType2">
+				 AND m.nickname LIKE CONCAT('%',#{headquarter.keyword},'%')
+			</when>
+		</choose>
+	</sql>
+	
+	<sql id="headquarterOrderBy">
+		<choose>
+			<when test="headquarter.orderByType == selectType0">
+				 ORDER BY m.money_amount ASC
+			</when>
+			
+			<when test="headquarter.orderByType == selectType1">
+				 ORDER BY m.register_date DESC
+			</when>
+			
+			<when test="headquarter.orderByType == selectType2">
+				 ORDER BY m.create_date DESC
+			</when>
+			<otherwise>
+				ORDER BY m.create_date DESC
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<sql id="distributorWhere">
+		<if test="distributor.userType != null">
+             AND m.user_type = #{distributor.userType}
+        </if>
+        
+		<choose>
+			<when test="distributor.selectType == selectType1">
+				 AND m.id LIKE CONCAT('%',#{distributor.keyword},'%')
+			</when>
+			
+			<when  test="distributor.selectType == selectType2">
+				 AND m.nickname LIKE CONCAT('%',#{distributor.keyword},'%')
+			</when>
+		</choose>
+		
+		<if test="distributor.subHeadquarter != null and distributor.subHeadquarter != ''">
+			AND m.sub_headquarter_seq = #{distributor.subHeadquarter}
+		</if>
+	</sql>
+	
+	<sql id="distributorOrderBy">
+		<choose>
+			<when test="distributor.orderByType == selectType0">
+				 ORDER BY m.money_amount ASC
+			</when>
+			
+			<when test="distributor.orderByType == selectType1">
+				 ORDER BY m.register_date DESC
+			</when>
+			
+			<when test="distributor.orderByType == selectType2">
+				 ORDER BY m.create_date DESC
+			</when>
+			
+			<otherwise>
+				ORDER BY m.create_date DESC
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<sql id="storeWhere">
+		<if test="store.userType != null">
+             AND m.user_type = #{store.userType}
+        </if>
+        
+        <choose>
+			<when test="store.selectType == selectType1">
+				 AND m.id LIKE CONCAT('%',#{store.keyword},'%')
+			</when>
+			
+			<when  test="store.selectType == selectType2">
+				 AND m.nickname LIKE CONCAT('%',#{store.keyword},'%')
+			</when>
+		</choose>
+        
+		<if test="store.distributor != null and store.distributor != ''">
+			AND m.distributor_seq = #{store.distributor}
+		</if>
+	</sql>
+	
+	<sql id="storeOrderBy">
+		<choose>
+			<when test="store.orderByType == selectType0">
+				 ORDER BY m.money_amount ASC
+			</when>
+			
+			<when test="store.orderByType == selectType1">
+				 ORDER BY m.register_date DESC
+			</when>
+			
+			<when test="store.orderByType == selectType2">
+				 ORDER BY m.create_date DESC
+			</when>
+			
+			<otherwise>
+				ORDER BY m.create_date DESC
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<select id="findHeadquarterList" resultType="com.casino.modules.admin.common.form.HeadquarterForm">
+		SELECT
+			m.seq AS seq,
+			m.id AS id,
+			m.nickname AS nickname,
+			IFNULL(m.money_amount, 0) AS moneyAmount,
+			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeDistributor} AND m1.sub_headquarter_seq = m.seq ) AS distributorCount,
+			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeStore} AND m1.sub_headquarter_seq = m.seq ) AS storeCount,
+			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.sub_headquarter_seq = m.seq ) AS memberCount,
+			(
+			SELECT
+				count(*) 
+			FROM
+				member m1
+				LEFT JOIN money_history mh ON m1.seq = mh.receiver 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit}
+				AND m1.sub_headquarter_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{headquarter.isMoney}
+				<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{headquarter.fromApplicationTime})
+				</if>
+				<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' "> 
+					AND DATE(#{headquarter.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			) AS depositMemberCount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit}
+				AND m1.sub_headquarter_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{headquarter.isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{headquarter.fromApplicationTime})
+				</if>
+				<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' "> 
+					AND DATE(#{headquarter.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS depositMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND ( m1.sub_headquarter_seq = m.seq OR m1.seq = m.seq ) 
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
+				AND mh.money_or_point = #{headquarter.isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{headquarter.fromApplicationTime})
+				</if>
+				<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' "> 
+					AND DATE(#{headquarter.toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS depositPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.payer = m1.seq
+				LEFT JOIN member m2 ON mh.receiver = m2.seq AND m2.sub_headquarter_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq
+				AND m1.user_type = #{userTypeSubHeadquarter}
+				AND mh.money_or_point = #{headquarter.isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{headquarter.fromApplicationTime})
+				</if>
+				<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' "> 
+					AND DATE(#{headquarter.toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS depositPayment,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal}
+				AND m1.sub_headquarter_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{headquarter.isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{headquarter.fromApplicationTime})
+				</if>
+				<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' "> 
+					AND DATE(#{headquarter.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0)AS withdrawalMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
+				AND ( m1.sub_headquarter_seq = m.seq OR m1.seq = m.seq ) 
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore}) 
+				AND mh.money_or_point = #{headquarter.isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{headquarter.fromApplicationTime})
+				</if>
+				<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' "> 
+					AND DATE(#{headquarter.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			) ,0)AS withdrawalPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq
+				LEFT JOIN member m2 ON mh.payer = m2.seq AND m2.sub_headquarter_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq
+				AND m1.user_type = #{userTypeSubHeadquarter}
+				AND mh.money_or_point = #{headquarter.isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{headquarter.fromApplicationTime})
+				</if>
+				<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' "> 
+					AND DATE(#{headquarter.toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS withdrawalPayment,
+			IFNULL(m.slot_rate, 0) AS slotRate,
+			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
+			m.status AS status,
+			IFNULL(bs.betting_amount, 0) AS betAmount,
+			IFNULL(bs.winning_amount, 0) AS winningAmount,
+			IFNULL(bs.lost_amount, 0) AS lostAmount,
+			IFNULL(bs.bat_rolling, 0) AS batRolling,
+			bs.type AS gameType
+		FROM
+			member m
+		LEFT JOIN betting_summary bs ON bs.member_seq = m.seq 
+		<where>
+			<include refid="headquarterWhere"/>
+		</where>
+		GROUP BY m.seq
+		
+		<include refid="headquarterOrderBy" />
+	</select>
+
+	<select id="findStoreList" resultType="com.casino.modules.admin.common.form.StoreForm">
+		SELECT
+			m.seq AS seq,
+			m.sub_headquarter_seq AS headquarterSeq,
+			m.distributor_seq AS distributorSeq,
+			( SELECT m1.id	FROM member m1 WHERE m1.user_type = #{userTypeSubHeadquarter} AND m1.seq = m.sub_headquarter_seq) AS headquarter,
+			( SELECT m1.id	FROM member m1 WHERE m1.user_type = #{userTypeDistributor} AND m1.seq = m.distributor_seq) AS distributor,
+			m.id AS id,
+			m.nickname AS nickname,
+			IFNULL(m.money_amount, 0) AS moneyAmount,
+			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.store_seq = m.seq ) AS memberCount,
+			(
+			SELECT
+				count(*) 
+			FROM
+				member m1
+				LEFT JOIN money_history mh ON m1.seq = mh.receiver 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND m1.store_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{store.isMoney}
+				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
+				</if>
+				<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
+					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			)AS depositMemberCount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND m1.store_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{store.isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
+				</if>
+				<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
+					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS depositMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND ( m1.store_seq = m.seq OR m1.seq = m.seq ) 
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
+				AND mh.money_or_point = #{store.isMoney} 
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
+				</if>
+				<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
+					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS depositPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.payer = m1.seq
+				LEFT JOIN member m2 ON mh.receiver = m2.seq AND m2.store_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq
+				AND m1.user_type = #{userTypeStore} 
+				AND mh.money_or_point = #{store.isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
+				</if>
+				<if test="store.toApplicationTime != null and store.toApplicationTime != '' "> 
+					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS depositPayment,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
+				AND m1.store_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{store.isMoney} 
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
+				</if>
+				<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
+					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
+				</if>  
+			), 0) AS withdrawalMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
+				AND ( m1.store_seq = m.seq OR m1.seq = m.seq ) 
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
+				AND mh.money_or_point = #{store.isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
+				</if>
+				<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
+					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
+				</if>  
+			), 0) AS withdrawalPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq
+				LEFT JOIN member m2 ON mh.payer = m2.seq AND m2.store_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq 
+				AND m1.user_type = #{userTypeStore} 
+				AND mh.money_or_point = #{store.isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
+				</if>
+				<if test="store.toApplicationTime != null and store.toApplicationTime != '' "> 
+					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS withdrawalPayment,
+			IFNULL(m.slot_rate, 0) AS slotRate,
+			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
+			m.status AS status,
+			IFNULL(bs.betting_amount, 0) AS betAmount,
+			IFNULL(bs.winning_amount, 0) AS winningAmount,
+			IFNULL(bs.lost_amount, 0) AS lostAmount,
+			IFNULL(bs.bat_rolling, 0) AS batRolling,
+			bs.type AS gameType
+		FROM
+			member m
+		LEFT JOIN betting_summary bs ON bs.member_seq = m.seq 
+		<where>
+			<include refid="storeWhere"/>
+		</where>
+		GROUP BY m.seq
+		<include refid="storeOrderBy"/>
+	</select>
+
+	<select id="findDistributorList" resultType="com.casino.modules.admin.common.form.DistributorForm">
+		SELECT
+			m.seq AS seq,
+			m.sub_headquarter_seq AS headquarterSeq,
+			( SELECT m1.id FROM member m1 WHERE m1.user_type =
+			#{userTypeSubHeadquarter} AND m1.seq = m.sub_headquarter_seq) AS
+			subHeadquarter,
+			m.id AS id,
+			m.nickname AS nickname,
+			IFNULL(m.money_amount, 0) AS moneyAmount,
+			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeStore}
+			AND m1.distributor_seq = m.seq ) AS storeCount,
+			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal}
+			AND m1.distributor_seq = m.seq ) AS memberCount,
+			(
+			SELECT
+				count(*)
+			FROM
+				member m1
+			LEFT JOIN money_history mh ON m1.seq = mh.receiver
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit}
+				AND m1.distributor_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{distributor.isMoney}									
+				<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{distributor.fromApplicationTime})
+				</if>
+				<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' ">
+					AND DATE(#{distributor.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			)AS depositMemberCount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND m1.distributor_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{distributor.isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{distributor.fromApplicationTime})
+				</if>
+				<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' ">
+					AND DATE(#{distributor.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS depositMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND ( m1.distributor_seq = m.seq OR m1.seq = m.seq )
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
+				AND mh.money_or_point = #{distributor.isMoney} 
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{distributor.fromApplicationTime})
+				</if>
+				<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' ">
+					AND DATE(#{distributor.toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS depositPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.payer = m1.seq
+				LEFT JOIN member m2 ON mh.receiver = m2.seq AND m2.distributor_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq 
+				AND m1.user_type = #{userTypeDistributor} 
+				AND mh.money_or_point = #{distributor.isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{distributor.fromApplicationTime})
+				</if>
+				<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' "> 
+					AND DATE(#{distributor.toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS depositPayment,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
+				AND m1.distributor_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{distributor.isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete} 
+				<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{distributor.fromApplicationTime})
+				</if>
+				<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' ">
+					AND DATE(#{distributor.toApplicationTime}) >= DATE(mh.application_time)
+				</if>  
+			), 0) AS withdrawalMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
+				AND ( m1.distributor_seq = m.seq OR m1.seq = m.seq ) 
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
+				AND mh.money_or_point = #{distributor.isMoney} 
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{distributor.fromApplicationTime})
+				</if>
+				<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' ">
+					AND DATE(#{distributor.toApplicationTime}) >= DATE(mh.application_time)
+				</if>  
+			), 0) AS withdrawalPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq
+				LEFT JOIN member m2 ON mh.payer = m2.seq AND m2.distributor_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq 
+				AND m1.user_type = #{userTypeDistributor} 
+				AND mh.money_or_point = #{distributor.isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{distributor.fromApplicationTime})
+				</if>
+				<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' "> 
+					AND DATE(#{distributor.toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS withdrawalPayment,
+			IFNULL(m.slot_rate, 0) AS slotRate,
+			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
+			m.status AS status,
+			IFNULL(bs.betting_amount, 0) AS betAmount,
+			IFNULL(bs.winning_amount, 0) AS winningAmount,
+			IFNULL(bs.lost_amount, 0) AS lostAmount,
+			IFNULL(bs.bat_rolling, 0) AS batRolling,
+			bs.type AS gameType
+		FROM
+			member m
+		LEFT JOIN betting_summary bs ON bs.member_seq = m.seq 
+		<where>
+			<include refid="distributorWhere"/>
+		</where>
+		GROUP BY m.seq
+		<include refid="distributorOrderBy"/>
+	</select>
+	
+	<select id="getRecipient" resultType="com.casino.modules.admin.common.entity.Member">
+		SELECT m.nickname
+		FROM
+			member m
+		LEFT JOIN member_site ms ON m.seq = ms.member_seq
+		WHERE
+			m.level_seq = #{levelSeq}
+			AND m.user_type = #{userType}
+			AND ms.site_seq = #{siteSeq}
+	</select>
+
+    <select id="getMemberList" resultType="com.casino.modules.admin.common.form.MemberForm">
+		SELECT
+		m1.seq,
+		m1.id,
+		m1.name,
+		m1.nickname,
+		m1.color,
+		IFNULL(m1.money_amount, 0) AS moneyAmount,
+		IFNULL(m1.mileage_amount, 0) AS mileageAmount,
+		m1.user_type AS userType,
+		level.seq AS levelSeq,
+		level.level_name AS levelName,
+		m1.status,
+		m1.register_date,
+		m1.signup_ip,
+		m1.site_domain,
+		m1.site_name,
+		m1.recommender,
+		IFNULL(m1.member_revenue, 0) AS memberRevenue,
+		m2.seq AS StoreSeq,
+		m2.id AS StoreId,
+		m3.seq AS DistributorSeq,
+		m3.id AS DistributorId,
+		m4.seq AS subHeadquarterSeq,
+		m4.id AS subHeadquarterId,
+		m1.recommendable,
+		IFNULL(dh.deposit, 0) AS deposit,
+		IFNULL(amh.admin_deposit, 0) AS adminDeposit,
+		IFNULL(wh.withdrawal, 0) AS withdrawal,
+		al.connection_date AS recentDate,
+		al.connection_ip,
+		al.connection_domain AS recentDomain,
+		SUM(IFNULL(bs.betting_amount, 0)) AS betAmount,
+		SUM(IFNULL(bs.winning_amount, 0)) AS winningAmount,
+		SUM(IFNULL(bs.lost_amount, 0)) AS lostAmount,
+		IFNULL(bs.bat_rolling, 0) AS batRolling
+		FROM
+		member m1
+		LEFT JOIN LEVEL ON level.seq = m1.level_seq
+		LEFT JOIN member m2 ON m1.store_seq = m2.seq
+		LEFT JOIN member m3 ON m1.distributor_seq = m3.seq
+		LEFT JOIN member m4 ON m1.sub_headquarter_seq = m4.seq
+		LEFT JOIN (SELECT SUM(mh.variable_amount) AS deposit, mh.receiver AS seq
+			FROM money_history mh
+			LEFT JOIN member m ON m.seq = mh.receiver
+			WHERE (mh.operation_type = #{entity.operationTypeDeposit} OR mh.operation_type = #{entity.operationTypeTransferIn}) AND mh.money_or_point = #{entity.isMoney}
+            AND (mh.status != ${MONEY_HISTORY_STATUS_PARTNER_PAYMENT} AND mh.status = ${MONEY_HISTORY_STATUS_COMPLETE}) GROUP BY mh.receiver) AS dh ON dh.seq = m1.seq
+		LEFT JOIN (SELECT SUM(mh.variable_amount) AS withdrawal, mh.receiver AS seq
+			FROM money_history mh
+			LEFT JOIN member m ON m.seq = mh.receiver
+			WHERE (mh.operation_type = #{entity.operationTypeWithdrawal} OR mh.operation_type = #{entity.operationTypeTransferOut}) AND mh.money_or_point = #{entity.isMoney}
+            AND (mh.status != ${MONEY_HISTORY_STATUS_PARTNER_PAYMENT} AND mh.status = ${MONEY_HISTORY_STATUS_COMPLETE}) GROUP BY mh.receiver) AS wh ON wh.seq = m1.seq
+		LEFT JOIN (SELECT SUM(mh.variable_amount) AS admin_deposit, mh.receiver
+			FROM money_history mh
+			LEFT JOIN member m ON m.seq = mh.receiver
+			WHERE mh.operation_type = ${MONEY_HISTORY_OPERATION_TYPE_DEPOSIT} AND mh.status = ${MONEY_HISTORY_STATUS_PARTNER_PAYMENT}
+			GROUP BY mh.receiver) as amh ON amh.receiver = m1.seq
+		LEFT JOIN (SELECT al.member_seq, al.site, MAX(al.connection_date) as connection_date, al.connection_ip, al.connection_domain
+			FROM access_log AS al LEFT JOIN member mm ON mm.seq = al.member_seq GROUP BY al.member_seq) AS al ON al.member_seq = m1.seq
+		LEFT JOIN betting_summary bs ON bs.member_seq = m1.seq
+        <where>
+			m1.user_type = #{entity.userType}
+            <if test="entity.subHeadquarterSeq != null and entity.subHeadquarterSeq != ''">
+                AND (m1.sub_headquarter_seq = #{entity.subHeadquarterSeq} OR m1.distributor_seq = #{entity.subHeadquarterSeq} OR m1.store_seq = #{entity.subHeadquarterSeq})
+            </if>
+			<if test="entity.siteName != null and entity.siteName != ''">
+				AND m1.site_name = #{entity.siteName}
+			</if>
+            <if test="entity.id != null and entity.id != ''">
+                AND m1.id = #{entity.id}
+            </if>
+			<if test="entity.searchValue != null and entity.searchValue != ''">
+				AND m1.${entity.searchField} LIKE CONCAT('%', #{entity.searchValue}, '%')
+			</if>
+            <if test="entity.state != null">
+                AND
+                m1.status IN
+                <foreach collection="entity.state" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="entity.levels != null">
+                AND
+                m1.level_seq IN
+                <foreach collection="entity.levels" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+		GROUP BY m1.seq
+		ORDER BY m1.${column}
+		<choose>
+			<when test="order == 1">
+				 DESC
+			</when>
+			<otherwise>
+				 ASC
+			</otherwise>
+		</choose>
+    </select>
+
+	<select id="getMemberBySeq" resultType="com.casino.modules.admin.common.form.MemberForm">
+		SELECT
+			m1.seq,
+			m1.id,
+			m1.password,
+			m1.nickname,
+			m1.color,
+			m1.name,
+			m1.user_type,
+			IFNULL(m1.money_amount, 0) AS moneyAmount,
+			IFNULL(m1.mileage_amount, 0) AS mileageAmount,
+			m1.bank_name,
+			m1.account_holder,
+			m1.bank_number,
+			m1.exchange_password,
+			m1.register_date,
+			m1.signup_ip,
+			m1.site_domain,
+			m1.site_name,
+			m1.status,
+			m1.email_address,
+			m1.phone_number,
+			IFNULL(m1.member_revenue, 0) AS memberRevenue,
+			m1.recommender,
+			m1.recommended_reason,
+			m1.betting_possible,
+			m1.recommendable,
+			m1.memo,
+			m1.slot_rate,
+			m1.baccarat_rate,
+			m2.seq AS StoreSeq,
+			m2.id AS StoreId,
+			m3.seq AS DistributorSeq,
+			m3.id AS DistributorId,
+			m4.seq AS subHeadquarterSeq,
+			m4.id AS subHeadquarterId,
+			IFNULL(dh.deposit, 0) AS deposit,
+			IFNULL(amh.admin_deposit, 0) AS adminDeposit,
+			IFNULL(wh.withdrawal, 0) AS withdrawal,
+			IFNULL(dh.depositCount, 0) AS depositCount,
+			IFNULL(wh.withdrawalCount, 0) AS withdrawalCount,
+			al.connection_date AS recentDate,
+			al.connection_ip,
+			al.connection_domain AS recentDomain,
+			SUM(IFNULL(bs.betting_amount, 0)) AS betAmount,
+			SUM(IFNULL(bs.winning_amount, 0)) AS winningAmount,
+			SUM(IFNULL(bs.lost_amount, 0)) AS lostAmount,
+			IFNULL(bs.bat_rolling, 0) AS batRolling,
+			level.seq AS levelSeq,
+			level.level_name AS levelName,
+			( SELECT count(*) FROM member m WHERE m.user_type = #{entity.userTypeDistributor} AND m.sub_headquarter_seq = m1.seq ) AS distributorCount,
+			( SELECT count(*) FROM member m WHERE m.user_type = #{entity.userTypeStore} AND m.sub_headquarter_seq = m1.seq ) AS storeCount,
+			( SELECT count(*) FROM member m WHERE m.user_type = #{entity.userTypeMember} AND m.sub_headquarter_seq = m1.seq ) AS memberCount,
+			( SELECT count(*) FROM member m
+				LEFT JOIN money_history mh ON m.seq = mh.receiver
+				WHERE mh.operation_type = #{entity.operationTypeDeposit} AND m1.sub_headquarter_seq = m.seq
+				AND m1.user_type = #{entity.userTypeMember}
+				AND mh.money_or_point = #{entity.isMoney}) AS depositMemberCount,
+			IFNULL(( SELECT sum( mh.variable_amount ) FROM money_history mh
+				LEFT JOIN member m ON mh.receiver = m.seq WHERE mh.operation_type = #{entity.operationTypeDeposit}
+				AND m.sub_headquarter_seq = m1.seq AND m.user_type = #{entity.userTypeMember}
+				AND mh.money_or_point = #{entity.isMoney}), 0) AS depositMemberAmount
+		FROM
+			member m1
+			LEFT JOIN LEVEL ON level.seq = m1.level_seq
+			LEFT JOIN member m2 ON m1.store_seq = m2.seq
+			LEFT JOIN member m3 ON m1.distributor_seq = m3.seq
+			LEFT JOIN member m4 ON m1.sub_headquarter_seq = m4.seq
+			LEFT JOIN (SELECT SUM(mh.variable_amount) AS deposit, COUNT(mh.seq) AS depositCount, mh.receiver AS seq
+				FROM money_history mh
+				LEFT JOIN member m ON m.seq = mh.receiver
+				WHERE (mh.operation_type = #{entity.operationTypeDeposit} OR mh.operation_type = #{entity.operationTypeTransferIn}) AND mh.money_or_point = #{entity.isMoney}
+				AND (mh.status != ${MONEY_HISTORY_STATUS_PARTNER_PAYMENT} AND mh.status = ${MONEY_HISTORY_STATUS_COMPLETE}) GROUP BY mh.receiver) AS dh ON dh.seq = m1.seq
+			LEFT JOIN (SELECT SUM(mh.variable_amount) AS withdrawal, COUNT(mh.seq) AS withdrawalCount, mh.receiver AS seq
+				FROM money_history mh
+				LEFT JOIN member m ON m.seq = mh.receiver
+				WHERE (mh.operation_type = #{entity.operationTypeWithdrawal} OR mh.operation_type = #{entity.operationTypeTransferOut}) AND mh.money_or_point = #{entity.isMoney}
+				AND (mh.status != ${MONEY_HISTORY_STATUS_PARTNER_PAYMENT} AND mh.status = ${MONEY_HISTORY_STATUS_COMPLETE}) GROUP BY mh.receiver) AS wh ON wh.seq = m1.seq
+			LEFT JOIN (SELECT SUM(mh.variable_amount) AS admin_deposit, mh.receiver
+				FROM money_history mh
+				LEFT JOIN member m ON m.seq = mh.receiver
+				WHERE mh.operation_type = ${MONEY_HISTORY_OPERATION_TYPE_DEPOSIT} AND mh.status = ${MONEY_HISTORY_STATUS_PARTNER_PAYMENT}
+				GROUP BY mh.receiver) as amh ON amh.receiver = m1.seq
+			LEFT JOIN (SELECT al.member_seq, al.site, MAX(al.connection_date) as connection_date, al.connection_ip, al.connection_domain
+				FROM access_log AS al LEFT JOIN member mm ON mm.seq = al.member_seq GROUP BY al.member_seq) AS al ON al.member_seq = m1.seq
+			LEFT JOIN betting_summary bs ON bs.member_seq = m1.seq
+		<where>
+			m1.seq = #{entity.seq}
+		</where>
+		GROUP BY m1.seq
+	</select>
+    
+	<select id="getSiteList" resultType="java.util.Map">
+		SELECT
+		DISTINCT m.site_name AS siteName, m.site_domain AS siteDomain
+		FROM member m
+		WHERE m.site_name IS NOT NULL
+		GROUP BY m.site_name
+    </select>
+    
+    <select id="getDistributorListModal" resultType="com.casino.modules.admin.common.form.DistributorForm">
+    	SELECT
+			m.seq AS seq,
+			m.sub_headquarter_seq AS headquarterSeq,
+			( SELECT m1.id	FROM member m1 WHERE m1.user_type = #{userTypeSubHeadquarter} AND m1.seq = m.sub_headquarter_seq) AS subHeadquarter,
+			m.id AS id,
+			m.nickname AS nickname,
+			IFNULL(m.money_amount, 0) AS moneyAmount,
+			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.distributor_seq = m.seq ) AS memberCount,
+			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeStore} AND m1.distributor_seq = m.seq ) AS storeCount,
+			(
+			SELECT
+				count(*) 
+			FROM
+				member m1
+				LEFT JOIN money_history mh ON m1.seq = mh.receiver 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND m1.distributor_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{isMoney}
+				<if test="fromApplicationTime != null and fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{fromApplicationTime})
+				</if>
+				<if test="toApplicationTime != null and toApplicationTime != '' ">
+					AND DATE(#{toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			)AS depositMemberCount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND m1.distributor_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="fromApplicationTime != null and fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{fromApplicationTime})
+				</if>
+				<if test="toApplicationTime != null and toApplicationTime != '' ">
+					AND DATE(#{toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS depositMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND ( m1.distributor_seq = m.seq OR m1.seq = m.seq ) 
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
+				AND mh.money_or_point = #{isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="fromApplicationTime != null and fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{fromApplicationTime})
+				</if>
+				<if test="toApplicationTime != null and toApplicationTime != '' ">
+					AND DATE(#{toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS depositPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.payer = m1.seq
+				LEFT JOIN member m2 ON mh.receiver = m2.seq AND m2.distributor_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq 
+				AND m1.user_type = #{userTypeDistributor} 
+				AND mh.money_or_point = #{isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="fromApplicationTime != null and fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{fromApplicationTime})
+				</if>
+				<if test="toApplicationTime != null and toApplicationTime != '' "> 
+					AND DATE(#{toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS depositPayment,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
+				AND m1.distributor_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{isMoney} 
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="fromApplicationTime != null and fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{fromApplicationTime})
+				</if>
+				<if test="toApplicationTime != null and toApplicationTime != '' ">
+					AND DATE(#{toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS withdrawalMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
+				AND ( m1.distributor_seq = m.seq OR m1.seq = m.seq )
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
+				AND mh.money_or_point = #{isMoney} 
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="fromApplicationTime != null and fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{fromApplicationTime})
+				</if>
+				<if test="toApplicationTime != null and toApplicationTime != '' ">
+					AND DATE(#{toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS withdrawalPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq
+				LEFT JOIN member m2 ON mh.payer = m2.seq AND m2.distributor_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq 
+				AND m1.user_type = #{userTypeDistributor} 
+				AND mh.money_or_point = #{isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="fromApplicationTime != null and fromApplicationTime != '' "> 
+					AND	DATE(mh.application_time) >= DATE(#{fromApplicationTime})
+				</if>
+				<if test="toApplicationTime != null and toApplicationTime != '' "> 
+					AND DATE(#{toApplicationTime}) >= DATE(mh.application_time)
+				</if> 
+			), 0) AS withdrawalPayment,
+			IFNULL(m.slot_rate, 0) AS slotRate,
+			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
+			m.status AS status,
+			IFNULL(bs.betting_amount, 0) AS betAmount,
+			IFNULL(bs.winning_amount, 0) AS winningAmount,
+			IFNULL(bs.lost_amount, 0) AS lostAmount,
+			IFNULL(bs.bat_rolling, 0) AS batRolling,
+			bs.type AS gameType
+		FROM
+			member m
+		LEFT JOIN betting_summary bs ON bs.member_seq = m.seq  
+		WHERE	m.user_type = 2 AND m.sub_headquarter_seq = #{seq}
+		GROUP BY m.seq
+		ORDER BY m.create_date DESC
+    </select>
+    
+    <select id="getStoreListModal" resultType="com.casino.modules.admin.common.form.StoreForm">
+    	SELECT
+			m.seq AS seq,
+			( SELECT m1.id	FROM member m1 WHERE m1.user_type = #{userTypeSubHeadquarter} AND m1.seq = m.sub_headquarter_seq) AS headquarter,
+			( SELECT m1.id	FROM member m1 WHERE m1.user_type = #{userTypeDistributor} AND m1.seq = m.distributor_seq) AS distributor,
+			m.id AS id,
+			m.nickname AS nickname,
+			IFNULL(m.money_amount, 0) AS moneyAmount,
+			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.store_seq = m.seq ) AS memberCount,
+			(
+			SELECT
+				count(*) 
+			FROM
+				member m1
+				LEFT JOIN money_history mh ON m1.seq = mh.receiver 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND m1.store_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{entity.isMoney}
+				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
+				</if>
+				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
+					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			)AS depositMemberCount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND m1.store_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{entity.isMoney}
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
+				</if>
+				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
+					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS depositMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
+				AND ( m1.store_seq = m.seq OR m1.seq = m.seq ) 
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
+				AND mh.money_or_point = #{entity.isMoney} 
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
+				</if>
+				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
+					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS depositPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.payer = m1.seq
+				LEFT JOIN member m2 ON mh.receiver = m2.seq AND m2.store_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq
+				AND m1.user_type = #{userTypeStore} 
+				AND mh.money_or_point = #{entity.isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
+				</if>
+				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
+					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS depositPayment,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
+				AND m1.store_seq = m.seq
+				AND m1.user_type = #{userTypeNormal}
+				AND mh.money_or_point = #{entity.isMoney} 
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
+				</if>
+				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
+					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS withdrawalMemberAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq 
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
+				AND ( m1.store_seq = m.seq OR m1.seq = m.seq )
+				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
+				AND mh.money_or_point = #{entity.isMoney} 
+				AND mh.status = #{moneyHistoryStatusComplete}
+				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
+				</if>
+				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
+					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS withdrawalPartnerAmount,
+			IFNULL((
+			SELECT
+				sum( mh.variable_amount ) 
+			FROM
+				money_history mh
+				LEFT JOIN member m1 ON mh.receiver = m1.seq
+				LEFT JOIN member m2 ON mh.payer = m2.seq AND m2.store_seq = m1.seq
+			WHERE
+				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
+				AND m1.seq = m.seq
+				AND m1.user_type = #{userTypeStore} 
+				AND mh.money_or_point = #{entity.isMoney}
+				AND m2.user_type = #{userTypeNormal}
+				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
+					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
+				</if>
+				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
+					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
+				</if>
+			), 0) AS withdrawalPayment,
+			IFNULL(m.slot_rate, 0) AS slotRate,
+			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
+			m.status AS status,
+			IFNULL(bs.betting_amount, 0) AS betAmount,
+			IFNULL(bs.winning_amount, 0) AS winningAmount,
+			IFNULL(bs.lost_amount, 0) AS lostAmount,
+			IFNULL(bs.bat_rolling, 0) AS batRolling,
+			bs.type AS gameType
+		FROM
+			member m
+		LEFT JOIN betting_summary bs ON bs.member_seq = m.seq			
+		<where>
+			<if test="entity.userType != null">
+				AND m.user_type = #{entity.userType}
+			</if>
+			<if test="entity.headquarterSeq != null and entity.headquarterSeq != ''">
+				AND m.sub_headquarter_seq = #{entity.headquarterSeq}
+			</if>
+			<if test="entity.distributorSeq != null and entity.distributorSeq != ''">
+				AND m.distributor_seq = #{entity.distributorSeq}
+			</if>
+		</where>
+		GROUP BY m.seq
+		ORDER BY m.create_date DESC
+    </select>
+    
+    <select id="getMemberListModal" resultType="com.casino.modules.admin.common.form.MemberForm">
+    	SELECT
+		m1.seq,
+		m1.id,
+		m1.name,
+		m1.nickname,
+		IFNULL(m1.money_amount, 0) AS moneyAmount,
+		IFNULL(m1.mileage_amount, 0) AS mileageAmount,
+		m1.user_type AS userType,
+		level.seq AS levelSeq,
+		level.level_name AS levelName,
+		IFNULL(bs.betting_amount, 0) AS betAmount,
+		IFNULL(bs.winning_amount, 0) AS winningAmount,
+		IFNULL(bs.lost_amount, 0) AS lostAmount,
+		IFNULL(bs.bat_rolling, 0) AS batRolling,
+		bs.type AS gameType,
+		m1.status,
+		m1.register_date,
+		m1.site_domain,
+		m1.recommender,
+		m2.seq AS StoreSeq,
+		m2.id AS StoreId,
+		m2.nickname AS StoreNickname,
+		m3.seq AS DistributorSeq,
+		m3.id AS DistributorId,
+		m3.nickname AS distributorNickname,
+		m4.seq AS subHeadquarterSeq,
+		m4.id AS subHeadquarterId,
+		m4.nickname AS subHeadquarterNickname,
+		m1.recommendable,
+		IFNULL(dh.deposit, 0) AS deposit,
+		IFNULL(amh.admin_deposit, 0) AS adminDeposit,
+		IFNULL(wh.withdrawal, 0) AS withdrawal,
+		al.connection_date,
+		al.connection_ip,
+		al.connection_domain
+		FROM
+		member m1
+		LEFT JOIN LEVEL ON level.seq = m1.level_seq
+		LEFT JOIN member m2 ON m1.store_seq = m2.seq
+		LEFT JOIN member m3 ON m1.distributor_seq = m3.seq
+		LEFT JOIN member m4 ON m1.sub_headquarter_seq = m4.seq
+		LEFT JOIN (SELECT SUM(mh.variable_amount) AS deposit, mh.receiver AS seq
+			FROM money_history mh
+			LEFT JOIN member m ON m.seq = mh.receiver
+			WHERE mh.operation_type = #{entity.operationTypeDeposit}
+			AND mh.money_or_point = #{entity.isMoney}
+			<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != ''">
+				AND	DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
+			</if>
+			<if test="entity.toApplicationTime != null and entity.toApplicationTime != ''">
+				AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
+			</if>
+			GROUP BY mh.receiver) AS dh ON dh.seq = m1.seq
+		LEFT JOIN (SELECT SUM(mh.variable_amount) AS withdrawal, mh.receiver AS seq
+			FROM money_history mh
+			LEFT JOIN member m ON m.seq = mh.receiver
+			WHERE mh.operation_type = #{entity.operationTypeWithdrawal}
+			AND mh.money_or_point = #{entity.isMoney}
+			<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != ''">
+				AND	DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
+			</if>
+			<if test="entity.toApplicationTime != null and entity.toApplicationTime != ''">
+				AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
+			</if>
+			GROUP BY mh.receiver) AS wh ON wh.seq = m1.seq
+		LEFT JOIN (SELECT SUM(mh.variable_amount) AS admin_deposit, mh.receiver
+			FROM money_history mh
+			LEFT JOIN member m ON m.seq = mh.receiver
+			WHERE mh.operation_type = ${MONEY_HISTORY_OPERATION_TYPE_DEPOSIT} AND mh.status = ${MONEY_HISTORY_STATUS_PARTNER_PAYMENT}
+			GROUP BY mh.receiver) as amh ON amh.receiver = m1.seq
+		LEFT JOIN (SELECT al.member_seq, al.site, MAX(al.connection_date) as connection_date, al.connection_ip, al.connection_domain
+			FROM access_log AS al LEFT JOIN member mm ON mm.seq = al.member_seq GROUP BY al.member_seq) AS al ON al.member_seq = m1.seq
+		LEFT JOIN betting_summary bs ON bs.member_seq = m1.seq
+		<where>
+		<if test="entity.userType != null">
+			AND m1.user_type = #{entity.userType}  
+		</if>
+		<if test="entity.subHeadquarterSeq != null and entity.subHeadquarterSeq != ''">
+			AND m1.sub_headquarter_seq = #{entity.subHeadquarterSeq}
+		</if>
+		<if test="entity.distributorSeq != null and entity.distributorSeq != ''">
+			AND m1.distributor_seq = #{entity.distributorSeq}
+		</if>
+		<if test="entity.storeSeq != null and entity.storeSeq != ''">
+			AND m1.store_seq = #{entity.storeSeq}
+		</if>
+		</where>
+		GROUP BY m1.seq
+		ORDER BY m1.create_date DESC
+    </select>
+    
+</mapper>

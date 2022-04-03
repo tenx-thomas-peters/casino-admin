@@ -1,0 +1,68 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Memo')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+    <section class="body">
+        <div class="main">
+            <section role="main" class="content-body">
+            	<section class="panel" role="main">
+					<header class="panel-heading">
+						<h2 class="panel-title" th:text="#{admin.note.memoRegistration}"></h2>
+					</header>
+					<div class="panel-body">
+                        <form method="get" th:action="@{/partner2/confirmNote}" id="note-form" class="form-horizontal form-bordered mb-lg vform" novalidate="novalidate" th:object="${member}" >
+                            <input type="hidden" name="seq" th:field="*{seq}" autocomplete="off"/>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="memo-list">
+                                    <thead>
+                                     <tr>
+                                      <th class="text-center" style="width: 20%;" th:text="#{admin.common.hour}"></th>
+                                      <th class="text-center" style="width: 60%;" th:text="#{admin.common.contents}"></th>
+                                      <th class="text-center" style="width: 20%;" th:text="#{admin.common.process}"></th>
+                                     </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td><textarea name="content" style="width: 100%;" disabled></textarea></td>
+                                        <td class="text-center"><a class="add-memo">[[#{admin.member.addition}]]</a></td>
+                                    </tr>
+                                    <tr class="json-data" th:each="memo : ${memoList}">
+                                        <td class="text-center">
+                                            <p class="date" style="margin: 0" th:text="${memo.hour.split(' ')[0]}"></p>
+                                            <p class="time" style="margin: 0" th:text="${memo.hour.split(' ')[1]}"></p>
+                                        </td>
+                                        <td>
+                                            <textarea name="content" style="width: 100%;" th:text="${memo.contents}"></textarea>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="update-memo">[[#{admin.common.edit}]]</a>
+                                            <a class="delete-memo">[[#{admin.common.delete}]]</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="panel-footer">
+								<button type="button" class="btn btn-primary" id="confirmNote" th:text="#{admin.common.confirm}">Confirm</button>
+		                        <a href="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></a>
+							</div>
+                        </form>
+					</div>
+				</section>
+			</section>
+        </div>
+    </section>
+    
+    <script type="text/javascript" th:inline="javascript">
+	    var url = [[${url}]];
+	</script>
+	
+    <script th:replace="template :: scripts"></script>
+    <script th:src="@{/assets/javascripts/partner/note.js}"></script>
+</body>
+
+</html>

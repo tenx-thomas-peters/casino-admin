@@ -1,0 +1,15 @@
+.accessLog #loginlist th {
+    text-align: center;
+}
+
+.accessLog #loginlist td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 0;
+}
+
+#loginlist td > a {
+    text-decoration: none;
+    cursor: pointer;
+    color: #777;
+}
