@@ -49,7 +49,7 @@ public class ScheduleController {
             long t, before_30_min;
             if (this.lastRequestTime == null) {
                 t = date.getTimeInMillis();
-                before_30_min = t - (2 * ONE_MINUTE_IN_MILLIS);
+                before_30_min = t - (30 * ONE_MINUTE_IN_MILLIS);
             } else {
                 before_30_min = this.lastRequestTime;
                 t = date.getTimeInMillis();
@@ -64,21 +64,6 @@ public class ScheduleController {
 
             Integer defaultPerPage = 100;
             Integer pageNo = 1;
-
-            SimpleDateFormat fformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-            String mm = "2022-03-31T02:12:44.000000Z";
-            Date ddate = fformat.parse(mm);
-
-
-            String aa = simpleDateFormat.format(ddate);
-
-            Date aad1 = simpleDateFormat.parse(aa);
-
-            System.out.println("dddddd");
-            System.out.println(aad1);
-
-
-
 
             String transaction_list_simple_url = gameServerUrl + "/transaction-list-simple?" +
                     "start=" + date_30_ago +

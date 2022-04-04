@@ -15,15 +15,12 @@ public class BettingLogForm {
     private String userId;
     private String status;
     private BettingLogDetail details;
-
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
-//    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
-    private String processedAt;
-
     private String refererId; // bet-win relation
 
 //    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
 //    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
+//    Date format from response data ( /transaction-sample-list  api)
+    private String processedAt;
     private String createAt;
     private Member user; // {id: '', username: ''}
 

@@ -33,26 +33,28 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
     public boolean saveBettingSummary(List<BettingLogForm> bettingLogList) {
         boolean result = false;
         List<BettingSummary> bettingSummaryList = new ArrayList<>();
-        System.out.println("sssssss");
         for (BettingLogForm item : bettingLogList) {
             if (item.getType().equals("bet")) {
                 BettingSummary bettingSummary = new BettingSummary();
                 bettingSummary.setSeq(UUIDGenerator.generate());
 
 
-                System.out.println("asdfasdfasdf");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                SimpleDateFormat fformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-                Date ddate = null;
+                /* Thomas Peters 2022.04.03
+                ----------------------------------------------------------------------------- <
+                 * Convert date form from  2022-04-03 10:08:000000 to 2022-04-03T10:08:000000Z
+                 */
+                SimpleDateFormat destination_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat first_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+                Date first_date = null;
                 try {
-                    ddate = fformat.parse(item.getProcessedAt());
+                    first_date = first_format.parse(item.getProcessedAt());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                String aa = simpleDateFormat.format(ddate);
+                String str_first_date = destination_format.format(first_date);
 
-                System.out.println(aa);
-                bettingSummary.setCheckTime(aa);
+                bettingSummary.setCheckTime(str_first_date);
+                //----------------------------------------------------------------------------- >
 
                 QueryWrapper<Member> qw = new QueryWrapper<>();
                 qw.eq("id", item.getUser().getUsername());

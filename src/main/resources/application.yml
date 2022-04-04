@@ -122,7 +122,7 @@ casino :
     webapp: /webapp
     apiLog: /apiLog
   schedule:
-    delay: "0 */2 * * * *"
+    delay: "0 */30 * * * *"
     
 # mysql
 mysql-url: 'C:\\Program Files\\MySQL\MySQL Server 5.7\\bin'
