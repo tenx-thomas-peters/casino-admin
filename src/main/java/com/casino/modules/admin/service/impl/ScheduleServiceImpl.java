@@ -41,19 +41,19 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
                 /* Thomas Peters 2022.04.03
                 ----------------------------------------------------------------------------- <
-                 * Convert date form from  2022-04-03 10:08:000000 to 2022-04-03T10:08:000000Z
+                 * Convert date form from 2022-04-03T10:08:000000Z to 2022-04-03 10:08:000000
                  */
                 SimpleDateFormat destination_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 SimpleDateFormat first_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-                Date first_date = null;
+                Date origin_date = null;
                 try {
-                    first_date = first_format.parse(item.getProcessedAt());
+                    origin_date = first_format.parse(item.getProcessedAt());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                String str_first_date = destination_format.format(first_date);
+                String str_destination_date = destination_format.format(origin_date);
 
-                bettingSummary.setCheckTime(str_first_date);
+                bettingSummary.setCheckTime(str_destination_date);
                 //----------------------------------------------------------------------------- >
 
                 QueryWrapper<Member> qw = new QueryWrapper<>();
@@ -89,6 +89,17 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                 System.out.println("bettingSummary");
                 System.out.println(bettingSummary);
                 bettingSummaryList.add(bettingSummary);
+
+                /* Thomas Peters 2022.04.04
+                 *----------------------------------------------------------------- <
+                 * apply betting amount to member
+                 */
+                assert member != null;
+                float amount = member.getMoneyAmount() + ( bettingSummary.getBettingAmount() + bettingSummary.getWinningAmount() - bettingSummary.getLostAmount() );
+                member.setMoneyAmount(amount);
+                memberService.updateById(member);
+                System.out.println("member");
+                System.out.println(member);
             }
         }
 
