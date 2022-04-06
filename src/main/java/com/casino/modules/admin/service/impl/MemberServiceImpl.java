@@ -172,7 +172,13 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 					? prevMoneyAmount + variableAmount
 					: prevMoneyAmount - variableAmount;
 			moneyHistory.setFinalAmount(finalAmount);
+
+			// classification = ku bun
+			// 0: money, 1: point
 			moneyHistory.setMoneyOrPoint(classification);
+
+			//transactionClassification = ke rea ku bun
+			// 0: increase, 1: decrease
 			moneyHistory.setOperationType(transactionClassification);
 			moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
 			moneyHistory.setReasonType(reasonType);
