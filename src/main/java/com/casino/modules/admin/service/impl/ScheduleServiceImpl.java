@@ -167,7 +167,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     moneyHistory.setFinalAmount(final_amount);
                     moneyHistory.setMoneyOrPoint(0);
                     moneyHistory.setOperationType(0);
-                    moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_COMPLETE);
+                    moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
 
                     // set Reason of money transfer
                     QueryWrapper<Dict> qwe = new QueryWrapper<>();
@@ -175,9 +175,11 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
                     if(winningAmount < bettingAmount){
                         qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER);
+                        moneyHistory.setReasonType(CommonConstant.MONEY_REASON_TRANSFER);
                     }
                     else{
                         qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER_WINNING);
+                        moneyHistory.setReasonType(CommonConstant.MONEY_REASON_TRANSFER_WINNING);
                     }
                     String reasonStrKey = "";
                     List<Dict> reasonList = dictService.list(qwe);
