@@ -143,15 +143,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
 //                    total amount of member
                     float final_amount = member.getMoneyAmount() - bettingAmount + winningAmount;
-                    System.out.println("final");
-                    System.out.println(final_amount);
-                    member.setMoneyAmount(final_amount);
 
-                    if (memberService.updateById(member)) {
-                        System.out.println("save member");
-                    } else {
-                        System.out.println("fail member");
-                    }
 
                     // set money history
                     moneyHistory.setSeq(UUIDGenerator.generate());
@@ -179,18 +171,17 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
                     // set Reason of money transfer
                     QueryWrapper<Dict> qwe = new QueryWrapper<>();
-                    qw.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
-                    List<Dict> reasonList = dictService.list(qwe);
-                    String reasonStrKey = "";
+                    qwe.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
 
                     if(winningAmount < bettingAmount){
-//                        moneyHistory.setReasonType(4);
-                        reasonStrKey = reasonList.get(4).getStrValue();
+                        qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER);
                     }
                     else{
-//                        moneyHistory.setReasonType(5);
-                        reasonStrKey = reasonList.get(5).getStrValue();
+                        qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER_WINNING);
                     }
+                    String reasonStrKey = "";
+                    List<Dict> reasonList = dictService.list(qwe);
+                    reasonStrKey = reasonList.get(0).getStrValue();
 
                     List<String> params = new ArrayList<String>();
                     params.add(String.valueOf(moneyHistory.getVariableAmount()));
@@ -201,6 +192,15 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
                     moneyHistoryService.save(moneyHistory);
 
+                    System.out.println("final");
+                    System.out.println(final_amount);
+                    member.setMoneyAmount(final_amount);
+
+                    if (memberService.updateById(member)) {
+                        System.out.println("save member");
+                    } else {
+                        System.out.println("fail member");
+                    }
 
                     member = memberService.getById(member.getSeq());
 

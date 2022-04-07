@@ -89,6 +89,7 @@ public interface CommonConstant {
 	public static final Integer MONEY_REASON_PARTNER_RECOVERY = 2;
 	public static final Integer MONEY_REASON_PARTNER_PAYMENT = 3;
 	public static final Integer MONEY_REASON_TRANSFER = 4;
+	public static final Integer MONEY_REASON_TRANSFER_WINNING = 6;
 	public static final Integer MONEY_REASON_ADMINEDIT = 5;
 
 	public static final Integer PARTNER_OR_MEMBER_MEMBER = 0;
