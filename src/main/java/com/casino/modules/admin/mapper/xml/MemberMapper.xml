@@ -127,22 +127,24 @@
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeStore} AND m1.sub_headquarter_seq = m.seq ) AS storeCount,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.sub_headquarter_seq = m.seq ) AS memberCount,
 			(
-			SELECT
-				count(*) 
-			FROM
-				member m1
-				LEFT JOIN money_history mh ON m1.seq = mh.receiver 
-			WHERE
-				mh.operation_type = #{moneyHistoryOperationTypeDeposit}
-				AND m1.sub_headquarter_seq = m.seq
-				AND m1.user_type = #{userTypeNormal}
-				AND mh.money_or_point = #{headquarter.isMoney}
-				<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' "> 
-					AND	DATE(mh.application_time) >= DATE(#{headquarter.fromApplicationTime})
-				</if>
-				<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' "> 
-					AND DATE(#{headquarter.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
+			SELECT count(*)
+			from
+			  (SELECT
+					m1.*
+				FROM
+					member m1
+					LEFT JOIN money_history mh ON m1.seq = mh.receiver
+				WHERE
+					mh.operation_type = #{moneyHistoryOperationTypeDeposit}
+					AND m1.user_type = #{userTypeNormal}
+					AND mh.money_or_point = #{headquarter.isMoney}
+					<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' ">
+						AND	DATE(mh.application_time) >= DATE(#{headquarter.fromApplicationTime})
+					</if>
+					<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' ">
+						AND DATE(#{headquarter.toApplicationTime}) >= DATE(mh.application_time)
+					</if>
+				GROUP BY mh.receiver ) as mmm WHERE mmm.sub_headquarter_seq = m.seq
 			) AS depositMemberCount,
 			IFNULL((
 			SELECT
