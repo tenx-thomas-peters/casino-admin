@@ -94,18 +94,22 @@ public class ApiController {
             @RequestParam("password") String password) {
         Result<JSONObject> result = new Result<>();
         JSONObject obj = new JSONObject();
+        System.out.println("member");
         try {
             QueryWrapper<Member> qw = new QueryWrapper<>();
+
             qw.eq("user_type", CommonConstant.USER_TYPE_NORMAL);
-            qw.eq("name", loginID);
+            qw.eq("id", loginID);
+
             Member member = memberService.getOne(qw);
             AccessLog accessLog = new AccessLog();
 
             if (member != null) {
                 accessLog.setSeq(UUIDGenerator.generate());
+
                 accessLog.setMemberSeq(member.getSeq());
                 accessLog.setSite(member.getSeq());
-                accessLog.setId(member.getId());
+                accessLog.setId(member.getId().toString());
                 accessLog.setNickname(member.getNickname());
                 accessLog.setAccountHolder(member.getAccountHolder());
                 accessLog.setLevel(member.getLevel());

@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
-@TableName("access_log")
 @Data
+@TableName("access_log")
 public class AccessLog implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
