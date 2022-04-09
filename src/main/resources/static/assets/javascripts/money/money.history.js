@@ -7,7 +7,7 @@ $(document).ready(function() {
         let left = 100;
         let width = screen.availWidth * 4 / 6;
         let height = 400;
-		let detailWindow = window.open(CONTEXT_ROOT + 'log/charge/agree?idx=' + moneyHistorySeq, 
+		let detailWindow = window.open(CONTEXT_ROOT + 'log/charge/agree?idx=' + moneyHistorySeq + "&member_type=member",
 			'Recharge application processing', 
 			'width='+ width + ',height=' + height + ',top=' + top + ',left=' + left);
         detailWindow.onbeforeunload = function () {
@@ -21,7 +21,7 @@ $(document).ready(function() {
 		let left = 100;
 		let width = screen.availWidth * 4 / 6;
 		let height = 400;
-		let detailWindow = window.open(CONTEXT_ROOT + 'log/charge/agree?idx=' + moneyHistorySeq,
+		let detailWindow = window.open(CONTEXT_ROOT + 'log/charge/agree?idx=' + moneyHistorySeq + "&member_type=partner",
 			'Recharge application processing',
 			'width='+ width + ',height=' + height + ',top=' + top + ',left=' + left);
 		detailWindow.onbeforeunload = function () {

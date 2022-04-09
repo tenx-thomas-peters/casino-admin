@@ -484,16 +484,26 @@ public class MoneyController {
     }
 
     @GetMapping(value = "charge/agree")
-    public String chargePopUp(@RequestParam("idx") String moneyHistorySeq, Model model, HttpServletRequest request) {
+    public String chargePopUp(@RequestParam("idx") String moneyHistorySeq, @RequestParam("member_type") String memberType, Model model, HttpServletRequest request) {
         String returnUrl = "";
         try {
             MoneyHistory moneyHistory = moneyHistoryService.getById(moneyHistorySeq);
             Member member = memberService.getById(moneyHistory.getReceiver());
             moneyHistory.setMember(member);
-            if (moneyHistory.getOperationType() == CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT) {
-                returnUrl = "views/admin/money/chargePopUp";
-            } else {
-                returnUrl = "views/admin/money/withdrawPopUp";
+
+            if(memberType.equals("member")){
+                if (moneyHistory.getOperationType() == CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT) {
+                    returnUrl = "views/admin/money/chargePopUp";
+                } else {
+                    returnUrl = "views/admin/money/withdrawPopUp";
+                }
+            }
+            else{
+                if (moneyHistory.getOperationType() == CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT) {
+                    returnUrl = "views/admin/money/partnerChargePopUp";
+                } else {
+                    returnUrl = "views/admin/money/partnerWithdrawPopUp";
+                }
             }
             model.addAttribute("moneyHistory", moneyHistory);
             model.addAttribute("url", "/log/charge/agree");
