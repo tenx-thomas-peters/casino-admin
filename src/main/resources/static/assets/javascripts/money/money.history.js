@@ -15,6 +15,20 @@ $(document).ready(function() {
         }
 	});
 
+	$('.partner_acceptBtn').on('click', function() {
+		let moneyHistorySeq = $(this).data('seq');
+		let top = 100;
+		let left = 100;
+		let width = screen.availWidth * 4 / 6;
+		let height = 400;
+		let detailWindow = window.open(CONTEXT_ROOT + 'log/charge/agree?idx=' + moneyHistorySeq,
+			'Recharge application processing',
+			'width='+ width + ',height=' + height + ',top=' + top + ',left=' + left);
+		detailWindow.onbeforeunload = function () {
+			window.location.reload();
+		}
+	});
+
 	$('.memberId').on('click', function (e) {
 	    e.preventDefault();
 	    let memberSeq = $(this).data('key');
