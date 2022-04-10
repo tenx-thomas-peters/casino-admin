@@ -1,0 +1,118 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.common.popup.title})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
+<body>
+<section class="body">
+    <div class="row">
+        <div role="main" class="col-md-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        [[#{admin.recharge.application.processing}]]
+                    </h4>
+                </header>
+                <div class="panel-body">
+                    <form class="form-horizontal form-bordered"
+                          th:action="@{/log/moneydeposit/accept}" method="post" id="chargeForm">
+                        <input type="hidden" id="seq" name="seq" th:value="${moneyHistory.seq}" />
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.common.id}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <strong class="control-label" id='memberId'>[[${moneyHistory.member.id}]]</strong>
+                                <label class="control-label" id='firstCharge'></label>
+                                <label class="control-label" id='allCharge'></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.deposit.amount}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="number" class="form-control" id="depositAmount" name="depositAmount" th:value="${moneyHistory.variableAmount}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{admin.deposit.log.bonus}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="number" class="form-control" id="bonus" max=500 name="bonus" th:value="${moneyHistory.bonus}"/>
+                            </div>
+                            <div><p class="control-label">[[#{admin.common.percent}]] [[#{admin.money.bonusLimit}]]</p></div>
+                        </div>
+
+                    </form>
+                </div>
+                <footer class="panel-footer">
+                    <button class="btn btn-default" type="submit" th:text="#{admin.common.charge}" id="chargeBtn" ></button>
+                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                </footer>
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+<script>
+    $("#chargeBtn").on("click", function() {
+        $.ajax({
+            url: CONTEXT_ROOT + "log/partnerMoneydeposit/accept",
+            type: "POST",
+            data: $("#chargeForm").serialize(),
+            success: function(response) {
+                if(response.success){
+                    new PNotify({
+                        title: 'Success!',
+                        text: response.message,
+                        type: 'success',
+                        buttons: {
+                            closer: true,
+                            sticker: false
+                        }
+                    });
+
+                    setTimeout(function() {
+                        window.close();
+                    }, 1000);
+                } else {
+                    new PNotify({
+                        title: 'Error!',
+                        text: response.message,
+                        type: 'error',
+                        buttons: {
+                            closer: true,
+                            sticker: false
+                        }
+                    });
+                }
+            },
+            error: function(err) {
+                new PNotify({
+                    title: 'Error!',
+                    text: err.message,
+                    type: 'error',
+                    buttons: {
+                        closer: true,
+                        sticker: false
+                    }
+                });
+                $.magnificPopup.close();
+            }
+        });
+    })
+</script>
+</body>
+</html>

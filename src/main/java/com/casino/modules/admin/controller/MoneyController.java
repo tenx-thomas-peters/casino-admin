@@ -448,6 +448,58 @@ public class MoneyController {
         return result;
     }
 
+    @RequestMapping(value = "/partnerMoneydeposit/accept")
+    @ResponseBody
+    public Result<MoneyHistory> PartnerMoneyDepositAccept(
+            @RequestParam("seq") String seq,
+            @RequestParam(name = "depositAmount", defaultValue = "0") Float depositAmount,
+            @RequestParam(name = "bonus", defaultValue = "0") Float bonus,
+            HttpServletRequest request) {
+        Result<MoneyHistory> result = new Result<>();
+        try {
+            //TODO
+            // game api - /user/add-balance start
+            MoneyHistory history = moneyHistoryService.getById(seq);
+            Member member = memberService.getById(history.getReceiver());
+            Float amount = depositAmount + depositAmount * bonus;
+
+            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT)) {
+                result.success("success!");
+            } else {
+                result.error505("failed");
+            }
+
+        } catch (Exception e) {
+            log.error("url: /log/moneydeposit/accept --- method: moneyDepositAccept --- " + e.getMessage());
+            result.error500("failed");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/partnerMoneywithdraw/accept")
+    @ResponseBody
+    public Result<MoneyHistory> PartnerMoneyWithdrawAccept(
+            @RequestParam("seq") String seq,
+            @RequestParam("withdrawAmount") Float withdrawAmount,
+            HttpServletRequest request) {
+        Result<MoneyHistory> result = new Result<>();
+        try {
+            //TODO
+            // game api - /user/sub-balance start
+            MoneyHistory history = moneyHistoryService.getById(seq);
+            Member member = memberService.getById(history.getReceiver());
+            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL)) {
+                result.success("success!");
+            } else {
+                result.error505("failed");
+            }
+        } catch (Exception e) {
+            log.error("url: /log/moneywithdraw/accept --- method: moneyWithdrawAccept --- " + e.getMessage());
+            result.error500("failed");
+        }
+        return result;
+    }
+
     @RequestMapping(value = "/member/money/historydata", method = {RequestMethod.GET, RequestMethod.POST})
     public String memberMoneyHistoryData(
             Model model,
