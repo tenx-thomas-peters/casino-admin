@@ -51,6 +51,9 @@ public class Member implements Serializable {
     @TableField(value = "money_amount")
     private Float moneyAmount;
 
+    @TableField(value = "casino_money")
+    private Float casinoMoney;
+
     @TableField(value = "mileage_amount")
     private Float mileageAmount;
 

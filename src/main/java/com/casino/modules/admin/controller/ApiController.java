@@ -605,4 +605,35 @@ public class ApiController {
         }
         return result;
     }
+
+    @GetMapping(value = "syncCasinoMoney")
+    public Result<Member> syncCasinoMoney(
+            @RequestParam("userSeq") String userSeq) {
+        Result<Member> result = new Result<>();
+        try {
+            Member member = memberService.getById(userSeq);
+
+            // Thomas 2022.04.11
+            // set sync casino money with game service and local money
+            // when user access to game service, casino money added, local money becomes 0
+
+            float casino_money = 0;
+            if(member.getCasinoMoney() != null){
+                casino_money = member.getCasinoMoney();
+            }
+
+            float update_casino_money = casino_money + member.getMoneyAmount();
+            member.setCasinoMoney(update_casino_money);
+            member.setMoneyAmount(0.0F);
+
+            memberService.updateById(member);
+            result.success("success");
+            result.setResult(member);
+        }
+        catch (Exception e) {
+            result.error500("Internal Server Error");
+            log.error("url: /api/syncCasinoMoney --- method: syncCasinoMoney --- message: " + e.toString());
+        }
+        return result;
+    }
 }
