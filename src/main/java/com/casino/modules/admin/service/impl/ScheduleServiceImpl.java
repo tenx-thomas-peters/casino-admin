@@ -135,41 +135,28 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     bettingSummary.setPlayingGame(playing_game);
                     bettingSummary.setCheckTime(checktime);
                     bettingSummary.setType(type);
-
                     bettingSummary.setMemberSeq(member != null ? member.getSeq() : "");
                     bettingSummary.setStoreSeq(member != null ? member.getStoreSeq() : "");
                     bettingSummary.setDistributorSeq(member != null ? member.getDistributorSeq() : "");
                     bettingSummary.setHeadquarterSeq(member != null ? member.getSubHeadquarterSeq() : "");
 
-//                    total amount of member
+                    // total amount of member
                     float final_amount = member.getMoneyAmount() - bettingAmount + winningAmount;
-
 
                     // set money history
                     moneyHistory.setSeq(UUIDGenerator.generate());
                     moneyHistory.setReceiver(member.getSeq());
                     moneyHistory.setApplicationTime(new Date());
-
                     moneyHistory.setProcessTime(new Date());
-                    System.out.println("processtime");
-                    System.out.println(new Date());
-
                     moneyHistory.setPrevAmount(member.getMoneyAmount());
-                    System.out.println("setPrevAmount");
-                    System.out.println(member.getMoneyAmount());
-
                     moneyHistory.setVariableAmount(winningAmount - bettingAmount);
-
-                    System.out.println("setVariableAmount");
-                    System.out.println(winningAmount - bettingAmount);
-
                     moneyHistory.setActualAmount(Math.abs(bettingAmount - winningAmount));
                     moneyHistory.setFinalAmount(final_amount);
                     moneyHistory.setMoneyOrPoint(0);
                     moneyHistory.setOperationType(0);
                     moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
 
-                    // set Reason of money transfer
+                    // set Reason of money transfer--------------------------------------- <
                     QueryWrapper<Dict> qwe = new QueryWrapper<>();
                     qwe.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
 
@@ -181,21 +168,20 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                         qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER_WINNING);
                         moneyHistory.setReasonType(CommonConstant.MONEY_REASON_TRANSFER_WINNING);
                     }
+
                     String reasonStrKey = "";
                     List<Dict> reasonList = dictService.list(qwe);
                     reasonStrKey = reasonList.get(0).getStrValue();
-
                     List<String> params = new ArrayList<String>();
                     params.add(String.valueOf(moneyHistory.getVariableAmount()));
                     String reason = messageSource.getMessage(reasonStrKey, params.toArray(), Locale.ENGLISH);
                     moneyHistory.setReason(reason);
+                    // set Reason of money transfer--------------------------------------- />
 
 //                    moneyHistory.setChargeCount(moneyHistory.getChargeCount() + 1);
 
                     moneyHistoryService.save(moneyHistory);
 
-                    System.out.println("final");
-                    System.out.println(final_amount);
                     member.setMoneyAmount(final_amount);
 
                     if (memberService.updateById(member)) {
@@ -203,13 +189,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     } else {
                         System.out.println("fail member");
                     }
-
-                    member = memberService.getById(member.getSeq());
-
                     bettingSummaryList.add(bettingSummary);
-
-                    System.out.println("member");
-                    System.out.println(member);
                 }
             }
         }
