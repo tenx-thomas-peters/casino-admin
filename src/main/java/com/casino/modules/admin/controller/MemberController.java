@@ -114,8 +114,6 @@ public class MemberController {
             List<Member> partnerList = memberService.list(memberQw);
 
             model.addAttribute("pageList", pageList);
-            System.out.println("pageList");
-            System.out.println(pageList.getRecords());
             model.addAttribute("member", new Member());
             model.addAttribute("memberForm", memberForm);
             model.addAttribute("pageNo", pageNo);
