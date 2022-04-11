@@ -89,8 +89,6 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
             QueryWrapper<Member> qw = new QueryWrapper<>();
             qw.eq("id", member_username);
             Member member = memberService.getOne(qw);
-            MoneyHistory moneyHistory = new MoneyHistory();
-
 
             for(String game_detail_id : game_detail_list){
 
@@ -139,56 +137,63 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     bettingSummary.setStoreSeq(member != null ? member.getStoreSeq() : "");
                     bettingSummary.setDistributorSeq(member != null ? member.getDistributorSeq() : "");
                     bettingSummary.setHeadquarterSeq(member != null ? member.getSubHeadquarterSeq() : "");
-
                     // total amount of member
-                    float final_amount = member.getMoneyAmount() - bettingAmount + winningAmount;
 
-                    // set money history
-                    moneyHistory.setSeq(UUIDGenerator.generate());
-                    moneyHistory.setReceiver(member.getSeq());
-                    moneyHistory.setApplicationTime(new Date());
-                    moneyHistory.setProcessTime(new Date());
-                    moneyHistory.setPrevAmount(member.getMoneyAmount());
-                    moneyHistory.setVariableAmount(winningAmount - bettingAmount);
-                    moneyHistory.setActualAmount(Math.abs(bettingAmount - winningAmount));
-                    moneyHistory.setFinalAmount(final_amount);
-                    moneyHistory.setMoneyOrPoint(0);
-                    moneyHistory.setOperationType(0);
-                    moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
+//                    moneyHistory.setChargeCount(moneyHistory.getChargeCount() + 1);
+
+                    String memberSeq = member.getSeq();
+                    float prevMoneyAmount = member.getMoneyAmount();
+                    float prevMileageAmount = 0;
+                    float variableAmount = winningAmount - bettingAmount;
+                    float actualAmount = Math.abs(bettingAmount - winningAmount);
+                    float finalAmount = member.getMoneyAmount() - bettingAmount + winningAmount;
+                    Integer classification = 0;
+                    Integer transactionClassification = 0;
+                    Integer status = CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT;
 
                     // set Reason of money transfer--------------------------------------- <
+                    Integer reasonType = 0;
                     QueryWrapper<Dict> qwe = new QueryWrapper<>();
                     qwe.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
 
                     if(winningAmount < bettingAmount){
                         qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER);
-                        moneyHistory.setReasonType(CommonConstant.MONEY_REASON_TRANSFER);
+                        reasonType = CommonConstant.MONEY_REASON_TRANSFER;
                     }
                     else{
                         qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER_WINNING);
-                        moneyHistory.setReasonType(CommonConstant.MONEY_REASON_TRANSFER_WINNING);
+                        reasonType = CommonConstant.MONEY_REASON_TRANSFER_WINNING;
                     }
 
                     String reasonStrKey = "";
                     List<Dict> reasonList = dictService.list(qwe);
                     reasonStrKey = reasonList.get(0).getStrValue();
                     List<String> params = new ArrayList<String>();
-                    params.add(String.valueOf(moneyHistory.getVariableAmount()));
+                    params.add(String.valueOf(winningAmount - bettingAmount));
+
                     String reason = messageSource.getMessage(reasonStrKey, params.toArray(), Locale.ENGLISH);
-                    moneyHistory.setReason(reason);
                     // set Reason of money transfer--------------------------------------- />
 
-//                    moneyHistory.setChargeCount(moneyHistory.getChargeCount() + 1);
-
-                    moneyHistoryService.save(moneyHistory);
-
-                    member.setMoneyAmount(final_amount);
-
-                    if (memberService.updateById(member)) {
-                        System.out.println("save member");
+                    Integer chargeCount = 0;
+                    if (memberService.updateMemberHoldingMoney(
+                            memberSeq,
+                            prevMoneyAmount,
+                            prevMileageAmount,
+                            variableAmount,
+                            actualAmount,
+                            finalAmount,
+                            classification,
+                            transactionClassification,
+                            status,
+                            reasonType,
+                            reason,
+                            chargeCount
+                    )){
+                        result = true;
                     } else {
-                        System.out.println("fail member");
+                        result = false;
                     }
+
                     bettingSummaryList.add(bettingSummary);
                 }
             }

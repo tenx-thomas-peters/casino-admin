@@ -153,8 +153,20 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 
 	@Override
 	@Transactional(readOnly = false)
-	public boolean updateMemberHoldingMoney(String memberSeq, Float prevMoneyAmount, Float prevMileageAmount,
-			Float variableAmount, Integer classification, Integer transactionClassification, Integer reasonType, String reason) {
+	public boolean updateMemberHoldingMoney(
+			String memberSeq,
+			Float prevMoneyAmount,
+			Float prevMileageAmount,
+			Float variableAmount,
+			Float actualAmount,
+			Float finalAmount,
+			Integer classification,
+			Integer transactionClassification,
+			Integer status,
+			Integer reasonType,
+			String reason,
+			Integer chargeCount
+	) {
 		String seq = UUIDGenerator.generate();
 		Member member = getById(memberSeq);
 		boolean ret = false;
@@ -167,10 +179,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			moneyHistory.setProcessTime(new Date());
 			moneyHistory.setPrevAmount(prevMoneyAmount);
 			moneyHistory.setVariableAmount(variableAmount);
-			moneyHistory.setActualAmount(variableAmount);
-			Float finalAmount = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
-					? prevMoneyAmount + variableAmount
-					: prevMoneyAmount - variableAmount;
+			moneyHistory.setActualAmount(actualAmount);
 			moneyHistory.setFinalAmount(finalAmount);
 
 			// classification = ku bun
@@ -180,9 +189,13 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			//transactionClassification = ke rea ku bun
 			// 0: increase, 1: decrease
 			moneyHistory.setOperationType(transactionClassification);
-			moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
+			moneyHistory.setStatus(status);
 			moneyHistory.setReasonType(reasonType);
 			moneyHistory.setReason(reason);
+
+			if(!chargeCount.equals(0)){
+				moneyHistory.setChargeCount(chargeCount);
+			}
 
 			member.setMoneyAmount(finalAmount);
 
@@ -196,9 +209,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			mileageHistory.setProcessTime(new Date());
 			mileageHistory.setPrevAmount(prevMileageAmount);
 			mileageHistory.setVariableAmount(variableAmount);
-			Float finalAmount = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
-					? prevMileageAmount + variableAmount
-					: prevMileageAmount - variableAmount;
 			mileageHistory.setFinalAmount(finalAmount);
 			mileageHistory.setReasonType(reasonType);
 			mileageHistory.setReason(reason);

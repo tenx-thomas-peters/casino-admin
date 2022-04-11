@@ -395,8 +395,27 @@ public class MemberController {
             }
             // Change money amount of member in admin member management page manually ------------------ />
 
-            if (memberService.updateMemberHoldingMoney(memberSeq, prevMoneyAmount,
-                    prevMileageAmount, variableAmount, classification, transactionClassification, CommonConstant.MONEY_REASON_ADMINEDIT, reason)) {
+            float actualAmount = variableAmount;
+            Float finalAmount = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
+                    ? prevMoneyAmount + variableAmount
+                    : prevMoneyAmount - variableAmount;
+            Integer status = CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT;
+            Integer reasonType = CommonConstant.MONEY_REASON_ADMINEDIT;
+            Integer chargeCount = 0;
+            if (memberService.updateMemberHoldingMoney(
+                    memberSeq,
+                    prevMoneyAmount,
+                    prevMileageAmount,
+                    variableAmount,
+                    actualAmount,
+                    finalAmount,
+                    classification,
+                    transactionClassification,
+                    status,
+                    reasonType,
+                    reason,
+                    chargeCount
+            )) {
                 result.success("success");
             } else {
                 result.error505("fail");
