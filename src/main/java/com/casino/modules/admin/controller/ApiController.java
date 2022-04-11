@@ -606,6 +606,11 @@ public class ApiController {
         return result;
     }
 
+    /**
+     * sync local casino money and money for game service when user access game service
+     * @param userSeq
+     * @return
+     */
     @GetMapping(value = "syncCasinoMoney")
     public Result<Member> syncCasinoMoney(
             @RequestParam("userSeq") String userSeq) {
