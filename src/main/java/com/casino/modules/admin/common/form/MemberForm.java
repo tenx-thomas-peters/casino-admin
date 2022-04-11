@@ -37,6 +37,7 @@ public class MemberForm {
     private String subHeadquarterID;
     private String subHeadquarterNickname;
     private Float moneyAmount;
+    private Float casinoMoney;
     private Float mileageAmount;
     private String bankName;
     private String accountHolder;

@@ -123,6 +123,7 @@
 			m.id AS id,
 			m.nickname AS nickname,
 			IFNULL(m.money_amount, 0) AS moneyAmount,
+		IFNULL(m.casino_money, 0) AS casinoMoney,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeDistributor} AND m1.sub_headquarter_seq = m.seq ) AS distributorCount,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeStore} AND m1.sub_headquarter_seq = m.seq ) AS storeCount,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.sub_headquarter_seq = m.seq ) AS memberCount,
@@ -291,6 +292,7 @@
 			m.id AS id,
 			m.nickname AS nickname,
 			IFNULL(m.money_amount, 0) AS moneyAmount,
+		IFNULL(m.casino_money, 0) AS casinoMoney,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.store_seq = m.seq ) AS memberCount,
 			(
 			SELECT
@@ -454,6 +456,7 @@
 			m.id AS id,
 			m.nickname AS nickname,
 			IFNULL(m.money_amount, 0) AS moneyAmount,
+		IFNULL(m.casino_money, 0) AS casinoMoney,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeStore}
 			AND m1.distributor_seq = m.seq ) AS storeCount,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal}
@@ -733,6 +736,7 @@
 			m1.name,
 			m1.user_type,
 			IFNULL(m1.money_amount, 0) AS moneyAmount,
+			IFNULL(m1.casino_money, 0) AS casinoMoney,
 			IFNULL(m1.mileage_amount, 0) AS mileageAmount,
 			m1.bank_name,
 			m1.account_holder,
@@ -831,6 +835,7 @@
 			m.id AS id,
 			m.nickname AS nickname,
 			IFNULL(m.money_amount, 0) AS moneyAmount,
+			IFNULL(m.casino_money, 0) AS casinoMoney,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.distributor_seq = m.seq ) AS memberCount,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeStore} AND m1.distributor_seq = m.seq ) AS storeCount,
 			(
@@ -991,6 +996,7 @@
 			m.id AS id,
 			m.nickname AS nickname,
 			IFNULL(m.money_amount, 0) AS moneyAmount,
+		IFNULL(m.casino_money, 0) AS casinoMoney,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.store_seq = m.seq ) AS memberCount,
 			(
 			SELECT
@@ -1159,6 +1165,7 @@
 		m1.name,
 		m1.nickname,
 		IFNULL(m1.money_amount, 0) AS moneyAmount,
+		IFNULL(m1.casino_money, 0) AS casinoMoney,
 		IFNULL(m1.mileage_amount, 0) AS mileageAmount,
 		m1.user_type AS userType,
 		level.seq AS levelSeq,
