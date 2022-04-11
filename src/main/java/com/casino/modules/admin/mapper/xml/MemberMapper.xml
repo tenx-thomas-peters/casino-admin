@@ -629,6 +629,7 @@
 		m1.nickname,
 		m1.color,
 		IFNULL(m1.money_amount, 0) AS moneyAmount,
+		IFNULL(m1.casino_money, 0) AS casinoMoney,
 		IFNULL(m1.mileage_amount, 0) AS mileageAmount,
 		m1.user_type AS userType,
 		level.seq AS levelSeq,
