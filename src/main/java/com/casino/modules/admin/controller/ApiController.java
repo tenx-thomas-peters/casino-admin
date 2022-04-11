@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.casino.common.utils.HttpUtils;
 import com.casino.modules.admin.common.entity.*;
 import com.casino.modules.admin.service.*;
 import com.casino.modules.shiro.authc.util.JwtUtil;
@@ -13,6 +14,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +41,12 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "/api")
 @Slf4j
 public class ApiController {
+    @Value(value = "${gameServer.url}")
+    private String gameServerUrl;
+
+    @Value(value = "${gameServer.apiKey}")
+    private String apiKey;
+
     @Autowired
     private IMemberService memberService;
 
@@ -622,16 +631,25 @@ public class ApiController {
             // set sync casino money with game service and local money
             // when user access to game service, casino money added, local money becomes 0
 
-            float casino_money = 0;
-            if(member.getCasinoMoney() != null){
-                casino_money = member.getCasinoMoney();
+            if(member.getMoneyAmount() > 0){
+                float casino_money = 0;
+                if(member.getCasinoMoney() != null){
+                    casino_money = member.getCasinoMoney();
+                }
+                float update_casino_money = casino_money + member.getMoneyAmount();
+                member.setCasinoMoney(update_casino_money);
+                member.setMoneyAmount(0.0F);
+
+                ResponseEntity<String> ret = HttpUtils.userAddBalance(gameServerUrl + "/user/add-balance", member.getName(), member.getMoneyAmount(), apiKey);
+
+                if (ret.getStatusCode().value() == 200) {
+                    memberService.updateById(member);
+                }
+                else {
+                    result.error505("sub -balance api failed");
+                }
             }
 
-            float update_casino_money = casino_money + member.getMoneyAmount();
-            member.setCasinoMoney(update_casino_money);
-            member.setMoneyAmount(0.0F);
-
-            memberService.updateById(member);
             result.success("success");
             result.setResult(member);
         }
