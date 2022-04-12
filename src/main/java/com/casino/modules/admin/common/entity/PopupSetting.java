@@ -29,6 +29,9 @@ public class PopupSetting implements Serializable {
 	@TableField(value = "title")
 	private String title;
 
+	@TableField(value = "content")
+	private String content;
+
 	@TableField(value = "location")
 	private String location;
 
