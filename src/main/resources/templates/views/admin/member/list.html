@@ -16,13 +16,7 @@
                 <header class="panel-heading">
                     <h2 class="panel-title">
                         <span th:text="#{admin.common.member.list}"></span>
-                        (
-                        &nbsp;
-                        <p th:text="${pageList.total}" style="color: red; display: inline-block; margin-bottom: 0;"></p>
-                        &nbsp;
-                        <span th:text="#{admin.member.peopleInTotal}"></span>
-                        &nbsp;
-                        )
+                        <span id='totalMsg'></span>
                     </h2>
                 </header>
                 <div class="panel-body">
@@ -236,12 +230,12 @@
                                         <a class="connection-ip text-default">[[${entity.signupIP}]]</a>
                                     </p>
                                     <p style="padding: 0;">
-<!--                                        <select class="form-control input-sm" name="siteDomain">-->
-<!--                                            <option th:each="site : ${siteList}"-->
-<!--                                                    th:value="${site.siteDomain}"-->
-<!--                                                    th:text="${site.siteDomain}"-->
-<!--                                                    th:selected="${entity.siteDomain == site.siteDomain}"></option>-->
-<!--                                        </select>-->
+                                        <select class="form-control input-sm" name="siteDomain">
+                                            <option th:each="site : ${siteList}"
+                                                    th:value="${site.siteDomain}"
+                                                    th:text="${site.siteDomain}"
+                                                    th:selected="${entity.siteDomain == site.siteDomain}"></option>
+                                        </select>
                                     </p>
                                 </td>
                                 <td th:text="${entity.distributorID}"></td>
@@ -330,10 +324,10 @@
         <div th:replace="views/admin/common/bettingSummary :: bettingSummary"></div>
     </div>
 </section>
-
 <script type="text/javascript" th:inline="javascript">
     var page = [[${pageList}]];
     var url = [[@{/}]] + [[${url}]];
+   	var totalMsg = [[${totalMsg}]];
 </script>
 
 <script th:replace="template :: scripts"></script>
