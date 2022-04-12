@@ -386,26 +386,6 @@ public class MemberController {
             String reasonStrKey = reasonList.get(0).getStrValue();
             reason = messageSource.getMessage(reasonStrKey, null, Locale.ENGLISH);
 
-            /* Thomas Peters 2022.04.06 --------------------------------
-             * Change money amount of member in admin member management page manually ------------------ <
-             */
-            ResponseEntity<String> ret;
-            Member member = memberService.getById(memberSeq);
-            if(classification == 0 && transactionClassification == 0){
-                ret = HttpUtils.userAddBalance(gameServerUrl + "/user/add-balance", member.getName(), variableAmount, apiKey);
-            }
-            else{
-                ret = HttpUtils.userSubBalance(gameServerUrl + "/user/sub-balance", member.getName(), variableAmount, apiKey);
-            }
-
-            if (ret.getStatusCode().value() == 200) {
-
-            }
-            else {
-                result.error505("sub -balance api failed");
-            }
-            // Change money amount of member in admin member management page manually ------------------ />
-
             float actualAmount = variableAmount;
             Float finalAmount = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
                     ? prevMoneyAmount + variableAmount
