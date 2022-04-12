@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="template :: head ('Customer Service')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/board.css}"/>
 <body>
     <section class="body">
         <header th:replace="template :: header" class="header"></header>
@@ -23,6 +24,9 @@
 								<li>
 									<a th:href="@{/board/list?province=0}" th:text="#{admin.common.notice}"></a>
 								</li>
+								<li>
+									<a th:href="@{/board/list?province=3}" th:text="#{admin.common.event}"></a>
+								</li>
 								<li class="active">
 									<a th:href="@{/board/questionlist}" th:text="#{admin.board.customerServiceCenter}"></a>
 								</li>
@@ -34,89 +38,115 @@
 								<div id="write" class="tab-pane active">
 									<form id="questionAnswerForm" th:object="${note}" name="questionAnswerForm" class="form-horizontal" >
 										<input type="hidden" name="seq" th:value="${note.seq}">
-										<div class="panel-body">
-											<div class="form-group">
-												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.address}">Address</span>:
-												</div>
-												<div class="col-sm-10">
-												</div>											
-											</div>
-											<div class="form-group">
-												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.title}"></span>:
-												</div>
-												<div class="col-sm-10">
-													<span th:text="${note.title}"></span>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-													<i class="fa fa-plus-square text-primary"></i>
-													<span th:text="#{admin.common.id.nickname.userName}"></span>:
-												</div>
-												<div class="col-sm-10" th:style="${'background:' + note.color + ';'}">
-													<span th:text="${note.mId}"></span>/
-													<span th:text="${note.nickname}"></span>/
-													<span th:text="${note.name}"></span>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.level}"></span>:
-												</div>
-												<div class="col-sm-10">
-													<span th:text="${note.levelName}"></span>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.site}"></span>:
-												</div>
-												<div class="col-sm-10">
-													<span th:text="${note.site}"></span>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.bankName}"></span>:
-												</div>
-												<div class="col-sm-10">
-													<span th:text="${note.bankName}"></span>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.date}"></span>:
-												</div>
-												<div class="col-sm-10">
-													<div class="form-group">
-														<div class="col-sm-6">
-															<p th:text="${(note.sendTime != null ? #dates.format(note.sendTime, 'yyyy-MM-dd hh:MM:ss') : '')}"></p>
-														</div>
-												   </div>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-													<i class="fa fa-plus-square text-primary"></i><span th:text="#{admin.common.contents}"></span>:
-												</div>
-												<div class="col-sm-10" id="content">
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.answer}"></span>:
-												</div>
-												<div class="col-sm-10">
-							    					<div class="form-group">
-							    						<textarea name="answer" id="answer" class="answer form-control" readOnly th:field="*{answer}"></textarea>
-							    					</div>
-							    					<div class="form-group">
-							    						<button class="btn btn-default answer-btn" type="button" th:text="#{admin.common.answer}"></button>
-							    					</div>
-												</div>
-											</div>
+										<table class="table table-customer">
+											<tr>
+												<th width="15%">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.address}"></span>:
+													</div>
+												</th>
+												<td></td>
+											</tr>
+											<tr>
+												<th width="15%">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.title}"></span>:
+													</div>
+												</th>
+												<td>
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<span th:text="${note.title}"></span>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th width="15%">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<i class="fa fa-plus-square text-primary"></i>
+														<span th:text="#{admin.common.id.nickname.userName}"></span>:
+													</div>
+												</th>
+												<td th:style="${'background:' + note.color + ';'}">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<span th:text="${note.mId}"></span>/
+														<span th:text="${note.nickname}"></span>/
+														<span th:text="${note.name}"></span>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th width="15%">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.level}"></span>:
+													</div>
+												</th>
+												<td>
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<span th:text="${note.levelName}"></span>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th width="15%">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.site}"></span>:
+													</div>
+												</th>
+												<td>
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<span th:text="${note.site}"></span>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th width="15%">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.bankName}"></span>:
+													</div>
+												</th>
+												<td>
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<span th:text="${note.bankName}"></span>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th width="15%">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.date}"></span>:
+													</div>
+												</th>
+												<td>
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<p th:text="${(note.sendTime != null ? #dates.format(note.sendTime, 'yyyy-MM-dd hh:MM:ss') : '')}"></p>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th width="15%">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<i class="fa fa-plus-square text-primary"></i><span th:text="#{admin.common.contents}"></span>:
+													</div>
+												</th>
+												<td>
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<div id="content"></div>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th width="15%">
+													<div class="demo-icon-hover mb-sm mt-sm">
+														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.answer}"></span>:
+													</div>
+												</th>
+												<td>
+						    						<textarea name="answer" id="answer" class="answer form-control" rows="15" th:field="*{answer}"></textarea>
+						    						<button class="btn btn-default answer-btn mt-sm" type="button" th:text="#{admin.common.answer}"></button>
+												</td>
+											</tr>
+										</table>
+										<div class="ml-sm mr-sm">
 											<div class="btn-group form-group">
 												<button class="btn btn-default" type="button" th:text="#{admin.level1DownAccount}" onclick="getConfig('level1');"></button>
 												<button class="btn btn-default" type="button" th:text="#{admin.level2DownAccount}" onclick="getConfig('level2');"></button>

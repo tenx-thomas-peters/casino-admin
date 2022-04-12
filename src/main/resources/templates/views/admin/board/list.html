@@ -17,6 +17,9 @@
 						<header class="panel-heading" th:if = "${form.province == 0}">
 							<h2 class="panel-title" th:text="#{admin.common.notice}"></h2>
 						</header>
+						<header class="panel-heading" th:if = "${form.province == 3}">
+							<h2 class="panel-title" th:text="#{admin.common.event}"></h2>
+						</header>
 						<div class="panel-body">
 							<div class="tabs tabs-primary">
 								<ul class="nav nav-tabs" th:if="${form.province == 2 || form.province == 5}">
@@ -25,6 +28,9 @@
 									</li>
 									<li>
 										<a th:href="@{/board/list?province=0}" th:text="#{admin.common.notice}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/list?province=3}" th:text="#{admin.common.event}"></a>
 									</li>
 									<li>
 										<a th:href="@{/board/questionlist}" th:text="#{admin.board.customerServiceCenter}"></a>
@@ -39,6 +45,26 @@
 									</li>
 									<li class="active">
 										<a th:href="@{/board/list?province=0}" th:text="#{admin.common.notice}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/list?province=3}" th:text="#{admin.common.event}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/questionlist}" th:text="#{admin.board.customerServiceCenter}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/write}" th:text="#{admin.board.writePost}"></a>
+									</li>
+								</ul>
+								<ul class="nav nav-tabs" th:if="${form.province == 3}">
+									<li>
+										<a th:href="@{/board/list?province=2}" th:text="#{admin.board.freeBoard}"></a>
+									</li>
+									<li>
+										<a th:href="@{/board/list?province=0}" th:text="#{admin.common.notice}"></a>
+									</li>
+									<li class="active">
+										<a th:href="@{/board/list?province=3}" th:text="#{admin.common.event}"></a>
 									</li>
 									<li>
 										<a th:href="@{/board/questionlist}" th:text="#{admin.board.customerServiceCenter}"></a>
@@ -130,8 +156,8 @@
 															<span th:if="${note.classification == 3}" th:text="#{admin.common.event}"> </span>
 															<span th:if="${note.classification == 4}" th:text="#{admin.common.customerService}"> </span>
 														</td>
-														<td th:text="${note.sender}"></td>
-														<td th:text="${note.title}"></td>
+														<td th:text="${note.nickname}"></td>
+														<td th:text="${note.title}" th:data-key="${note.seq}" class="edit text-primary"></td>
 														<td th:text="${(note.sendTime != null ? #dates.format(note.sendTime, 'yyyy-MM-dd') : '')}"></td>
 														<td>
 															<span th:if="${note.recommendStatus == 0}" th:text="#{admin.status.unrecommend}"> </span>
@@ -139,8 +165,9 @@
 														</td>
 														<td th:text="${note.lookUp}"></td>
 														<td>
+															<button type="button" class="btn btn-default edit" th:data-key="${note.seq}" th:text="#{admin.common.edit}"></button>
 															<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#deleteModal" th:text="#{admin.common.delete}"></button>
-															
+															<button type="button" class="btn btn-default" onClick="recommend();" th:text="#{admin.status.recommend}"></button>
 														</td>
 													</tr>
 													<tr th:if="${pageList.total == 0}">
