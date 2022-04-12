@@ -1,3 +1,6 @@
+$(document).ready(function() {
+	$('#totalMsg').html('( ' + totalMsg + ' )');
+});
 (function( $ ) {
 	'use strict';
 
