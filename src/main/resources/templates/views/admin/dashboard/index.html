@@ -14,7 +14,11 @@
         <section role="main" class="content-body">
             <section class="panel" role="main">
 				<header class="panel-heading">
-					<h2 class="panel-title" th:text="#{admin.admin.adminMain}"></h2>
+					
+					<h2 class="panel-title">
+						<i class="fa fa-caret-square-o-right text-primary"></i>
+						<span th:text="#{admin.admin.adminMain}"></span>
+					</h2>
 				</header>
 				<div class="panel-body">
 					<form id="formSearch" th:action="@{${url}}" class="form-inline search-form" method="POST">
@@ -26,7 +30,7 @@
 			                            <th class="text-center" th:text="#{admin.common.nickname}"></th>
 			                            <th class="text-center" th:text="#{admin.top.distributor}"></th>
 			                            <th class="text-center" th:text="#{admin.common.domain}"></th>
-			                            <th class="text-center" th:text="#{admin.common.id}"></th>
+			                            <th class="text-center" th:text="#{admin.common.ip}"></th>
 			                            <th class="text-center" th:text="#{admin.admin.numberOfConnections}"></th>
 			                            <th class="text-center" th:text="#{admin.admin.amountCharged}"></th>
 			                            <th class="text-center" th:text="#{admin.admin.withdrawalAmount}"></th>
@@ -89,7 +93,7 @@
                             </div>
                             <label class="col-md-2 col-sm-6 control-label">
                                 <i class="fa fa-plus-square text-primary"></i>
-                                [[|#{admin.common.winning}| + ' ' + |#{admin.common.amount}|]]
+                                [[|#{admin.common.winning}| + |#{admin.common.amount}|]]
                             </label>
                             <div class="col-md-4 col-sm-6">
                                 <input class="control-label adminSearchResult" name="winningAmount" disabled/>
@@ -137,7 +141,7 @@
                             </div>
                             <label class="col-md-2 col-sm-6 control-label">
                                 <i class="fa fa-plus-square text-primary"></i>
-                                [[|#{admin.common.withdrawal}| + ' ' + |#{admin.common.amount}|]]
+                                [[|#{admin.common.withdrawal}| + |#{admin.common.amount}|]]
                             </label>
                             <div class="col-md-4 col-sm-6">
                                 <input class="control-label adminSearchResult" name="withdrawalAmount" disabled/>
