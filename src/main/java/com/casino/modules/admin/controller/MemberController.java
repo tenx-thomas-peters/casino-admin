@@ -1,5 +1,6 @@
 package com.casino.modules.admin.controller;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,18 +9,13 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import com.casino.common.utils.HttpUtils;
-import com.casino.modules.shiro.authc.util.JwtUtil;
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,12 +26,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.casino.common.constant.CommonConstant;
+import com.casino.common.utils.HttpUtils;
 import com.casino.common.utils.UUIDGenerator;
 import com.casino.common.vo.Result;
 import com.casino.modules.admin.common.entity.AccessLog;
@@ -44,6 +42,7 @@ import com.casino.modules.admin.common.entity.Level;
 import com.casino.modules.admin.common.entity.Member;
 import com.casino.modules.admin.common.entity.MoneyHistory;
 import com.casino.modules.admin.common.entity.Note;
+import com.casino.modules.admin.common.entity.SysUser;
 import com.casino.modules.admin.common.form.BettingSummaryForm;
 import com.casino.modules.admin.common.form.MemberForm;
 import com.casino.modules.admin.service.IAccessLogService;
@@ -53,6 +52,8 @@ import com.casino.modules.admin.service.ILevelService;
 import com.casino.modules.admin.service.IMemberService;
 import com.casino.modules.admin.service.IMoneyHistoryService;
 import com.casino.modules.admin.service.INoteService;
+import com.casino.modules.admin.service.ISysUserService;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -89,6 +90,9 @@ public class MemberController {
 
     @Autowired
     private MessageSource messageSource;
+    
+    @Autowired
+    private ISysUserService sysUserService;
 
     @RequestMapping(value = "list")
     public String memberList(@ModelAttribute("memberForm") MemberForm memberForm,
@@ -126,6 +130,8 @@ public class MemberController {
             model.addAttribute("statusList", statusList);
             model.addAttribute("siteList", siteList);
             model.addAttribute("partnerList", partnerList);
+            String[] params = {String.valueOf(pageList.getTotal())};
+            model.addAttribute("totalMsg", messageSource.getMessage("admin.member.peopleInTotal", params, request.getLocale()));
             model.addAttribute("url", "member/list");
         } catch (Exception e) {
             log.error("url: /member/list --- method: getList --- message: " + e.toString());
@@ -156,9 +162,14 @@ public class MemberController {
             member.setUserType(CommonConstant.USER_TYPE_NORMAL);
             member.setName(member.getAccountHolder());
 
-            //TODO
-            // game api - /user/create start
+            member.setSiteName("---");
+            member.setSiteDomain("---");
+            member.setSignupIp("---");
+
+//            //TODO
+//            // game api - /user/create start
             ResponseEntity<?> ret1 = HttpUtils.createUser(gameServerUrl + "/user/create", member.getId(), member.getNickname(), apiKey);
+
             if (ret1.getStatusCode().value() == 200) {
                 String ret = ret1.getBody().toString();
                 JSONObject json = JSONObject.parseObject(ret);
@@ -656,5 +667,56 @@ public class MemberController {
             log.error("url: /member/popup_simul_list --- method: popupSimulList --- message: " + e.toString());
         }
         return "views/admin/member/loginMember";
+    }
+    
+    
+    @RequestMapping(value = "password_manage")
+    public String passwordManage() {
+    	return "views/admin/common/passwordManagement";
+    }
+    
+    @RequestMapping(value = "update_password")
+    @ResponseBody
+    public Result<Map<String, Object>> updatePwd(
+    		@RequestParam(value = "currentPwd") String currentPwd,
+    		@RequestParam(value = "newPwd") String newPwd,
+    		@RequestParam(value="confirmPwd") String confirmPwd,
+    		HttpServletRequest request) {
+    	Result<Map<String, Object>> result = new Result<>();
+    	try {
+    		SysUser userInfo = (SysUser) SecurityUtils.getSubject().getPrincipal();
+    		
+    		QueryWrapper<SysUser> qw = new QueryWrapper<>();
+			qw.eq("seq", userInfo.getSeq());
+			
+			SysUser sysUser = sysUserService.getOne(qw);
+			if (currentPwd == null || currentPwd == "" || newPwd == null || newPwd == "" || confirmPwd == null || confirmPwd == "") {
+				result.error505("failed");
+			} else if (sysUser == null) {
+				result.error505("failed");
+			} else {
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				String md5Pwd = Base64.encodeBase64String(md.digest(currentPwd.getBytes()));
+				
+				if (StringUtils.equals(md5Pwd, sysUser.getPassword())) {
+					if (StringUtils.equals(newPwd, confirmPwd)) {
+						String pwd = Base64.encodeBase64String(md.digest(confirmPwd.getBytes()));
+						sysUser.setPassword(pwd);
+						if(sysUserService.updateById(sysUser)) {
+							result.success("success");
+						} else {
+							result.error505("update failed");
+						}
+					} else {
+						result.error505("Confirm password incorrect");
+					}
+				} else {
+					result.error505("Current password incorrect");
+				}
+			}
+    	} catch(Exception e) {
+    		log.error("url: /member/password_management --- method: updatePwd --- message: " + e.toString());
+    	}
+    	return result;
     }
 }

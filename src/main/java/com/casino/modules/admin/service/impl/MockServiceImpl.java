@@ -99,7 +99,7 @@ public class MockServiceImpl  implements IMockService {
 		memberMapper.updateById(payer);
 		
 		Member receiver = memberMapper.selectById(receiverSeq);
-		Float receiverFinalAmount = receiver.getMoneyAmount() + Float.valueOf(moneyAmount);
+		Float receiverFinalAmount = (receiver.getMoneyAmount() == null ? 0 : receiver.getMoneyAmount()) + Float.valueOf(moneyAmount);
 		MoneyHistory receiverMoneyHistory = new MoneyHistory();
 		receiverMoneyHistory.setSeq(UUIDGenerator.generate());
 		receiverMoneyHistory.setPayer(payerSeq);

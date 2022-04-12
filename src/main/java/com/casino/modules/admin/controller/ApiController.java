@@ -1,11 +1,7 @@
 package com.casino.modules.admin.controller;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import com.casino.common.utils.HttpUtils;
 import com.casino.modules.admin.common.entity.*;
 import com.casino.modules.admin.service.*;
 import com.casino.modules.shiro.authc.util.JwtUtil;
@@ -62,11 +58,20 @@ public class ApiController {
     @Autowired
     private IAccessLogService accessLogService;
 
+    @Autowired
+    private IPopupSettingService popupSettingService;
+
     @PostMapping(value = "auth/register")
-    public Result<JSONObject> register(@RequestBody Member member) {
+    public Result<JSONObject> register(@RequestBody Member member, HttpServletRequest request) {
         Result<JSONObject> result = new Result<>();
         JSONObject obj = new JSONObject();
         try {
+            String domain = request.getServerName();
+            String ipAddress = request.getHeader("X-FORWARDED-FOR");
+            if (ipAddress == null) {
+                ipAddress = request.getRemoteAddr();
+            }
+
             QueryWrapper<Member> qw = new QueryWrapper<>();
             qw.eq("name", member.getName());
             List<Member> memberList = memberService.list(qw);
@@ -76,6 +81,10 @@ public class ApiController {
                 member.setSeq(UUIDGenerator.generate());
                 member.setUserType(CommonConstant.USER_TYPE_NORMAL);
 //                member.setName(member.getAccountHolder());
+
+                member.setSignupIp(ipAddress);
+                member.setSiteDomain(domain);
+                member.setSiteName(domain);
 
                 if (memberService.save(member)) {
                     String token = JwtUtil.sign(member.getName(), member.getPassword());
@@ -103,10 +112,14 @@ public class ApiController {
             @RequestParam("password") String password) {
         Result<JSONObject> result = new Result<>();
         JSONObject obj = new JSONObject();
-        System.out.println("member");
         try {
-            QueryWrapper<Member> qw = new QueryWrapper<>();
+            String domain = request.getServerName();
+            String ipAddress = request.getHeader("X-FORWARDED-FOR");
+            if (ipAddress == null) {
+                ipAddress = request.getRemoteAddr();
+            }
 
+            QueryWrapper<Member> qw = new QueryWrapper<>();
             qw.eq("user_type", CommonConstant.USER_TYPE_NORMAL);
             qw.eq("id", loginID);
 
@@ -115,15 +128,16 @@ public class ApiController {
 
             if (member != null) {
                 accessLog.setSeq(UUIDGenerator.generate());
-
                 accessLog.setMemberSeq(member.getSeq());
-                accessLog.setSite(member.getSeq());
-                accessLog.setId(member.getId().toString());
+                accessLog.setSite(domain);
+                accessLog.setId(member.getId());
                 accessLog.setNickname(member.getNickname());
                 accessLog.setAccountHolder(member.getAccountHolder());
                 accessLog.setLevel(member.getLevel());
                 accessLog.setMoneyAmount(member.getMoneyAmount());
                 accessLog.setDistributor(member.getDistributorSeq());
+                accessLog.setConnectionIp(ipAddress);
+                accessLog.setConnectionDomain(domain);
 
                 qw.eq("password", password);
                 member = memberService.getOne(qw);
@@ -192,6 +206,9 @@ public class ApiController {
         Integer noteCounts = 0;
         Float houseMoney = 0.0f;
         Float jackpotAmount = 0.0f;
+        String inlineNotice = "";
+        List<PopupSetting> popupSettingList = new ArrayList<>();
+
         Map<String, Object> topRanking = new HashMap<>();
 
         try {
@@ -219,13 +236,22 @@ public class ApiController {
                 basicSetting = list.get(0);
                 houseMoney = basicSetting.getHouseMoney();
                 jackpotAmount = basicSetting.getJackpotAmount();
+                inlineNotice = basicSetting.getMemberLineAdvertisement();
+
                 topRanking.put("topMember", basicSetting.getWeeklyWithdrawalRankingTop1Id());
                 topRanking.put("moneyAmount", basicSetting.getWeeklyWithdrawalRankingTop1Money());
             }
 
+            QueryWrapper<PopupSetting> popQw = new QueryWrapper<>();
+            popQw.ne("expiration_start", new Date());
+            popQw.ge("expiration_end", new Date());
+            popupSettingList = popupSettingService.list(popQw);
+
             jsonObject.put("houseMoney", houseMoney);
             jsonObject.put("jackpotAmount", jackpotAmount);
             jsonObject.put("topRanking", topRanking);
+            jsonObject.put("inlineNotice", inlineNotice);
+            jsonObject.put("popupNotice", popupSettingList);
 
             result.success("Success");
             result.setResult(jsonObject);
