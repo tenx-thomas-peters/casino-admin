@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -69,8 +70,6 @@ public class BoardController {
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
 			IPage<Note> pageList = boardService.getNotePageList(page, form);
 			
-			
-			
 			model.addAttribute("pageList", pageList);
 			
 			model.addAttribute("page", pageList);
@@ -120,8 +119,18 @@ public class BoardController {
 	}
 
 	@GetMapping(value = "/write")
-	public String write(Model model) {
+	public String write(@RequestParam(name = "seq", defaultValue="") String seq, Model model) {
 		try {
+			Note note = new Note();
+			Member member = new Member();
+			Level level = new Level();
+			if(StringUtils.isNotEmpty(seq)) {
+				note = boardService.getById(seq);
+				member = memberService.getById(note.getSender());
+				note.setNickname(member.getNickname());
+				level = levelService.getById(member.getLevelSeq());
+				note.setLevelName(level.getLevelName());
+			}
 			
 			QueryWrapper<Level> qw = new QueryWrapper<>();
 			qw.eq("correction", CommonConstant.CORRECTION_APPLY);
@@ -134,6 +143,9 @@ public class BoardController {
 			model.addAttribute("levelList", levelList);
 			model.addAttribute("receiverList", receiverList);
 			model.addAttribute("commentList", commentList);
+			model.addAttribute("levelName", level.getLevelName());
+			model.addAttribute("levelSeq", member.getLevelSeq());
+			model.addAttribute("note", note);
 			model.addAttribute("url", "board/write");
 
 		} catch (Exception e) {
@@ -151,14 +163,22 @@ public class BoardController {
 				String content = note.getContent();
 				content = content.substring(1, content.length());
 				note.setContent(content);
-				note.setSeq(UUIDGenerator.generate());
 				note.setReadStatus(CommonConstant.STATUS_UN_READ);
 				note.setType(CommonConstant.TYPE_POST);
 
-				if (boardService.save(note)) {
-					result.success("Operate Success");
+				if(StringUtils.isNotBlank(note.getSeq())) {
+					if(boardService.updateById(note) ) {
+						result.success("Operate Success");
+					} else {
+						result.error500("Operate Faild");
+					}
 				} else {
-					result.error500("Operate Faild");
+					note.setSeq(UUIDGenerator.generate());
+					if (boardService.save(note)) {
+						result.success("Operate Success");
+					} else {
+						result.error500("Operate Faild");
+					}
 				}
 			} else {
 				result.error500("Operation Failed");

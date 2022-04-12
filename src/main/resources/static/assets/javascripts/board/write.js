@@ -1,6 +1,12 @@
 $(document).ready(function(){
+	if(levelSeq != null) {
+		$('#writeForm select[name="writer"]').append($('<option data-key="'+levelSeq+'" value="' + levelName + '">' + levelName + '</option>'));
+	}
+	
 	$('#levelList').change(function(){
+		console.log("asdfasdf");
 		var levelSeq = $('#levelList').val();
+		console.log(levelSeq);
 		$.ajax({
 			url: "getNickNameList",
 			type: "GET",
@@ -224,8 +230,7 @@ $(document).on('click', '.enroll', function (e) {
                 });
 				
                 setTimeout(function() {
-                	
-                    window.location.reload();
+                	window.location.reload();
                 }, 1000);
             } else {
                 new PNotify({
