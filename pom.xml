@@ -333,6 +333,7 @@
                     <exclude>**/*.otf</exclude>
                     <exclude>**/*.eot</exclude>
                     <exclude>**/*.svg</exclude>
+                    <exclude>**/*.ogg</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -345,6 +346,7 @@
                     <include>**/*.otf</include>
                     <include>**/*.eot</include>
                     <include>**/*.svg</include>
+                    <include>**/*.ogg</include>
                 </includes>
             </resource>
             <resource>
