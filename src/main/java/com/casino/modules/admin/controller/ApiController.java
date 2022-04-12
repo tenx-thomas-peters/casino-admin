@@ -2,6 +2,7 @@ package com.casino.modules.admin.controller;
 
 import java.util.*;
 
+import com.casino.common.utils.HttpUtils;
 import com.casino.modules.admin.common.entity.*;
 import com.casino.modules.admin.service.*;
 import com.casino.modules.shiro.authc.util.JwtUtil;
@@ -518,7 +519,6 @@ public class ApiController {
     }
 
     /**
-     * @param Seq
      * @return
      * @author SH
      */
@@ -535,10 +535,6 @@ public class ApiController {
 
     /**
      * apply charge
-     *
-     * @param memberSeq
-     * @param requestAmount
-     * @param depositer
      * @return
      * @author SH
      */
@@ -591,10 +587,6 @@ public class ApiController {
 
     /**
      * apply charge
-     *
-     * @param memberSeq
-     * @param requestAmount
-     * @param depositer
      * @return
      * @author SH
      */
