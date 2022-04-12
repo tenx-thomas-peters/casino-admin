@@ -650,17 +650,19 @@ public class ApiController {
             // when user access to game service, casino money added, local money becomes 0
 
             if(member.getMoneyAmount() > 0){
-                float casino_money = 0;
-                if(member.getCasinoMoney() != null){
-                    casino_money = member.getCasinoMoney();
-                }
-                float update_casino_money = casino_money + member.getMoneyAmount();
-                member.setCasinoMoney(update_casino_money);
-                member.setMoneyAmount(0.0F);
 
                 ResponseEntity<String> ret = HttpUtils.userAddBalance(gameServerUrl + "/user/add-balance", member.getName(), member.getMoneyAmount(), apiKey);
 
                 if (ret.getStatusCode().value() == 200) {
+
+                    float casino_money = 0;
+                    if(member.getCasinoMoney() != null){
+                        casino_money = member.getCasinoMoney();
+                    }
+                    float update_casino_money = casino_money + member.getMoneyAmount();
+                    member.setCasinoMoney(update_casino_money);
+                    member.setMoneyAmount(0.0F);
+
                     memberService.updateById(member);
                 }
                 else {
