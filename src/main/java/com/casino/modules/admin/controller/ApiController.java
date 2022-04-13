@@ -2,14 +2,15 @@ package com.casino.modules.admin.controller;
 
 import java.util.*;
 
+import com.alibaba.fastjson.JSON;
 import com.casino.common.utils.HttpUtils;
 import com.casino.modules.admin.common.entity.*;
+import com.casino.modules.admin.common.form.APIUserForm;
 import com.casino.modules.admin.service.*;
 import com.casino.modules.shiro.authc.util.JwtUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -214,6 +215,16 @@ public class ApiController {
 
         try {
             Member member = memberService.getById(memberSeq);
+            String url = gameServerUrl + "/user?username=" + member.getId();
+            ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
+
+            if (res.getStatusCode().value() == 200) {
+                APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
+                member.setCasinoMoney(memberForms.getBalance());
+                if (memberService.updateById(member)) log.info("===  update casino money successful  ==");
+                else result.error505("===  update casino money failed");
+            }
+            else {result.error505("/user api failed");}
 
             Session session = SecurityUtils.getSubject().getSession();
             String token = (String) session.getAttribute("user_token");
@@ -258,7 +269,41 @@ public class ApiController {
             result.setResult(jsonObject);
         } catch (Exception e) {
             result.error500("Internal Server Error");
-            log.error("url: /auth/memberInfo --- method: getMemberInfo --- message: " + e.toString());
+            log.error("url: /auth/memberInfo --- method: getMemberInfo() --- message: " + e.toString());
+        }
+        return result;
+    }
+
+    public Result<Member> getCaisnoMoeny(String member_id){
+
+        Result<Member> result = new Result<>();
+        try {
+            float casino_money = 0.0F;
+
+            String url = gameServerUrl + "/user?username=" + member_id;
+            ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
+
+            if (res.getStatusCode().value() == 200) {
+                JSONObject json = JSON.parseObject(res.getBody().toString());
+
+                APIUserForm memberForms = json.getJSONArray("data").toJavaObject(APIUserForm.class);
+
+                QueryWrapper<Member> qw = new QueryWrapper<>();
+                qw.eq("id", memberForms.getId());
+
+                Member member = memberService.getOne(qw);
+
+                member.setCasinoMoney(memberForms.getBalance());
+
+                if (memberService.updateById(member)) log.info("=======================  update casino money successful  =======================");
+                 else log.error("=======================  update casino money failed  =======================");
+            } else {
+                result.error505("/user api failed");
+            }
+        }
+        catch (Exception e){
+            result.error500("Internal Server Error");
+            log.error("url: /user --- method: syncCasinoMoney --- message: " + e.toString());
         }
         return result;
     }
@@ -297,7 +342,7 @@ public class ApiController {
             jsonObject.put("jackpotAmount", jackpotAmount);
             jsonObject.put("topRanking", topRanking);
         } catch (Exception e) {
-            log.error("url: /auth/memberInfo --- method: getMemberInfo --- message: " + e.toString());
+            log.error("url: /auth/memberInfo --- method: memberInfo() --- message: " + e.toString());
         }
         return jsonObject;
     }
