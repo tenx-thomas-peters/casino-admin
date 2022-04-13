@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Money history')"></head>
+<head th:replace="template :: head (#{admin.money.log.title})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/money/money-history.css}"/>
 <body>
     <section class="body">
@@ -21,7 +21,7 @@
 										<input type="hidden" th:field="*{fromProcessTime}"/>
 										<input type="hidden" th:field="*{toProcessTime}"/>
 				                    </form>
-									<div class="table-responsive">
+									<div class="table-scrollable">
 										<table class="table table-bordered table-striped" id="moneylog-datatable">
 											<thead>
 												<tr>

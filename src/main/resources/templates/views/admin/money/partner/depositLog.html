@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Money history')"></head>
+<head th:replace="template :: head (#{admin.partner.deposit.log.title})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/money/money-history.css}"/>
 <body>
     <section class="body">
@@ -86,7 +86,7 @@
 					                    	<span th:if="${moneyHistory.fromProcessTime != null || moneyHistory.toProcessTime != null}">~</span>
 					                    	<span th:text="${moneyHistory.toProcessTime}" ></span>
 					                    	<span></span>
-					                    	[[#{admin.common.totalDeposit}]]:
+					                    	[[#{admin.deposit.totalDeposit}]]:
 					                    	<span class='text-primary' th:text="${'KRW ' + #numbers.formatDecimal(totalDeposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 					                    	[[#{admin.common.totalWithdrawal}]]:
 					                    	<span class='text-primary' th:text="${'KRW ' + #numbers.formatDecimal(totalWithdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
@@ -94,7 +94,7 @@
 					                    	<span class='text-primary' th:text="${'KRW ' + #numbers.formatDecimal((totalDeposit - totalWithdraw), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 					                    </p>
 				                    </div>
-				                    <div class="table-responsive">
+				                    <div class="table-scrollable">
 				                    	<table class="table table-bordered table-striped" id="moneylog-datatable">
 											<thead>
 												<tr>
@@ -105,9 +105,9 @@
 													<th th:text="#{admin.common.nickname}"></th>
 													<th th:text="#{admin.money.log.prevAmount}"></th>
 													<th th:text="#{admin.deposit.log.applicationAmount}"></th>
-													<th th:text="#{admin.deposit.log.moneyAmount}"></th>
+													<th th:text="#{admin.deposit.log.finalAmount}"></th>
 													<th th:text="#{admin.deposit.log.bonus}"></th>
-													<th th:text="#{admin.common.accountHolder}"></th>
+													<th th:text="#{admin.deposit.depositerName}"></th>
 													<th th:text="#{admin.common.status}" class="control-button"></th>
 												</tr>
 											</thead>
