@@ -69,6 +69,37 @@ public class HttpUtils {
         }
     }
 
+    public static ResponseEntity<String> getUserInfo(String url, String apikey){
+        try {
+            HttpHeaders headers = new HttpHeaders();
+
+            /*
+             * set header content
+             * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             * <
+             */
+
+            headers.add(HttpHeaders.AUTHORIZATION, apikey);
+            headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+            headers.add("user-agent",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ >
+
+            RestTemplate restTemplate = new RestTemplate();
+            HttpEntity<Member> request = new HttpEntity<>(headers);
+
+            System.out.println(url);
+
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+            System.out.println(response);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error!, Please try again", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public static ResponseEntity<String> userAddBalance(String url, String username, Float amount, String apiKey) {
         try {
             HttpHeaders headers = new HttpHeaders();
