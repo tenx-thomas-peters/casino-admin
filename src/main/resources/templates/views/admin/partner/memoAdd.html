@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('#{admin.member.writeNote}')"></head>
+<head th:replace="template :: head (#{admin.partner.writeNote})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
 <body>
     <section class="body">
@@ -14,24 +14,24 @@
             <section role="main" class="content-body">
 	            	<section class="panel" role="main">
 						<header class="panel-heading">
-							<h2 class="panel-title" th:text="#{admin.write.partnerWriteANote}">P write a note</h2>
+							<h2 class="panel-title" th:text="#{admin.partner.writeNote}"></h2>
 						</header>
 						<div class="panel-body">
 							<div class="tabs tabs-primary">
 								<ul class="nav nav-tabs">
 									<li>
-										<a href="#popular" data-toggle="tab" th:text="#{admin.common.inbox}">inbox</a>
+										<a href="#popular" data-toggle="tab" th:text="#{admin.common.inbox}"></a>
 									</li>
 									<li>
-										<a th:href="@{/memo/sendPList}"  th:text="#{admin.common.sentInbox}"></a>
+										<a th:href="@{/memo/sendPList}"  th:text="#{admin.partner.sentInbox}"></a>
 									</li>
 									<li class="active">
-										<a href="#memoAdd" data-toggle="tab" th:text="#{admin.member.writeNote}">write a note</a>
+										<a href="#memoAdd" data-toggle="tab" th:text="#{admin.partner.writeNote}"></a>
 									</li>
 								</ul>
 								<div class="tab-content">
 									<div id="popular" class="tab-pane">
-										<p>inbox</p>
+										<p th:text="#{admin.common.inbox}"></p>
 									</div>
 									<div id="memoAdd" class="tab-pane active">
 										<form method="post" th:action="@{/partner2/memoadd}" th:object="${note}" id="pNoteForm">
@@ -49,10 +49,10 @@
 												</div>
 												<div class="col-sm-8">
 													<select data-plugin-selectTwo class="form-control populate" name="userType" required>
-														<option value="" th:text="#{admin.partner.partnerSelection}">Partner Selection</option>
-														<option value="1" th:text="#{admin.common.store}">store</option>
-														<option value="2" th:text="#{admin.common.distributor}">distributor</option>
-														<option value="3" th:text="#{admin.common.subHeadquarter}">sub headquarter</option>
+														<option value="" th:text="#{admin.partner.partnerSelection}"></option>
+														<option value="1" th:text="#{admin.common.store}"></option>
+														<option value="2" th:text="#{admin.common.distributor}"></option>
+														<option value="3" th:text="#{admin.common.subHeadquarter}"></option>
 													</select>
 												</div>
 											</div>

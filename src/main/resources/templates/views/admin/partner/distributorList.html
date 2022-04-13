@@ -69,7 +69,7 @@
 	                           	</select>
 	                           	<input type="text" class="form-control input-keyword" id="keyword" name="keyword" th:field=*{keyword} />
 	                           	<button type="submit" class="btn btn-default">
-	                           		<span th:text="#{admin.common.search}">Search</span>
+	                           		<span th:text="#{admin.common.search}"></span>
 	                                <i class="fa fa-search"></i>
 	                           	</button>
 	                       </div>
@@ -77,30 +77,30 @@
 	                   <div class="form-group" >
 	                       	<span style="float:right;"><b th:text="#{admin.headquarter.losingAmount} + ' = ' + ${losingAmount}"></b></span>
                        </div>
-	                   <div class="table-responsive">
+	                   <div class="table-scrollable">
 	                       <table class="table table-bordered table-striped distributor-list">
 	                           <thead>
 	                           <tr>
-		                            <th style="min-width: 50%;" th:text="#{admin.common.deputyHeadquarter}">deputy headquaters</th>
-		                            <th style="min-width: 50%;" th:text="#{admin.common.id}"> ID </th>
-									<th style="min-width: 50%;" th:text="#{admin.common.nickname}"> Nickname </th>
-									<th style="min-width: 50%;" th:text="#{admin.common.holdingMoney}"> Holding Money </th>
-									<th style="min-width: 50%;" th:text="#{admin.common.numberOfStores}"> Number of Stores </th>
-									<th style="min-width: 50%;" th:text="#{admin.common.member}"> Members </th>
-									<th style="min-width: 50%;" th:text="#{admin.statistic.depositMember}"> Deposit Member </th>
-									<th style="min-width: 50%;" th:text="#{admin.common.deposit.partner.payment}"> Deposit [Partner] (Payment) </th>
-									<th style="min-width: 50%;" th:text="#{admin.common.withdrawal.partner.payment}"> Withdrawal [Partner] (Payment) </th>
-									<th style="min-width: 50%;" th:text="#{admin.member.differenceOfDepositAndWithdraw}"> Difference between Deposit and Withdrawal </th>
-									<th style="min-width: 50%;" th:text="#{admin.distributor.distributorSummary}"> Distributor Summary </th>
-									<th style="min-width: 50%;" th:text="#{admin.common.type}"> Type </th>
-									<th style="min-width: 50%;" th:text="#{admin.common.betAmount}"> Bet Amount </th>
-									<th style="min-width: 50%;" th:text="#{admin.bettingSummary.winningAmount}"> Winning Amount </th>
-									<th style="min-width: 50%;" th:text="#{admin.headquarter.losingAmount}"> Lost Amount </th>
-									<th style="min-width: 50%;" th:text="#{admin.distributor.batRolling}"> Bat Rolling </th>
-									<th style="min-width: 50%;" th:text="#{admin.distributor.settlementRate}"> Settlement Rate </th>
-									<th style="min-width: 50%;" th:text="#{admin.distributor.processedRollingGold}"> Processed Rolling Gold </th>
-									<th style="min-width: 50%;" th:text="#{admin.common.status}"> State </th>
-									<th style="min-width: 180px;" th:text="#{admin.common.process}"> Process </th>
+		                            <th style="min-width: 50%;" th:text="#{admin.common.deputyHeadquarter}"></th>
+		                            <th style="min-width: 50%;" th:text="#{admin.common.id}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.common.nickname}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.common.holdingMoney}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.common.numberOfStores}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.common.member}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.statistic.depositMember}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.common.deposit.partner.payment}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.common.withdrawal.partner.payment}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.member.differenceOfDepositAndWithdraw}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.distributor.distributorSummary}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.common.type}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.common.betAmount}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.bettingSummary.winningAmount}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.headquarter.losingAmount}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.distributor.batRolling}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.distributor.settlementRate}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.distributor.processedRollingGold}"></th>
+									<th style="min-width: 50%;" th:text="#{admin.common.status}"></th>
+									<th style="min-width: 180px;" th:text="#{admin.common.process}"></th>
 	                           </tr>
 	                           </thead>
 	                           <tbody>
@@ -134,10 +134,10 @@
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="#{admin.common.slot}">slot</span>
+												<span th:text="#{admin.common.slot}"></span>
 											</p>
 											<p class="bg-white-grey" >
-												<span th:text="#{admin.common.baccarat}">baccarat</span>
+												<span th:text="#{admin.common.baccarat}"></span>
 											</p>
 										</td>
 										<td>
@@ -184,17 +184,19 @@
 										<td th:if="${entity.status == 0}" th:text="#{admin.common.normal}"></td>
 										<td th:if="${entity.status == 1}" th:text="#{admin.common.stop}"></td>
 										<td>
-											<button class="btn btn-sm btn-default headquarter-change-status-form" th:if="${entity.status == 0}" th:data-seq="${entity.seq}"><span class="text-danger" th:text="#{admin.common.stop}">Stop</span></button>
-											<button class="btn btn-sm btn-default headquarter-change-status-form" th:if="${entity.status == 1}" th:data-seq="${entity.seq}" th:text="#{admin.common.normal}">Normal</button>
-											<button class="btn btn-sm btn-default headquarter-delete-form" th:text="#{admin.common.delete}" th:data-seq="${entity.seq}">Delete</button>
-											<button class="btn btn-sm btn-default headquarter-note-form" th:text="#{admin.common.note}" th:data-seq="${entity.seq}">Note</button> 
+											<button class="btn btn-sm btn-default headquarter-change-status-form" th:if="${entity.status == 0}" th:data-seq="${entity.seq}">
+												<span class="text-danger" th:text="#{admin.common.stop}"></span>
+											</button>
+											<button class="btn btn-sm btn-default headquarter-change-status-form" th:if="${entity.status == 1}" th:data-seq="${entity.seq}" th:text="#{admin.common.normal}"></button>
+											<button class="btn btn-sm btn-default headquarter-delete-form" th:text="#{admin.common.delete}" th:data-seq="${entity.seq}"></button>
+											<button class="btn btn-sm btn-default headquarter-note-form" th:text="#{admin.common.note}" th:data-seq="${entity.seq}"></button> 
 										</td>
 	                                </tr>
 	                                <tr th:if="${page.total == 0}">
-										<td colSpan="21" class="text-center" th:text="#{admin.common.noData}">No Data</td>
+										<td colSpan="21" class="text-center" th:text="#{admin.common.noData}"></td>
 									</tr>
 									<tr th:if="${not #lists.isEmpty(page.records)}" class="background-primary text-default" style="background-color: #cfe7ff; color: #004675;">
-										<td th:text="#{admin.common.sum}">Sum</td>
+										<td th:text="#{admin.common.sum}"></td>
 										<td>-</td>
 										<td>-</td>
 										<td th:text="${#numbers.formatDecimal(moneyAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
@@ -219,10 +221,10 @@
 										<td>-</td>
 										<td>
 											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="#{admin.common.slot}">slot</span>
+												<span th:text="#{admin.common.slot}"></span>
 											</div>
 											<div style="margin-top: 5px;">
-												<span th:text="#{admin.common.baccarat}">baccarat</span>
+												<span th:text="#{admin.common.baccarat}"></span>
 											</div>
 										</td>
 										<td>
@@ -292,8 +294,8 @@
                        	change status?
                        </div>
                     <div class="modal-footer">
-                              <button class="btn btn-primary" th:text="#{admin.common.confirm}" id="headquarterStatusChange" >Confirm</button>
-                              <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}">Cancel</button>
+                              <button class="btn btn-primary" th:text="#{admin.common.confirm}" id="headquarterStatusChange" ></button>
+                              <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
                     </div>
                    </div>
                </div>
@@ -310,8 +312,8 @@
                      	Delete?
                      </div>
 	                  <div class="modal-footer">
-	                            <button class="btn btn-primary" th:text="#{admin.common.delete}" id="headquarterDelete" >Delete</button>
-	                            <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}">Cancel</button>
+	                            <button class="btn btn-primary" th:text="#{admin.common.delete}" id="headquarterDelete" ></button>
+	                            <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
 	                  </div>
                   </div>
                 </div>

@@ -45,31 +45,31 @@
 	                               <span th:text="#{admin.store.distributorSelection}"></span>
 	                           </label>
 	                           <select class="form-control" name="distributor" th:field="*{distributor}">
-	                               <option value="" th:text="#{admin.common.select}">Select::::</option>
+	                               <option value="" th:text="#{admin.common.select}"></option>
 	                               <option th:each="item, status:${distributorList}"
 							         	th:value="${item.seq}"
 										th:text="${item.id}">
 									</option>
 	                           </select>
 	                           <select class="form-control" name="column" th:field="*{orderByType}" style="max-width: 120px;">
-	                               <option value="-1" th:text="#{admin.common.sortBy}">Sort by:::</option>
-	                               <option value="0" th:text="#{admin.common.sort.holding}">In order of holding amount↑</option>
-	                               <option value="1" th:text="#{admin.common.sort.registration}">In order of registration date↓</option>
-	                               <option value="2" th:text="#{admin.common.sort.inOrder}">In order↓</option>
+	                               <option value="-1" th:text="#{admin.common.sortBy}"></option>
+	                               <option value="0" th:text="#{admin.common.sort.holding}"></option>
+	                               <option value="1" th:text="#{admin.common.sort.registration}"></option>
+	                               <option value="2" th:text="#{admin.common.sort.inOrder}"></option>
 	                           </select> 
 	                       </div>
 	                       <div class="form-group">
 	                       		<label for="pageSize">
 	                               <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
-	                               <span th:text="#{admin.distributor.distributorSearch}"></span>
+	                               <span th:text="#{admin.store.storeSearch}"></span>
 	                           </label>
 	                           <select class="form-control" name="id" th:field="*{selectType}">
-	                               <option value="1" th:text="#{admin.common.id}">ID</option>
-	                               <option value="2" th:text="#{admin.common.nickname}">Nickname</option>
+	                               <option value="1" th:text="#{admin.common.id}"></option>
+	                               <option value="2" th:text="#{admin.common.nickname}"></option>
 	                           </select>
 	                           <input type="text" class="form-control" id="search-input" name="keyword" th:field="*{keyword}">
 	                           <button type="submit" class="btn btn-default">
-	                           		<span th:text="#{admin.common.search}">Search</span>
+	                           		<span th:text="#{admin.common.search}"></span>
 	                                <i class="fa fa-search"></i>
 	                           </button>
 	                       </div>
@@ -77,30 +77,30 @@
 	                   <div class="form-group" >
 	                       	<span style="float:right;" th:text="#{admin.store.losing.amount}"><b>Losing Amount = 23%</b></span>
                        </div>
-	                   <div class="table-responsive">
+	                   <div class="table-scrollable">
 	                       <table class="table table-bordered table-striped store-list">
 	                           <thead>
 	                           	<tr>
-	                               	<th th:text="#{admin.common.deputyHeadquarter}"> Deputy Headquarter </th>
-	                            	<th th:text="#{admin.common.distributor}"> Distributor </th>
-	                                <th th:text="#{admin.common.id}"> ID </th>
-									<th th:text="#{admin.common.nickname}"> Nickname </th>
-									<th th:text="#{admin.common.holdingMoney}"> Holding Money </th>
-									<th th:text="#{admin.common.member}"> Members </th>
-									<th th:text="#{admin.statistic.depositMember}"> Deposit Member </th>
-									<th th:text="#{admin.common.deposit.partner.payment}"> Deposit [Partner] (Payment) </th>
-									<th th:text="#{admin.common.withdrawal.partner.payment}"> Withdrawal [Partner] (Payment) </th>
-									<th th:text="#{admin.member.differenceOfDepositAndWithdraw}"> Difference between Deposit and Withdrawal </th>
-									<th th:text="#{admin.store.storeSummary}"> Store Summary </th>
-									<th th:text="#{admin.common.type}"> Type </th>
-									<th th:text="#{admin.common.betAmount}"> Bet Amount </th>
-									<th th:text="#{admin.bettingSummary.winningAmount}"> Winning Amount </th>
-									<th th:text="#{admin.headquarter.losingAmount}"> Lost Amount </th>
-									<th th:text="#{admin.distributor.batRolling}"> Bat Rolling </th>
-									<th th:text="#{admin.distributor.settlementRate}"> Settlement Rate </th>
-									<th th:text="#{admin.distributor.processedRollingGold}"> Processed Rolling Gold </th>
-									<th th:text="#{admin.common.status}"> State </th>
-									<th style="min-width: 180px;" th:text="#{admin.common.process}"> Process </th>
+	                               	<th th:text="#{admin.common.deputyHeadquarter}"></th>
+	                            	<th th:text="#{admin.common.distributor}"></th>
+	                                <th th:text="#{admin.common.id}"></th>
+									<th th:text="#{admin.common.nickname}"></th>
+									<th th:text="#{admin.common.holdingMoney}"> </th>
+									<th th:text="#{admin.common.member}"></th>
+									<th th:text="#{admin.statistic.depositMember}"></th>
+									<th th:text="#{admin.common.deposit.partner.payment}"></th>
+									<th th:text="#{admin.common.withdrawal.partner.payment}"></th>
+									<th th:text="#{admin.member.differenceOfDepositAndWithdraw}"></th>
+									<th th:text="#{admin.store.storeSummary}"></th>
+									<th th:text="#{admin.common.type}"></th>
+									<th th:text="#{admin.common.betAmount}"></th>
+									<th th:text="#{admin.bettingSummary.winningAmount}"></th>
+									<th th:text="#{admin.headquarter.losingAmount}"></th>
+									<th th:text="#{admin.distributor.batRolling}"></th>
+									<th th:text="#{admin.distributor.settlementRate}"></th>
+									<th th:text="#{admin.distributor.processedRollingGold}"></th>
+									<th th:text="#{admin.common.status}"></th>
+									<th style="min-width: 180px;" th:text="#{admin.common.process}"></th>
                         	   	</tr>
 	                           </thead>
 	                           <tbody>
@@ -133,10 +133,10 @@
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="#{admin.common.slot}">slot</span>
+												<span th:text="#{admin.common.slot}"></span>
 											</p>
 											<p class="bg-white-grey" >
-												<span th:text="#{admin.common.baccarat}">baccarat</span>
+												<span th:text="#{admin.common.baccarat}"></span>
 											</p>
 										</td>
 										<td>
@@ -180,8 +180,8 @@
 											</p>
 										</td>
 										<td th:text="${entity.batRolling}"></td>
-										<td th:if="${entity.status == 0}" th:text="#{admin.common.normal}">normal</td>
-										<td th:if="${entity.status == 1}" th:text="#{admin.common.stop}">stop</td>
+										<td th:if="${entity.status == 0}" th:text="#{admin.common.normal}"></td>
+										<td th:if="${entity.status == 1}" th:text="#{admin.common.stop}"></td>
 										<td>
 											<button class="btn btn-sm btn-default store-change-status-form" th:if="${entity.status == 0}" th:data-seq="${entity.seq}"><span class="text-danger" th:text="#{admin.common.stop}">Stop</span></button>
 											<button class="btn btn-sm btn-default store-change-status-form" th:if="${entity.status == 1}" th:data-seq="${entity.seq}" th:text="#{admin.common.normal}">Normal</button>
@@ -190,10 +190,10 @@
 										</td>
 	                                </tr>
 	                                <tr th:if="${page.total == 0}">
-										<td colSpan="20" class="text-center" th:text="#{admin.common.noData}">No Data</td>
+										<td colSpan="20" class="text-center" th:text="#{admin.common.noData}"></td>
 									</tr>
 									<tr th:if="${not #lists.isEmpty(page.records)}" class="background-primary text-default" style="background-color: #cfe7ff; color: #004675;">
-										<td th:text="#{admin.common.sum}">Sum</td>
+										<td th:text="#{admin.common.sum}"></td>
 										<td>-</td>
 										<td>-</td>
 										<td>-</td>
@@ -218,10 +218,10 @@
 										<td>-</td>
 										<td>
 											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="#{admin.common.slot}">slot</span>
+												<span th:text="#{admin.common.slot}"></span>
 											</div>
 											<div style="margin-top: 5px;">
-												<span th:text="#{admin.common.baccarat}">baccarat</span>
+												<span th:text="#{admin.common.baccarat}"></span>
 											</div>
 										</td>
 										<td>
@@ -275,7 +275,7 @@
 	                </div>
 	                
 	                <div class="panel-footer">
-                        <a class="btn btn-default store-add-form" th:text="#{admin.store.storeRegistration}">Store Registration</a>
+                        <a class="btn btn-default store-add-form" th:text="#{admin.store.storeRegistration}"></a>
                     </div>
 	            </section>
 	            
@@ -290,8 +290,8 @@
 	                        	change status?
 	                        </div>
 		                    <div class="modal-footer">
-                                <button class="btn btn-primary" th:text="#{admin.common.confirm}" id="storeStatusChange" >Confirm</button>
-                                <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}">Cancel</button>
+                                <button class="btn btn-primary" th:text="#{admin.common.confirm}" id="storeStatusChange" ></button>
+                                <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
 		                    </div>
 	                    </div>
 	                </div>
@@ -308,8 +308,8 @@
 	                        	Delete?
 	                        </div>
 		                    <div class="modal-footer">
-                                <button class="btn btn-primary" th:text="#{admin.common.delete}" id="storeDelete" >Delete</button>
-                                <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}">Cancel</button>
+                                <button class="btn btn-primary" th:text="#{admin.common.delete}" id="storeDelete" ></button>
+                                <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
 		                    </div>
                         </div>
                     </div>
@@ -325,7 +325,7 @@
 	                        <div class="modal-body">
 	                        	<form method="post" th:action="@{/partner2/saveMemo}" id="store-note-form" class="form-horizontal form-bordered mb-lg vform" novalidate="novalidate"  >
 		                            <input type="hidden" name="seq" th:value="0" autocomplete="off"/>
-		                            <div class="table-responsive store">
+		                            <div class="table-scrollable store">
 		                            	<div style="margin-bottom: 10px;">
 						        			<button type="button" class="btn btn-primary new_btn" onClick="addMemo()"><span th:text="#{admin.common.add}"></span></button>
 						        		</div>
@@ -333,9 +333,9 @@
 		                            	<table class="table table-bordered table-striped store-list" id="store-memo">
 		                            		<thead>
 		                            			<tr>
-		                            				<th >Hour</th>
-		                            				<th>Contents</th>
-		                            				<th>Process</th>
+		                            				<th th:text="#{admin.common.hour}"></th>
+		                            				<th th:text="#{admin.common.content}"></th>
+		                            				<th th:text="#{admin.common.process}"></th>
 		                            			</tr>
 		                            		</thead>
 		                            		<tbody>
@@ -348,8 +348,8 @@
 		                        </form>
 	                        </div>
 	                        <div class="modal-footer">
-                                <button class="btn btn-primary" th:text="#{admin.common.confirm}" id="storeNote">Confirm</button>
-                                <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}">Cancel</button>
+                                <button class="btn btn-primary" th:text="#{admin.common.confirm}" id="storeNote"></button>
+                                <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
 		                    </div>
                         </div>
                     </div>
