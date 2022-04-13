@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head (#{admin.note.sendList})"></head>
+<head th:replace="template :: head (#{admin.partner.sentInbox})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/board.css}"/>
 <body>
 	<section class="body">
@@ -14,14 +14,14 @@
                 <section class="panel">
                     <header class="panel-heading">
                     	<h2 class="panel-title">
-                    		<span th:text="#{admin.common.sentInbox}"></span>
+                    		<span th:text="#{admin.partner.sentInbox}"></span>
                     	</h2>
                     </header>
                     <div class="panel-body">
                     	<div class="tabs tabs-primary">
 							<ul class="nav nav-tabs">
 								<li class="active">
-									<a href="#sentInbox" data-toggle="tab" th:text="#{admin.common.sentInbox}"></a>
+									<a href="#sentInbox" data-toggle="tab" th:text="#{admin.partner.sentInbox}"></a>
 								</li>
 							</ul>
 							<div class="tab-content">
@@ -60,7 +60,7 @@
 											</div>
 										</div>
 			                    	</form>
-			                    	<div class="table-responsive">
+			                    	<div class="table-scrollable">
 										<table class="table table-bordered table-striped text-center">
 											<thead>
 												<tr>
