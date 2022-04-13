@@ -22,7 +22,7 @@
 							<button type="button" class="btn btn-default" th:text="#{admin.popup.popupWindow}"></button>
 							<a class="btn btn-primary addPopupBut" th:text="#{admin.popup.addPopupWindow}"></a>
 						</div>
-						<div class="table-responsive">
+						<div class="table-scrollable">
 							<table class="table table-bordered table-striped" id="popupsetting-datatable">
 								<thead>
 									<tr>
@@ -51,6 +51,9 @@
 											<a class="deleteModal btn btn-default" data-toggle="modal" href="#modalDelete"><i class="fa fa-trash-o"></i></a>
 										</td>
 									</tr>
+									<tr th:if="${#lists.isEmpty(page.records)}">
+										<td class="text-center pt-sm pb-sm" colspan="7"th:text="#{admin.common.noData}"></td>
+									</tr>
 								</tbody>
 							</table>
 						</div>
@@ -73,7 +76,7 @@
 		                        <div class="modal-footer">
 		                        	<input type="hidden" name="modalSeq"/>
 		                            <button class="btn btn-primary" onclick="popupDelete();" th:text="#{admin.common.confirm}"></button>
-		                            <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}">Close</button>
+		                            <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
 		                        </div>
 		                    </div>
 		                </div>
