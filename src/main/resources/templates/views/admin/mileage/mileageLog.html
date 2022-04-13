@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Money history')"></head>
+<head th:replace="template :: head (#{admin.mileageLog.title})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/money/money-history.css}"/>
 <body>
     <section class="body">
@@ -14,16 +14,16 @@
             <section role="main" class="content-body">
             	<section class="panel" role="main">
 					<header class="panel-heading">
-						<h2 class="panel-title" th:text="#{admin.mileage.log.title}"></h2>
+						<h2 class="panel-title" th:text="#{admin.mileageLog.title}"></h2>
 					</header>
 					<div class="panel-body">
 						<div class="tabs tabs-primary">
 							<ul class="nav nav-tabs">
 								<li>
-									<a href="#moneyHistory" id="moneyHistoryTabBtn" data-toggle="tab" th:text="#{admin.money.log.title}"></a>
+									<a href="#moneyHistory" id="moneyHistoryTabBtn" data-toggle="tab" th:text="#{admin.menu.member.moneyHistory}"></a>
 								</li>
 								<li class="active">
-									<a href="#mileageHistory" id="mileageHistoryTabBtn" data-toggle="tab" th:text="#{admin.mileage.log.title}"></a>
+									<a href="#mileageHistory" id="mileageHistoryTabBtn" data-toggle="tab" th:text="#{admin.mileageLog.title}"></a>
 								</li>
 							</ul>
 							<div class="tab-content">
@@ -72,14 +72,14 @@
 											</button>
 										</div>
 				                    </form>
-				                    <div class="table-responsive">
+				                    <div class="table-scrollable">
 										<table class="table table-bordered table-striped" id="moneylog-datatable">
 											<thead>
 												<tr>
 													<th class="time-field" th:text="#{admin.money.log.pause}"></th>
 													<th th:text="#{admin.common.id}"></th>
 													<th th:text="#{admin.common.nickname}"></th>
-													<th th:text="#{admin.common.accountHolder}"></th>
+													<th th:text="#{admin.deposit.depositerName}"></th>
 													<th th:text="#{admin.common.distributor}"></th>
 													<th th:text="#{admin.mileage.prevAmount}"></th>
 													<th th:text="#{admin.mileage.log.variableAmount}"></th>
