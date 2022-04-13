@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Money history')"></head>
+<head th:replace="template :: head (#{admin.deposit.statistic})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
 <style>
 	#statisticData .sum {
@@ -46,7 +46,7 @@
                                 </button>
                             </div>
 	                    </form>
-	                    <div class="table-responsive">
+	                    <div class="table-scrollable">
 							<table class="table table-bordered table-striped" id="moneylog-datatable">
 								<thead>
 									<tr>
@@ -57,7 +57,7 @@
 										<th th:text="#{admin.statistic.baccarat.betting}"></th>
 										<th th:text="#{admin.statistic.baccarat.winning}"></th>
 										<th th:text="#{admin.statistic.baccarat.revenue}"></th>
-										<th th:text="#{admin.common.deposit}"></th>
+										<th th:text="#{admin.depositLog.deposit}"></th>
 										<th th:text="#{admin.common.withdraw}"></th>
 										<th th:text="#{admin.statistic.distributor.deposit}"></th>
 										<th th:text="#{admin.statistic.distributor.withdraw}"></th>
@@ -69,7 +69,7 @@
 									</tr>
 								</thead>
 								<tbody id="statisticData">
-									<tr th:each="entity : ${list}" th:data-checkDay="${#dates.format(entity.dates, 'yyyy-MM-dd')}">
+									<tr th:each="entity : ${list}" class="text-center" th:data-checkDay="${#dates.format(entity.dates, 'yyyy-MM-dd')}">
 										<td style="min-width: 130px;">
 											<span th:text="${#dates.format(entity.dates, 'yyyy-MM-dd')}"></span>
 											<span>(</span>
@@ -93,8 +93,8 @@
 										<td class="pointDeposit detail" th:text="${#numbers.formatDecimal(entity.pointDeposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td class="pointWithdraw detail" th:text="${#numbers.formatDecimal(entity.pointWithdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 									</tr>
-									<tr th:if="${list.size() > 0}" class="sum">
-										<td>sum</td>
+									<tr th:if="${list.size() > 0}" class="sum text-center">
+										<td th:text="#{admin.common.sum}"></td>
 										<td th:text="${#numbers.formatDecimal(slotBetSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td th:text="${#numbers.formatDecimal(slotWinSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td th:text="${#numbers.formatDecimal(slotBetWinSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
