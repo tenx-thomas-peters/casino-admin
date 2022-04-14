@@ -162,19 +162,19 @@
 		LEFT JOIN (
 			SELECT COUNT(n.seq) AS m_post, DATE(NOW()) AS today
 			FROM note n
-			WHERE n.read_status = 0 AND n.type = 2 AND n.classification = 2 AND DATE(n.send_time) = DATE(NOW())) AS mPost ON cal.today = mPost.today
+			WHERE n.read_status = 0 AND n.answer_status = 0 AND n.type = 2 AND n.classification = 2 AND DATE(n.send_time) = DATE(NOW())) AS mPost ON cal.today = mPost.today
 			
 		LEFT JOIN (
 			SELECT COUNT(n.seq) AS m_customer_service, DATE(NOW()) AS today
 			FROM note n
 			INNER JOIN member m ON n.sender = m.seq
-			WHERE n.read_status = 0 AND n.type = 2 AND n.classification = 4 AND m.user_type = 0 AND DATE(n.send_time) = DATE(NOW())) AS mCustomerService ON cal.today = mCustomerService.today	
+			WHERE n.read_status = 0 AND n.answer_status = 0 AND n.type = 2 AND n.classification = 4 AND m.user_type = 0 AND DATE(n.send_time) = DATE(NOW())) AS mCustomerService ON cal.today = mCustomerService.today
 			
 		LEFT JOIN (
 			SELECT COUNT(n.seq) AS p_note, DATE(NOW()) AS today
 			FROM note n
 			INNER JOIN member m ON n.sender = m.seq
-			WHERE n.read_status = 0 AND n.type = 1 AND m.user_type > 0 AND DATE(n.send_time) = DATE(NOW())) AS pNote ON cal.today = pNote.today	
+			WHERE n.read_status = 0 AND n.answer_status = 0 AND n.type = 1 AND m.user_type > 0 AND DATE(n.send_time) = DATE(NOW())) AS pNote ON cal.today = pNote.today
 			
 		LEFT JOIN (
 			SELECT COUNT(bs.seq) AS bs, DATE(NOW()) AS today
