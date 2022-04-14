@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('loginlist')"></head>
+<head th:replace="template :: head (#{admin.common.accessLogList})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/accessLog.css}"/>
 <body>
 	<section class="body accessLog">
@@ -73,7 +73,7 @@
 							</div>
 						</form>
 						<!-- datatable -->
-						<div class="table-responsive">
+						<div class="table-scrollable">
 							<table class="table table-bordered table-striped" id="loginlist">
 								<thead>
 									<tr>

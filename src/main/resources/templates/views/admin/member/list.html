@@ -88,7 +88,7 @@
                                 <input type="checkbox" th:id="${status.strValue}" name="state"
                                        th:value="${status.dictValue}"
                                        th:checked="${state.indexOf(status.dictValue.toString()) != -1}"/>
-                                <label th:for="${status.strValue}" th:text="${status.strValue}"></label>
+                                <label th:for="${status.strValue}" th:text="#{${status.strValue}}"></label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -105,7 +105,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="table-responsive">
+                    <div class="table-scrollable">
                         <table class="table table-bordered table-striped diff-color" id="member-list">
                             <thead>
                             <tr>
@@ -128,7 +128,7 @@
                                     [[#{admin.common.withdrawal}]]
                                 </th>
                                 <th th:text="#{admin.member.progressBet}"></th>
-                                <th th:text="#{admin.member.differenceOfDepositAndWithdraw}"></th>
+                                <th th:text="#{admin.member.difference}"></th>
                                 <th th:text="#{admin.common.status}">Status</th>
                                 <th th:text="#{admin.common.signUp.date.domain}"></th>
                                 <th th:text="#{admin.common.recent.date.domain}"></th>
@@ -145,7 +145,7 @@
                             </thead>
                             <tbody>
                             <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
-                            	<input type="hidden" th:value="entity.seq" name="seq"/>
+                                <input type="hidden" th:value="entity.seq" name="seq"/>
                                 <td>
                                     <div class="checkbox-custom checkbox-default checkbox-inline">
                                         <input type="checkbox" class="checkboxes" th:data-key="${entity.seq}"><label></label>
