@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -131,7 +133,10 @@ public class MemberController {
             model.addAttribute("siteList", siteList);
             model.addAttribute("partnerList", partnerList);
             String[] params = {String.valueOf(pageList.getTotal())};
-            model.addAttribute("totalMsg", messageSource.getMessage("admin.member.peopleInTotal", params, request.getLocale()));
+            
+            LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+            
+            model.addAttribute("totalMsg", messageSource.getMessage("admin.member.peopleInTotal", params, localeResolver.resolveLocale(request)));
             model.addAttribute("url", "member/list");
         } catch (Exception e) {
             log.error("url: /member/list --- method: getList --- message: " + e.toString());
