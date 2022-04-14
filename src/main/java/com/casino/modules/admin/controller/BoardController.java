@@ -126,9 +126,11 @@ public class BoardController {
 			Level level = new Level();
 			if(StringUtils.isNotEmpty(seq)) {
 				note = boardService.getById(seq);
-				member = memberService.getById(note.getSender());
-				note.setNickname(member.getNickname());
-				level = levelService.getById(member.getLevelSeq());
+				if(StringUtils.isNotEmpty(note.getSender())) {
+					member = memberService.getById(note.getSender());
+					note.setNickname(member.getNickname());
+					level = levelService.getById(member.getLevelSeq());
+				}
 				note.setLevelName(level.getLevelName());
 			}
 			
