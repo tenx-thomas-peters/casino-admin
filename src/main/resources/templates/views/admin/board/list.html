@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-	<head th:replace="template :: head ('Note List')"></head>
+	<head th:replace="template :: head (#{admin.board.title})"></head>
 	<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/board.css}"/>
 	<body>
 		<section class="body">
@@ -11,14 +11,8 @@
 	            <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
 	            <section role="main" class="content-body">
 	            	<section class="panel" role="main">
-	            		<header class="panel-heading" th:if = "${form.province == 2 || form.province == 5}">
-							<h2 class="panel-title" th:text="#{admin.board.freeBoard}"></h2>
-						</header>
-						<header class="panel-heading" th:if = "${form.province == 0}">
-							<h2 class="panel-title" th:text="#{admin.common.notice}"></h2>
-						</header>
-						<header class="panel-heading" th:if = "${form.province == 3}">
-							<h2 class="panel-title" th:text="#{admin.common.event}"></h2>
+	            		<header class="panel-heading">
+							<h2 class="panel-title" th:text="#{admin.board.title}"></h2>
 						</header>
 						<div class="panel-body">
 							<div class="tabs tabs-primary">
@@ -118,7 +112,7 @@
 												</div>
 											</div>
 										</form>
-										<div class="table-responsive">
+										<div class="table-scrollable">
 											<table class="table table-bordered table-striped">
 												<thead>
 													<tr>
