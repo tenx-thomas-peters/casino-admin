@@ -15,9 +15,9 @@ $(document).on('click', '.noteTitle', function(e){
 		 
 		let detailTr = $('<tr class="detailTd"></tr>')
 						.append($("<td colspan='20'></td>").append($("<div></div>").append("<div class=row></div>")
-						.append("<div class='col-md-1' style='float:left!important'>Title : </div>")
+						.append("<div class='col-md-1' style='float:left!important'>" + titleStr + " : </div>")
 						.append("<div class='col-md-10' style='text-align: left'>" + title +"</div class='row'></div><br/><br/>")
-						.append("<div class='col-md-1'>Content : </div>").append("<div class='col-md-10' style='text-align: left'>" + content + "</div>")));
+						.append("<div class='col-md-1'>" + contentStr + " : </div>").append("<div class='col-md-10' style='text-align: left'>" + content + "</div>")));
 		$(this).parent().parent().after(detailTr);
 	} else {
 		$(this).attr("data-closed", 0);
