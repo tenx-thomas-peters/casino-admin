@@ -88,7 +88,7 @@
                                 <input type="checkbox" th:id="${status.strValue}" name="state"
                                        th:value="${status.dictValue}"
                                        th:checked="${state.indexOf(status.dictValue.toString()) != -1}"/>
-                                <label th:for="${status.strValue}" th:text="#{${status.strValue}}"></label>
+                                <label th:for="${status.strValue}" th:text="${status.strValue}"></label>
                             </div>
                         </div>
                         <div class="form-group">
