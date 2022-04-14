@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Level')"></head>
+<head th:replace="template :: head (#{admin.common.setAmountByLevel})"></head>
 <body>
     <section class="body">
         <header th:replace="template :: header" class="header"></header>
@@ -25,7 +25,7 @@
 					<div class="panel-body">	
 						<form id="formSearch" th:action="@{/config/level}" class="form-inline search-form" style="display: none;">
 	                    </form>
-	                    <div class="table-responsive">
+	                    <div class="table-scrollable">
 							<table class="table table-bordered table-striped" id="level-datatable">
 								<thead>
 									<tr>
@@ -35,11 +35,11 @@
 												<label for="checkboxExample1"></label>
 											</div>
 		                                </th>
-										<th style="text-align: center;" th:text="#{admin.common.level}"></th>
-										<th style="text-align: center;" th:text="#{admin.common.level.name}"></th>
-										<th style="text-align: center;" th:text="#{admin.common.firstInsect.pro}"></th>
-										<th style="text-align: center;" th:text="#{admin.common.caterpillar.pro}"></th>
-										<th style="text-align: center;" th:text="#{admin.common.correction}"></th>
+										<th th:text="#{admin.common.grade}"></th>
+										<th class="text-center" th:text="#{admin.level.name}"></th>
+										<th class="text-center" th:text="#{admin.common.firstInsect.pro}"></th>
+										<th class="text-center" th:text="#{admin.common.caterpillar.pro}"></th>
+										<th class="text-center" th:text="#{admin.common.correction}"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -54,10 +54,21 @@
 												</div>
 											</td>
 											<td th:text="${level.levelNo}"  style="text-align: center;"></td>
-											<td style="text-align: center;"><input type="text" class="form-control levelInput" name="levelName" style="display: inline-block; width: auto; text-align: center;" th:value="${level.levelName}" /></td>
-											<td style="text-align: center;"><input type="text" class="form-control levelInput" name="firstInsect" style="display: inline-block; width: auto; text-align: center;" th:value="${level.firstInsect}" />%</td>
-											<td style="text-align: center;"><input type="text" class="form-control levelInput" name="caterpillar" style="display: inline-block; width: auto; text-align: center;" th:value="${level.caterpillar}" />%</td>
-											<td style="text-align: center;"><button type="submit" class="btn btn-default levelApply" th:text="#{admin.common.apply}"></button></td>
+											<td class="text-center">
+												<input type="text" class="form-control levelInput text-center" name="levelName" 
+													style="display: inline-block; width: auto;" th:value="${level.levelName}" />
+											</td>
+											<td class="text-center">
+												<input type="text" class="form-control levelInput text-center" name="firstInsect" 
+													style="display: inline-block; width: auto;" th:value="${level.firstInsect}" />%
+											</td>
+											<td class="text-center">
+												<input type="text" class="form-control levelInput text-center" name="caterpillar" 
+													style="display: inline-block; width: auto;" th:value="${level.caterpillar}" />%
+											</td>
+											<td class="text-center">
+												<button type="submit" class="btn btn-default levelApply" th:text="#{admin.common.apply}"></button>
+											</td>
 										</form>
 									</tr>
 								</tbody>							
@@ -69,7 +80,7 @@
             		<div class="panel-footer">          			
 	            		<div class="select-add-delete">
 	            			<a class="btn btn-primary add-level" th:text="#{admin.common.add}"></a>
-	    					<a id="delete" class="btn btn-primary" data-toggle="modal" href="#deleteModal" th:text="#{admin.common.delete}"></a>
+	    					<a id="delete" class="btn btn-default" data-toggle="modal" href="#deleteModal" th:text="#{admin.common.delete}"></a>
 	            		</div>
 			            <div id="deleteModal" class="modal fade" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
 							<div class="modal-dialog modal-dialog-centered">
