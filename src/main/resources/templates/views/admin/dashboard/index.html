@@ -11,18 +11,17 @@
     <div class="inner-wrapper">
         <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
 
-        <section role="main" class="content-body">
+        <section role="main" class="content-body" style="padding: 15px; background: #fff;">
             <section class="panel" role="main">
-				<header class="panel-heading">
-					
+				<header class="panel-heading" style="border: none; background: #fff; padding: 0;">
 					<h2 class="panel-title">
 						<i class="fa fa-caret-square-o-right text-primary"></i>
 						<span th:text="#{admin.admin.adminMain}"></span>
 					</h2>
 				</header>
-				<div class="panel-body">
-					<form id="formSearch" th:action="@{${url}}" class="form-inline search-form" method="POST">
-						<div class="table-responsive">
+				<div class="panel-body" style="padding: 0;">
+					<form id="formSearch" th:action="@{${url}}" class="form-inline search-form" method="POST" style="padding: 0; border: none;">
+						<div class="table-scrollable">
 							<table class="table table-bordered table-striped" id="popupsetting-datatable">
 								<thead>
 									<tr>
@@ -56,13 +55,11 @@
 							</table>
 						</div>
 					</form>
-					
 					<div class="tab_cont customPage w99 t_center ptb15"></div>
-					
 				</div>
-			</section>
-			<section class="panel" role="main">
-				<form class="form-inline search-form" id="dashboardFormSearch" style="background-color:#fdfdfd;">
+<!--			</section>-->
+<!--			<section class="panel" role="main" style="padding: 15px;">-->
+				<form class="form-inline search-form" id="dashboardFormSearch" style="background: linear-gradient(#fff, #e6edf7); border: 1px solid #bbc8d8; border-bottom-width: 2px;">
 					<div class="form-group">
 						<label>
 							<i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;border-radius:3px;"></i>
@@ -80,19 +77,19 @@
 					</div>
 				</form>
 
-				<div class="panel-body">
-					<h2 class="panel-title text-center" th:text="#{admin.common.search.result}"></h2>
-					<form class="form-horizontal">
+				<div class="panel-body" style="border: 1px solid #d9d9d9; border-radius: 0; padding: 0;">
+					<h2 class="panel-title text-center" style="background: linear-gradient(#fefefe, #e1e9f6); padding: 10px;" th:text="#{admin.common.search.result}"></h2>
+					<form class="form-horizontal search-result-form" style="margin: 10px; background: #eeeeee; padding: 10px 0;">
                         <div class="form-group">
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.common.id}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
                                 <input class="control-label adminSearchResult" name="id" disabled/>
                             </div>
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[|#{admin.common.winning}| + |#{admin.common.amount}|]]
                             </label>
                             <div class="col-md-4 col-sm-6">
@@ -101,14 +98,14 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.common.nickname}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
                             	<input class="control-label adminSearchResult" name="nickname" disabled/>
                             </div>
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.headquarter.losingAmount}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
@@ -117,14 +114,14 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.common.ranking}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
                                 <input class="control-label adminSearchResult" name="ranking" disabled/>
                             </div>
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.admin.rechargeAmount}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
@@ -133,14 +130,14 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.admin.totalBet}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
                                 <input class="control-label adminSearchResult" name="totalBet" disabled/>
                             </div>
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[|#{admin.common.withdrawal}| + |#{admin.common.amount}|]]
                             </label>
                             <div class="col-md-4 col-sm-6">
@@ -149,14 +146,14 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.common.phoneNumber}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
                                 <input class="control-label adminSearchResult" name="phoneNumber" disabled/>
                             </div>
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.admin.managerCorrection}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
@@ -165,14 +162,14 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.common.distributor}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
                                 <input class="control-label adminSearchResult" name="distributor" disabled/>
                             </div>
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.admin.rechargeBonusAmount}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
@@ -181,14 +178,14 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.common.holdingAmount}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
                                 <input class="control-label adminSearchResult" name="moneyAmount" disabled/>
                             </div>
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.admin.lotteryBonusPayment}]]
                             </label>
                             <div class="col-md-4 col-sm-6">
@@ -197,7 +194,7 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 col-sm-6 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
+                                <i class="fa fa-circle text-primary"></i>
                                 [[#{admin.admin.ownedMileage}]]
                             </label>
                             <div class="col-md-2 col-sm-6">

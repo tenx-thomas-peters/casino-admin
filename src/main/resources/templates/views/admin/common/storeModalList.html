@@ -12,7 +12,7 @@
 			    		<header class="pannel-heading">
 	                        <i class="fa fa-caret-square-o-right text-primary"></i>
 	                        <span id="headquarterId" th:text="${Id}"></span>
-	                        [[#{admin.common.sub}]] [[#{admin.common.store}]]&nbsp;[[#{admin.common.list}]]
+	                        [[#{admin.common.sub}]][[#{admin.common.store}]][[#{admin.common.list}]]
 		                </header>
 	                	<div class="panel-body">
 		                	<form class="form-inline search-form" th:action="@{/partner2/shopMember}" id="formSearch" method="get" th:object="${store}">
@@ -39,28 +39,28 @@
 		                           </button>
 		                       </div>
 		                   	</form>
-							<div class="table-responsive">
+							<div class="table-scrollable">
 		                       <table class="table table-bordered table-striped store-list" id="store-modal-list">
 		                           <thead>
 		                           	<tr>
-		                            	<th th:text="#{admin.common.distributor}"> Distributor </th>
-		                                <th th:text="#{admin.common.store}"> Store </th>
-										<th th:text="#{admin.common.nickname}"> Nickname </th>
-										<th th:text="#{admin.common.member}"> Members </th>
-										<th th:text="#{admin.common.depositMember}"> Deposit Member </th>
-										<th th:text="#{admin.common.deposit.partner.payment}"> Deposit [Partner] (Payment) </th>
-										<th th:text="#{admin.common.withdrawal.partner.payment} + ')'"> Withdrawal [Partner] (Payment) </th>
-										<th th:text="#{admin.member.differenceOfDepositAndWithdraw}"> Difference between Deposit and Withdrawal </th>
-										<th th:text="#{admin.common.store.summary}"> Store Summary </th>
-										<th th:text="#{admin.common.type}"> Type </th>
-										<th th:text="#admin.common.betAmount}"> Bet Amount </th>
-										<th th:text="#{admin.bettingSummary.winningAmount}"> Winning Amount </th>
-										<th th:text="#{admin.common.lost.amount}"> Lost Amount </th>
-										<th th:text="#{admin.common.bat.rolling}"> Bat Rolling </th>
-										<th th:text="#{admin.distributor.settlementRate}"> Settlement Rate </th>
-										<th th:text="#{admin.common.surcharge}">Surcharge</th>
-										<th th:text="#{admin.store.processed.rolling.gold}"> Processed Rolling Gold </th>
-										<th th:text="#{admin.common.status}"> Status </th>
+		                            	<th th:text="#{admin.common.distributor}"></th>
+		                                <th th:text="#{admin.common.store}"></th>
+										<th th:text="#{admin.common.nickname}"></th>
+										<th th:text="#{admin.common.member}"></th>
+										<th th:text="#{admin.common.depositMember}"></th>
+										<th th:text="#{admin.common.deposit.partner.payment}"></th>
+										<th th:text="#{admin.common.withdrawal.partner.payment} + ')'"></th>
+										<th th:text="#{admin.member.differenceOfDepositAndWithdraw}"></th>
+										<th th:text="#{admin.common.store.summary}"></th>
+										<th th:text="#{admin.common.type}"></th>
+										<th th:text="#{admin.common.betAmount}"></th>
+										<th th:text="#{admin.bettingSummary.winningAmount}"></th>
+										<th th:text="#{admin.common.lost.amount}"></th>
+										<th th:text="#{admin.common.bat.rolling}"></th>
+										<th th:text="#{admin.distributor.settlementRate}"></th>
+										<th th:text="#{admin.common.surcharge}"></th>
+										<th th:text="#{admin.store.processed.rolling.gold}"></th>
+										<th th:text="#{admin.common.status}"></th>
 	                        	   	</tr>
 		                           </thead>
 		                           <tbody>
@@ -88,14 +88,14 @@
 										</td>
 										<td>
 											<button class="progress-bet btn btn-sm btn-default"
-												th:text="#{admin.common.general.sales.summary}">General Sales Summary</button>
+												th:text="#{admin.common.store.summary}"></button>
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="#{admin.common.slot}">slot</span>
+												<span th:text="#{admin.common.slot}"></span>
 											</p>
 											<p class="bg-white-grey" >
-												<span th:text="#{admin.common.baccarat}">baccarat</span>
+												<span th:text="#{admin.common.baccarat}"></span>
 											</p>
 										</td>
 										<td>
@@ -140,14 +140,14 @@
 										</td>
 										<td>0%-0%</td>
 										<td th:text="${entity.batRolling}"></td>
-										<td th:if="${entity.status == 0}" th:text="#{admin.common.normal}">normal</td>
-										<td th:if="${entity.status == 1}" th:text="#{admin.common.stop}">stop</td>
+										<td th:if="${entity.status == 0}" th:text="#{admin.common.normal}"></td>
+										<td th:if="${entity.status == 1}" th:text="#{admin.common.stop}"></td>
 									</tr>
 									<tr th:if="${#lists.isEmpty(storeList)}">
-										<td colSpan="18" class="text-center" th:text="#{admin.common.noData}">No Data</td>
+										<td colSpan="18" class="text-center" th:text="#{admin.common.noData}"></td>
 									</tr>
 									<tr th:if="${not #lists.isEmpty(storeList)}" class="background-primary text-default" style="background-color: #cfe7ff; color: #004675;">
-										<td th:text="#{admin.common.sum}">Sum</td>
+										<td th:text="#{admin.common.sum}"></td>
 										<td>-</td>
 										<td>-</td>
 										<td th:text="${#numbers.formatDecimal(memberCountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
@@ -170,17 +170,17 @@
 										<td>-</td>
 										<td>
 											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="#{admin.common.slot}">slot</span>
+												<span th:text="#{admin.common.slot}"></span>
 											</div>
-											<div style="margin-top: 5px;">
-												<span th:text="#{admin.common.baccarat}">baccarat</span>
+											<div class="mt-sm">
+												<span th:text="#{admin.common.baccarat}"></span>
 											</div>
 										</td>
 										<td>
 											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
 												<span th:text="${#numbers.formatDecimal(slotBetAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 											</div>
-											<div style="margin-top: 5px;">
+											<div class="mt-sm">
 												<span th:text="${#numbers.formatDecimal(baccaratBetAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 											</div>
 										</td>
@@ -188,7 +188,7 @@
 											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
 												<span th:text="${#numbers.formatDecimal(slotWinningAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 											</div>
-											<div style="margin-top: 5px;">
+											<div class="mt-sm">
 												<span th:text="${#numbers.formatDecimal(baccaratWinningAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 											</div>
 										</td>
@@ -196,7 +196,7 @@
 											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
 												<span th:text="${#numbers.formatDecimal(slotLostAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 											</div>
-											<div style="margin-top: 5px;">
+											<div class="mt-sm">
 												<span th:text="${#numbers.formatDecimal(baccaratLostAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 											</div>
 										</td>
@@ -204,7 +204,7 @@
 											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
 												<span th:text="${#numbers.formatDecimal(slotBatRollingSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 											</div>
-											<div style="margin-top: 5px;">
+											<div class="mt-sm">
 												<span th:text="${#numbers.formatDecimal(baccaratBatRollingSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 											</div>
 										</td>
@@ -212,7 +212,7 @@
 											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
 												<span>-</span>
 											</div>
-											<div style="margin-top: 5px;">
+											<div class="mt-sm">
 												<span>-</span>
 											</div>
 										</td>

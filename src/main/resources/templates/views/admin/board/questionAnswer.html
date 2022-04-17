@@ -89,7 +89,7 @@
 											<tr>
 												<th width="15%">
 													<div class="demo-icon-hover mb-sm mt-sm">
-														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.site}"></span>:
+														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.lastDomain}"></span>:
 													</div>
 												</th>
 												<td>
@@ -160,7 +160,7 @@
 												<button class="btn btn-default" type="button" th:text="#{admin.reDepositInformation}" onclick="getConfig('reDepositInformation');"></button>
 											</div>
 											<div class="panel-body-bottom-title form-group">
-												<p class="form-label">! If you decide on a title for the answer button, we will work on it.</p>
+												<p class="form-label" th:text="#{admin.questionAnswer.footer.title}"></p>
 											</div>
 										</div>
 									</form>

@@ -19,7 +19,7 @@
                     <form id="formSearch" class="form-inline search-form" style="display: none;" th:action="@{/member/popup_bet}" method="get" th:object="${bettingSummaryForm}">
                         <input type="hidden" name="mem_sn" th:value="${memberSeq}" />
                     </form>
-                    <div class="table-responsive">
+                    <div class="table-scrollable">
                         <table class="table table-bordered table-striped" id="betting-list">
                             <thead>
                             <tr>

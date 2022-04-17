@@ -564,6 +564,7 @@ public class ApiController {
     }
 
     /**
+     * @param Seq
      * @return
      * @author SH
      */
@@ -580,6 +581,10 @@ public class ApiController {
 
     /**
      * apply charge
+     *
+     * @param memberSeq
+     * @param requestAmount
+     * @param depositer
      * @return
      * @author SH
      */
@@ -632,6 +637,10 @@ public class ApiController {
 
     /**
      * apply charge
+     *
+     * @param memberSeq
+     * @param requestAmount
+     * @param depositer
      * @return
      * @author SH
      */

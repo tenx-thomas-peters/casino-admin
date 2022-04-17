@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Preference')">
+<head th:replace="template :: head (#{admin.db.extraction})">
 </head>
 <body>
     <section class="body">
@@ -13,10 +13,12 @@
             <section role="main" class="content-body">
 	            <section class="panel" role="main">
 	               	<header class="panel-heading">
-						<h2 class="panel-title" th:text="#{admin.db.extraction}"><i class="text-primary fa fa-youtube-play"></i> DB Extraction</h2>
+						<h2 class="panel-title" th:text="#{admin.db.extraction}">
+							<i class="text-primary fa fa-youtube-play"></i>
+						</h2>
 					</header>
 	               	<div class="panel-body">
-	               		<button type="button" class="btn btn-default" th:text="#{admin.btn.backup}" onclick="backup()">DB Backup</button>
+	               		<button type="button" class="btn btn-default" th:text="#{admin.btn.backup}" onclick="backup()"></button>
 					</div>
 					<footer class="panel-footer">
 					</footer>

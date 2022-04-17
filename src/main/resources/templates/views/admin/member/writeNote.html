@@ -10,9 +10,9 @@
         <div role="main" class="col-md-12">
             <section class="panel">
                 <header class="panel-heading">
-                    <h4 class="panel-title">
+                    <h4 class="panel-title" th:text="#{admin.menu.member.WriteNote}">
                         <i class="fa fa-caret-square-o-right text-primary"></i>
-                        [[#{admin.member.writeNote}]]
+                        [[#{admin.menu.member.WriteNote}]]
                     </h4>
                 </header>
                 <div class="panel-body">
@@ -62,7 +62,7 @@
                     </form>
                 </div>
                 <footer class="panel-footer text-center">
-                    <button type="button" class="btn btn-primary write-member-note" th:text="#{admin.common.send}">Send</button>
+                    <button type="button" class="btn btn-primary write-member-note" th:text="#{admin.common.send}"></button>
                     <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
                 </footer>
             </section>

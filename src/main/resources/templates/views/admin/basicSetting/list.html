@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Preference')">
+<head th:replace="template :: head (#{admin.basic.setting})">
 </head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/basic-setting.css}"/>
 <body>
@@ -20,7 +20,7 @@
                     	</h2>
 					</header>
 	                	<div class="panel-body">
-							<div class="table-responsive">
+							<div class="table-scrollable">
 								<table class="table table-bordered mb-none">
 										<thead>
 										</thead>
@@ -300,7 +300,7 @@
 											    	<div>
 												    	<div class="checkbox-item col-md-3 col-sm-12">
 											    			<div class="text-center">
-											    				<span class="text-center" th:text="#{admin.vm.casino}"></span>
+											    				<span class="text-center" th:text="#{admin.basicSetting.safety}"></span>
 											    			</div>
 											    			<div class="row">
 												    				<div class="col-sm-4 radio-custom radio-primary">
