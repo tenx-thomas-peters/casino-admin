@@ -391,21 +391,8 @@ public class MoneyController {
             HttpServletRequest request) {
         Result<MoneyHistory> result = new Result<>();
         try {
-            //TODO
-            // game api - /user/add-balance start
-            MoneyHistory history = moneyHistoryService.getById(seq);
-            Member member = memberService.getById(history.getReceiver());
-            Float amount = depositAmount + depositAmount * bonus;
-            ResponseEntity<String> ret = HttpUtils.userAddBalance(gameServerUrl + "/user/add-balance", member.getName(), amount, apiKey);
-
-            if (ret.getStatusCode().value() == 200) {
-                JSONObject json = JSONObject.parseObject(ret.getBody().toString());
-
-                if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT)) {
-                    result.success("success!");
-                } else {
-                    result.error505("failed");
-                }
+            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT)) {
+                result.success("success!");
             } else {
                 result.error505("failed");
             }
@@ -428,7 +415,7 @@ public class MoneyController {
             // game api - /user/sub-balance start
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            ResponseEntity<String> ret = HttpUtils.userSubBalance(gameServerUrl + "/mock/user/sub-balance", member.getName(), withdrawAmount, apiKey);
+            ResponseEntity<String> ret = HttpUtils.userSubBalance(gameServerUrl + "/user/sub-balance", member.getName(), withdrawAmount, apiKey);
             if (ret.getStatusCode().value() == 200) {
                 JSONObject json = JSONObject.parseObject(ret.getBody().toString());
 

@@ -821,7 +821,8 @@
     
 	<select id="getSiteList" resultType="java.util.Map">
 		SELECT
-		DISTINCT m.site_name AS siteName, m.site_domain AS siteDomain
+		DISTINCT m.site_name AS siteName,
+				 IFNULL(m.site_domain, "") AS siteDomain
 		FROM member m
 		WHERE m.site_name IS NOT NULL
 		GROUP BY m.site_name

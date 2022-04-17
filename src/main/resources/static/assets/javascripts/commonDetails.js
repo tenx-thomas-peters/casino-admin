@@ -510,3 +510,15 @@ function todaySubmit() {
 	$('#toProcessTime').val(moment().format('YYYY-MM-DD'));
 	$('#formSearch').submit();
 }
+
+$('.pwdManage').on('click', function() {
+	window.open(CONTEXT_ROOT + '/member/password_manage', 'Password Management', 'width=100', 'height=100');
+});
+
+$('.logout').on('click', function() {
+	window.location.href= CONTEXT_ROOT + '#';
+})
+
+$('.ipBlock').on('click', function() {
+	window.open(CONTEXT_ROOT + '/ipBlock/list', 'Ip Block Management', 'width=200', 'height=200');
+})

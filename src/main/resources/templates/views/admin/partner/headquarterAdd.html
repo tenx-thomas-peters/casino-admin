@@ -15,48 +15,48 @@
                         <form method="post" th:action="@{/partner2/addHeadquarter}" id="headquarter-add-form" class="form-horizontal form-bordered mb-lg vform" novalidate="novalidate"  >
                             <input type="hidden" name="seq" th:value="0" autocomplete="off"/>
                             <div class="form-group">
-                            	<label class="col-sm-2 control-label" th:text="#{admin.common.id}">ID</label>
+                            	<label class="col-sm-2 control-label" th:text="#{admin.common.id}"></label>
                                 <div class="col-sm-4">
                                     <input type="text" name="id" class="form-control" required/>
                                 </div>
-                                <label class="col-sm-2 control-label" th:text="#{admin.common.password}">Password</label>
+                                <label class="col-sm-2 control-label" th:text="#{admin.common.password}"></label>
                                 <div class="col-sm-4">
                                     <input type="text" name="password" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
-                            	<label class="col-sm-2 control-label" th:text="#{admin.common.nickname}">Nickname</label>
+                            	<label class="col-sm-2 control-label" th:text="#{admin.common.nickname}"></label>
                                 <div class="col-sm-4">
                                     <input type="text" name="nickname" class="form-control" required/>
                                 </div>
-                                <label class="col-sm-2 control-label" th:text="#{admin.common.phoneNumber}">Hand phone</label>
+                                <label class="col-sm-2 control-label" th:text="#{admin.common.phoneNumber}"></label>
                                 <div class="col-sm-4">
                                     <input type="text" name="phoneNumber" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" th:text="#{admin.common.nameOfBank}">Name of Bank</label>
+                                <label class="col-sm-2 control-label" th:text="#{admin.common.nameOfBank}"></label>
                                 <div class="col-sm-4">
                                     <input type="text" name="bankName" class="form-control" required/>
                                 </div>
-                                <label class="col-sm-2 control-label" th:text="#{admin.common.accountNumber}">Account Number</label>
+                                <label class="col-sm-2 control-label" th:text="#{admin.common.accountNumber}"></label>
                                 <div class="col-sm-4">
                                     <input type="text" name="bankNumber" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" th:text="#{admin.common.accountHolder}">Account Holder</label>
+                                <label class="col-sm-2 control-label" th:text="#{admin.common.accountHolder}"></label>
                                 <div class="col-sm-4">
                                     <input type="text" name="accountHolder" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" th:text="#{admin.distributor.settlementRate}">Settlement Rate</label>
+                                <label class="col-sm-2 control-label" th:text="#{admin.distributor.settlementRate}"></label>
                                 <div class="col-sm-4">
-                                	<label th:text="#{admin.common.slot}">slot</label>
+                                	<label th:text="#{admin.common.slot}"></label>
                                     <input type="number" name="slotRate" class="form-control" style="width:70px; display:inline-block;" required/>
                                     <span>%</span>
-                                    <label th:text="#{admin.common.baccarat}">baccarat</label>
+                                    <label th:text="#{admin.common.baccarat}"></label>
                                     <input type="number" name="baccaratRate" class="form-control" style="width:70px; display:inline-block;" required/>
                                     <span>%</span>
                                 </div>
@@ -64,7 +64,7 @@
                         </form>
 					</div>
 					<div class="panel-footer">
-						<button class="btn btn-primary headquarter-add" th:text="#{admin.common.registration}">Registration</button>
+						<button class="btn btn-primary headquarter-add" th:text="#{admin.common.registration}"></button>
                         <a href="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></a>
 					</div>
 				</section>

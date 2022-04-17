@@ -114,7 +114,7 @@ $(document).on('click', '.m-withdraw', function (e) {
 
 $(document).on('click', '.m-posts', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'board/list?province=5&sendTimeFrom=' + moment().format('YYYY-MM-DD') + '&sendTimeTo=' + moment().format('YYYY-MM-DD');
+    window.location.href = CONTEXT_ROOT + 'board/list?province=2&sendTimeTo=' + moment().format('YYYY-MM-DD');
 });
 
 $(document).on('click', '.m-customer-service', function (e) {

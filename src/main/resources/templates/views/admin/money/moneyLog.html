@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Money history')"></head>
+<head th:replace="template :: head (#{admin.menu.member.moneyHistory})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/money/money-history.css}"/>
 <body>
     <section class="body">
@@ -14,16 +14,16 @@
             <section role="main" class="content-body">
             	<section class="panel" role="main">
 					<header class="panel-heading">
-						<h2 class="panel-title" th:text="#{admin.money.log.title}"></h2>
+						<h2 class="panel-title" th:text="#{admin.menu.member.moneyHistory}"></h2>
 					</header>
 					<div class="panel-body">
 						<div class="tabs tabs-primary">
 							<ul class="nav nav-tabs">
 								<li class="active">
-									<a href="#moneyHistory" id="moneyHistoryTabBtn" data-toggle="tab" th:text="#{admin.money.log.title}"></a>
+									<a href="#moneyHistory" id="moneyHistoryTabBtn" data-toggle="tab" th:text="#{admin.menu.member.moneyHistory}"></a>
 								</li>
 								<li>
-									<a href="#mileageHistory" id="mileageHistoryTabBtn" data-toggle="tab" th:text="#{admin.mileage.log.title}"></a>
+									<a href="#mileageHistory" id="mileageHistoryTabBtn" data-toggle="tab" th:text="#{admin.mileageLog.title}"></a>
 								</li>
 							</ul>
 							<div class="tab-content">
@@ -71,7 +71,7 @@
 											</button>
 										</div>
 				                    </form>
-									<div class="table-responsive">
+									<div class="table-scrollable">
 										<table class="table table-bordered table-striped" id="moneylog-datatable">
 											<thead>
 												<tr>

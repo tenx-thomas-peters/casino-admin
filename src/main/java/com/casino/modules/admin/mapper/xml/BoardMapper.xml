@@ -53,9 +53,9 @@
 	</sql>
     
 	<select id="getNotePageList" resultMap="noticeListEntity">
-        SELECT n.*, m.name
+        SELECT n.*, m.name, m.nickname as "nickname"
         FROM note n
-        LEFT JOIN member m ON m.seq = n.receiver
+        LEFT JOIN member m ON m.seq = n.sender
         <include refid="noteWhere"/>
         ORDER BY n.send_time DESC
   	</select>
@@ -104,9 +104,9 @@
   	</select>
   	
   	<select id="getCommentList" resultMap="noticeListEntity">
-  		SELECT n.seq as seq, n.content as content, n.sender as sender,  m.nickname as receiver
+  		SELECT n.seq as seq, n.content as content, n.sender as sender,  m.nickname as nickname
   		FROM note n
-  		LEFT JOIN member m ON n.receiver=m.seq 
+  		LEFT JOIN member m ON n.sender=m.seq 
   		WHERE n.answer_status = 1
   		ORDER BY n.send_time DESC
   	</select>

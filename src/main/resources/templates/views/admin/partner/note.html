@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Memo')"></head>
+<head th:replace="template :: head (#{admin.note.memoRegistration})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
 <body>
     <section class="body">
@@ -15,7 +15,7 @@
 					<div class="panel-body">
                         <form method="get" th:action="@{/partner2/confirmNote}" id="note-form" class="form-horizontal form-bordered mb-lg vform" novalidate="novalidate" th:object="${member}" >
                             <input type="hidden" name="seq" th:field="*{seq}" autocomplete="off"/>
-                            <div class="table-responsive">
+                            <div class="table-scrollable">
                                 <table class="table table-bordered table-striped" id="memo-list">
                                     <thead>
                                      <tr>
@@ -47,7 +47,7 @@
                                 </table>
                             </div>
                             <div class="panel-footer">
-								<button type="button" class="btn btn-primary" id="confirmNote" th:text="#{admin.common.confirm}">Confirm</button>
+								<button type="button" class="btn btn-primary" id="confirmNote" th:text="#{admin.common.confirm}"></button>
 		                        <a href="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></a>
 							</div>
                         </form>

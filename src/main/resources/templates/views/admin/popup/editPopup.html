@@ -22,7 +22,7 @@
 		                        <div class="col-sm-9">
 		                        	<input type="hidden" name="site" th:value="${popupSetting.siteSeq}"/>
 		                            <select name="siteSeq" class="form-control">
-		                                <option value="all" class="siteSeqOption">all</option>
+		                                <option value="all" class="siteSeqOption" th:text="#{admin.common.all}"></option>
 		                                <option value="gadget" class="siteSeqOption">gadget</option>
 		                            </select>
 		                        </div>
@@ -39,6 +39,13 @@
 									<input type="text" name="title" class="form-control" th:value="${popupSetting.title}"/>
 								</div>
 		                    </div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" th:text="#{admin.common.content}"></label>
+								<div class="col-sm-9">
+<!--									<input type="text" name="content" class="form-control" th:value="${popupSetting.content}"/>-->
+									<textarea name="content" class="form-control" th:value="${popupSetting.content}">[[${popupSetting.content}]]</textarea>
+								</div>
+							</div>
 		                    <div class="form-group">
 		                        <label class="col-sm-3 control-label" th:text="#{admin.common.location}"></label>
 								<div class="col-sm-9">

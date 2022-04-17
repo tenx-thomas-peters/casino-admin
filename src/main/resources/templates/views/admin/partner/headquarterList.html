@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head (#{admin.headquarter.subHeadquarterList})"></head>
+<head th:replace="template :: head (#{admin.headquarter.deputyHeadquarterList})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/headquarter.css}"/>
 <body>
 	<section class="body headquarter">
@@ -14,7 +14,7 @@
 	        <section role="main" class="content-body">
 	            <section class="panel">
 	                <header class="panel-heading">
-	                    <h2 class="panel-title" th:text="#{admin.headquarter,deputyHeadquarterList}"></h2>
+	                    <h2 class="panel-title" th:text="#{admin.headquarter.deputyHeadquarterList}"></h2>
 	                </header>
 	                <div class="panel-body">
 	                    <form class="form-inline search-form" th:action="@{/partner2/list_top}" id="formSearch" method="get" th:object="${headquarter}">
@@ -39,7 +39,7 @@
 		                         </label>
 		                         <input type="text" class="form-control input-print" id="pageSize" name="pageSize" style="width:50px;" th:value="${pageSize}">
 		                         <select class="form-control" name="column" th:field="*{orderByType}">
-		                             <option value="-1" th:text="#{admin.common.sortBy}">Sort by:::</option>
+		                             <option value="-1" th:text="#{admin.common.sortBy}"></option>
 		                             <option value="0" th:text="#{admin.common.sort.holding}">In order of holding amount↑</option>
 	                               	 <option value="1" th:text="#{admin.common.sort.registration}">In order of registration date↓</option>
 	                                 <option value="2" th:text="#{admin.common.sort.inOrder}">In order↓</option>
@@ -48,7 +48,7 @@
 	                        <div class="form-group">
 	                       	 	<label for="pageSize">
 	                              	<i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
-	                              	<span th:text="#{admin.headquarter.headquarterSearch}">Headquarter Search</span>
+	                              	<span th:text="#{admin.headquarter.headquarterSearch}"></span>
 	                           	</label>
 	                           	<select class="form-control" name="id" th:field="*{selectType}">
 	                               	<option value="1" th:text="#{admin.common.id}"></option>
@@ -56,7 +56,7 @@
 	                           	</select>
 	                           	<input type="text" class="form-control input-keyword" id="keyword" name="keyword" th:field=*{keyword} />
 	                           	<button type="submit" class="btn btn-default">
-	                           		<span th:text="#{admin.common.search}">Search</span>
+	                           		<span th:text="#{admin.common.search}"></span>
 	                                <i class="fa fa-search"></i>
 	                           	</button>
 	                       </div>
@@ -64,30 +64,30 @@
 	                   <div class="form-group" >
 	                       	<span style="float:right;"><b th:text="#{admin.headquarter.losingAmount} + ' = ' + ${losingAmount}"></b></span>
                        </div>
-	                   <div class="table-responsive">
+	                   <div class="table-scrollable">
 	                       <table class="table table-bordered table-striped headquarter-list">
 	                           <thead>
 	                           	<tr>
-									<th th:text="#{admin.common.id}"> ID </th>
-									<th th:text="#{admin.common.nickname}"> Nickname </th>
-									<th th:text="#{admin.common.holdingMoney}"> Holding Money </th>
-									<th th:text="#{admin.common.numberOfDistributors}"> Number of Distributors </th>
-									<th th:text="#{admin.common.numberOfStores}"> Number of Stores </th>
-									<th th:text="#{admin.common.member}"> Members </th>
-									<th th:text="#{admin.statistic.depositMember}"> Deposit Member </th>
-									<th th:text="#{admin.common.deposit.partner.payment}"> Deposit [Partner] (Payment) </th>
-									<th th:text="#{admin.common.withdrawal.partner.payment}"> Withdrawal [Partner] (Payment) </th>
-									<th th:text="#{admin.member.differenceOfDepositAndWithdraw}"> Difference between Deposit and Withdrawal </th>
-									<th th:text="#{admin.headquarter.executiveSummary}"> Executive Summary </th>
-									<th th:text="#{admin.common.type}"> Type </th>
-									<th th:text="#{admin.common.betAmount}"> Bet Amount </th>
-									<th th:text="#{admin.bettingSummary.winningAmount}"> Winning Amount </th>
-									<th th:text="#{admin.headquarter.losingAmount}"> Lost Amount </th>
-									<th th:text="#{admin.distributor.batRolling}"> Bat Rolling </th>
-									<th th:text="#{admin.distributor.settlementRate}"> Settlement Rate </th>
-									<th th:text="#{admin.distributor.processedRollingGold}"> Processed Rolling Gold </th>
-									<th th:text="#{admin.common.status}"> Status </th>
-									<th style="min-width: 180px;" th:text="#{admin.common.process}"> Process </th>
+									<th th:text="#{admin.common.id}"></th>
+									<th th:text="#{admin.common.nickname}"></th>
+									<th th:text="#{admin.common.holdingMoney}"></th>
+									<th th:text="#{admin.common.numberOfDistributors}"></th>
+									<th th:text="#{admin.common.numberOfStores}"></th>
+									<th th:text="#{admin.common.member}"></th>
+									<th th:text="#{admin.statistic.depositMember}"></th>
+									<th th:text="#{admin.common.deposit.partner.payment}"></th>
+									<th th:text="#{admin.common.withdrawal.partner.payment}"></th>
+									<th th:text="#{admin.member.differenceOfDepositAndWithdraw}"></th>
+									<th th:text="#{admin.headquarter.executiveSummary}"></th>
+									<th th:text="#{admin.common.type}"></th>
+									<th th:text="#{admin.common.betAmount}"></th>
+									<th th:text="#{admin.bettingSummary.winningAmount}"></th>
+									<th th:text="#{admin.headquarter.losingAmount}"></th>
+									<th th:text="#{admin.distributor.batRolling}"></th>
+									<th th:text="#{admin.distributor.settlementRate}"></th>
+									<th th:text="#{admin.distributor.processedRollingGold}"></th>
+									<th th:text="#{admin.common.status}"></th>
+									<th style="min-width: 180px;" th:text="#{admin.common.process}"></th>
 	                           	</tr>
 	                           </thead>	
 	                           <tbody>
@@ -117,14 +117,14 @@
 										</td>
 										<td>
 											<button class="progress-bet btn btn-sm btn-default"
-												th:text="#{admin.headquarter.executiveSummary}">Executive Summary</button>
+												th:text="#{admin.headquarter.executiveSummary}"></button>
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="#{admin.common.slot}">slot</span>
+												<span th:text="#{admin.common.slot}"></span>
 											</p>
 											<p class="bg-white-grey" >
-												<span th:text="#{admin.common.baccarat}">baccarat</span>
+												<span th:text="#{admin.common.baccarat}"></span>
 											</p>
 										</td>
 										<td>
@@ -206,10 +206,10 @@
 										<td>-</td>
 										<td>
 											<p style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="#{admin.common.slot}">slot</span>
+												<span th:text="#{admin.common.slot}"></span>
 											</p>
 											<p >
-												<span th:text="#{admin.common.baccarat}">baccarat</span>
+												<span th:text="#{admin.common.baccarat}"></span>
 											</p>
 										</td>
 										<td>
@@ -262,7 +262,7 @@
 	                   <div class="tab_cont customPage w99 t_center ptb15"></div> 
 	                </div>
 	                <div class="panel-footer">
-                        <a class="btn btn-default headquarter-add-form" th:text="#{admin.common.deputy} + ' ' + #{admin.common.headquarter} + ' ' + #{admin.common.registration}">Deputy Headquarter Registration</a>
+                        <a class="btn btn-default headquarter-add-form" th:text="#{admin.headquarter.duptyRegistration}"></a>
                     </div>
 	            </section>
             </section>
@@ -272,14 +272,14 @@
 	                    <div class="modal-content">
 	                        <div class="modal-header">
 	                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-	                            <h2 class="modal-title" th:text="|#{admin.common.subHeadquarter}| + ' ' + |#{admin.common.change}| + ' ' + |#{admin.common.status}|"></h2>
+	                            <h2 class="modal-title" th:text="|#{admin.common.change}| + ' ' + |#{admin.common.status}|"></h2>
 	                        </div>
 	                        <div class="modal-body">
 	                        	change status?
 	                        </div>
 		                    <div class="modal-footer">
-                                <button class="btn btn-primary" th:text="#{admin.common.confirm}" id="headquarterStatusChange" >Confirm</button>
-                                <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}">Cancel</button>
+                                <button class="btn btn-primary" th:text="#{admin.common.confirm}" id="headquarterStatusChange" ></button>
+                                <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
 		                    </div>
 	                    </div>
 	                </div>
@@ -292,12 +292,11 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                                <h2 class="modal-title" th:text="|#{admin.common.subHeadquarter}| + ' ' + |#{admin.common.delete}|"></h2>
                         </div>
-                        <div class="modal-body">
-                        	Delete?
+                        <div class="modal-body" th:text="#{admin.common.deleteMsg}">
                         </div>
 	                    <div class="modal-footer">
-                               <button class="btn btn-primary" th:text="#{admin.common.delete}" id="headquarterDelete" >Delete</button>
-                               <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}">Cancel</button>
+                               <button class="btn btn-primary" th:text="#{admin.common.delete}" id="headquarterDelete" ></button>
+                               <button class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
 	                    </div>
                      </div>
                  </div>

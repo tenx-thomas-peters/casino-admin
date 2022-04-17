@@ -50,7 +50,7 @@
                                 </button>
                             </div>
 	                    </form>
-	                    <div class="table-responsive">
+	                    <div class="table-scrollable">
 							<table class="table table-bordered table-striped" id="moneylog-datatable">
 								<thead>
 									<tr>
@@ -74,10 +74,10 @@
 											th:class="${#dates.format(entity.eachDate,'E')=='Sat'?'text-primary':#dates.format(entity.eachDate,'E')=='Sun'?'text-danger':''}"></span>
 											<span>)</span>
 										</td>
-										<td class="center" th:text="${#numbers.formatDecimal(entity.newMember, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
-										<td class="center" th:text="${#numbers.formatDecimal(entity.connectedMember, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
-										<td class="center" th:text="${#numbers.formatDecimal((entity.depositMember), 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
-										<td class="center" th:text="${#numbers.formatDecimal(entity.bettingMember, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(entity.newMember, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + #{admin.common.people}"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(entity.connectedMember, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + #{admin.common.people}"></td>
+										<td class="center" th:text="${#numbers.formatDecimal((entity.depositMember), 1, 'COMMA', 2, 'POINT').replace('.00', '')} + #{admin.common.people}"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(entity.bettingMember, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + #{admin.common.people}"></td>
 										
 										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(entity.depositAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td class="blue text-center equalWidth" th:text="${#numbers.formatDecimal(entity.depositNumber, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
@@ -94,10 +94,10 @@
 									</tr>
 									<tr th:if="${list.size() > 0}" >
 										<td class="center" th:text="#{admin.common.sum}"></td>
-										<td class="center" th:text="${#numbers.formatDecimal(newMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
-										<td class="center" th:text="${#numbers.formatDecimal(connetedMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
-										<td class="center" th:text="${#numbers.formatDecimal(depositMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
-										<td class="center" th:text="${#numbers.formatDecimal(bettingMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + ' people'"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(newMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + #{admin.common.people}"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(connetedMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + #{admin.common.people}"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(depositMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + #{admin.common.people}"></td>
+										<td class="center" th:text="${#numbers.formatDecimal(bettingMemberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')} + #{admin.common.people}"></td>
 
 										<td class="text-right equalWidth" th:text="${#numbers.formatDecimal(depositAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td class="blue text-center" th:text="${#numbers.formatDecimal(depositNumberSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>

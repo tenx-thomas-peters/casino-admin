@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head (#{admin.note.sendList})"></head>
+<head th:replace="template :: head (#{admin.note.partnerSentInbox})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/board.css}"/>
 <body>
 	<section class="body">
@@ -21,18 +21,18 @@
 	                   	<div class="tabs tabs-primary">
 							<ul class="nav nav-tabs">
 								<li>
-									<a href="#popular" data-toggle="tab" th:text="#{admin.common.inbox}">inbox</a>
+									<a href="#popular" data-toggle="tab" th:text="#{admin.common.inbox}"></a>
 								</li>
 								<li class="active">
-									<a th:href="@{/memo/sendPList}"  th:text="#{admin.common.sentInbox}"></a>
+									<a th:href="@{/memo/sendPList}"  th:text="#{admin.partner.sentInbox}"></a>
 								</li>
 								<li>
-									<a th:href="@{/partner2/popup_memoadd}"  th:text="#{admin.member.writeNote}"></a>
+									<a th:href="@{/partner2/popup_memoadd}"  th:text="#{admin.partner.writeNote}"></a>
 								</li>
 							</ul>
 							<div class="tab-content">
 								<div id="popular" class="tab-pane">
-									<p>inbox</p>
+									<p th:text="#{admin.common.inbox}"></p>
 								</div>
 								<div id="sentInbox" class="tab-pane active">
 			                    	<form th:action="@{/memo/sendPList}" method="get" th:object="${form}" id="formSearch" class="form-inline search-form">
@@ -69,7 +69,7 @@
 											</div>
 										</div>
 			                    	</form>
-			                    	<div class="table-responsive">
+			                    	<div class="table-scrollable">
 										<table class="table table-bordered table-striped text-center">
 											<thead>
 												<tr>
@@ -79,15 +79,15 @@
 					                                        	data-set="#member-datatable .checkboxes" onclick="allCheck()"><label></label>
 					                                    </div>
 													</th>
-													<th th:text="#{admin.common.site}"> Site </th>
-													<th th:text="#{admin.common.recipient}"> recipient </th>
-													<th th:text="#{admin.common.nickname}"> nickname </th>
-													<th th:text="#{admin.common.accountHolder}"> Account Holder </th>
-													<th th:text="#{admin.common.sender}"> Sender </th>
-													<th th:text="#{admin.common.title}"> Title </th>
-													<th th:text="#{admin.note.timeSpent}"> time spent </th>
-													<th th:text="#{admin.common.read}"> Read </th>
-													<th th:text="#{admin.common.status}"> Status </th>
+													<th th:text="#{admin.common.site}"></th>
+													<th th:text="#{admin.common.recipient}"></th>
+													<th th:text="#{admin.common.nickname}"></th>
+													<th th:text="#{admin.common.accountHolder}"></th>
+													<th th:text="#{admin.common.sender}"></th>
+													<th th:text="#{admin.common.title}"></th>
+													<th th:text="#{admin.note.timeSpent}"></th>
+													<th th:text="#{admin.common.read}"></th>
+													<th th:text="#{admin.common.status}"></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -156,6 +156,8 @@
 	<script type="text/javascript" th:inline="javascript">
 	    var page = [[${page}]];
 		var url = [[${url}]];
+		var titleStr = [[#{admin.common.title}]];
+		var contentStr = [[#{admin.common.content}]];
 	 </script>
 
     <script th:replace="template :: scripts"></script>

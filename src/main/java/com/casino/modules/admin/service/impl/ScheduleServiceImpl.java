@@ -200,80 +200,6 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
         }
         //sort out the logic for betting summary ----------------------------------------------------------------------- />
 
-
-// Thomas Peters 2022.04.05 ------------------------------------------ remove <
-//        for (BettingLogForm item : bettingLogList) {
-//
-//            if (item.getType().equals("bet")) {
-//                BettingSummary bettingSummary = new BettingSummary();
-//                bettingSummary.setSeq(UUIDGenerator.generate());
-//
-//
-//                /* Thomas Peters 2022.04.03
-//                ----------------------------------------------------------------------------- <
-//                 * Convert date form from 2022-04-03T10:08:000000Z to 2022-04-03 10:08:000000
-//                 */
-//                SimpleDateFormat destination_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                SimpleDateFormat first_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-//                Date origin_date = null;
-//                try {
-//                    origin_date = first_format.parse(item.getProcessedAt());
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//                String str_destination_date = destination_format.format(origin_date);
-//
-//                bettingSummary.setCheckTime(str_destination_date);
-//                //----------------------------------------------------------------------------- >
-//
-//                QueryWrapper<Member> qw = new QueryWrapper<>();
-//                qw.eq("id", item.getUser().getUsername());
-//                Member member = memberService.getOne(qw);
-//
-//                bettingSummary.setMemberSeq(member != null ? member.getSeq() : "");
-//                bettingSummary.setStoreSeq(member != null ? member.getStoreSeq() : "");
-//                bettingSummary.setDistributorSeq(member != null ? member.getDistributorSeq() : "");
-//                bettingSummary.setHeadquarterSeq(member != null ? member.getSubHeadquarterSeq() : "");
-//
-//                if (item.getDetails() != null && item.getDetails().getGame() != null) {
-//                    bettingSummary.setPlayingGame(item.getDetails().getGame().getTitle());
-//                    Integer type = item.getDetails().getGame().getType() != null && item.getDetails().getGame().getType().equals("slot") ? 0 : 1;
-//                    bettingSummary.setType(type);
-//                }
-//
-//                bettingSummary.setBettingAmount(Math.abs(item.getAmount()));
-//
-//                if (item.getType().equals("bet")) {
-//                    // get winning amount
-//                    BettingLogForm bettingLogForm = getBetWinRelation(bettingLogList, item.getId());
-//                    bettingSummary.setWinningAmount(bettingLogForm.getAmount());
-//                    if (bettingLogForm.getAmount() == 0) {
-//                        bettingSummary.setLostAmount(Math.abs(item.getAmount()));
-//                    }
-//                }
-//
-//                bettingSummary.setBetCount(1);
-////                bettingSummary.setBatRolling();
-////                bettingSummary.setPointRate();
-//
-//                System.out.println("bettingSummary");
-//                System.out.println(bettingSummary);
-//                bettingSummaryList.add(bettingSummary);
-//
-//                /* Thomas Peters 2022.04.04
-//                 *----------------------------------------------------------------- <
-//                 * apply betting amount to member
-//                 */
-//                assert member != null;
-//                float amount = member.getMoneyAmount() + ( bettingSummary.getBettingAmount() + bettingSummary.getWinningAmount() - bettingSummary.getLostAmount() );
-//                member.setMoneyAmount(amount);
-//                memberService.updateById(member);
-//                System.out.println("member");
-//                System.out.println(member);
-//            }
-//        }
-// Thomas Peters 2022.04.05 ------------------------------------------ remove />
-
         System.out.println("bettingSummaryList");
         System.out.println(bettingSummaryList);
         if (bettingSummaryService.saveBatch(bettingSummaryList)) {
@@ -292,7 +218,6 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                 break;
             }
         }
-
         return bettingLogForm;
     }
 }

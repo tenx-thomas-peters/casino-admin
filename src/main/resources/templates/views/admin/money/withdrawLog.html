@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="template :: head ('Money history')"></head>
+<head th:replace="template :: head (#{admin.withdraw.log.title})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/money/money-history.css}"/>
 <body>
     <section class="body">
@@ -20,7 +20,7 @@
 						<div class="tabs tabs-primary">
 							<ul class="nav nav-tabs">
 								<li>
-									<a href="#deposit" id="depositTabBtn" data-toggle="tab" th:text="#{admin.common.deposit}"></a>
+									<a href="#deposit" id="depositTabBtn" data-toggle="tab" th:text="#{admin.depositLog.deposit}"></a>
 								</li>
 								<li class="active">
 									<a href="#withdraw" id="withdrawTabBtn" data-toggle="tab" th:text="#{admin.common.withdraw}"></a>
@@ -115,15 +115,15 @@
 					                    	<span th:if="${moneyHistory.fromProcessTime != null || moneyHistory.toProcessTime != null}">~</span>
 					                    	<span th:text="${moneyHistory.toProcessTime}" ></span>
 					                    	<span></span>
-					                    	[[#{admin.common.totalDeposit}]]:
+					                    	[[#{admin.deposit.totalDeposit}]]:
 					                    	<span class='text-primary' th:text="${'KRW ' + #numbers.formatDecimal(totalDeposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
-					                    	[[#{admin.common.totalWithdrawal}]]:
+					                    	[[#{admin.deposit.totalWithdrawal}]]:
 					                    	<span class='text-primary' th:text="${'KRW ' + #numbers.formatDecimal(totalWithdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
-					                    	[[#{admin.common.difference}]]:
+					                    	[[#{admin.deposit.difference}]]:
 					                    	<span class='text-primary' th:text="${'KRW ' + #numbers.formatDecimal((totalDeposit - totalWithdraw), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 					                    </p>
 				                    </div>
-				                    <div class="table-responsive">
+				                    <div class="table-scrollable">
 										<table class="table table-bordered table-striped" id="moneylog-datatable">
 											<thead>
 												<tr>

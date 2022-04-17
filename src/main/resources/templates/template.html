@@ -86,7 +86,7 @@
         </div>
         <!-- end: search & user box -->
 
-        <div class="form-inline alarm-info visible-lg">
+        <div class="form-inline alarm-info hidden-xs">
             <div class="form-group" style="vertical-align: top;">
                 <label style="margin-left: 30px; padding: 3px; background-color: #f9fa0f; color: #35654d;">
                     [[#{admin.header.alarmInfo}]]
@@ -94,7 +94,7 @@
             </div>
             <div class="form-group" style="padding-left: 10px;">
                 <div>
-                    <p class="header-context-info text-white m-login-member">
+                    <p class="header-context-info text-white m-login-member" style="color: #f9fa0f;">
                         [[#{admin.header.mLoginMember}]][<span class="m-login-member">0</span>]
                     </p>
                     <p class="header-context-info text-white m-deposit">
@@ -134,20 +134,18 @@
                     </p>
                 </div>
             </div>
-            <div class="form-group mr-md" style="float: right;">
-                <a class="text-danger mr-md mt-md" style="display: inline-block;">[[#{admin.common.ipBlockManagement}]]</a>
-                <a class="text-danger mr-md mt-md" style="display: inline-block;">[[#{admin.common.passwordManagement}]]</a>
-                <a class="text-danger mt-md" style="display: inline-block;">[[#{admin.common.logout}]]</a>
+            <div class="form-group mr-md hidden-md" style="float: right;">
+                <a class="text-danger mr-md mt-md ipBlock" style="display: inline-block;">[[#{admin.common.ipBlockManagement}]]</a>
+                <a class="text-danger mr-md mt-md pwdManage" style="display: inline-block;">[[#{admin.common.passwordManagement}]]</a>
+                <a class="text-danger mt-md logout" style="display: inline-block;">[[#{admin.common.logout}]]</a>
             </div>
-            <div class="form-group mr-md" style="float: right;">
-                <button class="btn btn-default btn-lg">[[#{admin.common.save}]]</button>
-            </div>
-            <div class="form-group mr-md" style="float: right;">
-                <textarea name="note" class="form-control input-lg"></textarea>
+            <div class="form-group mr-md hidden-md" style="float: right;">
+                <textarea name="note" class="form-control input-lg" style="padding: 5px;"></textarea>
+                <button class="btn btn-default btn-lg" style="font-size: 12px; padding: 20px 25px;">[[#{admin.common.save}]]</button>
             </div>
         </div>
 
-        <div class="form-inline alarm-info visible-lg">
+        <div class="form-inline alarm-info hidden-xs">
             <div class="form-group">
                 <label style="margin-left: 30px; padding: 3px; background-color: #1792d4; color: white;">
                     [[#{admin.header.currentInfo}]]
@@ -156,7 +154,7 @@
             <div class="form-group" style="padding-left: 10px;">
                 <div>
                     <p class="header-context-info text-white">
-                        •&nbsp;[[#{admin.common.member}]]
+                        •&nbsp;[[#{admin.header.member}]]
                     </p>
                     <p class="header-context-info text-white m-today-deposit">
                         •&nbsp;[[#{admin.header.mTodayDeposit}]]&nbsp;<span class="m-today-deposit money-green">0</span>&nbsp;[[#{admin.common.won}]]
@@ -177,10 +175,10 @@
             </div>
         </div>
 
-        <div class="form-inline alarm-info visible-lg">
+        <div class="form-inline alarm-info hidden-xs">
             <div class="form-group" style="padding-left: 10px; margin-left: 90px;">
                 <div>
-                    <p class="header-context-info text-dark-yellow">•&nbsp;[[#{admin.common.partner}]]</p>
+                    <p class="header-context-info text-dark-yellow">•&nbsp;[[#{admin.header.partner}]]</p>
                     <p class="header-context-info text-dark-yellow p-today-deposit">
                         •&nbsp;[[#{admin.header.pTodayDeposit}]]&nbsp;<span class="p-today-deposit money-green">0</span>&nbsp;[[#{admin.common.won}]]
                     </p>
@@ -417,10 +415,20 @@
     </aside>
     <!-- end: sidebar -->
 
+    <!--    start: footer-->
+    <footer th:fragment="footer" class="footer">
+
+    </footer>
+    <!--    end: footer-->
+
 
     <div th:fragment="scripts">
         <script type="text/javascript" th:inline="javascript">
         	var CONTEXT_ROOT = [[@{/}]];
+        	var recordsPerPage = [[#{admin.common.recordsPerPage}]];
+        	var allTxt = [[#{admin.common.pagination.all}]];
+        	var pagesTxt = [[#{admin.common.pagination.entries}]];
+        	var pageTxt = [[#{admin.common.pagination.page}]];
 
             var txtAdd = [[#{admin.member.addition}]];
             var txtEdit = [[#{admin.common.edit}]];
