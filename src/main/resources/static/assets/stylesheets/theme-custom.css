@@ -24,6 +24,13 @@
     padding: 0;
 }
 
+input.form-control, select.form-control{
+    border-radius: 0!important;
+    padding: 0 5px;
+    font-size: 12px;
+    height: auto;
+}
+
 .border-bottom {
     border-bottom: 1px solid #eff2f7;
 }
@@ -34,8 +41,22 @@
     margin-bottom: 10px;
 }
 
+.search-form.form-inline .form-group >label{
+    font-size: 10px;
+    margin-bottom: 0;
+}
+
 .search-form .form-group {
     margin-bottom: 10px !important;
+}
+
+.search-form .form-group .input-group-icon .input-group-addon .icon{
+    padding: 0 12px;
+}
+
+.panel-body .btn.btn-default{
+    font-size: 13px;
+    padding: 0 12px;
 }
 
 .search-form .checkbox-inline input[type="checkbox"]:checked + label:before {
@@ -389,7 +410,6 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 .alarm-info .alarm-info-title{
     margin-left: 30px;
     padding: 0px 3px;
-    background-color: #f9fa0f;
     color: #35654d;
     font-size: 12px
 }
