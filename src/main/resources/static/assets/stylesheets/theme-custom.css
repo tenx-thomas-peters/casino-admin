@@ -16,9 +16,6 @@
     }
 }
 
-.sidebar-left {
-    width: 260px;
-}
 .content-body {
     padding: 0;
 }
@@ -137,6 +134,7 @@ a.text-default {
 .sidebar-left {
     background: #929eac;
     box-shadow: none;
+    width: 210px;
 }
 
 .nav-menu {
@@ -233,7 +231,7 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 }
 
 .sidebar-widget .widget-header {
-    padding: 10px;
+    padding: 6px 10px;
     background: #41556e;
 }
 
@@ -244,9 +242,11 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 .sidebar-widget .widget-header h6 i {
     color: white;
 }
-
+.sidebar-widget .widget-content{
+    padding: 0px;
+}
 .sidebar-widget .widget-content ul {
-    padding: 0 10px 10px 10px;
+    padding: 4px 8px 10px;
 }
 
 .sidebar-widget .widget-content ul li a {
@@ -255,6 +255,8 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     text-decoration: none;
     color: black;
     font-weight: bold;
+    font-size: 12px;
+    line-height: 20px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -304,7 +306,7 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
   overflow-x: auto;
   overflow-y: hidden;
   border: 1px solid #e7ecf1;
-  margin: 10px 0 !important;
+  margin: 5px 0 !important;
 }
 .DTS .table-scrollable {
     border: 0;
@@ -363,4 +365,64 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 
 .search-result-form div {
     margin-bottom: 5px;
+}
+
+/* Thomas 2022.04.14------------------------------*/
+.text-danger{
+    color: #ff0800 !important;
+}
+
+.header{
+    border-bottom: none;
+    height: 154px;
+    padding-top: 8px;
+}
+
+.header .alarm-info .form-group p{
+    font-weight: bold;
+    font-size: 14px;
+}
+.inner-wrapper{
+    padding-top: 154px;
+}
+
+.alarm-info .alarm-info-title{
+    margin-left: 30px;
+    padding: 0px 3px;
+    background-color: #f9fa0f;
+    color: #35654d;
+    font-size: 12px
+}
+.content-body{
+    padding: 8px;
+    background: #fff;
+}
+.panel .panel-heading{
+    border: none;
+    background: #fff;
+    padding: 0;
+}
+
+.panel-heading .panel-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.panel-body{
+    padding: 0px;
+}
+
+.daily-note{
+    margin-right: 30px;
+}
+.daily-note textarea.note{
+    width: 500px;
+}
+
+.b-yellow{
+    background-color: #f9fa0f;
+}
+
+.b-blue{
+    background-color: #1792d4;
 }
