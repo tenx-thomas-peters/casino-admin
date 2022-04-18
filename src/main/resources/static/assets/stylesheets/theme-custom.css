@@ -28,14 +28,14 @@ input.form-control{
     border-radius: 0!important;
     padding: 0 5px;
     font-size: 12px;
-    height: auto;
+    height: 21px;
 }
 
 select.form-control{
     border-radius: 0!important;
     padding: 0 2px;
     font-size: 12px;
-    height: auto;
+    height: 21px;
 }
 .panel-body{
     box-shadow: none;
@@ -75,6 +75,7 @@ select.form-control{
 .panel-body .btn.btn-default{
     font-size: 13px;
     padding: 0 12px;
+    height: 21px;
 }
 
 .search-form .checkbox-inline input[type="checkbox"]:checked + label:before {
@@ -472,4 +473,13 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     padding: 5px;
     border-top: 1px solid #dadada;
     margin: 0;
+}
+
+.input-daterange.input-group .input-group-addon{
+    padding: 0 5px;
+    line-height: 1;
+}
+
+.w-50{
+    width: 50px;
 }

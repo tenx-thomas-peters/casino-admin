@@ -37,7 +37,7 @@
 		                             <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
 		                             <span th:text="#{admin.common.print}"></span>
 		                         </label>
-		                         <input type="text" class="form-control input-print" id="pageSize" name="pageSize" style="width:50px;" th:value="${pageSize}">
+		                         <input type="text" class="form-control input-print w-50" id="pageSize" name="pageSize" th:value="${pageSize}">
 		                         <select class="form-control" name="column" th:field="*{orderByType}">
 		                             <option value="-1" th:text="#{admin.common.sortBy}"></option>
 		                             <option value="0" th:text="#{admin.common.sort.holding}">In order of holding amount↑</option>

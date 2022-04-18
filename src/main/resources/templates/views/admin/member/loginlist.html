@@ -38,7 +38,7 @@
                                     <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
                                     <span th:text="#{admin.common.print}"></span>
                                 </label>
-                                <input type="text" class="form-control" id="pageSize" name="pageSize" th:value="${pageSize}" style="width: 50px;">
+                                <input type="text" class="form-control w-50" id="pageSize" name="pageSize" th:value="${pageSize}">
                                 <select class="form-control member" th:field="*{distributor}">
                                 	<option value="" th:text="#{admin.common.all}"></option>
                                 	<option th:each="partner, row : ${partnerList}" th:value="${partner.seq}" th:text="${partner.id}"></option>
