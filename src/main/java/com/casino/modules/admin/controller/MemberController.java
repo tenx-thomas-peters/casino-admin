@@ -99,7 +99,7 @@ public class MemberController {
     @RequestMapping(value = "list")
     public String memberList(@ModelAttribute("memberForm") MemberForm memberForm,
                              @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                             @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
+                             @RequestParam(value = "pageSize", defaultValue = "150") Integer pageSize,
                              @RequestParam(value = "order", defaultValue = "1") Integer order,
                              @RequestParam(value = "column", defaultValue = "create_date") String column,
                              Model model, HttpServletRequest request) {
