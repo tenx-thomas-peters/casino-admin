@@ -481,5 +481,5 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 }
 
 .w-50{
-    width: 50px;
+    width: 50px!important;
 }

@@ -9,7 +9,10 @@
             <section role="main" class="content-body">
             	<section class="panel" role="main">
 					<header class="panel-heading">
-						<h2 class="panel-title" th:text="#{admin.headquarter.headquarterRegistration}"></h2>
+                        <h2 class="panel-title">
+                            <i class="fa fa-caret-square-o-right text-primary"></i>
+                            <span th:text="#{admin.headquarter.headquarterRegistration}"></span>
+                        </h2>
 					</header>
 					<div class="panel-body">
                         <form method="post" th:action="@{/partner2/addHeadquarter}" id="headquarter-add-form" class="form-horizontal form-bordered mb-lg vform" novalidate="novalidate"  >

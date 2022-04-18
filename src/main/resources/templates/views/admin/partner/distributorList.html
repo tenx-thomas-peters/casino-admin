@@ -14,7 +14,10 @@
 	        <section role="main" class="content-body">
 	            <section class="panel">
 	                <header class="panel-heading">
-	                    <h2 class="panel-title" th:text="#{admin.distributor.distributorList}"></h2>
+						<h2 class="panel-title">
+							<i class="fa fa-caret-square-o-right text-primary"></i>
+							<span th:text="#{admin.distributor.distributorList}"></span>
+						</h2>
 	                </header>
 	                <div class="panel-body">
 	                    <form class="form-inline search-form" th:action="@{/partner2/list}" id="formSearch" method="get" th:object="${distributor}">

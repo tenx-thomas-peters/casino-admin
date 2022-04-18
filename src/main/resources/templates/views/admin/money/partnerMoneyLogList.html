@@ -14,7 +14,10 @@
             <section role="main" class="content-body">
             	<section class="panel" role="main">
 					<header class="panel-heading">
-						<h2 class="panel-title" th:text="#{admin.log.partnerMoneyLogListTitle}"></h2>
+						<h2 class="panel-title">
+							<i class="fa fa-caret-square-o-right text-primary"></i>
+							<span th:text="#{admin.log.partnerMoneyLogListTitle}"></span>
+						</h2>
 					</header>
 					<div class="panel-body">
 						<form id="formSearch" th:action="@{${url}}" th:object="${moneyHistory}" class="form-inline search-form" method="post">
