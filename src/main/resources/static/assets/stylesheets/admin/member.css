@@ -1,18 +1,9 @@
-#member-list th {
-    padding: 5px;
-    text-align: center;
-}
+
 
 #member-list td {
     vertical-align: middle;
     text-align: center;
     padding: 0;
-}
-
-#member-list td > p {
-    border-top: 1px solid #dadada;
-    padding: 5px;
-    margin: 0;
 }
 
 #member-list td a {
@@ -75,3 +66,7 @@
     white-space: nowrap;
 }
 
+select.form-control[name="levelSeq"], select.form-control[name="status"]{
+    width: 60px;
+    margin: 0 auto;
+}

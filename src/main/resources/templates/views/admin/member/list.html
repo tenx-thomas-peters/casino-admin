@@ -120,25 +120,21 @@
                                 <th th:text="#{admin.common.name.nickname}">Name/Nickname
                                 </th>
                                 <th>
-                                    [[#{admin.common.reservedMoney}]]&nbsp;/&nbsp;<br/>[[#{admin.common.mileage}]]
+                                    [[#{admin.common.reservedMoney}]]/[[#{admin.common.mileage}]]
                                 </th>
                                 <th th:text="#{admin.common.ranking}">Ranking</th>
                                 <th>
-                                    [[#{admin.common.deposit}]]
-                                    &nbsp;/&nbsp;<br/>
-                                    [[#{admin.common.withdrawal}]]
+                                    [[#{admin.common.deposit}]]/[[#{admin.common.withdrawal}]]
                                 </th>
                                 <th th:text="#{admin.member.progressBet}"></th>
                                 <th th:text="#{admin.member.difference}"></th>
                                 <th th:text="#{admin.common.status}">Status</th>
                                 <th th:text="#{admin.common.signUp.date.domain}"></th>
                                 <th th:text="#{admin.common.recent.date.domain}"></th>
-                                <th th:text="#{admin.common.connection.ip.domain}"></th>
+                                <th th:text="#{admin.common.connection.ip.domain}" style="width: 160px"></th>
                                 <th th:text="#{admin.member.recommender}"></th>
                                 <th>
-                                    [[#{admin.common.store}]]&nbsp;/&nbsp;
-                                    [[#{admin.common.distributor}]]&nbsp;/&nbsp;
-                                    [[#{admin.common.subHeadquarter}]]
+                                    [[#{admin.common.store}]]/[[#{admin.common.distributor}]]/[[#{admin.common.subHeadquarter}]]
                                 </th>
                                 <th th:text="#{admin.common.recommendable}">Recommendable</th>
                                 <th th:text="#{admin.member.correction}">Correction</th>
@@ -230,7 +226,7 @@
                                     <p>
                                         <a class="connection-ip text-default">[[${entity.signupIP}]]</a>
                                     </p>
-                                    <p style="padding: 0;">
+                                    <p style="padding: 3px 10px;">
                                         <select class="form-control input-sm" name="siteDomain">
                                             <option th:each="site : ${siteList}"
                                                     th:value="${site.siteDomain}"
