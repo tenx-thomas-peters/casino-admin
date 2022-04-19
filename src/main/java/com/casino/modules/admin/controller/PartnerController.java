@@ -73,7 +73,7 @@ public class PartnerController {
 			Page<HeadquarterForm> page = new Page<HeadquarterForm>(pageNo, pageSize);
 			IPage<HeadquarterForm> pageList = memberService.findHeadquarterList(page, headquarter, column, order);
             
-			
+
 			Double moneyAmountSum = pageList.getRecords().stream().mapToDouble(temp->temp.getMoneyAmount()).sum();
 			Double distributorCountSum = pageList.getRecords().stream().mapToDouble(temp->temp.getDistributorCount()).sum();
 			Double storeCountSum = pageList.getRecords().stream().mapToDouble(temp->temp.getStoreCount()).sum();
@@ -97,17 +97,15 @@ public class PartnerController {
 			
 			for (HeadquarterForm item : pageList.getRecords()) {
 				if(item.getGameType() != null) {
-					if (item.getGameType().equals(0)) {
-						slotBetAmountSum += item.getBetAmount();
-						slotWinningAmountSum += item.getWinningAmount();
-						slotLostAmountSum += item.getLostAmount();
-						slotBatRollingSum += item.getBatRolling();
-					} else {
-						baccaratBetAmountSum += item.getBetAmount();
-						baccaratWinningAmountSum += item.getWinningAmount();
-						baccaratLostAmountSum += item.getLostAmount();
-						baccaratBatRollingSum += item.getBatRolling();
-					}
+						slotBetAmountSum += item.getSlotBettingAmount();
+						slotWinningAmountSum += item.getSlotWinningAmount();
+						slotLostAmountSum += item.getSlotLostAmount();
+						slotBatRollingSum += item.getSlotHeadquarterRollingAmount();
+
+						baccaratBetAmountSum += item.getBaccaratBettingAmount();
+						baccaratWinningAmountSum += item.getBaccaratWinningAmount();
+						baccaratLostAmountSum += item.getBaccaratLostAmount();
+						baccaratBatRollingSum += item.getBaccaratHeadquarterRollingAmount();
 				}
 			}
 			
