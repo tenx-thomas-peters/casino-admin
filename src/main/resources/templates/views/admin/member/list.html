@@ -46,9 +46,9 @@
                                 <option value="create_date">::[[#{admin.common.sort}]]</option>
                                 <option value="register_date" th:selected="${column == 'register_date'}">[[#{admin.member.joinDate}]]</option>
                                 <option value="nickname" th:selected="${column == 'nickname'}">[[#{admin.member.holdingMoney}]]</option>
-                                <!--                                <option value="2">member revenue</option>-->
-                                <!--                                <option value="3">number of connections</option>-->
-                                <!--                                <option value="3">recently accessed</option>-->
+                                <option value="member_income" th:selected="${column == 'member_income'}">[[#{admin.member.member_income}]]</option>
+                                <option value="connection_count" th:selected="${column == 'connection_count'}">[[#{admin.member.connection_count}]]</option>
+                                <option value="recent_connection" th:selected="${column == 'recent_connection'}">[[#{admin.member.recent_connection}]]</option>
                             </select>
                             <select class="form-control" id="order" name="order">
                                 <option value="0" th:selected="${order == 0}">↑</option>
@@ -64,8 +64,12 @@
                             <select class="form-control" th:field="*{searchField}">
                                 <option value="id">[[#{admin.common.id}]]</option>
                                 <option value="nickname">[[#{admin.common.nickname}]]</option>
+                                <option value="phoneNumber">[[#{admin.common.phoneNumber}]]</option>
+                                <option value="accountHolder">[[#{admin.common.accountHolder}]]</option>
+                                <option value="recommender">[[#{admin.member.recommender}]]</option>
+                                <option value="ip">IP</option>
                             </select>
-                            <div class="input-group input-group-icon" style="width: 200px; display: inline-block;">
+                            <div class="input-group input-group-icon" style="width: 160px; display: inline-block;">
                                 <span class="input-group-addon">
                                     <span class="icon"><i class="fa fa-search"></i></span>
                                 </span>

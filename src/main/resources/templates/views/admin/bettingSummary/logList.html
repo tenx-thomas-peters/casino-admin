@@ -109,8 +109,8 @@
                                     </td>
                                     <td class="text-center" th:text="${entity.playingGame}"></td>
                                     <td class="text-center">
-                                        <p class="bg-white-yellow">slot</p>
-                                        <p class="bg-white-grey">baccarat</p>
+                                        <p class="bg-white-yellow" th:text="#{admin.slotloglist.slot}">slot</p>
+                                        <p class="bg-white-grey" th:text="#{admin.slotloglist.baccarat}">baccarat</p>
                                     </td>
                                     <td class="text-center">
                                         <p class="bg-white-yellow" th:text="${entity.type == 0 ? #numbers.formatDecimal(entity.bettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>

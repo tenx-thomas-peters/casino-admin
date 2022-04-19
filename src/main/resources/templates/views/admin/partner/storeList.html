@@ -132,7 +132,7 @@
 											<span th:class="${(entity.depositPayment - entity.withdrawalPayment) eq 0 ? '' : 'text-blue'}" th:text="${'(' + #numbers.formatDecimal((entity.depositPayment - entity.withdrawalPayment), 1, 'COMMA', 2, 'POINT').replace('.00', '') + ')'}"></span>
 										</td>
 										<td>
-											<button class="btn btn-sm btn-default progress-bet" th:text="#{admin.common.store} + ' ' + #{admin.common.summary}">Store Summary</button>
+											<button class="btn btn-sm btn-default progress-bet" th:text="#{admin.store.storeSummary}">Store Summary</button>
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">

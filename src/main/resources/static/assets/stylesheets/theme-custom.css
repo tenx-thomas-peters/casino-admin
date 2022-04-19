@@ -325,7 +325,7 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 .menu-li{
     display: flex;
 }
-.menu-li a.w-50{
+.menu-li a.w-50p{
     width: 50%;
 }
 
@@ -469,7 +469,7 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     text-align: center;
 }
 
-.table.table-bordered.table-striped tbody tr td > p{
+.table.table-bordered.table-striped tbody tr td > p, .table.table-bordered.table-striped tbody tr td{
     padding: 5px;
     border-top: 1px solid #dadada;
     margin: 0;
@@ -480,6 +480,32 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     line-height: 1;
 }
 
+.tabs.tabs-primary .nav.nav-tabs li a{
+    padding: 5px 45px;
+    margin-right: 0px;
+}
+
 .w-50{
     width: 50px!important;
+}
+
+.w-80{
+    width: 80px;
+}
+
+.panel-footer .btn.btn-default{
+    background-color: #d2dff0;
+    border-radius: 0;
+}
+.input-daterange.input-group .form-control[name="fromApplicationTime"],
+.input-daterange.input-group .form-control[name="toApplicationTime"],
+.input-daterange.input-group .form-control[name="fromProcessTime"],
+.input-daterange.input-group .form-control[name="toProcessTime"]{
+    width: 120px;
+}
+
+.form-group .input-group.input-group-icon .form-control[name="searchValue"],
+.form-group .input-group.input-group-icon .form-control[name="IDOrNickNameValue"]
+{
+    width: 160px;
 }
