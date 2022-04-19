@@ -15,8 +15,10 @@
             	<form method = "post" id="noteForm" th:action="@{send}" th:object="${note}" >
 	            	<section class="panel" role="main">
 						<header class="panel-heading">
-							<h2 class="panel-title" th:text="#{admin.menu.member.WriteNote}"></h2>
-							
+							<h2 class="panel-title">
+								<i class="fa fa-caret-square-o-right text-primary"></i>
+								<span th:text="#{admin.menu.member.WriteNote}"></span>
+							</h2>
 						</header>
 						<div class="panel-body">
 							<div class="form-group">

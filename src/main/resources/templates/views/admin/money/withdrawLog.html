@@ -14,7 +14,10 @@
             <section role="main" class="content-body">
             	<section class="panel" role="main">
 					<header class="panel-heading">
-						<h2 class="panel-title" th:text="#{admin.withdraw.log.title}"></h2>
+						<h2 class="panel-title">
+							<i class="fa fa-caret-square-o-right text-primary"></i>
+							<span th:text="#{admin.withdraw.log.title}"></span>
+						</h2>
 					</header>
 					<div class="panel-body">
 						<div class="tabs tabs-primary">
@@ -34,7 +37,7 @@
 												<i class="fa fa-search search-icon"></i>
 												<span th:text="#{admin.common.print}"></span>
 											</label>
-											<input type="text" class="form-control" name="pageSize" th:value="${pageSize}" style="width: 50px;" />
+											<input type="text" class="form-control w-50" name="pageSize" th:value="${pageSize}" />
 										</div>
 										<div class="form-group">
 			                                <select class="form-control order-select" th:field="*{orderType}">

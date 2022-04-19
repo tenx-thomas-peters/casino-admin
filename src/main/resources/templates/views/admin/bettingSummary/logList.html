@@ -14,7 +14,10 @@
             <section role="main" class="content-body">
                 <section class="panel">
                     <header class="panel-heading">
-                        <h2 class="panel-title" th:text="#{admin.common.memberBettingSummary}"></h2>
+                        <h2 class="panel-title">
+                            <i class="fa fa-caret-square-o-right text-primary"></i>
+                            <span th:text="#{admin.common.memberBettingSummary}"></span>
+                        </h2>
                     </header>
                     <div class="panel-body">
                         <form id="formSearch" class="form-inline search-form" th:action="@{/log/slotloglist}" method="post" th:object="${bettingSummaryForm}">
@@ -23,7 +26,7 @@
                                     <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
                                     <span th:text="#{admin.common.print}"></span>
                                 </label>
-                                <input type="text" class="form-control" id="pageSize" name="pageSize" th:value="${pageSize}">
+                                <input type="text" class="form-control w-50" id="pageSize" name="pageSize" th:value="${pageSize}">
                             </div>
                             <div class="form-group">
                                 <label class="control-label">
@@ -106,8 +109,8 @@
                                     </td>
                                     <td class="text-center" th:text="${entity.playingGame}"></td>
                                     <td class="text-center">
-                                        <p class="bg-white-yellow">slot</p>
-                                        <p class="bg-white-grey">baccarat</p>
+                                        <p class="bg-white-yellow" th:text="#{admin.slotloglist.slot}">slot</p>
+                                        <p class="bg-white-grey" th:text="#{admin.slotloglist.baccarat}">baccarat</p>
                                     </td>
                                     <td class="text-center">
                                         <p class="bg-white-yellow" th:text="${entity.type == 0 ? #numbers.formatDecimal(entity.bettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>

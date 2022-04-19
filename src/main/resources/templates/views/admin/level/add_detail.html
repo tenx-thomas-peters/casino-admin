@@ -14,7 +14,10 @@
 		                        <div class="modal-body">
 									<form id="level-addForm" th:action="@{/config/add_detail}" name="level" class="form-horizontal mb-lg" method="post" novalidate="novalidate">
 										<header class="panel-heading">
-											<h2 class="panel-title" th:text="#{admin.common.add.level}"></h2>
+											<h2 class="panel-title">
+												<i class="fa fa-caret-square-o-right text-primary"></i>
+												<span th:text="#{admin.common.add.level}"></span>
+											</h2>
 										</header>
 										<div class="panel-body">
 											<div class="form-group mt-lg">

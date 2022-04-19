@@ -14,7 +14,10 @@
 	        <section role="main" class="content-body">
 	            <section class="panel">
 	                <header class="panel-heading">
-	                    <h2 class="panel-title" th:text="#{admin.headquarter.deputyHeadquarterList}"></h2>
+						<h2 class="panel-title">
+							<i class="fa fa-caret-square-o-right text-primary"></i>
+							<span th:text="#{admin.headquarter.deputyHeadquarterList}"></span>
+						</h2>
 	                </header>
 	                <div class="panel-body">
 	                    <form class="form-inline search-form" th:action="@{/partner2/list_top}" id="formSearch" method="get" th:object="${headquarter}">
@@ -37,7 +40,7 @@
 		                             <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
 		                             <span th:text="#{admin.common.print}"></span>
 		                         </label>
-		                         <input type="text" class="form-control input-print" id="pageSize" name="pageSize" style="width:50px;" th:value="${pageSize}">
+		                         <input type="text" class="form-control input-print w-50" id="pageSize" name="pageSize" th:value="${pageSize}">
 		                         <select class="form-control" name="column" th:field="*{orderByType}">
 		                             <option value="-1" th:text="#{admin.common.sortBy}"></option>
 		                             <option value="0" th:text="#{admin.common.sort.holding}">In order of holding amount↑</option>

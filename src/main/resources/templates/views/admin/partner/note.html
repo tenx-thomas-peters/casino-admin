@@ -10,7 +10,10 @@
             <section role="main" class="content-body">
             	<section class="panel" role="main">
 					<header class="panel-heading">
-						<h2 class="panel-title" th:text="#{admin.note.memoRegistration}"></h2>
+                        <h2 class="panel-title">
+                            <i class="fa fa-caret-square-o-right text-primary"></i>
+                            <span th:text="#{admin.note.memoRegistration}"></span>
+                        </h2>
 					</header>
 					<div class="panel-body">
                         <form method="get" th:action="@{/partner2/confirmNote}" id="note-form" class="form-horizontal form-bordered mb-lg vform" novalidate="novalidate" th:object="${member}" >

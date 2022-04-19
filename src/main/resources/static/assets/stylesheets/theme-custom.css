@@ -16,15 +16,37 @@
     }
 }
 
-.sidebar-left {
-    width: 260px;
-}
 .content-body {
     padding: 0;
 }
 
 .form-control {
     padding: 0;
+}
+
+input.form-control{
+    border-radius: 0!important;
+    padding: 0 5px;
+    font-size: 12px;
+    height: 21px;
+}
+
+select.form-control{
+    border-radius: 0!important;
+    padding: 0 2px;
+    font-size: 12px;
+    height: 21px;
+}
+.panel-body{
+    box-shadow: none;
+}
+
+.panel-footer {
+    margin-top: 0;
+    border-top: none;
+    padding: 10px 0;
+    background-color: initial;
+    border-top: none;
 }
 
 .border-bottom {
@@ -37,8 +59,23 @@
     margin-bottom: 10px;
 }
 
+.search-form.form-inline .form-group >label{
+    font-size: 10px;
+    margin-bottom: 0;
+}
+
 .search-form .form-group {
     margin-bottom: 10px !important;
+}
+
+.search-form .form-group .input-group-icon .input-group-addon .icon{
+    padding: 0 12px;
+}
+
+.panel-body .btn.btn-default{
+    font-size: 13px;
+    padding: 0 12px;
+    height: 21px;
 }
 
 .search-form .checkbox-inline input[type="checkbox"]:checked + label:before {
@@ -97,12 +134,6 @@ section[class*=member] form .radio-custom {
     padding: 0;
 }
 
-#betting-list td > p {
-    border-top: 1px solid #dadada;
-    padding: 8px;
-    margin: 0;
-}
-
 #betting-list td a {
     text-decoration: none;
     cursor: pointer;
@@ -137,6 +168,7 @@ a.text-default {
 .sidebar-left {
     background: #929eac;
     box-shadow: none;
+    width: 210px;
 }
 
 .nav-menu {
@@ -233,7 +265,7 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 }
 
 .sidebar-widget .widget-header {
-    padding: 10px;
+    padding: 6px 10px;
     background: #41556e;
 }
 
@@ -244,9 +276,11 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 .sidebar-widget .widget-header h6 i {
     color: white;
 }
-
+.sidebar-widget .widget-content{
+    padding: 0px;
+}
 .sidebar-widget .widget-content ul {
-    padding: 0 10px 10px 10px;
+    padding: 4px 8px 10px;
 }
 
 .sidebar-widget .widget-content ul li a {
@@ -255,6 +289,8 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     text-decoration: none;
     color: black;
     font-weight: bold;
+    font-size: 12px;
+    line-height: 20px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -289,7 +325,7 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 .menu-li{
     display: flex;
 }
-.menu-li a.w-50{
+.menu-li a.w-50p{
     width: 50%;
 }
 
@@ -304,7 +340,7 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
   overflow-x: auto;
   overflow-y: hidden;
   border: 1px solid #e7ecf1;
-  margin: 10px 0 !important;
+  margin: 5px 0 !important;
 }
 .DTS .table-scrollable {
     border: 0;
@@ -363,4 +399,113 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 
 .search-result-form div {
     margin-bottom: 5px;
+}
+
+/* Thomas 2022.04.14------------------------------*/
+.text-danger{
+    color: #ff0800 !important;
+}
+
+.header{
+    border-bottom: none;
+    height: 154px;
+    padding-top: 8px;
+}
+
+.header .alarm-info .form-group p{
+    font-weight: bold;
+    font-size: 14px;
+}
+.inner-wrapper{
+    padding-top: 154px;
+}
+
+.alarm-info .alarm-info-title{
+    margin-left: 30px;
+    padding: 0px 3px;
+    color: #35654d;
+    font-size: 12px
+}
+.content-body{
+    padding: 8px;
+    background: #fff;
+}
+.panel .panel-heading{
+    border: none;
+    background: #fff;
+    padding: 0;
+}
+
+.panel-heading .panel-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.panel-body{
+    padding: 0px;
+}
+
+.daily-note{
+    margin-right: 30px;
+}
+.daily-note textarea.note{
+    width: 500px;
+}
+
+.b-yellow{
+    background-color: #f9fa0f;
+}
+
+.b-blue{
+    background-color: #1792d4;
+}
+
+.table.table-bordered .checkbox-custom{
+    padding: 0 0 0 18px;
+}
+
+.table.table-bordered.table-striped th {
+    padding: 3px;
+    text-align: center;
+}
+
+.table.table-bordered.table-striped tbody tr td > p, .table.table-bordered.table-striped tbody tr td{
+    padding: 5px;
+    border-top: 1px solid #dadada;
+    margin: 0;
+}
+
+.input-daterange.input-group .input-group-addon{
+    padding: 0 5px;
+    line-height: 1;
+}
+
+.tabs.tabs-primary .nav.nav-tabs li a{
+    padding: 5px 45px;
+    margin-right: 0px;
+}
+
+.w-50{
+    width: 50px!important;
+}
+
+.w-80{
+    width: 80px;
+}
+
+.panel-footer .btn.btn-default{
+    background-color: #d2dff0;
+    border-radius: 0;
+}
+.input-daterange.input-group .form-control[name="fromApplicationTime"],
+.input-daterange.input-group .form-control[name="toApplicationTime"],
+.input-daterange.input-group .form-control[name="fromProcessTime"],
+.input-daterange.input-group .form-control[name="toProcessTime"]{
+    width: 120px;
+}
+
+.form-group .input-group.input-group-icon .form-control[name="searchValue"],
+.form-group .input-group.input-group-icon .form-control[name="IDOrNickNameValue"]
+{
+    width: 160px;
 }

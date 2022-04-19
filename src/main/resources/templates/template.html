@@ -88,13 +88,13 @@
 
         <div class="form-inline alarm-info hidden-xs">
             <div class="form-group" style="vertical-align: top;">
-                <label style="margin-left: 30px; padding: 3px; background-color: #f9fa0f; color: #35654d;">
+                <label class="alarm-info-title b-yellow">
                     [[#{admin.header.alarmInfo}]]
                 </label>
             </div>
             <div class="form-group" style="padding-left: 10px;">
                 <div>
-                    <p class="header-context-info text-white m-login-member" style="color: #f9fa0f;">
+                    <p class="header-context-info text-white m-login-member">
                         [[#{admin.header.mLoginMember}]][<span class="m-login-member">0</span>]
                     </p>
                     <p class="header-context-info text-white m-deposit">
@@ -139,7 +139,7 @@
                 <a class="text-danger mr-md mt-md pwdManage" style="display: inline-block;">[[#{admin.common.passwordManagement}]]</a>
                 <a class="text-danger mt-md logout" style="display: inline-block;">[[#{admin.common.logout}]]</a>
             </div>
-            <div class="form-group mr-md hidden-md" style="float: right;">
+            <div class="form-group hidden-md daily-note" style="float: right;">
                 <textarea name="note" class="form-control input-lg" style="padding: 5px;"></textarea>
                 <button class="btn btn-default btn-lg" style="font-size: 12px; padding: 20px 25px;">[[#{admin.common.save}]]</button>
             </div>
@@ -147,7 +147,7 @@
 
         <div class="form-inline alarm-info hidden-xs">
             <div class="form-group">
-                <label style="margin-left: 30px; padding: 3px; background-color: #1792d4; color: white;">
+                <label class="alarm-info-title b-blue">
                     [[#{admin.header.currentInfo}]]
                 </label>
             </div>
@@ -208,7 +208,7 @@
                     <div class="widget-content">
                         <ul>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/member/list}">
+                                <a class="w-50p" th:href="@{/member/list}">
                                     <span th:text="|#{admin.menu.member.list}|"></span>
                                 </a>
                                 <a th:href="@{/log/slotloglist}">
@@ -216,7 +216,7 @@
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/log/depositloglist}">
+                                <a class="w-50p" th:href="@{/log/depositloglist}">
                                     <span class="text-danger" th:text="|#{admin.menu.member.deposit}|"></span>
                                 </a>
                                 <a th:href="@{/log/withdrawloglist}">
@@ -224,7 +224,7 @@
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/log/moneyloglist}">
+                                <a class="w-50p" th:href="@{/log/moneyloglist}">
                                     <span th:text="|#{admin.menu.member.moneyHistory}|"></span>
                                 </a>
                                 <a th:href="@{/log/mileageloglist}">
@@ -232,12 +232,12 @@
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/member/loginlist}">
+                                <a class="w-50p" th:href="@{/member/loginlist}">
                                     <span th:text="|#{admin.menu.member.connectionRecord}|"></span>
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/memo/sendlist}">
+                                <a class="w-50p" th:href="@{/memo/sendlist}">
                                     <span th:text="|#{admin.menu.member.noteManagement}|"></span>
                                 </a>
                                 <a th:href="@{/memo/popup_adminwrite}">
@@ -258,7 +258,7 @@
                     <div class="widget-content">
                         <ul>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/board/list?province=2}">
+                                <a class="w-50p" th:href="@{/board/list?province=2}">
                                     <span th:text="#{admin.menu.board.freeBoard}">Free Board</span>
                                 </a>
                                 <a th:href="@{/board/list?province=0}">
@@ -266,7 +266,7 @@
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/board/questionlist}">
+                                <a class="w-50p" th:href="@{/board/questionlist}">
                                     <span th:text="#{admin.menu.board.customerService}">Customer Service Center</span>
                                 </a>
                                 <a th:href="@{/board/write}">
@@ -288,7 +288,7 @@
                     <div class="widget-content">
                         <ul>
                             <li class="menu-li">
-                                <a  class="text-success w-50" th:href="@{/partner2/list_top}">
+                                <a  class="text-success w-50p" th:href="@{/partner2/list_top}">
                                     <span th:text="|#{admin.menu.partner.headquarter}|"></span>
                                 </a>
                                 <a class="text-success" th:href="@{/partner2/list}">
@@ -296,12 +296,12 @@
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a  class="text-success w-50" th:href="@{/partner2/list_store}">
+                                <a  class="text-success w-50p" th:href="@{/partner2/list_store}">
                                     <span th:text="|#{admin.menu.partner.store}|"></span>
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a  class="text-danger w-50" th:href="@{/log/partner/depositloglist}">
+                                <a  class="text-danger w-50p" th:href="@{/log/partner/depositloglist}">
                                     <span th:text="|#{admin.menu.partner.deposit}|"></span>
                                 </a>
                                 <a class="text-primary" th:href="@{/log/partner/withdrawloglist}">
@@ -309,12 +309,12 @@
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a  class="text-success w-50" th:href="@{/log/partner_moneyloglist}">
+                                <a  class="text-success w-50p" th:href="@{/log/partner_moneyloglist}">
                                     <span th:text="|#{admin.menu.partner.detail}|"></span>
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a  class="text-success w-50" th:href="@{/memo/sendPList}">
+                                <a  class="text-success w-50p" th:href="@{/memo/sendPList}">
                                     <span th:text="|#{admin.menu.partner.note}|"></span>
                                 </a>
                                 <a class="text-success" th:href="@{/partner2/popup_memoadd}">
@@ -335,7 +335,7 @@
                     <div class="widget-content">
                         <ul>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/stat/site}">
+                                <a class="w-50p" th:href="@{/stat/site}">
                                     <span th:text="|#{admin.menu.statistics.siteStatus}|"></span>
                                 </a>
                                 <a th:href="@{/stat/money}">
@@ -356,7 +356,7 @@
                     <div class="widget-content">
                         <ul>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/config/globalconfig}">
+                                <a class="w-50p" th:href="@{/config/globalconfig}">
                                     <span th:text="|#{admin.menu.system.preference}|"></span>
                                 </a>
                                 <a th:href="@{/config/level}">
@@ -364,47 +364,11 @@
                                 </a>
                             </li>
                             <li class="menu-li">
-                                <a class="w-50" th:href="@{/config/popuplist}">
+                                <a class="w-50p" th:href="@{/config/popuplist}">
                                     <span th:text="|#{admin.menu.system.popup}|"></span>
                                 </a>
                                 <a th:href="@{/config/dbOption}">
                                     <span th:text="#{admin.menu.system.DB}"></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="sidebar-widget">
-                    <div class="widget-header">
-                        <h6>
-                            <i class="fa fa-plus-square" aria-hidden="true"></i>
-                            <span style="color: white;">Mock</span>
-                        </h6>
-                    </div>
-                    <div class="widget-content">
-                        <ul>
-                            <li class="menu-li">
-                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/member/popupEditMember', 'Member Edit', 'width=1200,height=700')" class="nav-link ">
-                                    <span class="title">Member Edit</span>
-                                </a>
-                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/member/money', 'Member Money', 'width=1200,height=700')" class="nav-link ">
-                                    <span class="title">Member Money</span>
-                                </a>
-                            </li>
-                            <li class="menu-li">
-                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/partner/money', 'Partner Money', 'width=1200,height=700')" class="nav-link ">
-                                    <span class="title">Partner Money</span>
-                                </a>
-                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/member/bettingSummary', 'Betting Summary', 'width=1200,height=700')" class="nav-link ">
-                                    <span class="title">Betting Summary</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript: window.open(CONTEXT_ROOT + 'mock/member/accessLog', 'Access Log', 'width=1200,height=700')" class="nav-link ">
-                                    <span class="title">
-                                        Access Log
-                                    </span>
                                 </a>
                             </li>
                         </ul>

@@ -26,20 +26,20 @@
 	display: inline-block;
 }
 #formSearch select.order-select {
-	width: 250px;
-}
-#formSearch select.status-select {
 	width: 120px;
 }
+#formSearch select.status-select {
+	width: 80px;
+}
 #formSearch select.time-type {
-	width: 160px;
+	width: 80px;
 }
 #formSearch .search-key {
-	width: 200px; 
+	width: 160px;
 	display: inline-block;
 }
 #formSearch .money-reason-select {
-	width: 200px; 
+	width: 160px;
 }
 .panel-body .statistic-info {
 	float: right;
