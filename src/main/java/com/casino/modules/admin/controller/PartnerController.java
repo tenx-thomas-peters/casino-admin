@@ -376,17 +376,15 @@ public class PartnerController {
 			
 			for (StoreForm item : pageList.getRecords()) {
 				if(item.getGameType() != null) {
-					if (item.getGameType().equals(0)) {
-						slotBetAmountSum += item.getBetAmount();
-						slotWinningAmountSum += item.getWinningAmount();
-						slotLostAmountSum += item.getLostAmount();
-						slotBatRollingSum += item.getBatRolling();
-					} else {
-						baccaratBetAmountSum += item.getBetAmount();
-						baccaratWinningAmountSum += item.getWinningAmount();
-						baccaratLostAmountSum += item.getLostAmount();
-						baccaratBatRollingSum += item.getBatRolling();
-					}
+					slotBetAmountSum += item.getSlotBettingAmount();
+					slotWinningAmountSum += item.getSlotWinningAmount();
+					slotLostAmountSum += item.getSlotLostAmount();
+					slotBatRollingSum += item.getSlotStoreRollingAmount();
+
+					baccaratBetAmountSum += item.getBaccaratBettingAmount();
+					baccaratWinningAmountSum += item.getBaccaratWinningAmount();
+					baccaratLostAmountSum += item.getBaccaratLostAmount();
+					baccaratBatRollingSum += item.getBaccaratStoreRollingAmount();
 				}
 			}
 			
@@ -707,17 +705,15 @@ public class PartnerController {
 			
 			for (StoreForm item : storeList) {
 				if(item.getGameType() != null) {
-					if (item.getGameType().equals(0)) {
-						slotBetAmountSum += item.getBetAmount();
-						slotWinningAmountSum += item.getWinningAmount();
-						slotLostAmountSum += item.getLostAmount();
-						slotBatRollingSum += item.getBatRolling();
-					} else {
-						baccaratBetAmountSum += item.getBetAmount();
-						baccaratWinningAmountSum += item.getWinningAmount();
-						baccaratLostAmountSum += item.getLostAmount();
-						baccaratBatRollingSum += item.getBatRolling();
-					}
+					slotBetAmountSum += item.getSlotBettingAmount();
+					slotWinningAmountSum += item.getSlotWinningAmount();
+					slotLostAmountSum += item.getSlotLostAmount();
+					slotBatRollingSum += item.getSlotStoreRollingAmount();
+
+					baccaratBetAmountSum += item.getBaccaratBettingAmount();
+					baccaratWinningAmountSum += item.getBaccaratWinningAmount();
+					baccaratLostAmountSum += item.getBaccaratLostAmount();
+					baccaratBatRollingSum += item.getBaccaratStoreRollingAmount();
 				}
 			}
 			
