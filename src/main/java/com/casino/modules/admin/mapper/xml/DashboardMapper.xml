@@ -40,7 +40,7 @@
 			connections,
 			IFNULL(chargedAmount, 0) AS chargedAmount,
 			IFNULL(withdrawalAmount, 0) AS withdrawalAmount,
-			IFNULL(wonAmount, 0) AS wonAmount
+			(IFNULL(slotWonAmount, 0) + IFNULL(baccaratWonAmount, 0)) AS wonAmount
 		FROM (SELECT 
 				m.seq AS seq, 
 				m.id AS id, 
@@ -60,7 +60,7 @@
 				SELECT mh.receiver AS "member_seq", COALESCE(SUM(mh.actual_amount), 0) AS "withdrawalAmount" FROM money_history mh LEFT JOIN member mem ON mh.receiver = mem.seq 
 				WHERE	WEEK(mh.process_time) = WEEK(NOW()) AND mh.operation_type = 1 AND mh.status = 1 GROUP BY mem.seq) AS mh1_mem ON mh1_mem.member_seq = mem.seq
 			LEFT JOIN (
-				SELECT bs.member_seq, COALESCE(SUM(bs.winning_amount), 0) AS "wonAmount" FROM betting_summary bs LEFT JOIN member mem ON bs.member_seq = mem.seq 
+				SELECT bs.member_seq, COALESCE(SUM(bs.slot_winning_amount), 0) AS "slotWonAmount", COALESCE(SUM(bs.baccarat_winning_amount), 0) AS "baccaratWonAmount" FROM betting_summary bs LEFT JOIN member mem ON bs.member_seq = mem.seq
 				WHERE	WEEK(bs.check_time) = WEEK(NOW()) GROUP BY mem.seq) AS bs_mem ON bs_mem.member_seq = mem.seq
     </select>
 	
