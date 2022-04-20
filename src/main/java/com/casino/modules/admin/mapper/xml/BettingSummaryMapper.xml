@@ -12,19 +12,14 @@
         m2.id AS storeID,
         IFNULL(m2.slot_rate, 0) AS storeSlotRate,
         IFNULL(m2.baccarat_rate, 0) AS storeBaccaratRate,
-        (bs.betting_amount * (IFNULL(m2.slot_rate, 0) / 100)) AS storeRollingAmount,
         m3.seq AS distributorSeq,
         m3.id AS distributorID,
         IFNULL(m3.slot_rate, 0) AS distributorSlotRate,
         IFNULL(m3.baccarat_rate, 0) AS distributorBaccaratRate,
-        (bs.betting_amount * (IFNULL(m3.slot_rate, 0) / 100) - bs.betting_amount * (IFNULL(m2.slot_rate, 0) / 100)) AS distributorRollingAmount,
         m4.seq AS subHeadquarterSeq,
         m4.id AS subHeadquarterID,
         IFNULL(m4.slot_rate, 0) AS subHeadquarterSlotRate,
         IFNULL(m4.baccarat_rate, 0) AS subHeadquarterBaccaratRate,
-        (bs.betting_amount * (IFNULL(m4.slot_rate, 0) / 100)
-             - (bs.betting_amount * (IFNULL(m3.slot_rate, 0) / 100) - bs.betting_amount * (IFNULL(m2.slot_rate, 0) / 100))
-             - (bs.betting_amount * (IFNULL(m2.slot_rate, 0) / 100))) AS subHeadquarterRollingAmount,
         bs.*
         FROM
         betting_summary bs

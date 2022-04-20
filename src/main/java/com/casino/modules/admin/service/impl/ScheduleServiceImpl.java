@@ -95,10 +95,16 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                 boolean status_play = false;
                 BettingSummary bettingSummary = new BettingSummary();
                 bettingSummary.setSeq(UUIDGenerator.generate());
-                float bettingAmount = 0;
-                float winningAmount = 0;
-                float lostAmount = 0;
-                Integer betCount  = 0;
+                float slotBettingAmount = 0;
+                float baccaratBettingAmount = 0;
+                float slotWinningAmount = 0;
+                float baccaratWinningAmount = 0;
+                float slotLostAmount = 0;
+                float baccaratLostAmount = 0;
+                Integer slotBetCount  = 0;
+                Integer baccaratBetCount  = 0;
+
+
                 String playing_game = "";
                 Integer type = 0;
 
@@ -108,55 +114,128 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                         if(game_detail_id.equals(item.getDetails().getGame().getId())){ // filter by game id
                             status_play = true;
 
-                            type = item.getDetails().getGame().getType().equals("slots")?0:1;
-                            playing_game = item.getDetails().getGame().getTitle();
-
-                            if(item.getType().equals("bet")){
-                                bettingAmount += Math.abs( item.getAmount() );
-                                betCount++;
+                            if(item.getDetails().getGame().getType().equals("slots")){ // separate game type
+                                if(item.getType().equals("bet")){
+                                    slotBettingAmount += Math.abs( item.getAmount() );
+                                    slotBetCount++;
+                                }
+                                else{
+                                    slotWinningAmount += item.getAmount();
+                                }
                             }
                             else{
-                                winningAmount += item.getAmount();
+                                if(item.getType().equals("bet")){
+                                    baccaratBettingAmount += Math.abs( item.getAmount() );
+                                    baccaratBetCount++;
+                                }
+                                else{
+                                    baccaratWinningAmount += item.getAmount();
+                                }
                             }
+                            playing_game = item.getDetails().getGame().getTitle();
                         }
                     }
                 }
 
                 if(status_play){
-                    if(winningAmount < bettingAmount)
-                        lostAmount = bettingAmount - winningAmount;
+                    if(slotWinningAmount < slotBettingAmount)
+                        slotLostAmount = slotBettingAmount - slotWinningAmount;
 
-                    bettingSummary.setBettingAmount(bettingAmount);
-                    bettingSummary.setWinningAmount(winningAmount);
-                    bettingSummary.setLostAmount(lostAmount);
-                    bettingSummary.setBetCount(betCount);
-                    bettingSummary.setPlayingGame(playing_game);
-                    bettingSummary.setCheckTime(checktime);
-                    bettingSummary.setType(type);
-                    bettingSummary.setMemberSeq(member != null ? member.getSeq() : "");
-                    bettingSummary.setStoreSeq(member != null ? member.getStoreSeq() : "");
-                    bettingSummary.setDistributorSeq(member != null ? member.getDistributorSeq() : "");
-                    bettingSummary.setHeadquarterSeq(member != null ? member.getSubHeadquarterSeq() : "");
-                    // total amount of member
+                    if(baccaratWinningAmount < baccaratBettingAmount)
+                        baccaratLostAmount = baccaratBettingAmount - baccaratWinningAmount;
 
-//                    moneyHistory.setChargeCount(moneyHistory.getChargeCount() + 1);
+                    float slot_store_rolling_amount = 0;
+                    float baccarat_store_rolling_amount = 0;
+                    float slot_distributor_rolling_amount = 0;
+                    float baccarat_distributor_rolling_amount = 0;
+                    float slot_headquarter_rolling_amount = 0;
+                    float baccarat_headquarter_rolling_amount = 0;
 
-                    String memberSeq = member.getSeq();
-                    float prevMoneyAmount = member.getMoneyAmount();
-                    float prevMileageAmount = 0;
-                    float variableAmount = winningAmount - bettingAmount;
-                    float actualAmount = Math.abs(bettingAmount - winningAmount);
-                    float finalAmount = member.getMoneyAmount() - bettingAmount + winningAmount;
-                    Integer classification = 0;
-                    Integer transactionClassification = 0;
-                    Integer status = CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT;
+                    float slot_distributor_rate_amount = 0;
+                    float baccarat_distributor_rate_amount = 0;
+
+                    //-------- get store
+                    if(member.getStoreSeq() !=null && member.getStoreSeq().equals("")){
+                        Member store_member = memberService.getById(member.getStoreSeq());
+                        slot_store_rolling_amount = this.calulateRate(slotBettingAmount, store_member.getSlotRate());
+                        baccarat_store_rolling_amount = this.calulateRate(baccaratBettingAmount, store_member.getBaccaratRate());
+
+                        float store_variableAmount = slot_store_rolling_amount + baccarat_store_rolling_amount;
+                        memberService.updateMemberHoldingMoney(
+                                store_member.getSeq(),
+                                store_member.getMoneyAmount(),
+                                0f,
+                                store_variableAmount,
+                                Math.abs(store_variableAmount),
+                                store_member.getMoneyAmount() + store_variableAmount,
+                                0,
+                                0,
+                                CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+                                2,
+                                "store ",
+                                0
+                        );
+                    }
+
+                    //-------- get distributor
+                    if(member.getDistributorSeq() !=null && member.getDistributorSeq().equals("")){
+                        Member distributor_member = memberService.getById(member.getDistributorSeq());
+                        slot_distributor_rate_amount = this.calulateRate(slotBettingAmount, distributor_member.getSlotRate());
+                        baccarat_distributor_rate_amount =  this.calulateRate(baccaratBettingAmount, distributor_member.getBaccaratRate());
+
+                        slot_distributor_rolling_amount = slot_distributor_rate_amount - slot_store_rolling_amount;
+                        baccarat_distributor_rolling_amount = baccarat_distributor_rate_amount - baccarat_store_rolling_amount;
+
+                        float distributor_variableAmount = slot_distributor_rolling_amount + baccarat_distributor_rolling_amount;
+                        memberService.updateMemberHoldingMoney(
+                                distributor_member.getSeq(),
+                                distributor_member.getMoneyAmount(),
+                                0f,
+                                distributor_variableAmount,
+                                Math.abs(distributor_variableAmount),
+                                distributor_member.getMoneyAmount() + distributor_variableAmount,
+                                0,
+                                0,
+                                CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+                                2,
+                                "partner",
+                                0
+                        );
+                    }
+
+                    //-------- get headquarter
+                    if(member.getSubHeadquarterSeq() !=null && member.getSubHeadquarterSeq().equals("")){
+                        Member headquarter_member = memberService.getById(member.getSubHeadquarterSeq());
+                        slot_headquarter_rolling_amount = this.calulateRate(slotBettingAmount, headquarter_member.getSlotRate()) - slot_distributor_rate_amount;
+                        baccarat_headquarter_rolling_amount = this.calulateRate(baccaratBettingAmount, headquarter_member.getBaccaratRate()) - baccarat_distributor_rate_amount;
+
+                        float headquarter_variableAmount = slot_headquarter_rolling_amount + baccarat_headquarter_rolling_amount;
+                        memberService.updateMemberHoldingMoney(
+                                headquarter_member.getSeq(),
+                                headquarter_member.getMoneyAmount(),
+                                0f,
+                                headquarter_variableAmount,
+                                Math.abs(headquarter_variableAmount),
+                                headquarter_member.getMoneyAmount() + headquarter_variableAmount,
+                                0,
+                                0,
+                                CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+                                2,
+                                "Headquarter",
+                                0
+                        );
+                    }
+
+                    //-------- get member
+                    float variableAmount = (slotWinningAmount + baccaratWinningAmount) - (slotBettingAmount+baccaratBettingAmount);
 
                     // set Reason of money transfer--------------------------------------- <
                     Integer reasonType = 0;
+
                     QueryWrapper<Dict> qwe = new QueryWrapper<>();
                     qwe.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
 
-                    if(winningAmount < bettingAmount){
+                    if((slotWinningAmount + baccaratWinningAmount) < (slotBettingAmount + baccaratBettingAmount)){
                         qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER);
                         reasonType = CommonConstant.MONEY_REASON_TRANSFER;
                     }
@@ -165,34 +244,55 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                         reasonType = CommonConstant.MONEY_REASON_TRANSFER_WINNING;
                     }
 
-                    String reasonStrKey = "";
                     List<Dict> reasonList = dictService.list(qwe);
-                    reasonStrKey = reasonList.get(0).getStrValue();
                     List<String> params = new ArrayList<String>();
-                    params.add(String.valueOf(winningAmount - bettingAmount));
-
-                    String reason = messageSource.getMessage(reasonStrKey, params.toArray(), Locale.ENGLISH);
+                    params.add(String.valueOf(variableAmount));
+                    String reason = messageSource.getMessage(reasonList.get(0).getStrValue(), params.toArray(), Locale.ENGLISH);
                     // set Reason of money transfer--------------------------------------- />
 
-                    Integer chargeCount = 0;
-                    if (memberService.updateMemberHoldingMoney(
-                            memberSeq,
-                            prevMoneyAmount,
-                            prevMileageAmount,
+                    memberService.updateMemberHoldingMoney(
+                            member.getSeq(),
+                            member.getMoneyAmount(),
+                            0f,
                             variableAmount,
-                            actualAmount,
-                            finalAmount,
-                            classification,
-                            transactionClassification,
-                            status,
+                            Math.abs(variableAmount),
+                            member.getMoneyAmount() + variableAmount,
+                            0,
+                            0,
+                            CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
                             reasonType,
                             reason,
-                            chargeCount
-                    )){
-                        result = true;
-                    } else {
-                        result = false;
-                    }
+                            0
+                    );
+
+
+                    // save betting summary-----------------------------------------------------------------------------
+                    bettingSummary.setSlotBettingAmount(slotBettingAmount);
+                    bettingSummary.setBaccaratBettingAmount(baccaratBettingAmount);
+                    bettingSummary.setSlotWinningAmount(slotWinningAmount);
+                    bettingSummary.setBaccaratWinningAmount(baccaratWinningAmount);
+                    bettingSummary.setSlotLostAmount(slotLostAmount);
+                    bettingSummary.setBaccaratLostAmount(baccaratLostAmount);
+                    bettingSummary.setSlotBetCount(slotBetCount);
+                    bettingSummary.setBaccaratBetCount(baccaratBetCount);
+                    bettingSummary.setPlayingGame(playing_game);
+                    bettingSummary.setCheckTime(checktime);
+                    bettingSummary.setType(type);
+                    bettingSummary.setMemberSeq(member.getSeq());
+                    bettingSummary.setStoreSeq(member.getStoreSeq() != null ? member.getStoreSeq() : "");
+                    bettingSummary.setDistributorSeq(member.getDistributorSeq() != null ? member.getDistributorSeq() : "");
+                    bettingSummary.setHeadquarterSeq(member.getSubHeadquarterSeq() != null ? member.getSubHeadquarterSeq() : "");
+                    bettingSummary.setSlotStoreRollingAmount(slot_store_rolling_amount);
+                    bettingSummary.setBaccaratStoreRollingAmount(baccarat_store_rolling_amount);
+                    bettingSummary.setSlotDistributorRollingAmount(slot_distributor_rolling_amount);
+                    bettingSummary.setBaccaratDistributorRollingAmount(baccarat_distributor_rolling_amount);
+                    bettingSummary.setSlotHeadquarterRollingAmount(slot_headquarter_rolling_amount);
+                    bettingSummary.setBaccaratHeadquarterRollingAmount(baccarat_headquarter_rolling_amount);
+                    // save betting summary-----------------------------------------------------------------------------
+
+                    // total amount of member
+
+//                    moneyHistory.setChargeCount(moneyHistory.getChargeCount() + 1);
 
                     bettingSummaryList.add(bettingSummary);
                 }
@@ -219,5 +319,9 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
             }
         }
         return bettingLogForm;
+    }
+
+    public float calulateRate(float amount, float rate){
+        return amount * rate /100;
     }
 }

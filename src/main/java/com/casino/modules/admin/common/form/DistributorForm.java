@@ -42,13 +42,16 @@ public class DistributorForm {
 	private Float withdrawalPartnerAmount;
 	
 	private Float withdrawalMemberAmount;
-	
-	private Float betAmount;
-	
-	private Float winningAmount;
-	
-	private Float LostAmount;
-	
+
+	private Float slotBettingAmount;
+	private Float baccaratBettingAmount;
+
+	private Float slotWinningAmount;
+	private Float baccaratWinningAmount;
+
+	private Float slotLostAmount;
+	private Float baccaratLostAmount;
+
 	private Float batRolling;
 	
 	private Float settlementRate;
@@ -58,8 +61,9 @@ public class DistributorForm {
 	private Float baccaratRate;
 	
 	private Float losingAmount;
-	
-	private Float rollingAmount;
+
+	private Float slotDistributorRollingAmount;
+	private Float baccaratDistributorRollingAmount;
 	
 	private Integer status;
 	

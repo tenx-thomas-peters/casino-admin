@@ -177,7 +177,7 @@ public class MockController {
 			bettingSummary.setPointRate(bettingSummary.getType().equals(0) ? member.getSlotRate() : member.getBaccaratRate());
 
 			bettingSummary.setSeq(UUIDGenerator.generate());
-			bettingSummary.setBetCount(1);
+			bettingSummary.setSlotBetCount(1);
 
 			if (bettingSummaryService.save(bettingSummary)) {
 				model.addAttribute("success", true);

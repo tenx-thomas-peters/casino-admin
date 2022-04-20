@@ -41,14 +41,18 @@ public class HeadquarterForm {
 	
 	private Float withdrawalPartnerAmount;
 	
-	private Float betAmount;
-	
-	private Float winningAmount;
-	
-	private Float LostAmount;
-	
-	private Float batRolling;
-	
+	private Float slotBettingAmount;
+	private Float baccaratBettingAmount;
+
+	private Float slotWinningAmount;
+	private Float baccaratWinningAmount;
+
+	private Float slotLostAmount;
+	private Float baccaratLostAmount;
+
+	private Float slotHeadquarterRollingAmount;
+	private Float baccaratHeadquarterRollingAmount;
+
 	private Float slotRate;
 	
 	private Float baccaratRate;
