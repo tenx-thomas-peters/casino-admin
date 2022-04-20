@@ -447,7 +447,7 @@
 			bs.type AS gameType
 		FROM
 			member m
-		LEFT JOIN betting_summary bs ON bs.member_seq = m.seq 
+		LEFT JOIN betting_summary bs ON bs.store_seq = m.seq
 		<where>
 			<include refid="storeWhere"/>
 		</where>
@@ -471,23 +471,25 @@
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal}
 			AND m1.distributor_seq = m.seq ) AS memberCount,
 			(
-			SELECT
-				count(*)
+			SELECT count(*)
+			from
+			(SELECT
+			m1.*
 			FROM
-				member m1
+			member m1
 			LEFT JOIN money_history mh ON m1.seq = mh.receiver
 			WHERE
-				mh.operation_type = #{moneyHistoryOperationTypeDeposit}
-				AND m1.distributor_seq = m.seq
-				AND m1.user_type = #{userTypeNormal}
-				AND mh.money_or_point = #{distributor.isMoney}									
-				<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{distributor.fromApplicationTime})
-				</if>
-				<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' ">
-					AND DATE(#{distributor.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
-			)AS depositMemberCount,
+			mh.operation_type = #{moneyHistoryOperationTypeDeposit}
+			AND m1.user_type = #{userTypeNormal}
+			AND mh.money_or_point = #{distributor.isMoney}
+			<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' ">
+				AND	DATE(mh.application_time) >= DATE(#{distributor.fromApplicationTime})
+			</if>
+			<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' ">
+				AND DATE(#{distributor.toApplicationTime}) >= DATE(mh.application_time)
+			</if>
+			GROUP BY mh.receiver ) as mmm WHERE mmm.sub_headquarter_seq = m.seq
+			) AS depositMemberCount,
 			IFNULL((
 			SELECT
 				sum( mh.variable_amount ) 
@@ -607,17 +609,21 @@
 			IFNULL(m.slot_rate, 0) AS slotRate,
 			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
 			m.status AS status,
-			SUM(IFNULL(bs.slot_betting_amount, 0)) AS slotBettingAmount,
-			SUM(IFNULL(bs.baccarat_betting_amount, 0)) AS baccaratBettingAmount,
-			SUM(IFNULL(bs.slot_winning_amount, 0)) AS slotWinningAmount,
-			SUM(IFNULL(bs.baccarat_winning_amount, 0)) AS baccaratWinningAmount,
-			SUM(IFNULL(bs.slot_lost_amount, 0)) AS slotLostAmount,
-			SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount,
+
+			IFNULL(SUM(bs.slot_betting_amount),0)  AS slotBettingAmount,
+			IFNULL(SUM(bs.baccarat_betting_amount),0)  AS baccaratBettingAmount,
+			IFNULL(SUM(bs.slot_winning_amount),0)  AS slotWinningAmount,
+			IFNULL(SUM(bs.baccarat_winning_amount),0)  AS baccaratWinningAmount,
+			IFNULL(SUM(bs.slot_lost_amount),0)  AS slotLostAmount,
+			IFNULL(SUM(bs.baccarat_lost_amount),0)  AS baccaratLostAmount,
+			IFNULL(SUM(bs.slot_distributor_rolling_amount),0)  AS slotDistributorRollingAmount,
+			IFNULL(SUM(bs.baccarat_distributor_rolling_amount),0)  AS baccaratDistributorRollingAmount,
+
 			IFNULL(bs.bat_rolling, 0) AS batRolling,
 			bs.type AS gameType
 		FROM
 			member m
-		LEFT JOIN betting_summary bs ON bs.member_seq = m.seq 
+		LEFT JOIN betting_summary bs ON bs.distributor_seq = m.seq
 		<where>
 			<include refid="distributorWhere"/>
 		</where>
