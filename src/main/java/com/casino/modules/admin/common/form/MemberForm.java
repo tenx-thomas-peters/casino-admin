@@ -66,9 +66,14 @@ public class MemberForm {
     private Float baccaratRate;
 
     private String site;
-    private Float betAmount;
-    private Float winningAmount;
-    private Float lostAmount;
+    private Float slotBettingAmount;
+    private Float baccaratBettingAmount;
+    private Float slotWinningAmount;
+    private Float baccaratWinningAmount;
+    private Integer slotBetCount;
+    private Integer baccaratBetCount;
+    private Float slotLostAmount;
+    private Float baccaratLostAmount;
     private Float batRolling;
     private Float deposit;
     private Integer depositCount;

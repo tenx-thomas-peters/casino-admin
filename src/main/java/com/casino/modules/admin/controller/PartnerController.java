@@ -815,15 +815,13 @@ public class PartnerController {
 			
 			for (MemberForm item : memberList) {
 				if(item.getGameType() != null) {
-					if (item.getGameType().equals(0)) {
-						slotBetAmountSum += item.getBetAmount();
-						slotWinningAmountSum += item.getWinningAmount();
-						slotLostAmountSum += item.getLostAmount();
-					} else {
-						baccaratBetAmountSum += item.getBetAmount();
-						baccaratWinningAmountSum += item.getWinningAmount();
-						baccaratLostAmountSum += item.getLostAmount();
-					}
+					slotBetAmountSum += item.getSlotBettingAmount();
+					slotWinningAmountSum += item.getSlotWinningAmount();
+					slotLostAmountSum += item.getSlotLostAmount();
+
+					baccaratBetAmountSum += item.getBaccaratBettingAmount();
+					baccaratWinningAmountSum += item.getBaccaratWinningAmount();
+					baccaratLostAmountSum += item.getBaccaratLostAmount();
 				}
 			}
 			

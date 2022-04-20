@@ -203,7 +203,7 @@
                                 </td>
                                 <td>
                                     <a class="progress-bet text-default">
-                                        [[${#numbers.formatDecimal(entity.betAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                        [[${#numbers.formatDecimal((entity.slotBettingAmount + entity.baccaratBettingAmount), 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
                                     </a>
                                 </td>
                                 <td class="text-primary">
