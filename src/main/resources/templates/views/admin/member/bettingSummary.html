@@ -62,16 +62,16 @@
                                     <p>baccarat</p>
                                 </td>
                                 <td class="text-center">
-                                    <p th:text="${entity.type == 0 ? #numbers.formatDecimal(entity.bettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
-                                    <p th:text="${entity.type == 1 ? #numbers.formatDecimal(entity.bettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                    <p th:text="${ #numbers.formatDecimal(entity.slotBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
+                                    <p th:text="${ #numbers.formatDecimal(entity.baccaratBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
                                 </td>
                                 <td class="text-center">
-                                    <p th:text="${entity.type == 0 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
-                                    <p th:text="${entity.type == 1 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></p>
+                                    <p th:text="${ #numbers.formatDecimal(entity.slotWinningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
+                                    <p th:text="${ #numbers.formatDecimal(entity.baccaratWinningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
                                 </td>
                                 <td class="text-center">
-                                    <p th:text="${entity.type == 0 ? entity.betCount : 0}"></p>
-                                    <p th:text="${entity.type == 1 ? entity.betCount : 0}"></p>
+                                    <p th:text="${ entity.slotBetCount }"></p>
+                                    <p th:text="${entity.baccaratBetCount }"></p>
                                 </td>
                                 <td class="text-center">
                                     <p th:text="${entity.memberSlotRate}"></p>
@@ -85,8 +85,8 @@
                                     <p th:text="|${entity.storeBaccaratRate}| + '%'"></p>
                                 </td>
                                 <td class="text-center">
-                                    <p>[[${entity.type == 0 ? #numbers.formatDecimal(entity.storeRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
-                                    <p>[[${entity.type == 1 ? #numbers.formatDecimal(entity.storeRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                    <p>[[${ #numbers.formatDecimal(entity.slotStoreRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') }]]</p>
+                                    <p>[[${ #numbers.formatDecimal(entity.baccaratStoreRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') }]]</p>
                                 </td>
                                 <td class="text-center">
                                     <p th:text="${entity.distributorID}"></p>
@@ -96,8 +96,8 @@
                                     <p th:text="|${entity.distributorBaccaratRate}| + '%'"></p>
                                 </td>
                                 <td class="text-center">
-                                    <p>[[${entity.type == 0 ? #numbers.formatDecimal(entity.distributorRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
-                                    <p>[[${entity.type == 1 ? #numbers.formatDecimal(entity.distributorRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                    <p>[[${ #numbers.formatDecimal(entity.slotDistributorRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]</p>
+                                    <p>[[${ #numbers.formatDecimal(entity.baccaratDistributorRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]</p>
                                 </td>
                                 <td class="text-center">
                                     <p th:text="${entity.subHeadquarterID}"></p>
@@ -107,8 +107,8 @@
                                     <p th:text="|${entity.subHeadquarterBaccaratRate}| + '%'"></p>
                                 </td>
                                 <td class="text-center">
-                                    <p>[[${entity.type == 0 ? #numbers.formatDecimal(entity.subHeadquarterRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
-                                    <p>[[${entity.type == 1 ? #numbers.formatDecimal(entity.subHeadquarterRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}]]</p>
+                                    <p>[[${ #numbers.formatDecimal(entity.slotHeadquarterRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]</p>
+                                    <p>[[${ #numbers.formatDecimal(entity.baccaratHeadquarterRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]</p>
                                 </td>
                             </tr>
                             <tr th:if="${#lists.isEmpty(pageList.records)}">
