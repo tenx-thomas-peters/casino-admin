@@ -109,27 +109,29 @@
 											<td>
 												<div class="row">
                                                     <div class="col-sm-3">
-                                                        <input type="text" class="form-control" name="nickname" th:value="${note.nickname}" required/>
-                                                        <input type="hidden" name="sender" th:value="${note.sender}" />
+                                                        <input type="text" class="form-control" name="sender" th:value="${note.sender}" required/>
                                                     </div>
-                                                    <div class="col-sm-2">
-                                                    	<span th:text="#{admin.common.grade}"></span>
-                                                        <div class="d-inline-block" style="display: inline-block">
-                                                            <select class="form-control" name="levelList" id="levelList">
-                                                                <option value=></option>
-                                                                <option th:each="item : ${levelList}"
-                                                                        th:value="${item.seq}"  th:selected="${levelSeq == item.seq ? true : false }"
-                                                                        th:text="${item.levelName}"></option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-2">
-                                                        <div class="d-inline-block">
-                                                            <select class="form-control" name="writer" id="writer">
-                                                            	<option th:text="#{admin.write.nicknameSelection}"></option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
+<!--                                                    Thomas 2022.04.20 remove-->
+<!--                                                    <div class="col-sm-2">-->
+<!--                                                    	<span th:text="#{admin.common.grade}"></span>-->
+<!--                                                        <div class="d-inline-block" style="display: inline-block">-->
+<!--                                                            <select class="form-control" name="levelList" id="levelList">-->
+<!--                                                                <option value=></option>-->
+<!--                                                                <option th:each="item : ${levelList}"-->
+<!--                                                                        th:value="${item.seq}"  th:selected="${levelSeq == item.seq ? true : false }"-->
+<!--                                                                        th:text="${item.levelName}"></option>-->
+<!--                                                            </select>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-sm-2">-->
+<!--                                                        <div class="d-inline-block">-->
+<!--                                                            <select class="form-control" name="writer" id="writer">-->
+<!--                                                            	<option th:text="#{admin.write.nicknameSelection}"></option>-->
+<!--                                                            </select>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    Thomas 2022.04.20 remove-->
+
                                                 </div>
 											</td>
 										</tr>
@@ -141,9 +143,7 @@
 												</div>
 											</th>
 											<td>
-												<input type="text" data-plugin-datepicker=""
-													class="form-control" name="sendTime" th:value="${#dates.format(note.sendTime, 'yyyy-MM-dd')}"
-													data-date-format="yyyy-mm-dd" required />
+												<input type="text" class="form-control" name="sendTime" required />
 											</td>
 										</tr>
 										<tr>
