@@ -153,7 +153,7 @@
 															<span th:if="${note.classification == 3}" th:text="#{admin.common.event}"> </span>
 															<span th:if="${note.classification == 4}" th:text="#{admin.common.customerService}"> </span>
 														</td>
-														<td th:text="${note.nickname}"></td>
+														<td th:text="${note.sender}"></td>
 														<td th:text="${note.title}" th:data-key="${note.seq}" class="edit text-primary"></td>
 														<td th:text="${(note.sendTime != null ? #dates.format(note.sendTime, 'yyyy-MM-dd') : '')}"></td>
 														<td>
