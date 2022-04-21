@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.casino.modules.admin.common.entity.BettingSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -161,13 +162,31 @@ public class NoteController {
     	Result<Note> result = new Result<Note>();
     	try {
     		if(note != null) {
-    			note.setSeq(UUIDGenerator.generate());
-    			note.setReceiver(note.getMSeq());
-    			note.setReadStatus(CommonConstant.STATUS_UN_READ);
-    			note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
-    			note.setLookUp(0);
-    			note.setType(CommonConstant.TYPE_NOTE);
-    			if(noteService.save(note)) {
+				String storeSeq = note.getStoreSeq();
+				String levelSeq = note.getLevelSeq();
+				QueryWrapper<Member> qw = new QueryWrapper<>();
+				qw.eq("store_seq", storeSeq);
+				qw.eq("level_seq", levelSeq);
+				List<Member> memberListByLevelAndStore = memberService.list(qw);
+				List<Note> noteSaveList = new ArrayList<>();
+
+				for(Member member : memberListByLevelAndStore){
+					Note noteSave = new Note();
+					noteSave.setSeq(UUIDGenerator.generate());
+					noteSave.setSender(note.getSender());
+					noteSave.setReceiver(member.getSeq());
+					noteSave.setReadStatus(CommonConstant.STATUS_UN_READ);
+					noteSave.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
+					noteSave.setLookUp(0);
+					noteSave.setType(CommonConstant.TYPE_NOTE);
+					noteSave.setContent(note.getContent());
+					noteSave.setSite(note.getSite());
+					noteSave.setTitle(note.getTitle());
+
+					noteSaveList.add(noteSave);
+				}
+
+    			if(noteService.saveBatch(noteSaveList)) {
     				result.success("Operate Success");
     			} else {
     				result.error500("Operate Faild");
