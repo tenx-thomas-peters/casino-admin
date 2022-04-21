@@ -20,10 +20,10 @@ public class Note implements Serializable {
 	@TableId(value = "seq")
 	private String seq;
 
-	@TableId(value = "storeSeq")
+	@TableField(exist=false)
 	private String storeSeq;
 
-	@TableId(value = "levelSeq")
+	@TableField(exist=false)
 	private String levelSeq;
 
 	@TableField(value = "site")
@@ -31,6 +31,9 @@ public class Note implements Serializable {
 
 	@TableField(value = "sender")
 	private String sender;
+
+	@TableField(exist=false)
+	private String sender1;
 
 	@TableField(value = "receiver")
 	private String receiver;
