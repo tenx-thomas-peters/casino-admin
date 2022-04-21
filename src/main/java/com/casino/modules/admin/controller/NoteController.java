@@ -117,9 +117,11 @@ public class NoteController {
             List<Level> levelList = levelService.list(qw);
             
             List<Map<String, String>> domainList = memberService.getSiteList();
-            
+
+			List<Member> storeList = this.getPartnerList(1);
             model.addAttribute("levelList", levelList);
             model.addAttribute("domainList", domainList);
+            model.addAttribute("storeList", storeList);
             model.addAttribute("url", "memo/popup_adminwrite");
     		
     	} catch (Exception e) {
@@ -127,6 +129,12 @@ public class NoteController {
     	}
     	return "views/admin/note/writeAnote";
     }
+
+	public List<Member> getPartnerList(Integer userType){
+		QueryWrapper<Member> qw = new QueryWrapper<>();
+		qw.eq("user_type", userType);
+		return memberService.list(qw);
+	}
     
     @PostMapping(value = "getRecipient")
 	@ResponseBody
@@ -180,7 +188,7 @@ public class NoteController {
     	try {
     		QueryWrapper<Member> qw = new QueryWrapper<>();
     		qw.eq("user_type", member.getUserType());
-    		qw.eq("level_seq", member.getLevelSeq());
+//    		qw.eq("level_seq", member.getLevelSeq());
     		memberList = memberService.list(qw);
     	} catch (Exception e) {
     		log.error("url: /member/getMemberList --- method: getMembersByUserTypeAndLevel --- message: " + e.toString());

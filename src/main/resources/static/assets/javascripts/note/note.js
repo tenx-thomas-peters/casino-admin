@@ -1,16 +1,17 @@
 $(document).ready(function(){
-	$('#userType').change(function(){
-		var level = $("#levelType").val();
-		var userType = $("#userType").val();
-		getMemberList(level, userType);
-	});
-	
-	$('#levelType').change(function(){
-		var level = $("#levelType").val();
-		var userType = $("#userType").val();
-		getMemberList(level, userType);
-	});
-	
+	// $('#userType').change(function(){
+	// 	var level = $("#levelType").val();
+	// 	var userType = $("#userType").val();
+    //     $('select[name="mSeq"]').html($('<option value=""></option>'));
+	// 	getMemberList(level, userType);
+	// });
+	//
+	// $('#levelType').change(function(){
+	// 	var level = $("#levelType").val();
+	// 	var userType = $("#userType").val();
+	// 	getMemberList(level, userType);
+	// });
+	//
 	$('select[name=levelSeq]').trigger('change');
 	
 	$(document).on('click', '.send-note', function (e) {
@@ -128,16 +129,16 @@ $(document).ready(function(){
     });
 });
 
-function getMemberList(level, userType) {
-	$.ajax({
-		url: "getMemberList",
-		type: "GET",
-		data: { "levelSeq": level, "userType": userType },
-		success: function(response){
-			$('select[name="mSeq"]').html($('<option value=""></option>'));
-			response.map(function(item) {
-				$('select[name="mSeq"]').append($('<option value="' + item.seq + '">' + item.nickname + '</option>'));
-			})
-		}
-	});
-}
+// function getMemberList(level, userType) {
+// 	$.ajax({
+// 		url: "getMemberList",
+// 		type: "GET",
+// 		data: { "levelSeq": level, "userType": userType },
+// 		success: function(response){
+// 			$('select[name="mSeq"]').html($('<option value=""></option>'));
+// 			response.map(function(item) {
+// 				$('select[name="mSeq"]').append($('<option value="' + item.seq + '">' + item.nickname + '</option>'));
+// 			})
+// 		}
+// 	});
+// }
