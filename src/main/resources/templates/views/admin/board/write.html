@@ -82,17 +82,17 @@
 	                                                        <select id="classification" name="classification" class="form-control">
 	                                                            <option th:text="#{admin.common.classificationSelection}"></option>
 	                                                            <option value="0" th:selected="${note.classification == 0 ? true : false}" th:text="#{admin.common.notice}"></option>
-	                                                            <option value="1" th:selected="${note.classification == 1 ? true : false}" th:text="#{admin.common.faq}"></option>
+<!--	                                                            <option value="1" th:selected="${note.classification == 1 ? true : false}" th:text="#{admin.common.faq}"></option>-->
 	                                                            <option value="2" th:selected="${note.classification == 2 ? true : false}" th:text="#{admin.board.freeBoard}"></option>
 	                                                            <option value="3" th:selected="${note.classification == 3 ? true : false}" th:text="#{admin.common.event}"></option>
-	                                                            <option value="4" th:selected="${note.classification == 4 ? true : false}" th:text="#{admin.common.customerService}"></option>
+<!--	                                                            <option value="4" th:selected="${note.classification == 4 ? true : false}" th:text="#{admin.common.customerService}"></option>-->
 	                                                        </select>
 	                                                    </div>
 	                                                </div>
 	                                                <div class="col-sm-2">
 	                                                    <div class="d-inline-block">
 	                                                        <select id="site" name="site" class="form-control">
-	                                                        	<option th:text="#{admin.common.siteSelection}"></option>
+	                                                        	<option th:value="#{admin.common.siteSelection}" th:text="#{admin.common.siteSelection}"></option>
 	                                                        </select>
 	                                                    </div>
 	                                                </div>
@@ -143,7 +143,7 @@
 												</div>
 											</th>
 											<td>
-												<input type="text" class="form-control" name="sendTime" required />
+												<input type="text" class="form-control" name="sendTime"  th:value="${#dates.format(note.sendTime, 'yyyy-MM-dd')}" required />
 											</td>
 										</tr>
 										<tr>
@@ -188,7 +188,7 @@
 											</th>
 											<td>
 												<textarea name="content" id="content" class="content"
-													data-plugin-summernote th:value="${note.content}"
+													data-plugin-summernote th:text="${note.content}"
 													data-plugin-options='{ "height": 180, "codemirror": { "theme": "ambiance" }, "maximumImageFileSize": "1KB" }'></textarea>
 											</td>
 										</tr>
@@ -330,8 +330,8 @@
 </section>
 <script type="text/javascript" th:inline="javascript">
     	var url = [[@{/}]] + [[${url}]];
-    	var levelName = [[${levelName}]];
-    	var levelSeq = [[${levelSeq}]];
+    	// var levelName = [[${levelName}]];
+    	// var levelSeq = [[${levelSeq}]];
 
 </script>
 <script th:replace="template :: scripts"></script>

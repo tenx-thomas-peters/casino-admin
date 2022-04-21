@@ -120,18 +120,21 @@ public class BoardController {
 
 	@GetMapping(value = "/write")
 	public String write(@RequestParam(name = "seq", defaultValue="") String seq, Model model) {
+
 		try {
 			Note note = new Note();
 			Member member = new Member();
 			Level level = new Level();
 			if(StringUtils.isNotEmpty(seq)) {
 				note = boardService.getById(seq);
-				if(StringUtils.isNotEmpty(note.getSender())) {
+
+
+//				if(StringUtils.isNotEmpty(note.getSender())) {
 					member = memberService.getById(note.getSender());
-					note.setNickname(member.getNickname());
-					level = levelService.getById(member.getLevelSeq());
-				}
-				note.setLevelName(level.getLevelName());
+//					note.setNickname(member.getNickname());
+//					level = levelService.getById(member.getLevelSeq());
+//				}
+//				note.setLevelName(level.getLevelName());
 			}
 			
 			QueryWrapper<Level> qw = new QueryWrapper<>();
@@ -141,14 +144,18 @@ public class BoardController {
 			List<Note> receiverList = boardService.getReceiverList();
 			
 			List<Note> commentList = boardService.getCommentList();
-			
+
+			System.out.println("note");
+			System.out.println(note);
 			model.addAttribute("levelList", levelList);
 			model.addAttribute("receiverList", receiverList);
 			model.addAttribute("commentList", commentList);
-			model.addAttribute("levelName", level.getLevelName());
-			model.addAttribute("levelSeq", member.getLevelSeq());
+//			model.addAttribute("levelName", level.getLevelName());
+//			model.addAttribute("levelSeq", member.getLevelSeq());
 			model.addAttribute("note", note);
 			model.addAttribute("url", "board/write");
+
+
 
 		} catch (Exception e) {
 			log.error("url: /board/write --- method: write--- " + e.toString());
