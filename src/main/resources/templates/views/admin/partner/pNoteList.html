@@ -22,19 +22,16 @@
 	                   	<div class="tabs tabs-primary">
 							<ul class="nav nav-tabs">
 								<li>
-									<a href="#popular" data-toggle="tab" th:text="#{admin.common.inbox}"></a>
+									<a th:href="@{/memo/pInboxList}"  th:text="#{admin.partner.sentInbox}"></a>
 								</li>
 								<li class="active">
-									<a th:href="@{/memo/sendPList}"  th:text="#{admin.partner.sentInbox}"></a>
+									<a href="#sentInbox"  th:text="#{admin.partner.sentInbox}"></a>
 								</li>
 								<li>
 									<a th:href="@{/partner2/popup_memoadd}"  th:text="#{admin.partner.writeNote}"></a>
 								</li>
 							</ul>
 							<div class="tab-content">
-								<div id="popular" class="tab-pane">
-									<p th:text="#{admin.common.inbox}"></p>
-								</div>
 								<div id="sentInbox" class="tab-pane active">
 			                    	<form th:action="@{/memo/sendPList}" method="get" th:object="${form}" id="formSearch" class="form-inline search-form">
 			                    		<div class="form-group">

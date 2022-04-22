@@ -23,7 +23,7 @@
 							<div class="tabs tabs-primary">
 								<ul class="nav nav-tabs">
 									<li>
-										<a href="#popular" data-toggle="tab" th:text="#{admin.common.inbox}"></a>
+										<a th:href="@{/memo/pInboxList}"  th:text="#{admin.partner.sentInbox}"></a>
 									</li>
 									<li>
 										<a th:href="@{/memo/sendPList}"  th:text="#{admin.partner.sentInbox}"></a>
@@ -33,9 +33,6 @@
 									</li>
 								</ul>
 								<div class="tab-content">
-									<div id="popular" class="tab-pane">
-										<p th:text="#{admin.common.inbox}"></p>
-									</div>
 									<div id="memoAdd" class="tab-pane active">
 										<form method="post" th:action="@{/partner2/memoadd}" th:object="${note}" id="pNoteForm">
 											<div class="form-group">

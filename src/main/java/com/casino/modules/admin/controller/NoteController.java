@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.casino.modules.admin.common.entity.BettingSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,6 +90,28 @@ public class NoteController {
         }
         return "views/admin/partner/pNoteList";
     }
+
+	@GetMapping(value = "/pInboxList")
+	public String pInboxList(@ModelAttribute("form") NoteListForm form,
+							@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+							@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request,
+							Model model) {
+		try {
+			Page<Note> page = new Page<Note>(pageNo, pageSize);
+			form.setType(CommonConstant.TYPE_P_NOTE);
+			IPage<Note> pageList = noteService.getSendList(page, form);
+
+			model.addAttribute("pageList", pageList);
+			model.addAttribute("page", pageList);
+			model.addAttribute("form", form);
+			model.addAttribute("pageNo", pageNo);
+			model.addAttribute("pageSize", pageSize);
+			model.addAttribute("url", "memo/pInboxList");
+		} catch (Exception e) {
+			log.error("url: /memo/pInboxList --- method: sendPList --- error: " + e.toString());
+		}
+		return "views/admin/partner/pInboxList";
+	}
     
     @PostMapping(value = "/batchDelete")
     @ResponseBody
