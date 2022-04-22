@@ -99,7 +99,7 @@ public class NoteController {
 		try {
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
 			form.setType(CommonConstant.TYPE_P_NOTE);
-			IPage<Note> pageList = noteService.getSendList(page, form);
+			IPage<Note> pageList = noteService.getInboxList(page);
 
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);

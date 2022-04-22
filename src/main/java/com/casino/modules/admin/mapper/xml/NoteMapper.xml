@@ -28,6 +28,15 @@
 		</where>
 		ORDER BY n.send_time DESC
 	</select>
+
+	<select id="getInboxList" resultType="com.casino.modules.admin.common.entity.Note">
+		SELECT n.*, m.nickname, m.account_holder, m.id AS "mId"
+		FROM note n
+		LEFT JOIN member m ON m.seq = n.sender
+		WHERE n.type = 3
+		ORDER BY n.send_time DESC
+	</select>
+
 	<select id="getNoteContentBySeq" resultType="java.lang.Boolean">
 		SELECT n.seq as seq, n.title as title, n.content as content
 		FROM note n
