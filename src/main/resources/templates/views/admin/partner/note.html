@@ -16,45 +16,67 @@
                         </h2>
 					</header>
 					<div class="panel-body">
-                        <form method="get" th:action="@{/partner2/confirmNote}" id="note-form" class="form-horizontal form-bordered mb-lg vform" novalidate="novalidate" th:object="${member}" >
-                            <input type="hidden" name="seq" th:field="*{seq}" autocomplete="off"/>
-                            <div class="table-scrollable">
-                                <table class="table table-bordered table-striped" id="memo-list">
-                                    <thead>
-                                     <tr>
-                                      <th class="text-center" style="width: 20%;" th:text="#{admin.common.hour}"></th>
-                                      <th class="text-center" style="width: 60%;" th:text="#{admin.common.contents}"></th>
-                                      <th class="text-center" style="width: 20%;" th:text="#{admin.common.process}"></th>
-                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td><textarea name="content" style="width: 100%;" disabled></textarea></td>
-                                        <td class="text-center"><a class="add-memo">[[#{admin.member.addition}]]</a></td>
-                                    </tr>
-                                    <tr class="json-data" th:each="memo : ${memoList}">
-                                        <td class="text-center">
-                                            <p class="date" style="margin: 0" th:text="${memo.hour.split(' ')[0]}"></p>
-                                            <p class="time" style="margin: 0" th:text="${memo.hour.split(' ')[1]}"></p>
-                                        </td>
-                                        <td>
-                                            <textarea name="content" style="width: 100%;" th:text="${memo.contents}"></textarea>
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="update-memo">[[#{admin.common.edit}]]</a>
-                                            <a class="delete-memo">[[#{admin.common.delete}]]</a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <form id="member-note-form" name="note" class="form-horizontal form-bordered" th:action="@{/partner2/confirmNote}" method="post">
+                            <input type="hidden" name="sender" value="" />
+                            <input type="hidden" name="receiver" th:value="${member.seq}" />
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    <i class="fa fa-plus-square text-primary"></i>
+                                    [[#{admin.common.title}]]
+                                </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="title" maxlength="128" required />
+                                </div>
                             </div>
-                            <div class="panel-footer">
-								<button type="button" class="btn btn-primary" id="confirmNote" th:text="#{admin.common.confirm}"></button>
-		                        <a href="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></a>
-							</div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    <i class="fa fa-plus-square text-primary"></i>
+                                    [[#{admin.common.sender}]]
+                                </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="sender1" value="운영팀" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    <i class="fa fa-plus-square text-primary"></i>
+                                    [[#{admin.common.recipient}]]
+                                </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="recipient" th:value="${member.id}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-3 control-label">
+                                    <i class="fa fa-plus-square text-primary"></i>
+                                    [[#{admin.common.contents}]]
+                                </label>
+                                <div class="col-md-9 col-sm-9">
+                                    <textarea class="form-control" id="content_string" name="content" data-plugin-textarea-autosize required></textarea>
+                                </div>
+                            </div>
                         </form>
 					</div>
+                    <footer class="panel-footer text-center">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary write-member-note" th:text="#{admin.common.send}"></button>
+                                <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                            </div>
+                        </div>
+                        <div id="wrap_btn">
+                            <input type="button" value="가상계좌" onclick="addChar(0)" class="Qishi_submit_a">
+                            <input type="button" value="온라인 계좌" onclick="addChar(1)" class="Qishi_submit_a">
+                            <input type="button" value="지인계좌" onclick="addChar(2)" class="Qishi_submit_a">
+                            <input type="button" value="지인계좌" onclick="addChar(3)" class="Qishi_submit_a">
+                            <input type="button" value="요청처리완료" onclick="addChar(4)" class="Qishi_submit_a">
+                            <input type="button" value="대기멘트" onclick="addChar(5)" class="Qishi_submit_a">
+                            <input type="button" value="가상멘트" onclick="addChar(6)" class="Qishi_submit_a">
+                            <input type="button" value="JK.라만" onclick="addChar(7)" class="Qishi_submit_a">
+                            <input type="button" value="통협" onclick="addChar(8)" class="Qishi_submit_a">
+                            <input type="button" value="소액.VPN" onclick="addChar(9)" class="Qishi_submit_a">
+                       </div>
+                    </footer>
 				</section>
 			</section>
         </div>
@@ -62,6 +84,7 @@
     
     <script type="text/javascript" th:inline="javascript">
 	    var url = [[${url}]];
+        var basicSetting = [[${basicSetting}]];
 	</script>
 	
     <script th:replace="template :: scripts"></script>

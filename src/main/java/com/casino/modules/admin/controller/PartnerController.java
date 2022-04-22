@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.casino.modules.admin.common.entity.BasicSetting;
+import com.casino.modules.admin.service.IBasicSettingService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +48,9 @@ public class PartnerController {
 
 	@Autowired
 	private IMemberService memberService;
+
+	@Autowired
+	private IBasicSettingService basicSettingService;
 	
 	@Autowired
 	private INoteService noteService;
@@ -527,26 +532,13 @@ public class PartnerController {
 	}
 	
 	@GetMapping(value = "/getMemo")
-	public String getMemo(@ModelAttribute("member") Member member, Model model, @RequestParam("seq") String seq) {
+	public String getMemo(@RequestParam("seq") String seq, Model model) {
 		try {
-			QueryWrapper<Member> memoQW = new QueryWrapper<>();
-			memoQW.eq("seq", seq);
-			member = memberService.getOne(memoQW);
-			List<Map<String, String>> memoList = new ArrayList<>();
-			JSONArray memoArray = JSONObject.parseArray(member.getMemo());
-			if (memoArray != null) {
-                for (int i = 0; i < memoArray.size(); i++) {
-                    JSONObject obj = memoArray.getJSONObject(i);
-                    Map<String, String> memo = new HashMap<>();
-                    memo.put("hour", obj.getString("hour"));
-                    memo.put("contents", obj.getString("contents"));
+			Member member = memberService.getById(seq);
 
-                    memoList.add(memo);
-                }
-            }
-			
+			BasicSetting basicSetting = basicSettingService.getById(123);
 			model.addAttribute("member", member);
-			model.addAttribute("memoList", memoList);
+			model.addAttribute("basicSetting", basicSetting);
 			model.addAttribute("url", "partner2/getMemo");
 		}
 		catch(Exception e) {
@@ -555,21 +547,29 @@ public class PartnerController {
 		return "views/admin/partner/note";
 	}
 	
-	@GetMapping(value = "/confirmNote")
+	@PostMapping(value = "/confirmNote")
 	@ResponseBody
-	public Result<Member> confirmNote(
-			@RequestParam("seq") String seq, 
-			@RequestParam("memo") String memo,
-			Member member, HttpServletRequest request) {
-		Result<Member> result = new Result<Member>();
+	public Result<Note> confirmNote(@ModelAttribute("note") Note note) {
+		Result<Note> result = new Result<>();
 		try {
-			member = memberService.getById(seq);
-			member.setMemo(memo);
-			if(memberService.updateById(member)) {
-				result.success("operation success!");
-			}
-			else {
-				result.error500("operation failed!");
+			if (note != null) {
+				note.setSeq(UUIDGenerator.generate());
+				note.setReadStatus(CommonConstant.STATUS_UN_READ);
+				note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
+				note.setLookUp(0);
+				note.setType(CommonConstant.TYPE_P_RECEIVE_NOTE);
+				note.setTitle(note.getTitle());
+				note.setContent(note.getContent());
+				note.setReceiver(note.getReceiver());
+				note.setSender(note.getSender1());
+
+				if (noteService.save(note)) {
+					result.success("Operate Success");
+				} else {
+					result.error500("Operate Faild");
+				}
+			} else {
+				result.error500("Operate Faild");
 			}
 		} catch (Exception e) {
 			log.error("url: /partner2/confirmNote --- method: confirmNote --- " + e.getMessage());
