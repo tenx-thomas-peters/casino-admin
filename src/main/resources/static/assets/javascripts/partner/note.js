@@ -53,8 +53,6 @@ function addChar(note_num){
 
     console.log(note_num);
     let content_string = ""
-    console.log(basicSetting);
-    console.log(basicSetting.crequestProcessingCompleted);
     switch (note_num){
         case 0:
             content_string = basicSetting.ccRepaymentInformation;break;
@@ -78,6 +76,5 @@ function addChar(note_num){
             content_string = basicSetting.ccGameErrorReport;break;
     }
 
-    console.log(content_string);
     $("#content_string").text(content_string);
 }
