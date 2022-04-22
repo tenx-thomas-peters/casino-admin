@@ -1,0 +1,127 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{admin.note.partnerSentInbox})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/admin/board.css}"/>
+<body>
+<section class="body">
+    <header th:replace="template :: header" class="header"></header>
+    <div class="inner-wrapper">
+        <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+
+        <section role="main" class="content-body">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h2 class="panel-title">
+                        <i class="fa fa-caret-square-o-right text-primary"></i>
+                        <span th:text="#{admin.note.partnerSentInbox}"></span>
+                    </h2>
+                </header>
+                <div class="panel-body">
+                    <div class="tabs tabs-primary">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#popular" data-toggle="tab" th:text="#{admin.common.inbox}"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/memo/sendPList}"  th:text="#{admin.partner.sentInbox}"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/partner2/popup_memoadd}"  th:text="#{admin.partner.writeNote}"></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="sentInbox" class="tab-pane active">
+                                <form th:action="@{/memo/pInboxList}" method="get" th:object="${form}" id="formSearch"></form>
+                                <div class="table-scrollable">
+                                    <table class="table table-bordered table-striped text-center">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="checkbox-custom checkbox-default checkbox-inline">
+                                                    <input type="checkbox" class="group-checkable" id="allCheck"
+                                                           data-set="#member-datatable .checkboxes" onclick="allCheck()"><label></label>
+                                                </div>
+                                            </th>
+                                            <th th:text="#{admin.partner.sentperson}"></th>
+                                            <th th:text="#{admin.common.date}"></th>
+                                            <th th:text="#{admin.common.contents}"></th>
+                                            <th th:text="#{admin.common.status}"></th>
+                                            <th th:text="#{admin.common.process}"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
+                                            <td>
+                                                <div class="checkbox-custom checkbox-default checkbox-inline">
+                                                    <input class="checkboxes" type="checkbox" th:name="${entity.seq}"><label></label>
+                                                </div>
+                                            </td>
+                                            <td th:text="${entity.mId}"></td>
+                                            <td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd') : '')}"></td>
+                                            <td>
+                                                <a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
+                                            </td>
+                                            <td>
+                                                <span th:if="${entity.readStatus == 0}" th:text="#{admin.status.unread}"></span>
+                                                <span th:if="${entity.readStatus == 1}" th:text="#{admin.common.read}"></span>
+                                            </td>
+                                            <td>
+                                                <span th:if="${entity.recommendStatus == 0}" th:text="#{admin.status.unrecommend}"></span>
+                                                <span th:if="${entity.recommendStatus == 1}" th:text="#{admin.status.recommend}"></span>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">
+                                            <td colspan="10" th:text="#{admin.common.noData}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab_cont customPage w99 t_center ptb15"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="select-delete">
+                        <div class="modal fade" id="batchDelete" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <h4 class="modal-title" th:text="#{admin.common.delete}"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p th:text="#{admin.common.deleteMsg}"></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" onclick="batchDelete();" th:text="#{admin.common.confirm}"></button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{admin.common.cancel}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="btn btn-default modal-member-delete" data-toggle="modal" href="#batchDelete" th:text="#{admin.common.selectDelete}"></a>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var page = [[${page}]];
+    var url = [[${url}]];
+    var titleStr = [[#{admin.common.title}]];
+    var contentStr = [[#{admin.common.content}]];
+</script>
+<script th:replace="template :: scripts"></script>
+
+<script th:src="@{/assets/javascripts/tables/note.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    createPagenation(page, url);
+</script>
+</body>
+</html>

@@ -90,6 +90,28 @@ public class NoteController {
         }
         return "views/admin/partner/pNoteList";
     }
+
+	@GetMapping(value = "/pInboxList")
+	public String pInboxList(@ModelAttribute("form") NoteListForm form,
+							@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+							@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request,
+							Model model) {
+		try {
+			Page<Note> page = new Page<Note>(pageNo, pageSize);
+			form.setType(CommonConstant.TYPE_P_NOTE);
+			IPage<Note> pageList = noteService.getInboxList(page);
+
+			model.addAttribute("pageList", pageList);
+			model.addAttribute("page", pageList);
+			model.addAttribute("form", form);
+			model.addAttribute("pageNo", pageNo);
+			model.addAttribute("pageSize", pageSize);
+			model.addAttribute("url", "memo/pInboxList");
+		} catch (Exception e) {
+			log.error("url: /memo/pInboxList --- method: sendPList --- error: " + e.toString());
+		}
+		return "views/admin/partner/pInboxList";
+	}
     
     @PostMapping(value = "/batchDelete")
     @ResponseBody
@@ -117,9 +139,11 @@ public class NoteController {
             List<Level> levelList = levelService.list(qw);
             
             List<Map<String, String>> domainList = memberService.getSiteList();
-            
+
+			List<Member> storeList = this.getPartnerList(1);
             model.addAttribute("levelList", levelList);
             model.addAttribute("domainList", domainList);
+            model.addAttribute("storeList", storeList);
             model.addAttribute("url", "memo/popup_adminwrite");
     		
     	} catch (Exception e) {
@@ -127,6 +151,12 @@ public class NoteController {
     	}
     	return "views/admin/note/writeAnote";
     }
+
+	public List<Member> getPartnerList(Integer userType){
+		QueryWrapper<Member> qw = new QueryWrapper<>();
+		qw.eq("user_type", userType);
+		return memberService.list(qw);
+	}
     
     @PostMapping(value = "getRecipient")
 	@ResponseBody
@@ -153,13 +183,31 @@ public class NoteController {
     	Result<Note> result = new Result<Note>();
     	try {
     		if(note != null) {
-    			note.setSeq(UUIDGenerator.generate());
-    			note.setReceiver(note.getMSeq());
-    			note.setReadStatus(CommonConstant.STATUS_UN_READ);
-    			note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
-    			note.setLookUp(0);
-    			note.setType(CommonConstant.TYPE_NOTE);
-    			if(noteService.save(note)) {
+				String storeSeq = note.getStoreSeq();
+				String levelSeq = note.getLevelSeq();
+				QueryWrapper<Member> qw = new QueryWrapper<>();
+				qw.eq("store_seq", storeSeq);
+				qw.eq("level_seq", levelSeq);
+				List<Member> memberListByLevelAndStore = memberService.list(qw);
+				List<Note> noteSaveList = new ArrayList<>();
+
+				for(Member member : memberListByLevelAndStore){
+					Note noteSave = new Note();
+					noteSave.setSeq(UUIDGenerator.generate());
+					noteSave.setSender(note.getSender());
+					noteSave.setReceiver(member.getSeq());
+					noteSave.setReadStatus(CommonConstant.STATUS_UN_READ);
+					noteSave.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
+					noteSave.setLookUp(0);
+					noteSave.setType(CommonConstant.TYPE_NOTE);
+					noteSave.setContent(note.getContent());
+					noteSave.setSite(note.getSite());
+					noteSave.setTitle(note.getTitle());
+
+					noteSaveList.add(noteSave);
+				}
+
+    			if(noteService.saveBatch(noteSaveList)) {
     				result.success("Operate Success");
     			} else {
     				result.error500("Operate Faild");
@@ -180,7 +228,7 @@ public class NoteController {
     	try {
     		QueryWrapper<Member> qw = new QueryWrapper<>();
     		qw.eq("user_type", member.getUserType());
-    		qw.eq("level_seq", member.getLevelSeq());
+//    		qw.eq("level_seq", member.getLevelSeq());
     		memberList = memberService.list(qw);
     	} catch (Exception e) {
     		log.error("url: /member/getMemberList --- method: getMembersByUserTypeAndLevel --- message: " + e.toString());

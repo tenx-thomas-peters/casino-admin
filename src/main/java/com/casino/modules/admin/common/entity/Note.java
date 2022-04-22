@@ -19,12 +19,21 @@ public class Note implements Serializable {
 
 	@TableId(value = "seq")
 	private String seq;
-	
+
+	@TableField(exist=false)
+	private String storeSeq;
+
+	@TableField(exist=false)
+	private String levelSeq;
+
 	@TableField(value = "site")
 	private String site;
 
 	@TableField(value = "sender")
 	private String sender;
+
+	@TableField(exist=false)
+	private String sender1;
 
 	@TableField(value = "receiver")
 	private String receiver;

@@ -23,6 +23,11 @@ public interface NoteMapper extends BaseMapper<Note> {
 			@Param("selectType2") Integer selectType2,
 			@Param("selectType3") Integer selectType3);
 
+	IPage<Note> getInboxList(Page<Note> page,
+							@Param("selectType1") Integer selectType1,
+							@Param("selectType2") Integer selectType2,
+							@Param("selectType3") Integer selectType3);
+
 	boolean getNoteContentBySeq(@Param("seq") String seq);
 	
 	IPage<Note> getNoticeList(Page<Note> page, @Param("note") Note note);

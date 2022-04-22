@@ -77,7 +77,7 @@ $('#classification').change(function(){
 			}
 		});
 	}else{
-		$('#writeForm select[name="site"]').html('');
+		$('#writeForm select[name="site"]').html($('<option value="gadget">gadget</option>'));
 	}
 })
 

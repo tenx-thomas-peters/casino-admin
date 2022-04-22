@@ -26,7 +26,7 @@
 									<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.sender}"></span>:
 								</div>
 								<div class="col-sm-8">
-									<input type="text" name="sender" class="form-control" required>
+									<input type="text" name="sender" value="운영팀" class="form-control" required>
 								</div>
 							</div>
 							<div class="form-group">
@@ -37,19 +37,13 @@
 									<div class="row">
 										<div class="col-md-3">
 											<select data-plugin-selectTwo class="form-control populate" name="levelSeq" id="levelType">
+												<option value="">등급</option>
 												<option th:each="item : ${levelList}" th:value="${item.seq}" th:text="${item.levelName}"></option>
 											</select>
 										</div>
 										<div class="col-md-3">
-											<select data-plugin-selectTwo class="form-control populate" name="userType" id="userType">
-												<option value="0" th:text="#{admin.common.member}">member</option>
-												<option value="1" th:text="#{admin.common.store}">store</option>
-												<option value="2" th:text="#{admin.common.distributor}">distributor</option>
-												<option value="3" th:text="#{admin.common.subHeadquarter}">sub headquarter</option>
-											</select>
-										</div>
-										<div class="col-md-3">
-											<select data-plugin-selectTwo class="form-control" name="mSeq" required>
+											<select data-plugin-selectTwo class="form-control" name="storeSeq" required>
+												<option th:each="store : ${storeList}" th:value="${store.seq}" th:text="${store.id}"></option>
 											</select>
 										</div>
 										<div class="col-md-3">
