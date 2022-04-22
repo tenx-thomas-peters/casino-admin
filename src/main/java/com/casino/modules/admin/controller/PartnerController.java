@@ -843,7 +843,7 @@ public class PartnerController {
 	@GetMapping(value = "/popup_memoadd")
     public String popupMemoAdd(Model model) {
     	try {
-    		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     		Date date = new Date();
     		String today = sdf.format(date);
     		model.addAttribute("url", "partner2/popup_memoadd");
@@ -860,21 +860,28 @@ public class PartnerController {
 		Result<Note> result = new Result<>();
     	try {
     		if(note != null) {
-    			note.setSeq(UUIDGenerator.generate());
     			QueryWrapper<Member> qw = new QueryWrapper<>();
     			qw.eq("user_type", note.getUserType());
-    			List<Member> members = memberService.list(qw);
-    			if(members.size() > 0) {
-    				List<Note> noteList = new ArrayList<>();
-    				for(int i = 0; i < members.size(); i ++) {
-    					note.setReceiver(members.get(i).getSeq());
-    					note.setReadStatus(CommonConstant.STATUS_UN_READ);
-    					note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
-    					note.setLookUp(0);
-    					note.setType(CommonConstant.TYPE_P_NOTE);
-    					noteList.add(note);
+    			List<Member> partnerList = memberService.list(qw);
+
+    			if(partnerList.size() > 0) {
+    				List<Note> noteSaveList = new ArrayList<>();
+					for(Member partner : partnerList){
+						Note noteSave = new Note();
+
+						noteSave.setSeq(UUIDGenerator.generate());
+						noteSave.setSender("운영팀");
+						noteSave.setReceiver(partner.getSeq());
+						noteSave.setReadStatus(CommonConstant.STATUS_UN_READ);
+						noteSave.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
+						noteSave.setLookUp(0);
+						noteSave.setType(CommonConstant.TYPE_P_NOTE);
+						noteSave.setContent(note.getContent());
+						noteSave.setTitle(note.getTitle());
+
+						noteSaveList.add(noteSave);
     				}
-    				if(noteService.saveBatch(noteList)) {
+    				if(noteService.saveBatch(noteSaveList)) {
     					result.success("Operate Success");
     				} else {
     					result.error500("Operate Faild");
