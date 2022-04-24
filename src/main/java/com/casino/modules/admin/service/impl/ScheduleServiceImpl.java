@@ -72,6 +72,10 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
         //get username list in betting log -------------------------------
         for (BettingLogForm temp_item : bettingLogList) {
+
+            System.out.println("saveBettingSummary temp_item-----------");
+            System.out.println(temp_item.getUser());
+
             if(!member_username_list.contains(temp_item.getUser().getUsername()))
                 member_username_list.add(temp_item.getUser().getUsername());
 
@@ -154,14 +158,26 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     float slot_distributor_rate_amount = 0;
                     float baccarat_distributor_rate_amount = 0;
 
+                    System.out.println("member===========================");
+                    System.out.println(member);
+                    System.out.println(member.getStoreSeq());
                     //-------- get store
-                    if(member.getStoreSeq() !=null && member.getStoreSeq().equals("")){
+                    if(member.getStoreSeq() !=null && !member.getStoreSeq().equals("")){
+                        System.out.println("store_member");
+
                         Member store_member = memberService.getById(member.getStoreSeq());
+                        System.out.println(store_member);
                         slot_store_rolling_amount = this.calulateRate(slotBettingAmount, store_member.getSlotRate());
                         baccarat_store_rolling_amount = this.calulateRate(baccaratBettingAmount, store_member.getBaccaratRate());
 
+
+
+                        System.out.println(store_member.getBaccaratRate());
+                        System.out.println(baccaratBettingAmount);
+                        System.out.println(baccarat_store_rolling_amount);
+
                         float store_variableAmount = slot_store_rolling_amount + baccarat_store_rolling_amount;
-                        memberService.updateMemberHoldingMoney(
+                        memberService.updatePartnerMemberHoldingMoney(
                                 store_member.getSeq(),
                                 store_member.getMoneyAmount(),
                                 0f,
@@ -178,7 +194,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     }
 
                     //-------- get distributor
-                    if(member.getDistributorSeq() !=null && member.getDistributorSeq().equals("")){
+                    if(member.getDistributorSeq() !=null && !member.getDistributorSeq().equals("")){
                         Member distributor_member = memberService.getById(member.getDistributorSeq());
                         slot_distributor_rate_amount = this.calulateRate(slotBettingAmount, distributor_member.getSlotRate());
                         baccarat_distributor_rate_amount =  this.calulateRate(baccaratBettingAmount, distributor_member.getBaccaratRate());
@@ -187,7 +203,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                         baccarat_distributor_rolling_amount = baccarat_distributor_rate_amount - baccarat_store_rolling_amount;
 
                         float distributor_variableAmount = slot_distributor_rolling_amount + baccarat_distributor_rolling_amount;
-                        memberService.updateMemberHoldingMoney(
+                        memberService.updatePartnerMemberHoldingMoney(
                                 distributor_member.getSeq(),
                                 distributor_member.getMoneyAmount(),
                                 0f,
@@ -204,13 +220,13 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     }
 
                     //-------- get headquarter
-                    if(member.getSubHeadquarterSeq() !=null && member.getSubHeadquarterSeq().equals("")){
+                    if(member.getSubHeadquarterSeq() !=null && !member.getSubHeadquarterSeq().equals("")){
                         Member headquarter_member = memberService.getById(member.getSubHeadquarterSeq());
                         slot_headquarter_rolling_amount = this.calulateRate(slotBettingAmount, headquarter_member.getSlotRate()) - slot_distributor_rate_amount;
                         baccarat_headquarter_rolling_amount = this.calulateRate(baccaratBettingAmount, headquarter_member.getBaccaratRate()) - baccarat_distributor_rate_amount;
 
                         float headquarter_variableAmount = slot_headquarter_rolling_amount + baccarat_headquarter_rolling_amount;
-                        memberService.updateMemberHoldingMoney(
+                        memberService.updatePartnerMemberHoldingMoney(
                                 headquarter_member.getSeq(),
                                 headquarter_member.getMoneyAmount(),
                                 0f,
@@ -252,11 +268,11 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
                     memberService.updateMemberHoldingMoney(
                             member.getSeq(),
-                            member.getMoneyAmount(),
+                            member.getCasinoMoney(),
                             0f,
                             variableAmount,
                             Math.abs(variableAmount),
-                            member.getMoneyAmount() + variableAmount,
+                            member.getCasinoMoney() + variableAmount,
                             0,
                             0,
                             CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
@@ -300,7 +316,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
         }
         //sort out the logic for betting summary ----------------------------------------------------------------------- />
 
-        System.out.println("bettingSummaryList");
+        System.out.println("betting summary -----------------------------------------------------------------------");
         System.out.println(bettingSummaryList);
         if (bettingSummaryService.saveBatch(bettingSummaryList)) {
             result = true;
