@@ -221,8 +221,8 @@ public class ApiController {
             if (res.getStatusCode().value() == 200) {
                 APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
                 member.setCasinoMoney(memberForms.getBalance());
-                if (memberService.updateById(member)) log.info("===  update casino money successful  ==");
-                else result.error505("===  update casino money failed");
+                if (!memberService.updateById(member))
+                    result.error505("===  update casino money failed");
             }
             else {result.error505("/user api failed");}
 

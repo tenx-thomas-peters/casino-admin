@@ -49,7 +49,7 @@ public class ScheduleController {
             long t, before_30_min;
             if (this.lastRequestTime == null) {
                 t = date.getTimeInMillis();
-                before_30_min = t - (59 * ONE_MINUTE_IN_MILLIS);
+                before_30_min = t - (5 * ONE_MINUTE_IN_MILLIS);
             } else {
                 before_30_min = this.lastRequestTime;
                 t = date.getTimeInMillis();
@@ -76,8 +76,15 @@ public class ScheduleController {
             if (result.getStatusCode().value() == 200) {
                 JSONObject json = JSON.parseObject(result.getBody().toString());
 
-                if (json.size() > 0) {
-                    List<BettingLogForm> bettingLogList = json.getJSONArray("data").toJavaList(BettingLogForm.class);
+                System.out.println("getTransactionListSimple json-----------");
+                System.out.println(json);
+
+                List<BettingLogForm> bettingLogList = json.getJSONArray("data").toJavaList(BettingLogForm.class);
+
+                System.out.println("getTransactionListSimple bettingLogList-----------");
+                System.out.println(bettingLogList);
+
+                if (bettingLogList.size() > 0) {
 
                     while (json.getString("next_page_url") != null) {
                         pageNo++;
@@ -102,10 +109,10 @@ public class ScheduleController {
                     }
                 }
             } else {
-                log.error("=======================  betting summary save failed  =======================");
+                log.error("======================= no  betting summary   =======================");
             }
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error("getTransactionListSimple:::::::" + e.toString());
         }
     }
 }
