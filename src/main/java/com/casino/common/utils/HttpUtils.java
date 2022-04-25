@@ -34,12 +34,21 @@ public class HttpUtils {
             System.out.println(response);
             return response;
         } catch (Exception e) {
+            System.out.println("HttpUtils==getUserRefreshToken==========Exception :");
             e.printStackTrace();
             return new ResponseEntity<>("Error!, Please try again", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public static ResponseEntity<String> createUser(String url, String username, String nickname, String apiKey) {
+        System.out.println("HttpUtils==createUser==");
+        System.out.println("*************** param info ***************");
+        System.out.println("*** url : "+url);
+        System.out.println("*** username : "+username);
+        System.out.println("*** nickname : "+nickname);
+        System.out.println("*** apiKey : "+apiKey);
+        System.out.println("******************************************");
+
         try {
             HttpHeaders headers = new HttpHeaders();
 
@@ -61,9 +70,11 @@ public class HttpUtils {
             HttpEntity<Member> request = new HttpEntity<>(member, headers);
 
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+            System.out.println("HttpUtils==createUser========== api success");
             System.out.println(response);
             return response;
         } catch (Exception e) {
+            System.out.println("HttpUtils==createUser==========Exception :");
             e.printStackTrace();
             return new ResponseEntity<>("Error!, Please try again", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -95,12 +106,21 @@ public class HttpUtils {
             System.out.println(response);
             return response;
         } catch (Exception e) {
+            System.out.println("HttpUtils==getUserInfo==========Exception :");
             e.printStackTrace();
             return new ResponseEntity<>("Error!, Please try again", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public static ResponseEntity<String> userAddBalance(String url, String username, Float amount, String apiKey) {
+        System.out.println("HttpUtils==userAddBalance==");
+        System.out.println("*************** param info ***************");
+        System.out.println("*** url : "+url);
+        System.out.println("*** username : "+username);
+        System.out.println("*** amount : "+amount);
+        System.out.println("*** apiKey : "+apiKey);
+        System.out.println("******************************************");
+
         try {
             HttpHeaders headers = new HttpHeaders();
 
@@ -122,15 +142,25 @@ public class HttpUtils {
             HttpEntity<Member> request = new HttpEntity<>(member, headers);
 
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+            System.out.println("HttpUtils==userSubBalance========== api success");
             System.out.println(response);
             return response;
         } catch (Exception e) {
+            System.out.println("HttpUtils==userAddBalance==========Exception :");
             e.printStackTrace();
             return new ResponseEntity<>("Error!, Please try again", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public static ResponseEntity<String> userSubBalance(String url, String username, Float amount, String apiKey) {
+        System.out.println("HttpUtils==userSubBalance==");
+        System.out.println("*************** param info ***************");
+        System.out.println("*** url : "+url);
+        System.out.println("*** username : "+username);
+        System.out.println("*** amount : "+amount);
+        System.out.println("*** apiKey : "+apiKey);
+        System.out.println("******************************************");
+
         try {
             HttpHeaders headers = new HttpHeaders();
 
@@ -152,15 +182,23 @@ public class HttpUtils {
             HttpEntity<Member> request = new HttpEntity<>(member, headers);
 
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+            System.out.println("HttpUtils==userSubBalance========== api success");
             System.out.println(response);
             return response;
         } catch (Exception e) {
+            System.out.println("HttpUtils==userSubBalance==========Exception :");
             e.printStackTrace();
             return new ResponseEntity<>("Error!, Please try again", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public static ResponseEntity<String> getTransactionListSimple(String url, String apiKey) {
+        System.out.println("HttpUtils==getTransactionListSimple==");
+        System.out.println("*************** param info ***************");
+        System.out.println("*** url : "+url);
+        System.out.println("*** apiKey : "+apiKey);
+        System.out.println("******************************************");
+
         try {
             HttpHeaders headers = new HttpHeaders();
 
@@ -179,16 +217,14 @@ public class HttpUtils {
 
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<Member> request = new HttpEntity<>(headers);
-
-            System.out.println(url);
-
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
-            System.out.println(response);
+
+            System.out.println("HttpUtils==getTransactionListSimple========== api success");
             return response;
         } catch (Exception e) {
+            System.out.println("HttpUtils==getTransactionListSimple==========Exception :");
             e.printStackTrace();
             return new ResponseEntity<>("Error!, Please try again", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
