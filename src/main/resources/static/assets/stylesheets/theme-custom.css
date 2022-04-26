@@ -441,6 +441,10 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     font-weight: bold;
 }
 
+.panel-heading .panel-title #totalMsg .member-num{
+    color: red;
+}
+
 .panel-body{
     padding: 0px;
 }
@@ -509,3 +513,4 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 {
     width: 160px;
 }
+

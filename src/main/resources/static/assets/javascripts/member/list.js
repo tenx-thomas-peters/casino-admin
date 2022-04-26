@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('#totalMsg').html('( ' + totalMsg + ' )');
+	$('#totalMsg').html('( 총 <span class="member-num">' + totalMsg + '</span> 명 )');
 });
 (function( $ ) {
 	'use strict';
