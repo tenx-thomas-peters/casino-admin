@@ -24,10 +24,7 @@
     white-space: nowrap;
 }
 
-#memberDetailModal .form-group {
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-}
+
 
 #deputyHeadquarterDetailModal .form-group {
     margin-bottom: 0px;
@@ -46,9 +43,6 @@
     padding-bottom: 0px;
 }
 
-#memberDetailModal .panel-heading {
-    padding: 10px;
-}
 
 #memo-list td a {
     cursor: pointer;

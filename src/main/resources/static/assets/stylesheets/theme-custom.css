@@ -514,7 +514,8 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     width: 160px;
 }
 
-.detail-modal .panel-body{
+.detail-modal .panel-body,
+.detail-table-modal .panel-body{
     padding: 0 20px;
 }
 
@@ -559,4 +560,20 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     color: white;
     padding: 3px 12px;
     height: 25px;
+}
+
+.detail-modal .form-group {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+
+.detail-modal .panel-heading,
+.detail-table-modal .panel-heading
+{
+    padding: 10px;
+}
+.detail-modal .custom-textarea{
+    height: 150px;
+    margin-bottom: 20px;
 }
