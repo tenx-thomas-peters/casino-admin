@@ -42,14 +42,16 @@ public class ScheduleController {
 
     @Scheduled(cron = "${casino.schedule.delay}")
     public void getTransactionListSimple() {
-        try {
 
+        System.out.println("ScheduleController==getTransactionListSimple==");
+
+        try {
             long ONE_MINUTE_IN_MILLIS = 60000;
             Calendar date = Calendar.getInstance();
             long t, before_30_min;
             if (this.lastRequestTime == null) {
                 t = date.getTimeInMillis();
-                before_30_min = t - (59 * ONE_MINUTE_IN_MILLIS);
+                before_30_min = t - (5 * ONE_MINUTE_IN_MILLIS);
             } else {
                 before_30_min = this.lastRequestTime;
                 t = date.getTimeInMillis();
@@ -75,11 +77,13 @@ public class ScheduleController {
 
             if (result.getStatusCode().value() == 200) {
                 JSONObject json = JSON.parseObject(result.getBody().toString());
-
-                if (json.size() > 0) {
-                    List<BettingLogForm> bettingLogList = json.getJSONArray("data").toJavaList(BettingLogForm.class);
+                List<BettingLogForm> bettingLogList = json.getJSONArray("data").toJavaList(BettingLogForm.class);
+                if (bettingLogList.size() > 0) {
+                    System.out.println("ScheduleController==getTransactionListSimple========== API betting log success");
 
                     while (json.getString("next_page_url") != null) {
+                        System.out.println("ScheduleController==getTransactionListSimple========== API betting log PageNumber:" + pageNo);
+
                         pageNo++;
 
                         String transaction_list_simple_url_replace = gameServerUrl + "/transaction-list-simple" +
@@ -95,17 +99,18 @@ public class ScheduleController {
                     }
 
                     if (scheduleService.saveBettingSummary(bettingLogList)) {
-                        log.info("=======================  betting summary save success  =======================");
                         this.lastRequestTime = t;
-                    } else {
-                        log.error("=======================  betting summary save failed  =======================");
                     }
                 }
+                else{
+                    System.out.println("ScheduleController==getTransactionListSimple========== betting log no data");
+                }
             } else {
-                log.error("=======================  betting summary save failed  =======================");
+                System.out.println("ScheduleController==getTransactionListSimple========== response failed");
             }
         } catch (Exception e) {
-            log.error(e.toString());
+            System.out.println("ScheduleController==getTransactionListSimple==========Exception : ");
+            e.printStackTrace();
         }
     }
 }

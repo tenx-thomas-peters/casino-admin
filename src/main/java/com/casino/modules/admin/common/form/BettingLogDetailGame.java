@@ -3,7 +3,7 @@ package com.casino.modules.admin.common.form;
 public class BettingLogDetailGame {
     private String id;
     private String type;
-    private Integer round;
+    private String round;
     private String title;
     private String vendor;
 
@@ -23,11 +23,11 @@ public class BettingLogDetailGame {
         this.type = type;
     }
 
-    public Integer getRound() {
+    public String getRound() {
         return round;
     }
 
-    public void setRound(Integer round) {
+    public void setRound(String round) {
         this.round = round;
     }
 

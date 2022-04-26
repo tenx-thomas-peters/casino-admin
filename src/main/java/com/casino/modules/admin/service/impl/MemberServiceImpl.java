@@ -197,6 +197,79 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 				moneyHistory.setChargeCount(chargeCount);
 			}
 
+			member.setCasinoMoney(finalAmount);
+
+			if (moneyHistoryService.save(moneyHistory) && updateById(member)) {
+				ret = true;
+			}
+		} else {
+			MileageHistory mileageHistory = new MileageHistory();
+			mileageHistory.setSeq(seq);
+			mileageHistory.setMemberSeq(memberSeq);
+			mileageHistory.setProcessTime(new Date());
+			mileageHistory.setPrevAmount(prevMileageAmount);
+			mileageHistory.setVariableAmount(variableAmount);
+			mileageHistory.setFinalAmount(finalAmount);
+			mileageHistory.setReasonType(reasonType);
+			mileageHistory.setReason(reason);
+			mileageHistory.setOperationType(transactionClassification);
+
+			member.setMileageAmount(finalAmount);
+
+			if (mileageHistoryService.save(mileageHistory) && updateById(member)) {
+				ret = true;
+			}
+		}
+
+		return ret;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public boolean updatePartnerMemberHoldingMoney(
+			String memberSeq,
+			Float prevMoneyAmount,
+			Float prevMileageAmount,
+			Float variableAmount,
+			Float actualAmount,
+			Float finalAmount,
+			Integer classification,
+			Integer transactionClassification,
+			Integer status,
+			Integer reasonType,
+			String reason,
+			Integer chargeCount
+	) {
+		String seq = UUIDGenerator.generate();
+		Member member = getById(memberSeq);
+		boolean ret = false;
+
+		if (classification.equals(CommonConstant.CLASSIFICATION_MONEY)) {
+			MoneyHistory moneyHistory = new MoneyHistory();
+			moneyHistory.setSeq(seq);
+			moneyHistory.setReceiver(memberSeq);
+			moneyHistory.setApplicationTime(new Date());
+			moneyHistory.setProcessTime(new Date());
+			moneyHistory.setPrevAmount(prevMoneyAmount);
+			moneyHistory.setVariableAmount(variableAmount);
+			moneyHistory.setActualAmount(actualAmount);
+			moneyHistory.setFinalAmount(finalAmount);
+
+			// classification = ku bun
+			// 0: money, 1: point
+			moneyHistory.setMoneyOrPoint(classification);
+
+			//transactionClassification = ke rea ku bun
+			// 0: increase, 1: decrease
+			moneyHistory.setOperationType(transactionClassification);
+			moneyHistory.setStatus(status);
+			moneyHistory.setReasonType(reasonType);
+			moneyHistory.setReason(reason);
+
+			if(!chargeCount.equals(0)){
+				moneyHistory.setChargeCount(chargeCount);
+			}
+
 			member.setMoneyAmount(finalAmount);
 
 			if (moneyHistoryService.save(moneyHistory) && updateById(member)) {
