@@ -133,10 +133,13 @@ public class MemberController {
             model.addAttribute("siteList", siteList);
             model.addAttribute("partnerList", partnerList);
             String[] params = {String.valueOf(pageList.getTotal())};
+
+            // Thomas 2022.04.25 -- remove
+//            LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+//            model.addAttribute("totalMsg", messageSource.getMessage("admin.member.peopleInTotal", params, localeResolver.resolveLocale(request)));
             
-            LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-            
-            model.addAttribute("totalMsg", messageSource.getMessage("admin.member.peopleInTotal", params, localeResolver.resolveLocale(request)));
+            model.addAttribute("totalMsg", pageList.getTotal());
+
             model.addAttribute("url", "member/list");
         } catch (Exception e) {
             log.error("url: /member/list --- method: getList --- message: " + e.toString());

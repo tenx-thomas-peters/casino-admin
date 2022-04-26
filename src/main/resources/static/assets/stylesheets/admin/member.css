@@ -24,10 +24,7 @@
     white-space: nowrap;
 }
 
-#memberDetailModal .form-group {
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-}
+
 
 #deputyHeadquarterDetailModal .form-group {
     margin-bottom: 0px;
@@ -46,20 +43,12 @@
     padding-bottom: 0px;
 }
 
-#memberDetailModal .panel-heading {
-    padding: 10px;
-}
 
 #memo-list td a {
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
     padding: 5px 10px;
-}
-
-#modifyHoldingMoneyModal .form-group {
-    margin-bottom: 5px;
-    padding-bottom: 5px;
 }
 
 #member-list .member-id {

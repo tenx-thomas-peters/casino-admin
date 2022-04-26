@@ -5,7 +5,7 @@
 <head th:replace="template :: head (#{admin.common.popup.title})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
 <body>
-    <section class="body">
+    <section class="body detail-table-modal">
         <div class="row">
             <div role="main" class="col-md-12">
                 <section class="panel">
@@ -37,7 +37,7 @@
 		                        </select>
                             </div>
 							<div class="form-group">
-								<button class="btn btn-primary historySearchBtn">
+								<button class="btn btn-default historySearchBtn">
 									<span th:text="#{admin.common.search}"></span>
 									<i class="fa fa-search"></i>
 								</button>
@@ -56,7 +56,7 @@
 									<th th:text="#{admin.money.log.variableAmount}"></th>
 									<th th:text="#{admin.money.log.finalAmount}"></th>
 									<th th:text="#{admin.common.reason}"></th>
-									<th th:text="#{admin.common.note}"></th>
+									<th th:text="#{admin.common.othernote}"></th>
 								</tr>
 								</thead>
 								<tbody class="tableBody">
@@ -79,9 +79,6 @@
 							</table>
 						</div>
                     </div>
-                    <footer class="panel-footer">
-                        <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
-                    </footer>
                 </section>
             </div>
         </div>

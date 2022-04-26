@@ -195,10 +195,8 @@
                                             [[${#numbers.formatDecimal(entity.deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
                                         </a>
                                     </p>
-                                    <p>
-                                        <a class="member-withdrawal text-danger">
-                                            [[${#numbers.formatDecimal(entity.withdrawal, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
-                                        </a>
+                                    <p class="member-withdrawal text-danger">
+                                        [[${#numbers.formatDecimal(entity.withdrawal, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
                                     </p>
                                 </td>
                                 <td>
@@ -239,13 +237,15 @@
                                         </select>
                                     </p>
                                 </td>
-                                <td th:text="${entity.distributorID}"></td>
+<!--                                <td th:text="${entity.distributorID}"></td>-->
+                                <td></td>
                                 <td>
                                     <span th:text="${entity.storeID}"></span> /
                                     <span th:text="${entity.distributorID}"></span> /
                                     <span th:text="${entity.subHeadquarterID}"></span>
                                 </td>
-                                <td th:text="${entity.recommendable == 0} ? #{admin.member.on} : #{admin.member.off}"></td>
+<!--                                <td th:text="${entity.recommendable == 0} ? #{admin.member.on} : #{admin.member.off}"></td>-->
+                                <td></td>
                                 <td>
                                     <button type="button" class="btn btn-default btn-sm member-update" th:text="#{admin.common.apply}"></button>
                                 </td>

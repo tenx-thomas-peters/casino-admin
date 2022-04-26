@@ -5,7 +5,7 @@
 <head th:replace="template :: head (#{admin.common.popup.title})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
 <body>
-<section class="body member-note">
+<section class="body member-note detail-modal">
     <div class="row" id="memberNoteModal">
         <div role="main" class="col-md-12">
             <section class="panel">
@@ -24,7 +24,7 @@
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.common.sender}]]
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 form-container">
                                 <input type="text" class="form-control" name="sender1" value="운영팀" readonly />
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.common.recipient}]]
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 form-container">
                                 <input type="text" class="form-control" name="recipient" th:value="${member.id}" readonly />
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.common.title}]]
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 form-container">
                                 <input type="text" class="form-control" name="title" maxlength="128" required />
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                     <input type="checkbox" id="sms" name="sms" />
                                     <label for="sms">[[#{admin.member.onlySms}]]</label>
                                 </div>
-                                <textarea class="form-control" name="content" data-plugin-textarea-autosize required></textarea>
+                                <textarea class="form-control custom-textarea" name="content" data-plugin-textarea-autosize required></textarea>
                             </div>
                         </div>
                     </form>
