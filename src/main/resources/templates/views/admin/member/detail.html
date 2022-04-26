@@ -5,7 +5,7 @@
 <head th:replace="template :: head (#{admin.common.popup.title})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
 <body>
-    <section class="body member-detail">
+    <section class="body member-detail detail-modal">
         <div class="row" id="memberDetailModal">
             <div role="main" class="col-md-12">
                 <section class="panel">
@@ -25,14 +25,14 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.id}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label member-id" th:text="*{id}"></p>
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.password}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <input type="text" class="form-control" th:field="*{password}" required />
                                 </div>
                             </div>
@@ -41,19 +41,19 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.nickname}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <input type="text" class="form-control" th:field="*{nickname}" style="display: inline-block; width: auto;" />
                                     <div class="input-group color" th:data-color="*{color}" data-color-format="rgb" data-plugin-colorpicker style="display: inline-block;">
                                         <span class="input-group-addon"><i></i></span>
                                         <input type="text" class="form-control" th:value="*{color}" name="color" style="display: none;">
                                     </div>
-                                    <a class="btn btn-default erase-color" th:text="#{admin.member.eraseColor}"></a>
+                                    <a class="erase-color" th:text="#{admin.member.eraseColor}" style="cursor: pointer"></a>
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.name}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{name}"></p>
                                 </div>
                             </div>
@@ -62,24 +62,26 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.reservedAmount}]]&nbsp;/&nbsp;[[#{admin.common.mileage}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
-                                    <p class="control-label member-money" style="display: inline-block; width: auto; cursor: pointer;">
-                                        [[*{#numbers.formatDecimal(moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
-                                        <span class="text-danger">[</span>
-                                        <span class="text-danger"
-                                              th:text="*{#numbers.formatDecimal(deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
-                                        <span class="text-danger">]</span>
-                                    </p>
-                                    &nbsp;/&nbsp;
-                                    <p class="control-label member-money" style="display: inline-block; width: auto; cursor: pointer;"
-                                       th:text="*{#numbers.formatDecimal(mileageAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
-                                    <a class="btn btn-default">[[#{admin.member.moneyRenewal}]]</a>
+                                <div class="col-md-4 col-sm-6 form-container">
+                                    <div>
+                                        <p class="control-label member-money" style="display: inline-block; width: auto; cursor: pointer;">
+                                            [[*{#numbers.formatDecimal(moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                            <span class="text-danger">[</span>
+                                            <span class="text-danger"
+                                                  th:text="*{#numbers.formatDecimal(casinoMoney, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+                                            <span class="text-danger">]</span>
+                                        </p>
+                                        &nbsp;/&nbsp;
+                                        <p class="control-label member-money" style="display: inline-block; width: auto; cursor: pointer;"
+                                           th:text="*{#numbers.formatDecimal(mileageAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
+                                        <a class="btn  custom-btn">[[#{admin.member.moneyRenewal}]]</a>
+                                    </div>
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.betAmount}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label">
                                         [[*{#numbers.formatDecimal((slotBettingAmount+baccaratBettingAmount), 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]&nbsp;[[#{admin.common.won}]]
                                     </p>
@@ -90,14 +92,14 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.nameOfBank}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <input type="text" class="form-control" th:field="*{bankName}" />
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.accountHolder}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <input type="text" class="form-control" th:field="*{accountHolder}" />
                                 </div>
                             </div>
@@ -106,14 +108,14 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.accountNumber}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <input type="text" class="form-control" th:field="*{bankNumber}" />
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.exchangePassword}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <input type="text" class="form-control" th:field="*{exchangePassword}" />
                                 </div>
                             </div>
@@ -122,14 +124,14 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.memberSince}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{#dates.format(registerDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.recentDate}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{#dates.format(recentDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
                                 </div>
                             </div>
@@ -138,14 +140,14 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.signUpIp}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{signupIP}"></p>
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.loginIp}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{connectionIP}"></p>
                                 </div>
                             </div>
@@ -154,23 +156,28 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.signUpDomain}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{siteDomain}"></p>
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.store}]]/[[#{admin.common.distributor}]]/[[#{admin.common.subHeadquarter}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6 partner-info">
-                                    <select class="form-control" name="selSeq" style="display: inline-block; width: auto;">
-                                        <option th:each="partner : ${partnerList}"
-                                                th:value="${partner.seq}"
-                                                th:selected="*{storeSeq != null} ? ${partner.seq} == *{storeSeq} : (*{distributorSeq != null} ? ${partner.seq} == *{distributorSeq} : (*{subHeadquarterSeq != null} ? ${partner.seq} == *{subHeadquarterSeq} : false))"
-                                                th:text="${partner.id}"></option>
-                                    </select>
-                                    <p class="control-label storeSeq" th:text="*{storeID}" style="display: inline-block;"></p>&nbsp;/&nbsp;
-                                    <p class="control-label distributorSeq" th:text="*{distributorID}" style="display: inline-block;"></p>&nbsp;/&nbsp;
-                                    <p class="control-label subHeadquarterSeq" th:text="*{subHeadquarterID}" style="display: inline-block;"></p>
+                                <div class="col-md-4 col-sm-6 partner-info form-container">
+                                    <div>
+                                        <select class="form-control" name="selSeq" style="display: inline-block; width: auto;">
+                                            <option th:each="partner : ${partnerList}"
+                                                    th:value="${partner.seq}"
+                                                    th:selected="*{storeSeq != null} ? ${partner.seq} == *{storeSeq} : (*{distributorSeq != null} ? ${partner.seq} == *{distributorSeq} : (*{subHeadquarterSeq != null} ? ${partner.seq} == *{subHeadquarterSeq} : false))"
+                                                    th:text="${partner.id}"></option>
+                                        </select>
+
+                                        <div style="display: inline-block;">
+                                            <span class="control-label storeSeq" th:text="*{storeID}" style="display: inline-block;"></span>&nbsp;/&nbsp;
+                                            <span class="control-label distributorSeq" th:text="*{distributorID}" style="display: inline-block;"></span>&nbsp;/&nbsp;
+                                            <span class="control-label subHeadquarterSeq" th:text="*{subHeadquarterID}" style="display: inline-block;"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -178,7 +185,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.numberOfDeposit}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{depositCount}" style="display: inline-block;"></p>&nbsp;
                                     [[#{admin.common.times}]]
                                 </div>
@@ -186,7 +193,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.numberOfWithdrawal}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{withdrawalCount}" style="display: inline-block;"></p>&nbsp;
                                     [[#{admin.common.times}]]
                                 </div>
@@ -196,7 +203,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.totalDeposit}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" style="display: inline-block;">
                                         [[*{#numbers.formatDecimal(deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
                                     </p>&nbsp;
@@ -206,7 +213,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.totalWithdrawal}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" style="display: inline-block;">
                                         [[*{#numbers.formatDecimal(withdrawal, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
                                     </p>&nbsp;
@@ -218,7 +225,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.membershipLevel}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <select class="form-control" th:field="*{levelSeq}">
                                         <option th:each="level : ${levelList}"
                                                 th:value="${level.seq}"
@@ -230,7 +237,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.status}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <select class="form-control" th:field="*{status}">
                                         <option th:each="status : ${statusList}"
                                                 th:value="${status.dictValue}"
@@ -244,14 +251,14 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.email}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{emailAddress}"></p>
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.phoneNumber}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <input type="text" class="form-control" th:field="*{phoneNumber}" />
                                 </div>
                             </div>
@@ -260,7 +267,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.memberRevenue}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label">
                                         [[*{#numbers.formatDecimal(memberRevenue, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]&nbsp;[[#{admin.common.won}]]
                                     </p>
@@ -269,7 +276,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.recommender}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <p class="control-label" th:text="*{recommender}"></p>
                                 </div>
                             </div>
@@ -278,14 +285,14 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.memberWhoSignedUp}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
-                                    <a class="btn btn-default recommended-person" th:text="#{admin.common.details}"></a>
+                                <div class="col-md-4 col-sm-6 form-container">
+                                    <a class="btn  recommended-person custom-btn" th:text="#{admin.common.details}"></a>
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.logout}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <a class="text-danger" th:text="#{admin.common.logout}"></a>
                                 </div>
                             </div>
@@ -294,14 +301,14 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.slotRatePoints}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <input type="number" class="form-control" th:field="*{slotRate}" style="display: inline-block; width: auto;" required />%
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.baccaratRatePoints}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <input type="number" class="form-control" th:field="*{baccaratRate}" style="display: inline-block; width: auto;" required />%
                                 </div>
                             </div>
@@ -310,7 +317,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.possible}]]&nbsp;/&nbsp;[[#{admin.common.notPossible}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <div class="radio-custom radio-primary">
                                         <input type="radio" id="bettingPossibleOn" name="bettingPossible"
                                                value="0" th:checked="*{bettingPossible == 0}" />
@@ -326,7 +333,7 @@
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.recommendable}]]
                                 </label>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-md-4 col-sm-6 form-container">
                                     <div class="radio-custom radio-primary">
                                         <input type="radio" id="recommendableOn" name="recommendable"
                                                value="0" th:checked="*{recommendable == 0}" />
@@ -340,11 +347,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-2 col-sm-6 control-label">
+                                <label class="col-md-2 col-sm-3 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.common.memo}]]
                                 </label>
-                                <div class="col-md-10 col-sm-6">
+                                <div class="col-md-10 col-sm-9 form-container">
                                     <div class="table-scrollable">
                                         <table class="table table-bordered table-striped" id="memo-list">
                                             <thead>
@@ -379,19 +386,21 @@
                         </form>
                     </div>
                     <footer class="panel-footer">
-                        <button class="btn btn-default money-change">
-                            [[#{admin.common.charge}]]/[[#{admin.common.exchange}]]
-                        </button>
-                        <button class="btn btn-default money-history">[[#{admin.money.log.title}]]</button>
-                        <button class="btn btn-default mileage-history">[[#{admin.mileage.log.title}]]</button>
-                        <button class="btn btn-default member-deposit">[[#{admin.deposit.log.title}]]</button>
-                        <button class="btn btn-default member-withdrawal">[[#{admin.common.withdrawalHistory}]]</button>
-                        <button class="btn btn-default bet-history">[[#{admin.common.bettingSummary}]]</button>
-                        <button class="btn btn-default access-log">[[#{admin.common.accessHistory}]]</button>
-                        <button class="btn btn-default member-inbox">[[#{admin.common.inbox}]]</button>
-                        <button class="btn btn-default write-note">[[#{admin.member.writeNote}]]</button>
-                        <button class="btn btn-default update-member">[[#{admin.common.edit}]]</button>
-                        <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                        <div class="panel-footer-btn-group">
+                            <button class="btn btn-default money-change">
+                                [[#{admin.common.charge}]]/[[#{admin.common.exchange}]]
+                            </button>
+                            <button class="btn btn-default money-history">[[#{admin.money.log.title}]]</button>
+                            <button class="btn btn-default mileage-history">[[#{admin.mileage.log.title}]]</button>
+                            <button class="btn btn-default member-deposit">[[#{admin.deposit.log.title}]]</button>
+                            <button class="btn btn-default member-withdrawal">[[#{admin.common.withdrawalHistory}]]</button>
+                            <button class="btn btn-default bet-history">[[#{admin.common.bettingSummary}]]</button>
+                            <button class="btn btn-default access-log">[[#{admin.common.accessHistory}]]</button>
+                            <button class="btn btn-default member-inbox">[[#{admin.common.inbox}]]</button>
+                            <button class="btn btn-default write-note">[[#{admin.member.writeNote}]]</button>
+                            <button class="btn btn-default update-member">[[#{admin.common.edit}]]</button>
+                            <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                        </div>
                     </footer>
                 </section>
             </div>

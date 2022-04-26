@@ -133,7 +133,6 @@ public class MemberController {
             model.addAttribute("siteList", siteList);
             model.addAttribute("partnerList", partnerList);
             String[] params = {String.valueOf(pageList.getTotal())};
-            System.out.println(pageList.getTotal());
 
             // Thomas 2022.04.25 -- remove
 //            LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
