@@ -1,312 +1,106 @@
 {
-  "current_page": 1,
-  "data": [
-    {
-      "id": 625879665,
-      "type": "bet",
-      "amount": -2000,
-      "before": 100000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140177203,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
+  "current_page":1,
+  "data":[
+    {"id":734067129,
+      "type":"bet",
+      "amount":-2000,
+      "before":143700,
+      "target_id":621603,
+      "target_type":"App\\Models\\User",
+      "status":"success",
+      "details":{
+        "game":{
+          "id":"onokyd4wn7uekbjx",
+          "type":"baccarat",
+          "round":"16e947344caa25ac16bbb42b-qbjwylk6zyteffm7",
+          "title":"Korean Speed Baccarat A","vendor":"evolution"
         }
       },
-      "processed_at": "2022-03-31T02:12:44.000000Z",
-      "referer_id": null,
-      "created_at": "2022-03-31T02:12:44.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
+      "processed_at":"2022-04-25T23:24:03.000000Z",
+      "referer_id":null,
+      "created_at":"2022-04-25T23:24:03.000000Z",
+      "user":{
+        "id":621603,
+        "username":"gtest"
       }
     },
-    {
-      "id": 625882250,
-      "type": "win",
-      "amount": 0,
-      "before": 98000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140177203,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
+    {"id":734067364,
+      "type":"win",
+      "amount":2000,
+      "before":141700,
+      "target_id":621603,
+      "target_type":"App\\Models\\User",
+      "status":"success",
+      "details":{
+        "game":{
+          "id":"onokyd4wn7uekbjx",
+          "type":"baccarat",
+          "round":"16e947344caa25ac16bbb42b-qbjwylk6zyteffm7",
+          "title":"Korean Speed Baccarat A",
+          "vendor":"evolution"
         }
       },
-      "processed_at": "2022-03-31T02:13:42.000000Z",
-      "referer_id": 625879665,
-      "created_at": "2022-03-31T02:13:42.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
+      "processed_at":"2022-04-25T23:24:14.000000Z",
+      "referer_id":734067129,
+      "created_at":"2022-04-25T23:24:14.000000Z",
+      "user":{
+        "id":621603,
+        "username":"gtest"
       }
     },
-    {
-      "id": 625883020,
-      "type": "bet",
-      "amount": -5000,
-      "before": 98000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140179419,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
+    {"id":734067760,
+      "type":"bet",
+      "amount":-1000,
+      "before":143700,
+      "target_id":621603,
+      "target_type":"App\\Models\\User",
+      "status":"success",
+      "details":
+      {
+        "game":{
+          "id":"onokyd4wn7uekbjx",
+          "type":"baccarat",
+          "round":"16e9473b87ce5c5cb1d61fec-qbjwylk6zyteffm7",
+          "title":"Korean Speed Baccarat A",
+          "vendor":"evolution"
         }
       },
-      "processed_at": "2022-03-31T02:14:00.000000Z",
-      "referer_id": null,
-      "created_at": "2022-03-31T02:14:00.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
-      }
+      "processed_at":"2022-04-25T23:24:34.000000Z",
+      "referer_id":null,
+      "created_at":"2022-04-25T23:24:34.000000Z",
+      "user":{
+        "id":621603,
+        "username":"gtest"}
     },
-    {
-      "id": 625885417,
-      "type": "win",
-      "amount": 0,
-      "before": 93000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140179419,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
+    {"id":734068048,
+      "type":"win",
+      "amount":0,
+      "before":142700,
+      "target_id":621603,
+      "target_type":"App\\Models\\User",
+      "status":"success",
+      "details":{
+        "game":{
+          "id":"onokyd4wn7uekbjx",
+          "type":"baccarat",
+          "round":"16e9473b87ce5c5cb1d61fec-qbjwylk6zyteffm7",
+          "title":"Korean Speed Baccarat A",
+          "vendor":"evolution"
         }
       },
-      "processed_at": "2022-03-31T02:14:49.000000Z",
-      "referer_id": 625883020,
-      "created_at": "2022-03-31T02:14:49.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
-      }
-    },
-    {
-      "id": 625885849,
-      "type": "bet",
-      "amount": -7000,
-      "before": 93000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140181288,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
-        }
-      },
-      "processed_at": "2022-03-31T02:14:58.000000Z",
-      "referer_id": null,
-      "created_at": "2022-03-31T02:14:58.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
-      }
-    },
-    {
-      "id": 625888510,
-      "type": "win",
-      "amount": 14000,
-      "before": 86000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140181288,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
-        }
-      },
-      "processed_at": "2022-03-31T02:16:03.000000Z",
-      "referer_id": 625885849,
-      "created_at": "2022-03-31T02:16:03.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
-      }
-    },
-    {
-      "id": 625889528,
-      "type": "bet",
-      "amount": -17000,
-      "before": 100000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140183912,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
-        }
-      },
-      "processed_at": "2022-03-31T02:16:26.000000Z",
-      "referer_id": null,
-      "created_at": "2022-03-31T02:16:26.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
-      }
-    },
-    {
-      "id": 625891438,
-      "type": "win",
-      "amount": 0,
-      "before": 83000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140183912,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
-        }
-      },
-      "processed_at": "2022-03-31T02:17:15.000000Z",
-      "referer_id": 625889528,
-      "created_at": "2022-03-31T02:17:15.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
-      }
-    },
-    {
-      "id": 625892193,
-      "type": "bet",
-      "amount": -35000,
-      "before": 83000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140186016,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
-        }
-      },
-      "processed_at": "2022-03-31T02:17:33.000000Z",
-      "referer_id": null,
-      "created_at": "2022-03-31T02:17:33.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
-      }
-    },
-    {
-      "id": 625894367,
-      "type": "win",
-      "amount": 0,
-      "before": 48000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140186016,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
-        }
-      },
-      "processed_at": "2022-03-31T02:18:25.000000Z",
-      "referer_id": 625892193,
-      "created_at": "2022-03-31T02:18:25.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
-      }
-    },
-    {
-      "id": 625894889,
-      "type": "bet",
-      "amount": -30000,
-      "before": 48000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140187968,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
-        }
-      },
-      "processed_at": "2022-03-31T02:18:37.000000Z",
-      "referer_id": null,
-      "created_at": "2022-03-31T02:18:37.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
-      }
-    },
-    {
-      "id": 625897432,
-      "type": "win",
-      "amount": 60000,
-      "before": 18000,
-      "target_id": 593672,
-      "target_type": "App\\Models\\User",
-      "status": "success",
-      "details": {
-        "game": {
-          "id": "701",
-          "type": "live",
-          "round": 13140187968,
-          "title": "Bulgaria Roulette",
-          "vendor": "vivo"
-        }
-      },
-      "processed_at": "2022-03-31T02:19:35.000000Z",
-      "referer_id": 625894889,
-      "created_at": "2022-03-31T02:19:35.000000Z",
-      "user": {
-        "id": 593672,
-        "username": "member-001"
+      "processed_at":"2022-04-25T23:24:45.000000Z",
+      "referer_id":734067760,
+      "created_at":"2022-04-25T23:24:45.000000Z",
+      "user":
+      {"id":621603,
+        "username":"gtest"
       }
     }
   ],
-  "first_page_url": "http://api.honorlink.org/api/transaction-list-simple?page=1",
-  "from": 1,
-  "next_page_url": null,
-  "path": "http://api.honorlink.org/api/transaction-list-simple",
-  "per_page": "100",
-  "prev_page_url": null,
-  "to": 12
+  "first_page_url":"http:\/\/api.honorlink.org\/api\/transaction-list-simple?page=1",
+  "from":1,
+  "next_page_url":null,
+  "path":"http:\/\/api.honorlink.org\/api\/transaction-list-simple",
+  "per_page":"100",
+  "prev_page_url":null,"to":4
 }

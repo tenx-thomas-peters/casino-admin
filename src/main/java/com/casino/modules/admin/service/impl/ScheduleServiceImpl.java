@@ -131,6 +131,8 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     if(member.getStoreSeq() !=null && !member.getStoreSeq().equals("")){
 
                         Member store_member = memberService.getById(member.getStoreSeq());
+                        System.out.println("IScheduleService==saveBettingSummary========store_member:" + store_member);
+
                         slot_store_rolling_amount = this.calulateRate(totalBettingAmount.slotBettingAmount, store_member.getSlotRate());
                         baccarat_store_rolling_amount = this.calulateRate(totalBettingAmount.baccaratBettingAmount, store_member.getBaccaratRate());
 
@@ -167,6 +169,8 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     //-------- get distributor
                     if(member.getDistributorSeq() !=null && !member.getDistributorSeq().equals("")){
                         Member distributor_member = memberService.getById(member.getDistributorSeq());
+                        System.out.println("IScheduleService==saveBettingSummary========distributor_member:" + distributor_member);
+
                         slot_distributor_rate_amount = this.calulateRate(totalBettingAmount.slotBettingAmount, distributor_member.getSlotRate());
                         baccarat_distributor_rate_amount =  this.calulateRate(totalBettingAmount.baccaratBettingAmount, distributor_member.getBaccaratRate());
 
@@ -206,6 +210,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     //-------- get headquarter
                     if(member.getSubHeadquarterSeq() !=null && !member.getSubHeadquarterSeq().equals("")){
                         Member headquarter_member = memberService.getById(member.getSubHeadquarterSeq());
+                        System.out.println("IScheduleService==saveBettingSummary========headquarter_member:" + headquarter_member);
 
                         slot_headquarter_rolling_amount =
                                 this.calulateRate(totalBettingAmount.slotBettingAmount, headquarter_member.getSlotRate()) - slot_distributor_rate_amount;

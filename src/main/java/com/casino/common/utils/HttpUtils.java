@@ -99,11 +99,7 @@ public class HttpUtils {
 
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<Member> request = new HttpEntity<>(headers);
-
-            System.out.println(url);
-
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
-            System.out.println(response);
             return response;
         } catch (Exception e) {
             System.out.println("HttpUtils==getUserInfo==========Exception :");
@@ -220,6 +216,7 @@ public class HttpUtils {
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
 
             System.out.println("HttpUtils==getTransactionListSimple========== api success");
+            System.out.println(response);
             return response;
         } catch (Exception e) {
             System.out.println("HttpUtils==getTransactionListSimple==========Exception :");
