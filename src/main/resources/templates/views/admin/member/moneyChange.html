@@ -5,7 +5,7 @@
 <head th:replace="template :: head (#{admin.common.popup.title})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
 <body>
-<section class="body member-money-change">
+<section class="body member-money-change detail-modal">
     <div class="row" id="modifyHoldingMoneyModal">
         <div role="main" class="col-md-12">
             <section class="panel">
@@ -24,7 +24,7 @@
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.common.id}]]
                             </label>
-                            <div class="col-md-7 col-sm-6">
+                            <div class="col-md-7 col-sm-6 form-container">
                                 <p class="control-label" th:text="${memberForm.id}"></p>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.member.amountOfMoney}]]
                             </label>
-                            <div class="col-md-7 col-sm-6">
+                            <div class="col-md-7 col-sm-6 form-container">
                                 <input type="number" class="form-control" id="prevMoneyAmount" name="prevMoneyAmount"
                                        th:value="${memberForm.moneyAmount}"
                                        style="width: auto; display: inline-block;" readonly />
@@ -77,7 +77,7 @@
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.member.amountOfMileage}]]
                             </label>
-                            <div class="col-md-7 col-sm-6">
+                            <div class="col-md-7 col-sm-6 form-container">
                                 <input type="number" class="form-control" id="prevMileageAmount" name="prevMileageAmount"
                                        th:value="${memberForm.mileageAmount}"
                                        style="width: auto; display: inline-block;" readonly />
@@ -89,7 +89,7 @@
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.member.increaseDecrease}]]
                             </label>
-                            <div class="col-md-7 col-sm-6">
+                            <div class="col-md-7 col-sm-6 form-container">
                                 <input type="number" class="form-control" id="variableAmount" name="variableAmount"
                                        style="width: auto; display: inline-block;" required />
                                 <span for="variableAmount" class="help-block help-block-error"></span>
@@ -100,7 +100,7 @@
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.common.reason}]]
                             </label>
-                            <div class="col-md-7 col-sm-6">
+                            <div class="col-md-7 col-sm-6 form-container">
                                 <textarea class="form-control" name="reason" data-plugin-textarea-autosize></textarea>
                             </div>
                         </div>
