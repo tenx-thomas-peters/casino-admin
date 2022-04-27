@@ -82,7 +82,12 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}" >
+												<tr class="noteTitle"  data-closed="0" style="cursor: pointer"
+													th:if="${not #lists.isEmpty(pageList.records)}"
+													th:each="entity : ${pageList.records}"
+													th:data-title="${entity.title}"
+													th:data-content="${entity.content}"
+												>
 													<td>
 														<div class="checkbox-custom checkbox-default checkbox-inline">
 															<input class="checkboxes" type="checkbox" th:value="${entity.seq}" name="noteSeq"><label></label>
@@ -93,12 +98,10 @@
 													<td th:text="${entity.nickname}"></td>
 													<td th:text="${entity.accountHolder}"></td>
 													<td th:text="${entity.sender}"></td>
-													<td>
-														<a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
-													</td>
+													<td th:text="${entity.title}"></td>
 													<td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd') : '')}"></td>
 													<td>
-														<span th:if="${entity.readStatus == 0}" th:text="#{admin.status.unread}"></span>
+														<span th:if="${entity.readStatus == 0}" th:text="#{admin.status.unread}" style="color: red"></span>
 														<span th:if="${entity.readStatus == 1}" th:text="#{admin.common.read}"></span>
 													</td>
 													<td>
@@ -149,6 +152,8 @@
 	<script type="text/javascript" th:inline="javascript">
 	    var page = [[${page}]];
 		var url = [[@{/}]] + [[${url}]];
+		var titleStr = [[#{admin.common.title}]];
+		var contentStr = [[#{admin.common.content}]];
 	</script>
 
     <script th:replace="template :: scripts"></script>
