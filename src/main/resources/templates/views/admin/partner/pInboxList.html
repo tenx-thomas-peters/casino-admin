@@ -15,7 +15,7 @@
                 <header class="panel-heading">
                     <h2 class="panel-title">
                         <i class="fa fa-caret-square-o-right text-primary"></i>
-                        <span th:text="#{admin.note.partnerSentInbox}"></span>
+                        <span th:text="#{admin.common.inbox}"></span>
                     </h2>
                 </header>
                 <div class="panel-body">
@@ -52,19 +52,22 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
+                                        <tr class="noteTitle"  data-closed="0" style="cursor: pointer"
+                                            th:if="${not #lists.isEmpty(pageList.records)}"
+                                            th:each="entity : ${pageList.records}"
+                                            th:data-title="${entity.title}"
+                                            th:data-content="${entity.content}"
+                                        >
                                             <td>
                                                 <div class="checkbox-custom checkbox-default checkbox-inline">
                                                     <input class="checkboxes" type="checkbox" th:name="${entity.seq}"><label></label>
                                                 </div>
                                             </td>
                                             <td th:text="${entity.mId}"></td>
-                                            <td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd') : '')}"></td>
+                                            <td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd hh:mm:ss') : '')}"></td>
+                                            <td th:text="${entity.title}"></td>
                                             <td>
-                                                <a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
-                                            </td>
-                                            <td>
-                                                <span th:if="${entity.readStatus == 0}" th:text="#{admin.status.unread}"></span>
+                                                <span th:if="${entity.readStatus == 0}" th:text="#{admin.status.unread}" style="color: red"></span>
                                                 <span th:if="${entity.readStatus == 1}" th:text="#{admin.common.read}"></span>
                                             </td>
                                             <td>
