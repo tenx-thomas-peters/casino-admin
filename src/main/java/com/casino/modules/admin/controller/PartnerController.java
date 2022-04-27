@@ -893,7 +893,7 @@ public class PartnerController {
     			result.error500("Operate Faild");
     		}
     	} catch (Exception e) {
-    		log.error("url: /memo/memoadd --- method: memoadd --- error: " + e.toString());
+    		log.error("url: /partner2/memoadd --- method: memoadd --- error: " + e.toString());
     	}
     	return result;
     }

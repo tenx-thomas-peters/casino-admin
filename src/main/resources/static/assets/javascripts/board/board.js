@@ -230,8 +230,8 @@ function hits(){
 	}
 	if(ids == "") {
 		new PNotify({
-            title: 'Faild!',
-            text: 'Please Check it.',
+            title: 'ERROR!',
+            text: '실행할 내용을 선택하십시오',
             type: 'error',
             buttons: {
                 closer: true,
