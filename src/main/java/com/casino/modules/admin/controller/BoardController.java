@@ -206,6 +206,10 @@ public class BoardController {
 		try {
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
 			IPage<Note> pageList = boardService.getQuestionPageList(page, form);
+
+			System.out.println("=====questionlist===");
+			System.out.println(pageList.getRecords());
+
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
 			model.addAttribute("pageNo", pageNo);

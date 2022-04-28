@@ -80,7 +80,7 @@
   
   	<select id="getQuestionPageList" resultMap="noticeListEntity">
 	  	SELECT n.seq, n.title, n.sender, m.id, m.register_date, n.recommend_status, n.answer,
-				m.account_holder, m.bank_name, m.name, m2.nickname, m.color,
+				m.account_holder, m.bank_name, m.nickname, m2.nickname, m.color,
 				n.send_time, n.read_status, l.level_name, n.answer_status
 		FROM note n
 		LEFT JOIN member m ON m.seq = n.sender
