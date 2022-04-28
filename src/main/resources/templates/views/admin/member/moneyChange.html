@@ -70,6 +70,9 @@
                                        th:value="${memberForm.moneyAmount}"
                                        style="width: auto; display: inline-block;" readonly />
                                 <span for="prevMoneyAmount" class="help-block help-block-error"></span>
+                                <p class="control-label casino-money">
+                                    [<span th:text="${memberForm.casinoMoney}"></span>]
+                                </p>
                             </div>
                         </div>
                         <div class="form-group">
@@ -107,8 +110,8 @@
                     </form>
                 </div>
                 <footer class="panel-footer text-center">
-                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.closeTheWindow}"></button>
                     <button class="btn btn-default update-holding-money" th:text="#{admin.common.run}"></button>
+                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.closeTheWindow}"></button>
                 </footer>
             </section>
         </div>

@@ -281,20 +281,25 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                             "finalAmount:" + (member.getCasinoMoney() + variableAmount) +
                             "reason:" + reason);
 
-                    if(memberService.updateMemberHoldingMoney(
-                            member.getSeq(),
-                            member.getCasinoMoney(),
-                            0f,
-                            variableAmount,
-                            Math.abs(variableAmount),
-                            member.getCasinoMoney() + variableAmount,
-                            0,
-                            0,
-                            CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
-                            reasonType,
-                            reason,
-                            0
-                    )){
+                    member.setCasinoMoney(member.getCasinoMoney() + variableAmount);
+
+//                    Thomas 2022.04.27 add log money history of betting result
+//                    if(memberService.updateMemberHoldingMoney(
+//                            member.getSeq(),
+//                            member.getCasinoMoney(),
+//                            0f,
+//                            variableAmount,
+//                            Math.abs(variableAmount),
+//                            member.getCasinoMoney() + variableAmount,
+//                            0,
+//                            0,
+//                            CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+//                            reasonType,
+//                            reason,
+//                            0
+//                    )){
+
+                    if(memberService.updateById(member)){
                         System.out.println("\tIScheduleService==saveBettingSummary======== member rolling data save success");
                     }else{
                         System.out.println("\tIScheduleService==saveBettingSummary======== member rolling data save fail ");

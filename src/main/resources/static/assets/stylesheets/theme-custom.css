@@ -577,3 +577,29 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     height: 150px;
     margin-bottom: 20px;
 }
+
+.note-inbox-detail{
+    border: solid 2px #5e7c9a;
+    padding: 0 15px;
+}
+.note-inbox-detail .note-content{
+    background-color: #f6f6f6;
+    padding: 5px;
+    display: flex;
+}
+.note-inbox-detail .note-content div
+{
+    border-top: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+    border-right: 1px solid #eaeaea;
+    border-bottom: 1px solid #eeeeee;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+.member-money-change.detail-modal .casino-money{
+    color: red;
+    margin-left: 5px;
+}

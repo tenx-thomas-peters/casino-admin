@@ -29,6 +29,7 @@
     <sql id="noteWhere">
 	  	<where>
 	  		n.classification = #{form.province}
+	  		AND n.type = 2
 	  		<choose>
 	  			<when test="form.selectType == selectType1">
 	  				AND n.title LIKE CONCAT('%',#{form.keyword},'%')

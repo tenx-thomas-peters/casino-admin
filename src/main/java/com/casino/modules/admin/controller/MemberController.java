@@ -387,6 +387,9 @@ public class MemberController {
             @RequestParam(value = "reason", defaultValue = "") String reason) {
         Result<JSONObject> result = new Result<>();
         try {
+
+            System.out.println("MemberController==updateMemberHoldingMoney==>");
+
             QueryWrapper<Dict> qw = new QueryWrapper<>();
             qw.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
             qw.eq("dict_value", CommonConstant.MONEY_REASON_ADMINEDIT);
@@ -416,8 +419,10 @@ public class MemberController {
                     chargeCount
             )) {
                 result.success("success");
+                System.out.println("MemberController==update Member Holding Money ==> success");
             } else {
                 result.error505("fail");
+                System.out.println("MemberController==update Member Holding Money ==> failed");
             }
         } catch (Exception e) {
             log.error("url: /member/updateHoldingMoney --- method: updateMemberHoldingMoney --- message: " + e.toString());

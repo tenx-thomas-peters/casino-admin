@@ -10,19 +10,30 @@ $(document).on('click', '.noteTitle', function(e){
 	let closed = $(this).attr("data-closed");
 	if (closed == 0) {
 		$(this).attr("data-closed", 1);
-		let title = $(this).text();
+		let title = $(this).data("title");
 		let content = $(this).data("content").replace(',<p>', '').replace('<p>', '');
 		 
 		let detailTr = $('<tr class="detailTd"></tr>')
-						.append($("<td colspan='20'></td>").append($("<div></div>").append("<div class=row></div>")
-						.append("<div class='col-md-1' style='float:left!important'>" + titleStr + " : </div>")
-						.append("<div class='col-md-10' style='text-align: left'>" + title +"</div class='row'></div><br/><br/>")
-						.append("<div class='col-md-1'>" + contentStr + " : </div>").append("<div class='col-md-10' style='text-align: left'>" + content + "</div>")));
-		$(this).parent().parent().after(detailTr);
+						.append($("<td colspan='20'></td>")
+							.append(
+								$("<div class='note-inbox-detail'></div>")
+									.append(
+										$("<div class='row note-content'></div>")
+											.append("<div class='col-md-1'>" + titleStr + " : </div>")
+											.append("<div class='col-md-11 note-content-body'>" + title +"</div class='row'></div>")
+									)
+									.append(
+										$("<div class='row note-content'></div>")
+											.append("<div class='col-md-1'>" + contentStr + " : </div>")
+											.append("<div class='col-md-11 note-content-body'>" + content + "</div>")
+									)
+							)
+						);
+		$(this).after(detailTr);
 	} else {
 		$(this).attr("data-closed", 0);
-		$(this).parent().parent().next().remove();
-	}	
+		$(this).next().remove();
+	}
 });
 
 function batchDelete() {

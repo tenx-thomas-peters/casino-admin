@@ -155,7 +155,7 @@
 														</td>
 														<td th:text="${note.sender}"></td>
 														<td th:text="${note.title}" th:data-key="${note.seq}" class="edit text-primary" style="cursor: pointer;"></td>
-														<td th:text="${(note.sendTime != null ? #dates.format(note.sendTime, 'yyyy-MM-dd') : '')}"></td>
+														<td th:text="${(note.sendTime != null ? #dates.format(note.sendTime, 'yyyy-MM-dd hh:mm:ss') : '')}"></td>
 														<td>
 															<span th:if="${note.recommendStatus == 0}" th:text="#{admin.status.unrecommend}"> </span>
 															<span th:if="${note.recommendStatus == 1}" th:text="#{admin.status.recommend}"> </span>
