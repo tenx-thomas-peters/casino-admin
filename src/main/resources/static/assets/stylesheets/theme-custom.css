@@ -598,3 +598,8 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     line-height: 20px;
     font-weight: bold;
 }
+
+.member-money-change.detail-modal .casino-money{
+    color: red;
+    margin-left: 5px;
+}
