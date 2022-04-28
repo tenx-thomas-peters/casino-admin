@@ -5,7 +5,7 @@
 <head th:replace="template :: head (#{admin.common.popup.title})"></head>
 <link rel="stylesheet" th:href="@{/assets/stylesheets/admin/member.css}"/>
 <body>
-<section class="body">
+<section class="body detail-modal">
     <div class="row">
         <div role="main" class="col-md-12">
             <section class="panel">
@@ -17,14 +17,14 @@
                 </header>
                 <div class="panel-body">
                     <form class="form-horizontal form-bordered"
-                          th:action="@{/log/moneydeposit/accept}" method="post" id="withdrawForm">
+                          th:action="@{/log/partnerMoneywithdraw/accept}" method="post" id="withdrawForm">
                         <input type="hidden" id="seq" name="seq" th:value="${moneyHistory.seq}" />
                         <div class="form-group">
                             <label class="col-md-3 col-sm-6 control-label">
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.common.id}]]
                             </label>
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-md-4 col-sm-6 form-container">
                                 <strong class="control-label" id='memberId'>[[${moneyHistory.member.id}]]</strong>
                                 <label class="control-label" id='firstCharge'></label>
                                 <label class="control-label" id='allCharge'></label>
@@ -35,15 +35,17 @@
                                 <i class="fa fa-plus-square text-primary"></i>
                                 [[#{admin.withdraw.amount}]]
                             </label>
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-md-4 col-sm-6 form-container">
                                 <input type="number" class="form-control" id="withdrawAmount" name="withdrawAmount" th:value="${moneyHistory.variableAmount}" required />
                             </div>
                         </div>
                     </form>
                 </div>
                 <footer class="panel-footer">
-                    <button class="btn btn-default" type="submit" th:text="#{admin.common.withdraw}" id="withdrawBtn" ></button>
-                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                    <div class="panel-footer-btn-group">
+                        <button class="btn btn-default" type="submit" th:text="#{admin.common.withdraw}" id="withdrawBtn" ></button>
+                        <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{admin.common.close}"></button>
+                    </div>
                 </footer>
             </section>
         </div>
