@@ -167,6 +167,19 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			String reason,
 			Integer chargeCount
 	) {
+		System.out.println("MemberServiceImpl==updateMemberHoldingMoney==");
+		System.out.println("*************** save param info ***************");
+		System.out.println("\t*** memberSeq : "+memberSeq);
+		System.out.println("\t*** prevMoneyAmount : "+prevMoneyAmount);
+		System.out.println("\t*** prevMileageAmount : "+prevMileageAmount);
+		System.out.println("\t*** variableAmount : "+variableAmount);
+		System.out.println("\t*** actualAmount : "+actualAmount);
+		System.out.println("\t*** finalAmount : "+finalAmount);
+		System.out.println("\t*** classification : "+classification);
+		System.out.println("\t*** transactionClassification : "+transactionClassification);
+		System.out.println("\t*** reason : "+reason);
+		System.out.println("\t*******************************************");
+
 		String seq = UUIDGenerator.generate();
 		Member member = getById(memberSeq);
 		boolean ret = false;
@@ -197,7 +210,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 				moneyHistory.setChargeCount(chargeCount);
 			}
 
-			member.setCasinoMoney(finalAmount);
+			member.setMoneyAmount(finalAmount);
 
 			if (moneyHistoryService.save(moneyHistory) && updateById(member)) {
 				ret = true;
