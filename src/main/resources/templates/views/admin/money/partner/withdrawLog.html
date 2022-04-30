@@ -128,7 +128,7 @@
 													<td th:text="${entity.note}"></td>
 													<td class="text-center">
 														<div th:if="${entity.status == 0}">
-															<a href="#" class="acceptBtn btn btn-sm btn-default text-danger" th:if="${entity.status == 0}" th:data-seq="${entity.seq}" th:text="#{admin.common.btn.accept}"></a>&nbsp;
+															<a href="#" class="partner_acceptBtn btn btn-sm btn-default text-danger" th:if="${entity.status == 0}" th:data-seq="${entity.seq}" th:text="#{admin.common.btn.accept}"></a>&nbsp;
 															<a href="#" class="declineBtn btn btn-sm btn-default" th:if="${entity.status == 0}" th:data-seq="${entity.seq}" th:text="#{admin.common.btn.decline}"></a>
 														</div>
 														<span class="text-primary" th:if="${entity.status == 1}" th:text="#{admin.money.status.completed}"></span>

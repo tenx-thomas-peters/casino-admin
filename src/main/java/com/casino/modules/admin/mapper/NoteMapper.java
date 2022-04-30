@@ -18,15 +18,11 @@ public interface NoteMapper extends BaseMapper<Note> {
 			@Param("pageSize") Integer pageSize, 
 			@Param("note") Note note);
 
-	IPage<Note> getSendList(Page<Note> page, @Param("form") NoteListForm form,
+	IPage<Note> getNoteList(Page<Note> page, @Param("form") NoteListForm form,
 			@Param("selectType1") Integer selectType1,
 			@Param("selectType2") Integer selectType2,
 			@Param("selectType3") Integer selectType3);
 
-	IPage<Note> getInboxList(Page<Note> page,
-							@Param("selectType1") Integer selectType1,
-							@Param("selectType2") Integer selectType2,
-							@Param("selectType3") Integer selectType3);
 
 	boolean getNoteContentBySeq(@Param("seq") String seq);
 	

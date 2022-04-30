@@ -238,6 +238,7 @@ public class ApiController {
 
                 jsonObject.put("noteCounts", noteCounts);
                 jsonObject.put("moneyAmount", member.getMoneyAmount());
+                jsonObject.put("casinoMoney", member.getCasinoMoney());
                 jsonObject.put("mileageAmount", member.getMileageAmount());
             }
 

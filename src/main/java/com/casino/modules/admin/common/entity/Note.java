@@ -67,6 +67,9 @@ public class Note implements Serializable {
 	@TableField(value = "type")
 	private Integer type;
 
+	@TableField(value = "send_type")
+	private Integer sendType;
+
 	@TableField(value = "classification")
 	private Integer classification;
 	
