@@ -875,7 +875,7 @@ public class PartnerController {
 						noteSave.setReadStatus(CommonConstant.STATUS_UN_READ);
 						noteSave.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
 						noteSave.setLookUp(0);
-						noteSave.setType(CommonConstant.TYPE_P_NOTE);
+						noteSave.setType(CommonConstant.TYPE_P_RECEIVE_NOTE);
 						noteSave.setContent(note.getContent());
 						noteSave.setTitle(note.getTitle());
 

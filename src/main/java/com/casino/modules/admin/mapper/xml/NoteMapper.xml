@@ -33,7 +33,7 @@
 		SELECT n.*, m.nickname, m.account_holder, m.id AS "mId"
 		FROM note n
 		LEFT JOIN member m ON m.seq = n.sender
-		WHERE n.type = 3
+		WHERE n.type = 1
 		ORDER BY n.send_time DESC
 	</select>
 

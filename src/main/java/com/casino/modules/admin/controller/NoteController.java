@@ -76,7 +76,7 @@ public class NoteController {
 			Model model) {
         try {
         	Page<Note> page = new Page<Note>(pageNo, pageSize);
-        	form.setType(CommonConstant.TYPE_P_NOTE);
+        	form.setType(CommonConstant.TYPE_P_RECEIVE_NOTE);
         	IPage<Note> pageList = noteService.getSendList(page, form);
 			
 			model.addAttribute("pageList", pageList);
@@ -98,9 +98,7 @@ public class NoteController {
 							Model model) {
 		try {
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
-			form.setType(CommonConstant.TYPE_P_NOTE);
 			IPage<Note> pageList = noteService.getInboxList(page);
-
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
 			model.addAttribute("form", form);
@@ -172,14 +170,24 @@ public class NoteController {
     		result.success("success!");
     		
     	} catch (Exception e) {
-    		log.error("url: /memo/popup_adminwrite --- method: popupAdminwrite --- error: " + e.toString());
+    		log.error("url: /memo/getRecipient --- method: popupAdminwrite --- error: " + e.toString());
     	}
     	return result;
     }
-    
+
+	/**
+	 * page: /memo/popup_adminwrite
+	 * noteForm submit to send note to members
+	 * @param note
+	 * @param model
+	 * @return
+	 */
     @PostMapping(value = "/send")
     @ResponseBody
     public Result<Note> send(@ModelAttribute("note") Note note, Model model) {
+		System.out.println("NoteController==send==");
+		System.out.println("API: /memo/send ======================");
+
     	Result<Note> result = new Result<Note>();
     	try {
     		if(note != null) {
@@ -191,27 +199,47 @@ public class NoteController {
 				List<Member> memberListByLevelAndStore = memberService.list(qw);
 				List<Note> noteSaveList = new ArrayList<>();
 
-				for(Member member : memberListByLevelAndStore){
-					Note noteSave = new Note();
-					noteSave.setSeq(UUIDGenerator.generate());
-					noteSave.setSender(note.getSender());
-					noteSave.setReceiver(member.getSeq());
-					noteSave.setReadStatus(CommonConstant.STATUS_UN_READ);
-					noteSave.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
-					noteSave.setLookUp(0);
-					noteSave.setType(CommonConstant.TYPE_NOTE);
-					noteSave.setContent(note.getContent());
-					noteSave.setSite(note.getSite());
-					noteSave.setTitle(note.getTitle());
+				if(memberListByLevelAndStore.size()!=0){
+					for(Member member : memberListByLevelAndStore){
 
-					noteSaveList.add(noteSave);
+						System.out.println("*************** note info to send for member ***************");
+
+						System.out.println("\t*** seq : "+UUIDGenerator.generate());
+						System.out.println("\t*** Sender : "+note.getSender());
+						System.out.println("\t*** Receiver : "+member.getSeq());
+						System.out.println("\t*** ReadStatus : "+CommonConstant.STATUS_UN_READ);
+						System.out.println("\t*** RecommendStatus : "+CommonConstant.STATUS_UN_RECOMMEND);
+						System.out.println("\t*** LookUp : "+0);
+						System.out.println("\t*** Type : "+CommonConstant.TYPE_NOTE);
+						System.out.println("\t*** Site : "+note.getSite());
+						System.out.println("\t*** Title : "+note.getTitle());
+						System.out.println("\t*** Content : "+note.getContent());
+						System.out.println("*******************************************");
+
+
+						Note noteSave = new Note();
+						noteSave.setSeq(UUIDGenerator.generate());
+						noteSave.setSender(note.getSender());
+						noteSave.setReceiver(member.getSeq());
+						noteSave.setReadStatus(CommonConstant.STATUS_UN_READ);
+						noteSave.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
+						noteSave.setLookUp(0);
+						noteSave.setType(CommonConstant.TYPE_NOTE);
+						noteSave.setContent(note.getContent());
+						noteSave.setSite(note.getSite());
+						noteSave.setTitle(note.getTitle());
+
+						noteSaveList.add(noteSave);
+					}
+					if(noteService.saveBatch(noteSaveList)) {
+						result.success("Operate Success");
+					} else {
+						result.error500("Operate Faild");
+					}
 				}
+				else
+					result.error500("보내려는 회원이 없습니다.\n <받는이>을 확인해주세요");
 
-    			if(noteService.saveBatch(noteSaveList)) {
-    				result.success("Operate Success");
-    			} else {
-    				result.error500("Operate Faild");
-    			}
     		} else {
     			result.error500("Operate Faild");
     		}
