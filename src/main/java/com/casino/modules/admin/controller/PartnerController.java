@@ -557,7 +557,8 @@ public class PartnerController {
 				note.setReadStatus(CommonConstant.STATUS_UN_READ);
 				note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
 				note.setLookUp(0);
-				note.setType(CommonConstant.TYPE_P_RECEIVE_NOTE);
+				note.setType(CommonConstant.TYPE_P_NOTE);
+				note.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
 				note.setTitle(note.getTitle());
 				note.setContent(note.getContent());
 				note.setReceiver(note.getReceiver());
@@ -875,7 +876,8 @@ public class PartnerController {
 						noteSave.setReadStatus(CommonConstant.STATUS_UN_READ);
 						noteSave.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
 						noteSave.setLookUp(0);
-						noteSave.setType(CommonConstant.TYPE_P_RECEIVE_NOTE);
+						noteSave.setType(CommonConstant.TYPE_P_NOTE);
+						noteSave.setSendType(CommonConstant.TYPE_SEND_NOTE);
 						noteSave.setContent(note.getContent());
 						noteSave.setTitle(note.getTitle());
 

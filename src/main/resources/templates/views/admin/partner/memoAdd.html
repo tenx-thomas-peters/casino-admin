@@ -34,7 +34,7 @@
 								</ul>
 								<div class="tab-content">
 									<div id="memoAdd" class="tab-pane active">
-										<form method="post" th:action="@{/partner2/memoadd}" th:object="${note}" id="pNoteForm">
+										<form method="post" th:object="${note}" id="pNoteForm">
 											<div class="form-group">
 												<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
 													<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.title}"></span>:

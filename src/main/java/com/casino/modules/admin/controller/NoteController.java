@@ -55,7 +55,8 @@ public class NoteController {
         try {
         	Page<Note> page = new Page<Note>(pageNo, pageSize);
         	form.setType(CommonConstant.TYPE_NOTE);
-        	IPage<Note> pageList = noteService.getSendList(page, form);
+        	form.setSendType(CommonConstant.TYPE_SEND_NOTE);
+        	IPage<Note> pageList = noteService.getNoteList(page, form);
 			
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
@@ -76,8 +77,9 @@ public class NoteController {
 			Model model) {
         try {
         	Page<Note> page = new Page<Note>(pageNo, pageSize);
-        	form.setType(CommonConstant.TYPE_P_RECEIVE_NOTE);
-        	IPage<Note> pageList = noteService.getSendList(page, form);
+        	form.setType(CommonConstant.TYPE_P_NOTE);
+        	form.setSendType(CommonConstant.TYPE_SEND_NOTE);
+        	IPage<Note> pageList = noteService.getNoteList(page, form);
 			
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
@@ -98,7 +100,9 @@ public class NoteController {
 							Model model) {
 		try {
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
-			IPage<Note> pageList = noteService.getInboxList(page);
+			form.setType(CommonConstant.TYPE_P_NOTE);
+			form.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
+			IPage<Note> pageList = noteService.getNoteList(page, form);
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
 			model.addAttribute("form", form);
@@ -211,6 +215,7 @@ public class NoteController {
 						System.out.println("\t*** RecommendStatus : "+CommonConstant.STATUS_UN_RECOMMEND);
 						System.out.println("\t*** LookUp : "+0);
 						System.out.println("\t*** Type : "+CommonConstant.TYPE_NOTE);
+						System.out.println("\t*** SendType : "+CommonConstant.TYPE_SEND_NOTE);
 						System.out.println("\t*** Site : "+note.getSite());
 						System.out.println("\t*** Title : "+note.getTitle());
 						System.out.println("\t*** Content : "+note.getContent());
@@ -225,6 +230,7 @@ public class NoteController {
 						noteSave.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
 						noteSave.setLookUp(0);
 						noteSave.setType(CommonConstant.TYPE_NOTE);
+						noteSave.setSendType(CommonConstant.TYPE_SEND_NOTE);
 						noteSave.setContent(note.getContent());
 						noteSave.setSite(note.getSite());
 						noteSave.setTitle(note.getTitle());
@@ -272,7 +278,8 @@ public class NoteController {
 		try {
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
 			form.setType(CommonConstant.TYPE_NOTE);
-			IPage<Note> pageList = noteService.getSendList(page, form);
+			form.setSendType(CommonConstant.TYPE_SEND_NOTE);
+			IPage<Note> pageList = noteService.getNoteList(page, form);
 
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);

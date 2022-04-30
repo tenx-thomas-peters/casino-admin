@@ -3,8 +3,14 @@
 <mapper namespace="com.casino.modules.admin.mapper.NoteMapper">
 
 	<sql id="sendListWhere">
-		n.type = #{form.type}
+		1=1
 		<choose>
+			<when test="form.type != null">
+				AND n.type = #{form.type}
+			</when>
+			<when test="form.sendType != null">
+				AND n.send_type = #{form.sendType}
+			</when>
 			<when test="form.selectType == selectType1">
 				 AND m.account_holder LIKE CONCAT('%',#{form.keyword},'%')
 			</when>
@@ -19,21 +25,13 @@
 		</choose>
 	</sql>
 		
-	<select id="getSendList" resultType="com.casino.modules.admin.common.entity.Note">
+	<select id="getNoteList" resultType="com.casino.modules.admin.common.entity.Note">
 		SELECT n.*, m.nickname, m.account_holder, m.id AS "mId"
 		FROM note n
 		LEFT JOIN member m ON m.seq = n.receiver
 		<where>
 			<include refid="sendListWhere"/>
 		</where>
-		ORDER BY n.send_time DESC
-	</select>
-
-	<select id="getInboxList" resultType="com.casino.modules.admin.common.entity.Note">
-		SELECT n.*, m.nickname, m.account_holder, m.id AS "mId"
-		FROM note n
-		LEFT JOIN member m ON m.seq = n.sender
-		WHERE n.type = 1
 		ORDER BY n.send_time DESC
 	</select>
 

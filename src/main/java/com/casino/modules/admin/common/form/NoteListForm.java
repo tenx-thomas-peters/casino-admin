@@ -18,7 +18,9 @@ public class NoteListForm {
 	private String site;
 	
 	private Integer type;
-	
+
+	private Integer sendType;
+
 	private String levelType;
 
 }

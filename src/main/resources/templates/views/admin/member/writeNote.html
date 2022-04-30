@@ -16,7 +16,7 @@
                     </h4>
                 </header>
                 <div class="panel-body">
-                    <form id="member-note-form" name="note" class="form-horizontal form-bordered" th:action="@{/member/writeNote}" method="post">
+                    <form id="member-note-form" name="note" class="form-horizontal form-bordered" method="post">
                         <input type="hidden" name="sender" value="" />
                         <input type="hidden" name="receiver" th:value="${member.seq}" />
                         <div class="form-group">

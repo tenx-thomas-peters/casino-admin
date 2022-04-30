@@ -35,15 +35,9 @@ public class NoteServiceImpl extends ServiceImpl<NoteMapper, Note> implements IN
 	}
 
 	@Override
-	public IPage<Note> getSendList(Page<Note> page, NoteListForm form) {
-		return noteMapper.getSendList(page, form, CommonConstant.SELECT_TYPE_1, 
+	public IPage<Note> getNoteList(Page<Note> page, NoteListForm form) {
+		return noteMapper.getNoteList(page, form, CommonConstant.SELECT_TYPE_1,
 					CommonConstant.SELECT_TYPE_2, CommonConstant.SELECT_TYPE_3);
-	}
-
-	@Override
-	public IPage<Note> getInboxList(Page<Note> page) {
-		return noteMapper.getInboxList(page, CommonConstant.SELECT_TYPE_1,
-				CommonConstant.SELECT_TYPE_2, CommonConstant.SELECT_TYPE_3);
 	}
 
 	@Override
