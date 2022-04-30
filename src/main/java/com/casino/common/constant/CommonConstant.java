@@ -60,7 +60,10 @@ public interface CommonConstant {
 	public static final Integer TYPE_NOTE = 0;
 	public static final Integer TYPE_P_NOTE = 1;
 	public static final Integer TYPE_POST = 2;
-	public static final Integer TYPE_P_RECEIVE_NOTE = 3;
+
+	// send type
+	public static final Integer TYPE_SEND_NOTE = 0;
+	public static final Integer TYPE_RECEIVE_NOTE = 1;
 
 	public static final Integer UNREAD_STATUS = 0;
 	public static final Integer READ_STATUS = 1;
