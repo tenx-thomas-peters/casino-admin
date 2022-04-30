@@ -558,7 +558,7 @@ public class PartnerController {
 				note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
 				note.setLookUp(0);
 				note.setType(CommonConstant.TYPE_P_NOTE);
-				note.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
+				note.setSendType(CommonConstant.TYPE_SEND_NOTE);
 				note.setTitle(note.getTitle());
 				note.setContent(note.getContent());
 				note.setReceiver(note.getReceiver());
