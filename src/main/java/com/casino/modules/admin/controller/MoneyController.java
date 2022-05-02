@@ -112,6 +112,8 @@ public class MoneyController {
             Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             IPage<MoneyHistory> pageList = moneyHistoryService.findPartenerMoneyLogList(page, moneyHistory, column, order);
 
+            moneyHistoryService.changeAdminReadStatusAll(CommonConstant.MONEY_OPERATION_TYPE_TRANSFER, CommonConstant.PARTNER_OR_MEMBER_PARTNER);
+
             QueryWrapper<Dict> dictQueryWrapper = new QueryWrapper<>();
             dictQueryWrapper.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
             List<Dict> reasonTypeList = dictService.list(dictQueryWrapper);
