@@ -24,5 +24,7 @@ public interface IBoardService extends IService<Note> {
 
 	Note getCommentById(String seq);
 
-	Note getQuestionBySeq(String seq);	
+	Note getQuestionBySeq(String seq);
+
+	boolean changeAdminReadStatusAll(Integer type, Integer classification);
 }

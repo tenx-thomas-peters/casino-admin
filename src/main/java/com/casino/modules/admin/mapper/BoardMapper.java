@@ -33,4 +33,6 @@ public interface BoardMapper extends BaseMapper<Note> {
 	Note getCommentById(@Param("seq")String seq);
 
 	Note getQuestionBySeq(@Param("seq") String seq);
+
+	boolean changeAdminReadStatusAll(@Param("type") Integer type, @Param("classification") Integer classification);
 }

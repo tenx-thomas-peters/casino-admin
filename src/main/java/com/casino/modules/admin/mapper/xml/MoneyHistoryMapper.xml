@@ -608,10 +608,10 @@
 		ORDER BY mh.application_time DESC
 	</select>
 
-	<update id="changeViewStatusAll">
+	<update id="changeAdminReadStatusAll">
 		UPDATE money_history mh
 			INNER JOIN member m ON m.seq = mh.receiver
-		SET view_status = 1
+		SET mh.admin_read_status = 1
 		WHERE
 			mh.status = 0
 			AND m.user_type = #{userType}

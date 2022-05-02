@@ -72,4 +72,9 @@ public class BoardServiceImpl extends ServiceImpl<BoardMapper, Note> implements 
 	public Note getQuestionBySeq(String seq) {
 		return boardMapper.getQuestionBySeq(seq);
 	}
+
+	@Override
+	public boolean changeAdminReadStatusAll(Integer type, Integer classification) {
+		return boardMapper.changeAdminReadStatusAll(type, classification);
+	}
 }

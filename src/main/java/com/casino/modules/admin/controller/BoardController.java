@@ -205,6 +205,7 @@ public class BoardController {
 
 		try {
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
+			boardService.changeAdminReadStatusAll(CommonConstant.TYPE_POST, CommonConstant.CLASSIFICATION_CUSTOMER);
 			IPage<Note> pageList = boardService.getQuestionPageList(page, form);
 
 			System.out.println("=====questionlist===");

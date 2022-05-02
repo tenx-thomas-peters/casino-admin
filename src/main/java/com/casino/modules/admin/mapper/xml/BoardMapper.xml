@@ -118,4 +118,15 @@
   		LEFT JOIN member m ON n.receiver=m.seq 
   		WHERE n.seq = #{seq}
   	</select>
+
+	<update id="changeAdminReadStatusAll">
+		UPDATE note
+			SET admin_read_status = 1
+		WHERE
+		  	send_type = 1
+		  	AND type = #{type}
+			<if test="type != 2">
+				AND classification = #{classification}
+			</if>
+	</update>
 </mapper>
