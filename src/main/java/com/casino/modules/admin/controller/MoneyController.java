@@ -307,6 +307,8 @@ public class MoneyController {
                 moneyHistory.setToProcessTime(sdf.format(new Date()));
                 moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
             }
+
+            moneyHistoryService.changeViewStatusAll(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW, CommonConstant.PARTNER_OR_MEMBER_PARTNER);
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
