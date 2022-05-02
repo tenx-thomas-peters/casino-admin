@@ -14,4 +14,6 @@ public interface IBettingSummaryService extends IService<BettingSummary> {
             BettingSummaryForm bettingSummaryForm);
 
     List<BettingSummaryForm> getBettingSummaryList(BettingSummaryForm bettingSummaryForm);
+
+    boolean changeAdminReadStatusAll();
 }

@@ -41,4 +41,6 @@ public interface IMoneyHistoryService extends IService<MoneyHistory> {
 
 	boolean updateMoneyHistory(MoneyHistory moneyHistoryParams);
 
+	boolean changeAdminReadStatusAll(Integer operationType, Integer userType);
+
 }

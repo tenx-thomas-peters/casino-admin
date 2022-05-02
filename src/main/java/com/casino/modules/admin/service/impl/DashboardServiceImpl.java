@@ -17,7 +17,6 @@ import com.casino.modules.admin.service.IDashboardService;
 @Service
 public class DashboardServiceImpl extends ServiceImpl<DashboardMapper, DashboardForm> implements IDashboardService {
 	
-	
 	@Autowired
     private DashboardMapper dashboardMapper;
 	
@@ -37,7 +36,9 @@ public class DashboardServiceImpl extends ServiceImpl<DashboardMapper, Dashboard
 	@Override
 	public Map<String, Number> getHeaderInfo() {
 		Map<String, Number> headerInfo = dashboardMapper.getAccessData();
+		Map<String, Number> getApplicationCountInfo = dashboardMapper.getApplicationCount();
 		Map<String, Number> totalMoneyInfo = dashboardMapper.getTotalMoneyInfo();
+		headerInfo.putAll(getApplicationCountInfo);
 		headerInfo.putAll(totalMoneyInfo);
 		return headerInfo;
 	}

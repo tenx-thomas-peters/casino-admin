@@ -607,4 +607,26 @@
 		</where>
 		ORDER BY mh.application_time DESC
 	</select>
+
+	<update id="changeAdminReadStatusAll">
+		UPDATE money_history mh
+			INNER JOIN member m ON m.seq = mh.receiver
+		SET mh.admin_read_status = 1
+		WHERE
+			mh.status = 0
+			<choose>
+				<when test="userType != null and userType == 0">
+					AND m.user_type = 0
+				</when>
+				<when test="userType != null and userType == 1">
+					AND m.user_type > 0
+				</when>
+			</choose>
+			<if test="operationType != null and 2 > operationType">
+				AND mh.operation_type = #{operationType}
+			</if>
+			<if test="operationType != null and operationType == 2">
+				AND mh.operation_type > #{operationType}
+			</if>
+	</update>
 </mapper>

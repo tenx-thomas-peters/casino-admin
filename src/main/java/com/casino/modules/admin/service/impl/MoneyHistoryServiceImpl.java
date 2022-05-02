@@ -216,4 +216,9 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 		}
 		return false;
 	}
+
+	@Override
+	public boolean changeAdminReadStatusAll(Integer operationType, Integer userType) {
+		return moneyHistoryMapper.changeAdminReadStatusAll(operationType, userType);
+	}
 }

@@ -112,6 +112,8 @@ public class MoneyController {
             Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             IPage<MoneyHistory> pageList = moneyHistoryService.findPartenerMoneyLogList(page, moneyHistory, column, order);
 
+            moneyHistoryService.changeAdminReadStatusAll(CommonConstant.MONEY_OPERATION_TYPE_TRANSFER, CommonConstant.PARTNER_OR_MEMBER_PARTNER);
+
             QueryWrapper<Dict> dictQueryWrapper = new QueryWrapper<>();
             dictQueryWrapper.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
             List<Dict> reasonTypeList = dictService.list(dictQueryWrapper);
@@ -154,6 +156,8 @@ public class MoneyController {
                 moneyHistory.setToProcessTime(sdf.format(new Date()));
                 moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
             }
+
+            moneyHistoryService.changeAdminReadStatusAll(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT, CommonConstant.PARTNER_OR_MEMBER_MEMBER);
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
             QueryWrapper<Member> qw = new QueryWrapper<>();
@@ -206,6 +210,7 @@ public class MoneyController {
                 moneyHistory.setToProcessTime(sdf.format(new Date()));
                 moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
             }
+            moneyHistoryService.changeAdminReadStatusAll(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW, CommonConstant.PARTNER_OR_MEMBER_MEMBER);
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
             QueryWrapper<Member> qw = new QueryWrapper<>();
@@ -261,6 +266,8 @@ public class MoneyController {
                 moneyHistory.setToProcessTime(sdf.format(new Date()));
                 moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
             }
+
+            moneyHistoryService.changeAdminReadStatusAll(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT, CommonConstant.PARTNER_OR_MEMBER_PARTNER);
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
@@ -302,6 +309,8 @@ public class MoneyController {
                 moneyHistory.setToProcessTime(sdf.format(new Date()));
                 moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
             }
+
+            moneyHistoryService.changeAdminReadStatusAll(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW, CommonConstant.PARTNER_OR_MEMBER_PARTNER);
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);

@@ -43,6 +43,7 @@ public class BettingSummaryController {
             bettingSummaryForm.setUserType(CommonConstant.USER_TYPE_NORMAL);
             Page<BettingSummaryForm> page = new Page<>(pageNo, pageSize);
             IPage<BettingSummaryForm> pageList = bettingSummaryService.getBettingSummaryList(page, bettingSummaryForm);
+            bettingSummaryService.changeAdminReadStatusAll();
 
             QueryWrapper<Member> memberQw = new QueryWrapper<>();
             memberQw.eq("user_type", CommonConstant.USER_TYPE_STORE);

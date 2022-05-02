@@ -70,6 +70,7 @@ public interface CommonConstant {
 
 	public static final Integer MONEY_OPERATION_TYPE_DEPOSIT = 0;
 	public static final Integer MONEY_OPERATION_TYPE_WITHDRAW = 1;
+	public static final Integer MONEY_OPERATION_TYPE_TRANSFER = 1;
 
 	// select type
 	public static final Integer SELECT_TYPE_0 = 0;

@@ -49,4 +49,9 @@
         </where>
         ORDER BY bs.check_time DESC
     </select>
+
+    <update id="changeAdminReadStatusAll">
+        UPDATE betting_summary
+        SET admin_read_status = 1
+    </update>
 </mapper>

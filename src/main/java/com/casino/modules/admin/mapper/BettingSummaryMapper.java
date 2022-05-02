@@ -15,4 +15,6 @@ public interface BettingSummaryMapper extends BaseMapper<BettingSummary> {
             @Param("entity") BettingSummaryForm bettingSummaryForm);
 
     List<BettingSummaryForm> getBettingSummaryList(@Param("entity") BettingSummaryForm bettingSummaryForm);
+
+    boolean changeAdminReadStatusAll();
 }

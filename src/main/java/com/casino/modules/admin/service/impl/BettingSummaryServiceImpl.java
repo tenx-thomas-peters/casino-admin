@@ -28,4 +28,9 @@ public class BettingSummaryServiceImpl extends ServiceImpl<BettingSummaryMapper,
     public List<BettingSummaryForm> getBettingSummaryList(BettingSummaryForm bettingSummaryForm) {
         return bettingSummaryMapper.getBettingSummaryList(bettingSummaryForm);
     }
+
+    @Override
+    public boolean changeAdminReadStatusAll() {
+        return bettingSummaryMapper.changeAdminReadStatusAll();
+    }
 }

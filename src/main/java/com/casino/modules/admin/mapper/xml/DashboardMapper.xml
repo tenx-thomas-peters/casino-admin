@@ -70,13 +70,9 @@
 			member_login,
 			store_login,
 			distributor_login,
-			member_deposit_cnt,
 			IFNULL(member_deposit_sum,0) AS member_deposit_sum,
-			member_withdraw_cnt,
 			IFNULL(member_withdraw_sum,0) AS member_withdraw_sum,
-			partner_deposit_cnt,
 			IFNULL(partner_deposit_sum,0) AS partner_deposit_sum,
-			partner_withdraw_cnt,
 			IFNULL(p_send,0) AS p_send,
 			IFNULL(p_collect,0) AS p_collect,
 			IFNULL(partner_withdraw_sum,0) AS partner_withdraw_sum,
@@ -113,7 +109,7 @@
 			SELECT COUNT(mh.seq) AS member_deposit_cnt, DATE(NOW()) AS today
 			FROM money_history mh
 			INNER JOIN member m ON m.seq = mh.receiver 
-			WHERE mh.status = 0 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 0 AND m.user_type = 0) AS mDeposit1 ON cal.today = mDeposit1.today
+			WHERE mh.status = 0 AND mh.operation_type = 0 AND m.user_type = 0) AS mDeposit1 ON cal.today = mDeposit1.today
 			
 		LEFT JOIN (
 			SELECT SUM(mh.variable_amount) AS member_deposit_sum, DATE(NOW()) AS today
@@ -189,5 +185,55 @@
 		(SELECT IFNULL(SUM(money_amount), 0) FROM member where user_type > 0) AS ptotal_money
 		FROM member
 		WHERE user_type = 0
+	</select>
+
+	<select id="getApplicationCount" resultType="java.util.Map">
+		SELECT
+			IFNULL((
+			   SELECT COUNT(mh.seq)
+			   FROM money_history mh
+						INNER JOIN member m ON m.seq = mh.receiver
+			   WHERE mh.status = 0
+				 AND mh.operation_type = 0
+			     AND mh.admin_read_status = 0
+				 AND m.user_type = 0
+		   ), 0) AS member_deposit_cnt,
+			IFNULL((
+			   SELECT COUNT(mh.seq)
+			   FROM money_history mh
+						INNER JOIN member m ON m.seq = mh.receiver
+			   WHERE mh.status = 0
+				 AND mh.operation_type = 1
+				 AND mh.admin_read_status = 0
+				 AND m.user_type = 0
+		   	), 0) AS member_withdraw_cnt,
+			IFNULL((
+			   SELECT COUNT(mh.seq)
+			   FROM money_history mh
+						INNER JOIN member m ON m.seq = mh.receiver
+			   WHERE mh.status = 0
+				 AND mh.operation_type = 0
+				 AND mh.admin_read_status = 0
+				 AND m.user_type > 0
+		   	), 0) AS partner_deposit_cnt,
+			IFNULL((
+			   SELECT COUNT(mh.seq)
+			   FROM money_history mh
+						INNER JOIN member m ON m.seq = mh.receiver
+			   WHERE mh.status = 0
+				 AND mh.operation_type = 1
+				 AND mh.admin_read_status = 0
+				 AND m.user_type > 0
+		   	), 0) AS partner_withdraw_cnt,
+			IFNULL((
+			   SELECT COUNT(mh.seq)
+			   FROM money_history mh
+						INNER JOIN member m ON m.seq = mh.receiver
+			   WHERE mh.status = 0
+				 AND mh.operation_type > 1
+				 AND mh.admin_read_status = 0
+				 AND m.user_type > 0
+		   ), 0) AS partner_send_collect_cnt
+		FROM (SELECT 1 ) AS apply
 	</select>
 </mapper>

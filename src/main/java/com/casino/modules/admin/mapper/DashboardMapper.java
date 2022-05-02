@@ -21,6 +21,8 @@ public interface DashboardMapper extends BaseMapper<DashboardForm> {
 	Map<String, Number> getAccessData();
 
 	Map<String, Number> getTotalMoneyInfo();
+
+	Map<String, Number> getApplicationCount();
 }
 
 	
