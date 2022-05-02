@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.casino.modules.admin.service.IBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +47,9 @@ public class NoteController {
     
     @Autowired
     private IMemberService memberService;
+
+	@Autowired
+	private IBoardService boardService;
 
     @GetMapping(value = "/sendlist")
     public String noteList(@ModelAttribute("form") NoteListForm form,
@@ -103,6 +107,9 @@ public class NoteController {
 			form.setType(CommonConstant.TYPE_P_NOTE);
 			form.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
 			IPage<Note> pageList = noteService.getNoteList(page, form);
+
+			boardService.changeAdminReadStatusAll(CommonConstant.TYPE_P_NOTE, 0);
+
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
 			model.addAttribute("form", form);
