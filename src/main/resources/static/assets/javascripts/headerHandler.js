@@ -37,7 +37,18 @@ $(document).ready(function() {
                 	if(playflg) {
                 		audio.play();
                 	}
-                	
+
+					if(res.data.member_deposit_cnt) $('.header-context-info.m-deposit').addClass("c-yellow");
+					if(res.data.member_withdraw_cnt) $('.header-context-info.m-withdraw').addClass("c-yellow");
+					if(res.data.m_post) $('.header-context-info.m-posts').addClass("c-yellow");
+					if(res.data.bs) $('.header-context-info.m-betting-summary').addClass("c-yellow");
+					if(res.data.distributor_login) $('.header-context-info.p-distributor').addClass("c-yellow");
+					if(res.data.store_login) $('.header-context-info.p-store').addClass("c-yellow");
+					if(res.data.partner_deposit_cnt) $('.header-context-info.p-deposit').addClass("c-yellow");
+					if(res.data.partner_withdraw_cnt) $('.header-context-info.p-withdraw').addClass("c-yellow");
+					if(res.data.partner_send_collect_cnt) $('.header-context-info.p-send-collect').addClass("c-yellow");
+					if(res.data.p_note) $('.header-context-info.p-note').addClass("c-yellow");
+
                 	$('span.m-login-member').html(Number(parseFloat(res.data.member_login).toFixed(0)).toLocaleString('en'));
                 	$('span.m-deposit').html(Number(parseFloat(res.data.member_deposit_cnt).toFixed(0)).toLocaleString('en'));
                 	$('span.m-withdraw').html(Number(parseFloat(res.data.member_withdraw_cnt).toFixed(0)).toLocaleString('en'));
