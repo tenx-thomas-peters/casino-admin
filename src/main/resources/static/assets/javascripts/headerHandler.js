@@ -48,10 +48,7 @@ $(document).ready(function() {
                 	$('span.p-store').html(Number(parseFloat(res.data.store_login).toFixed(0)).toLocaleString('en'));
                 	$('span.p-deposit').html(Number(parseFloat(res.data.partner_deposit_cnt).toFixed(0)).toLocaleString('en'));
                 	$('span.p-withdraw').html(Number(parseFloat(res.data.partner_withdraw_cnt).toFixed(0)).toLocaleString('en'));
-                	$('span.p-send-collect').html(
-                			Number(parseFloat(res.data.p_send).toFixed(0)).toLocaleString('en') + 
-                			' / ' + 
-                			Number(parseFloat(res.data.p_collect).toFixed(0)).toLocaleString('en'));
+                	$('span.p-send-collect').html(Number(parseFloat(res.data.partner_send_collect_cnt).toFixed(0)).toLocaleString('en'));
                 	$('span.p-note').html(Number(parseFloat(res.data.p_note).toFixed(0)).toLocaleString('en'));
                 	$('span.m-today-deposit').html(Number(parseFloat(res.data.member_deposit_sum).toFixed(0)).toLocaleString('en'));
                 	$('span.m-today-withdraw').html(Number(parseFloat(res.data.member_withdraw_sum).toFixed(0)).toLocaleString('en'));
@@ -99,17 +96,17 @@ $(document).on('click', '.m-today-withdraw', function (e) {
 
 $(document).on('click', '.m-login-member', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'member/list?state=3';
+    window.location.href = CONTEXT_ROOT + 'member/list';
 });
 
 $(document).on('click', '.m-deposit', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'log/depositloglist?status=0';
+    window.location.href = CONTEXT_ROOT + 'log/depositloglist';
 });
 
 $(document).on('click', '.m-withdraw', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'log/withdrawloglist?status=0';
+    window.location.href = CONTEXT_ROOT + 'log/withdrawloglist';
 });
 
 $(document).on('click', '.m-posts', function (e) {
@@ -124,7 +121,7 @@ $(document).on('click', '.m-customer-service', function (e) {
 
 $(document).on('click', '.m-betting-summary', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'log/slotloglist?fromProcessTime=' + moment().format('YYYY-MM-DD') + '&toProcessTime=' + moment().format('YYYY-MM-DD');
+    window.location.href = CONTEXT_ROOT + 'log/slotloglist';
 });
 
 $(document).on('click', '.p-distributor', function (e) {
@@ -154,5 +151,5 @@ $(document).on('click', '.p-send-collect', function (e) {
 
 $(document).on('click', '.p-note', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'memo/sendPList';
+    window.location.href = CONTEXT_ROOT + 'memo/pInboxList';
 });
