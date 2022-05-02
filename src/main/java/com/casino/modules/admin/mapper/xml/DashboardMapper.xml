@@ -113,7 +113,7 @@
 			SELECT COUNT(mh.seq) AS member_deposit_cnt, DATE(NOW()) AS today
 			FROM money_history mh
 			INNER JOIN member m ON m.seq = mh.receiver 
-			WHERE mh.status = 0 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 0 AND m.user_type = 0) AS mDeposit1 ON cal.today = mDeposit1.today
+			WHERE mh.status = 0 AND mh.operation_type = 0 AND m.user_type = 0) AS mDeposit1 ON cal.today = mDeposit1.today
 			
 		LEFT JOIN (
 			SELECT SUM(mh.variable_amount) AS member_deposit_sum, DATE(NOW()) AS today

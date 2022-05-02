@@ -607,4 +607,14 @@
 		</where>
 		ORDER BY mh.application_time DESC
 	</select>
+
+	<update id="changeViewStatusAll">
+		UPDATE money_history mh
+			INNER JOIN member m ON m.seq = mh.receiver
+		SET view_status = 1
+		WHERE
+			mh.status = 0
+			AND m.user_type = #{userType}
+			AND mh.operation_type = #{operationType}
+	</update>
 </mapper>
