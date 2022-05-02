@@ -490,7 +490,7 @@ public class MoneyController {
                 result.error505("failed");
             }
         } catch (Exception e) {
-            log.error("url: /log/moneywithdraw/accept --- method: moneyWithdrawAccept --- " + e.getMessage());
+            log.error("url: /log/partnerMoneywithdraw/accept --- method: moneyWithdrawAccept --- " + e.getMessage());
             result.error500("failed");
         }
         return result;

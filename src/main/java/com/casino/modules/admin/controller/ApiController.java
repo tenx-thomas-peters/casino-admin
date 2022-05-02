@@ -591,6 +591,8 @@ public class ApiController {
      */
     @PostMapping(value = "applyCharge")
     public Result<MoneyHistory> applyCharge(@RequestBody MoneyHistory moneyHistory) {
+        System.out.println("moneyHistory");
+        System.out.println(moneyHistory);
         Result<MoneyHistory> result = new Result<>();
         try {
             Member receiver = memberService.getById(moneyHistory.getReceiver());
@@ -652,35 +654,27 @@ public class ApiController {
             if (moneyHistoryParams != null) {
                 MoneyHistory moneyHistory = new MoneyHistory();
 
-                QueryWrapper<Member> qw = new QueryWrapper<>();
-                qw.eq("seq", moneyHistoryParams.getReceiver());
-
-                Member member = memberService.getOne(qw);
-
-                if (member.getMoneyAmount() == null || member.getMoneyAmount() == Float.valueOf(CommonConstant.IS_MONEY)) {
-                    result.error505("You have no money");
+                Member member = memberService.getById(moneyHistoryParams.getReceiver());
+                float totalMoney = member.getCasinoMoney() + member.getMoneyAmount();
+                if (moneyHistoryParams.getVariableAmount() > totalMoney ) {
+                    result.error505("머니가 부족합니다. 머니를 체크해주세요");
                 } else {
-                    if (moneyHistoryParams.getVariableAmount() > member.getMoneyAmount()) {
-                        result.error505("You have no money");
-                    } else {
-                        moneyHistory.setSeq(UUIDGenerator.generate());
-                        moneyHistory.setPrevAmount(Float.valueOf(member.getMoneyAmount()));
-                        moneyHistory.setReceiver(moneyHistoryParams.getReceiver());
-                        moneyHistory.setVariableAmount(Float.valueOf(moneyHistoryParams.getVariableAmount()));
-                        moneyHistory.setNote(moneyHistoryParams.getNote());
-                        moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_IN_PROGRESS);
-                        moneyHistory.setApplicationTime(new Date());
-                        moneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL);
+                    moneyHistory.setSeq(UUIDGenerator.generate());
+                    moneyHistory.setPrevAmount(member.getMoneyAmount());
+                    moneyHistory.setReceiver(moneyHistoryParams.getReceiver());
+                    moneyHistory.setVariableAmount(moneyHistoryParams.getVariableAmount());
+                    moneyHistory.setNote(moneyHistoryParams.getNote());
+                    moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_IN_PROGRESS);
+                    moneyHistory.setApplicationTime(new Date());
+                    moneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL);
 
-                        if (moneyHistoryService.saveOrUpdate(moneyHistory)) {
-                            result.success("success");
-                        } else {
-                            result.error505("failed");
-                        }
+                    if (moneyHistoryService.saveOrUpdate(moneyHistory)) {
+                        result.success("success");
+                    } else {
+                        result.error505("failed");
                     }
                 }
             }
-
         } catch (Exception e) {
             result.error500("Internal Server Error");
             log.error("url: /api/addWithdrawal --- method: addWithdrawal --- message: " + e.toString());

@@ -28,6 +28,8 @@
 		mu.nickname AS "member.nickname",
 		mu.color AS "member.color",
 		mu.account_holder AS "member.accountHolder",
+		mu.money_amount AS "member.moneyAmount",
+		mu.casino_money AS "member.casinoMoney",
 		mu.level_seq AS "member.levelSeq",
 		l.level_name AS "member.level",
 		mu.bank_name AS "member.bankName",
