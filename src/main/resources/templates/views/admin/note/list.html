@@ -99,14 +99,13 @@
 													<td th:text="${entity.accountHolder}"></td>
 													<td th:text="${entity.sender}"></td>
 													<td th:text="${entity.title}"></td>
-													<td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd') : '')}"></td>
+													<td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd hh:mm:ss') : '')}"></td>
 													<td>
 														<span th:if="${entity.readStatus == 0}" th:text="#{admin.status.unread}" style="color: red"></span>
 														<span th:if="${entity.readStatus == 1}" th:text="#{admin.common.read}"></span>
 													</td>
 													<td>
-														<span th:if="${entity.recommendStatus == 0}" th:text="#{admin.status.unrecommend}"></span>
-														<span th:if="${entity.recommendStatus == 1}" th:text="#{admin.status.recommend}"></span>
+														<span th:if="${entity.removeStatus == 1}" th:text="#{admin.status.remove}"></span>
 													</td>
 												</tr>
 												<tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">

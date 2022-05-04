@@ -76,6 +76,9 @@ public class Note implements Serializable {
 	
 	@TableField(value = "upload_path")
     private String uploadPath;
+
+	@TableField(value = "remove_status")
+	private Integer removeStatus;
 	
 	@TableField(exist=false)
 	private String nickname;

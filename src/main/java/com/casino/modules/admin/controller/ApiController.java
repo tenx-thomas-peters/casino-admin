@@ -439,12 +439,17 @@ public class ApiController {
     @GetMapping(value = "getInboxNoteList")
     public Result<IPage<Note>> getInboxNoteList(
             @RequestParam(name = "type", defaultValue = "0") Integer type,
+            @RequestParam(name = "receiver") String receiver,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
+
         Result<IPage<Note>> result = new Result<>();
         try {
             QueryWrapper<Note> qw = new QueryWrapper<>();
             qw.eq("type", type);
+            qw.eq("receiver", receiver);
+            qw.eq("send_type", 0);
+            qw.eq("remove_status", 0);
             Page<Note> page = new Page<Note>(pageNo, pageSize);
             IPage<Note> pageList = noteService.page(page, qw);
 
@@ -460,7 +465,10 @@ public class ApiController {
     @DeleteMapping(value = "deleteNote")
     public Result<Note> deleteNote(@RequestParam("noteSeq") String seq) {
         Result<Note> result = new Result<>();
-        if (noteService.removeById(seq)) {
+
+        Note note = noteService.getById(seq);
+        note.setRemoveStatus(1);
+        if (noteService.updateById(note)) {
             result.success("delete success");
         } else {
             result.error505("delete failed");
