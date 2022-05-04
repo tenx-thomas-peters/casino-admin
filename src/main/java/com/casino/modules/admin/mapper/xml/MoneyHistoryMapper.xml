@@ -290,13 +290,12 @@
 			LEFT JOIN (
 				SELECT
 					DATE( bts.check_time ) AS dates,
-					SUM( bts.betting_amount ) AS slot_bet,
-					SUM( bts.winning_amount ) AS slot_win
+					IFNULL(SUM(bts.slot_betting_amount),0) AS slot_bet,
+					IFNULL(SUM(bts.slot_winning_amount),0) AS slot_win
 				FROM
 					betting_summary bts
 				WHERE
-					bts.type = #{slotType} <!-- slot type -->
-					AND DATE( bts.check_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+					DATE( bts.check_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
 				GROUP BY
 					DATE( bts.check_time )) AS bet1 ON cal.dates = bet1.dates
 				<!-- slot betting statistic end -->
@@ -304,8 +303,8 @@
 			LEFT JOIN (
 				SELECT
 					DATE( bts.check_time ) AS dates,
-					SUM( bts.betting_amount ) AS baccarat_bet,
-					SUM( bts.winning_amount ) AS baccarat_win
+					IFNULL(SUM(bts.baccarat_betting_amount),0) AS baccarat_bet,
+					IFNULL(SUM(bts.baccarat_winning_amount),0) AS baccarat_win
 				FROM
 					betting_summary bts
 				WHERE
