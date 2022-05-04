@@ -127,14 +127,7 @@ public class BoardController {
 			Level level = new Level();
 			if(StringUtils.isNotEmpty(seq)) {
 				note = boardService.getById(seq);
-
-
-//				if(StringUtils.isNotEmpty(note.getSender())) {
-					member = memberService.getById(note.getSender());
-//					note.setNickname(member.getNickname());
-//					level = levelService.getById(member.getLevelSeq());
-//				}
-//				note.setLevelName(level.getLevelName());
+				member = memberService.getById(note.getSender());
 			}
 			
 			QueryWrapper<Level> qw = new QueryWrapper<>();
@@ -145,17 +138,11 @@ public class BoardController {
 			
 			List<Note> commentList = boardService.getCommentList();
 
-			System.out.println("note");
-			System.out.println(note);
 			model.addAttribute("levelList", levelList);
 			model.addAttribute("receiverList", receiverList);
 			model.addAttribute("commentList", commentList);
-//			model.addAttribute("levelName", level.getLevelName());
-//			model.addAttribute("levelSeq", member.getLevelSeq());
 			model.addAttribute("note", note);
 			model.addAttribute("url", "board/write");
-
-
 
 		} catch (Exception e) {
 			log.error("url: /board/write --- method: write--- " + e.toString());
@@ -207,9 +194,6 @@ public class BoardController {
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
 			boardService.changeAdminReadStatusAll(CommonConstant.TYPE_POST, CommonConstant.CLASSIFICATION_CUSTOMER);
 			IPage<Note> pageList = boardService.getQuestionPageList(page, form);
-
-			System.out.println("=====questionlist===");
-			System.out.println(pageList.getRecords());
 
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);

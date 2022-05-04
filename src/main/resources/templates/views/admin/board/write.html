@@ -50,17 +50,6 @@
 											<th width="15%">
 												<div class="demo-icon-hover mb-sm mt-sm">
 													<i class="fa fa-plus-square text-primary"></i>&nbsp;
-													<span th:text="#{admin.write.withBet}"></span>:
-												</div>
-											</th>
-											<td>
-												<button type="button" class="btn btn-default" th:text="#{admin.write.withBet}"></button>
-											</td>
-										</tr>
-										<tr>
-											<th width="15%">
-												<div class="demo-icon-hover mb-sm mt-sm">
-													<i class="fa fa-plus-square text-primary"></i>&nbsp;
 													<span th:text="#{admin.common.title}"></span>:
 												</div>
 											</th>
@@ -111,27 +100,6 @@
                                                     <div class="col-sm-3">
                                                         <input type="text" class="form-control" name="sender" th:value="${note.sender}" required/>
                                                     </div>
-<!--                                                    Thomas 2022.04.20 remove-->
-<!--                                                    <div class="col-sm-2">-->
-<!--                                                    	<span th:text="#{admin.common.grade}"></span>-->
-<!--                                                        <div class="d-inline-block" style="display: inline-block">-->
-<!--                                                            <select class="form-control" name="levelList" id="levelList">-->
-<!--                                                                <option value=></option>-->
-<!--                                                                <option th:each="item : ${levelList}"-->
-<!--                                                                        th:value="${item.seq}"  th:selected="${levelSeq == item.seq ? true : false }"-->
-<!--                                                                        th:text="${item.levelName}"></option>-->
-<!--                                                            </select>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="col-sm-2">-->
-<!--                                                        <div class="d-inline-block">-->
-<!--                                                            <select class="form-control" name="writer" id="writer">-->
-<!--                                                            	<option th:text="#{admin.write.nicknameSelection}"></option>-->
-<!--                                                            </select>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    Thomas 2022.04.20 remove-->
-
                                                 </div>
 											</td>
 										</tr>
@@ -197,31 +165,6 @@
                                 <div class="btnGroup">
                                     <button class="btn btn-default enroll" th:text="#{admin.write.enrollment}"></button>
                                     <a th:href="@{/board/write}" class="btn btn-default" th:text="#{admin.write.format}"></a>
-                                    <a class="btn btn-default" data-toggle="modal" href="#upload" th:text="#{admin.write.excelUpload}"></a>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <form id="answerForm" th:object="${note}">
-                                            <div class="panel-body">
-                                                <div class="col-md-4">
-                                                    <input name="sender" type="text" class="form-control" value="admin"/>
-                                                    <select id="receiverList" name="receiver" class="form-control manager">
-                                                        <option th:each="item : ${receiverList}"
-																th:value="${item.seq}"
-                                                                th:text="${item.nickname}"></option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <textarea class="form-control" name="content"
-															  style="height:88px"
-                                                              required></textarea>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-primary answer" style="margin-top: 35px; margin-left: 30px;" th:text="#{admin.common.answer}"></button>
-                                    </div>
                                 </div>
                                 <div class="row mt-sm" id="comment" th:each="comment : ${commentList}">
                                     <input type="hidden" th:value="${comment.seq}" name="seq" id="commentSeq"/>

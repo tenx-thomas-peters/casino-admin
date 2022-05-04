@@ -46,7 +46,7 @@
 											<tr>
 												<th width="15%">
 													<div class="demo-icon-hover mb-sm mt-sm">
-														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.address}"></span>:
+														<i class="fa fa-plus-square text-primary"></i> <span th:text="#{admin.common.site}"></span>:
 													</div>
 												</th>
 												<td></td>
@@ -72,9 +72,7 @@
 												</th>
 												<td th:style="${'background:' + note.color + ';'}">
 													<div class="demo-icon-hover mb-sm mt-sm">
-														<span th:text="${note.mId}"></span>/
-														<span th:text="${note.nickname}"></span>/
-														<span th:text="${note.name}"></span>
+														[<span th:text="${note.mId}"></span>]::[<span th:text="${note.nickname}"></span>]::[<span th:text="${note.name}"></span>]
 													</div>
 												</td>
 											</tr>
@@ -146,22 +144,22 @@
 												</th>
 												<td>
 						    						<textarea name="answer" id="answer" class="answer form-control" rows="15" th:field="*{answer}"></textarea>
-						    						<button class="btn btn-default answer-btn mt-sm" type="button" th:text="#{admin.common.answer}"></button>
+						    						<button class="btn btn-primary answer-btn mt-sm" type="button" th:text="#{admin.common.answer}"></button>
 												</td>
 											</tr>
 										</table>
 										<div class="ml-sm mr-sm">
-											<div class="btn-group form-group">
-												<button class="btn btn-default" type="button" th:text="#{admin.level1DownAccount}" onclick="getConfig('level1');"></button>
-												<button class="btn btn-default" type="button" th:text="#{admin.level2DownAccount}" onclick="getConfig('level2');"></button>
-												<button class="btn btn-default" type="button" th:text="#{admin.level3DownAccount}" onclick="getConfig('level3');"></button>
-												<button class="btn btn-default" type="button" th:text="#{admin.level45DownAccount}" onclick="getConfig('level45');"></button>
-												<button class="btn btn-default" type="button" th:text="#{admin.requestProcessingCompleted}" onclick="getConfig('requestProcessingCompleted');"></button>
-												<button class="btn btn-default" type="button" th:text="#{admin.reLoginRatingUp}" onclick="getConfig('reLoginRatingUp');"></button>
-												<button class="btn btn-default" type="button" th:text="#{admin.friendRecommend}" onclick="getConfig('friendRecommend');"></button>
-												<button class="btn btn-default" type="button" th:text="#{admin.ladderBettingX}" onclick="getConfig('ladderBettingX');"></button>
-												<button class="btn btn-default" type="button" th:text="#{admin.gameErrorReport}" onclick="getConfig('gameErrorReport');"></button>
-												<button class="btn btn-default" type="button" th:text="#{admin.reDepositInformation}" onclick="getConfig('reDepositInformation');"></button>
+											<div class="form-group">
+												<button class="btn btn-primary" type="button" th:text="#{admin.level1DownAccount}" onclick="getConfig('level1');"></button>
+												<button class="btn btn-primary" type="button" th:text="#{admin.level2DownAccount}" onclick="getConfig('level2');"></button>
+												<button class="btn btn-primary" type="button" th:text="#{admin.level3DownAccount}" onclick="getConfig('level3');"></button>
+												<button class="btn btn-primary" type="button" th:text="#{admin.level45DownAccount}" onclick="getConfig('level45');"></button>
+												<button class="btn btn-primary" type="button" th:text="#{admin.requestProcessingCompleted}" onclick="getConfig('requestProcessingCompleted');"></button>
+												<button class="btn btn-primary" type="button" th:text="#{admin.reLoginRatingUp}" onclick="getConfig('reLoginRatingUp');"></button>
+												<button class="btn btn-primary" type="button" th:text="#{admin.friendRecommend}" onclick="getConfig('friendRecommend');"></button>
+												<button class="btn btn-primary" type="button" th:text="#{admin.ladderBettingX}" onclick="getConfig('ladderBettingX');"></button>
+												<button class="btn btn-primary" type="button" th:text="#{admin.gameErrorReport}" onclick="getConfig('gameErrorReport');"></button>
+												<button class="btn btn-primary" type="button" th:text="#{admin.reDepositInformation}" onclick="getConfig('reDepositInformation');"></button>
 											</div>
 											<div class="panel-body-bottom-title form-group">
 												<p class="form-label" th:text="#{admin.questionAnswer.footer.title}"></p>
