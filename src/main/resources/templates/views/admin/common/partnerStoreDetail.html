@@ -127,7 +127,7 @@
 							    [[#{admin.common.holdingMoney}]]
 							</label>
 							<div class="col-md-4 col-sm-6">
-							    <input type="number" class="form-control" name="moneyAmount" th:value="${#numbers.formatDecimal(memberForm.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}" />
+							    <input type="text" class="form-control" name="moneyAmount" th:value="${#numbers.formatDecimal(memberForm.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}" />
 							</div>
                            
 							<label class="col-md-2 col-sm-6 control-label">
