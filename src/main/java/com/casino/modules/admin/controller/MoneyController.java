@@ -69,6 +69,7 @@ public class MoneyController {
             Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
             moneyHistory.setStatus(1);
+            moneyHistory.setPartnerOrMember(0);
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
             QueryWrapper<Dict> dictQueryWrapper = new QueryWrapper<>();

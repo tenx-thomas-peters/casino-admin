@@ -488,24 +488,22 @@
     		  LEFT JOIN (
     		  	SELECT
     		  		DATE(bss.check_time) AS checkDate,
-    		  		COUNT(*) AS slotBettingNumber,
-    		  		SUM(bss.betting_amount) AS slotBettingAmount
+					IFNULL(SUM(bss.slot_bet_count),0)  AS slotBettingNumber,
+					IFNULL(SUM(bss.slot_betting_amount),0)  AS slotBettingAmount
    		  		FROM
    		  			betting_summary AS bss
 	  			WHERE
-	  				bss.type = #{slotType}
-	  				AND DATE(bss.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+	  				DATE(bss.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
   				GROUP BY DATE(bss.check_time)) AS tmp_bss ON tmp_bss.checkDate = cal.dates
 			  LEFT JOIN (
 			  	SELECT
 			  		DATE(bsb.check_time) AS checkDate,
-			  		COUNT(*) AS baccaratBettingNumber,
-			  		SUM(bsb.betting_amount) AS baccaratBettingAmount
+					IFNULL(SUM(bsb.baccarat_bet_count),0)  AS baccaratBettingNumber,
+					IFNULL(SUM(bsb.baccarat_betting_amount),0)  AS baccaratBettingAmount
 		  		FROM
 		  			betting_summary AS bsb
 	  			WHERE
-	  				bsb.type = #{baccaratType}
-	  				AND DATE(bsb.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+	  				DATE(bsb.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
   				GROUP BY DATE(bsb.check_time)) AS tmp_bsb ON tmp_bsb.checkDate = cal.dates
   			  ORDER BY cal.dates
 	</select>
