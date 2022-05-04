@@ -16,6 +16,10 @@
     }
 }
 
+.c-yellow{
+    color: yellow!important;
+}
+
 .content-body {
     padding: 0;
 }

@@ -73,13 +73,7 @@
 			IFNULL(member_deposit_sum,0) AS member_deposit_sum,
 			IFNULL(member_withdraw_sum,0) AS member_withdraw_sum,
 			IFNULL(partner_deposit_sum,0) AS partner_deposit_sum,
-			IFNULL(p_send,0) AS p_send,
-			IFNULL(p_collect,0) AS p_collect,
-			IFNULL(partner_withdraw_sum,0) AS partner_withdraw_sum,
-			m_post,
-			m_customer_service,
-			p_note,
-			bs
+			IFNULL(partner_withdraw_sum,0) AS partner_withdraw_sum
 		FROM (SELECT DATE(NOW()) AS today) AS cal
 		LEFT JOIN (
 			SELECT COUNT(al.seq) AS member_judge_login, DATE(NOW()) AS today
@@ -106,22 +100,10 @@
 			WHERE m.user_type = 2 AND DATE(al.connection_date) = DATE(NOW())) AS distributorLogin ON cal.today = distributorLogin.today
 		
 		LEFT JOIN (
-			SELECT COUNT(mh.seq) AS member_deposit_cnt, DATE(NOW()) AS today
-			FROM money_history mh
-			INNER JOIN member m ON m.seq = mh.receiver 
-			WHERE mh.status = 0 AND mh.operation_type = 0 AND m.user_type = 0) AS mDeposit1 ON cal.today = mDeposit1.today
-			
-		LEFT JOIN (
 			SELECT SUM(mh.variable_amount) AS member_deposit_sum, DATE(NOW()) AS today
 			FROM money_history mh
 			INNER JOIN member m ON m.seq = mh.receiver 
 			WHERE mh.status = 1 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 0 AND m.user_type = 0) AS mDeposit2 ON cal.today = mDeposit2.today
-			
-		LEFT JOIN (
-			SELECT COUNT(mh.seq) AS member_withdraw_cnt, DATE(NOW()) AS today
-			FROM money_history mh
-			INNER JOIN member m ON m.seq = mh.receiver 
-			WHERE mh.status = 0 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 1 AND m.user_type = 0) AS mWithdraw1 ON cal.today = mWithdraw1.today
 			
 		LEFT JOIN (
 			SELECT SUM(mh.variable_amount) AS member_withdraw_sum, DATE(NOW()) AS today
@@ -130,52 +112,17 @@
 			WHERE mh.status = 1 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 1 AND m.user_type = 0) AS mWithdraw2 ON cal.today = mWithdraw2.today
 			
 		LEFT JOIN (
-			SELECT COUNT(mh.seq) AS partner_deposit_cnt, SUM(mh.variable_amount) AS partner_deposit_sum, DATE(NOW()) AS today
+			SELECT SUM(mh.variable_amount) AS partner_deposit_sum, DATE(NOW()) AS today
 			FROM money_history mh
 			INNER JOIN member m ON m.seq = mh.receiver 
 			WHERE mh.status = 0 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 0 AND m.user_type > 0) AS pDeposit ON cal.today = pDeposit.today
 			
 		LEFT JOIN (
-			SELECT COUNT(mh.seq) AS partner_withdraw_cnt, SUM(mh.variable_amount) AS partner_withdraw_sum, DATE(NOW()) AS today
+			SELECT SUM(mh.variable_amount) AS partner_withdraw_sum, DATE(NOW()) AS today
 			FROM money_history mh
 			INNER JOIN member m ON m.seq = mh.receiver 
 			WHERE mh.status = 0 AND DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 1 AND m.user_type > 0) AS pWithdraw ON cal.today = pWithdraw.today
-			
-		LEFT JOIN (
-			SELECT SUM(mh.variable_amount) AS p_send, DATE(NOW()) AS today
-			FROM money_history mh
-			INNER JOIN member m1 ON m1.seq = mh.receiver 
-			INNER JOIN member m2 ON m2.seq = mh.payer 
-			WHERE DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 2 AND m1.user_type = 0 AND m2.user_type > 0) AS pSend ON cal.today = pSend.today
-			
-		LEFT JOIN (
-			SELECT SUM(mh.variable_amount) AS p_collect, DATE(NOW()) AS today
-			FROM money_history mh
-			INNER JOIN member m1 ON m1.seq = mh.receiver 
-			INNER JOIN member m2 ON m2.seq = mh.payer 
-			WHERE DATE(mh.application_time) = DATE(NOW()) AND mh.operation_type = 2 AND m1.user_type > 0 AND m2.user_type = 0) AS pCollect ON cal.today = pCollect.today
-			
-		LEFT JOIN (
-			SELECT COUNT(n.seq) AS m_post, DATE(NOW()) AS today
-			FROM note n
-			WHERE n.read_status = 0 AND n.answer_status = 0 AND n.type = 2 AND n.classification = 2 AND DATE(n.send_time) = DATE(NOW())) AS mPost ON cal.today = mPost.today
-			
-		LEFT JOIN (
-			SELECT COUNT(n.seq) AS m_customer_service, DATE(NOW()) AS today
-			FROM note n
-			INNER JOIN member m ON n.sender = m.seq
-			WHERE n.read_status = 0 AND n.answer_status = 0 AND n.type = 2 AND n.classification = 4 AND m.user_type = 0 AND DATE(n.send_time) = DATE(NOW())) AS mCustomerService ON cal.today = mCustomerService.today
-			
-		LEFT JOIN (
-			SELECT COUNT(n.seq) AS p_note, DATE(NOW()) AS today
-			FROM note n
-			INNER JOIN member m ON n.sender = m.seq
-			WHERE n.read_status = 0 AND n.answer_status = 0 AND n.type = 1 AND m.user_type > 0 AND DATE(n.send_time) = DATE(NOW())) AS pNote ON cal.today = pNote.today
-			
-		LEFT JOIN (
-			SELECT COUNT(bs.seq) AS bs, DATE(NOW()) AS today
-			FROM betting_summary bs
-			WHERE DATE(bs.check_time) = DATE(NOW())) AS bs ON cal.today = bs.today
+
 	</select>
 	
 	<select id="getTotalMoneyInfo" resultType="java.util.Map">
@@ -233,7 +180,28 @@
 				 AND mh.operation_type > 1
 				 AND mh.admin_read_status = 0
 				 AND m.user_type > 0
-		   ), 0) AS partner_send_collect_cnt
+		   	), 0) AS partner_send_collect_cnt,
+			IFNULL((
+				SELECT COUNT(seq)
+				FROM betting_summary
+				WHERE admin_read_status = 0
+			), 0) AS bs,
+			IFNULL((
+			    SELECT COUNT(n.seq)
+				FROM note n
+				WHERE n.type = 1 AND n.send_type = 1 AND n.admin_read_status = 0
+			), 0) AS p_note,
+			IFNULL((
+				SELECT COUNT(n.seq)
+				FROM note n
+				INNER JOIN member m ON n.sender = m.seq
+				WHERE  n.type = 2 AND n.classification = 4 AND m.user_type = 0 AND n.admin_read_status = 0
+			), 0) As m_customer_service,
+			IFNULL((
+				SELECT COUNT(n.seq)
+				FROM note n
+				WHERE n.read_status = 0 AND n.type = 2 AND n.classification = 2 AND n.admin_read_status = 0
+			), 0) AS m_post
 		FROM (SELECT 1 ) AS apply
 	</select>
 </mapper>

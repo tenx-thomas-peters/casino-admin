@@ -161,7 +161,14 @@
 													</td>
 													<td th:text="${entity.member.level}"></td>
 													<td th:text="${#numbers.formatDecimal(entity.prevAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
-													<td th:text="${#numbers.formatDecimal(entity.finalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+													<td>
+														[[${#numbers.formatDecimal(entity.member.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+														<span class="text-danger">[</span>
+														<span class="text-danger">
+															[[${#numbers.formatDecimal(entity.member.casinoMoney, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+														</span>
+														<span class="text-danger">]</span>
+													</td>
 													<td class="applicationAmount text-danger" th:data-val="${entity.variableAmount}" th:text="${#numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 													<td th:text="${#numbers.formatDecimal(entity.bonus, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 													<td th:text="${entity.member.bankName}"></td>

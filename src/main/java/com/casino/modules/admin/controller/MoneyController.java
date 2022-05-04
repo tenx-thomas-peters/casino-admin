@@ -68,6 +68,8 @@ public class MoneyController {
         try {
             Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
+            moneyHistory.setStatus(1);
+            moneyHistory.setPartnerOrMember(0);
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
             QueryWrapper<Dict> dictQueryWrapper = new QueryWrapper<>();
@@ -420,23 +422,14 @@ public class MoneyController {
             HttpServletRequest request) {
         Result<MoneyHistory> result = new Result<>();
         try {
-            //TODO
-            // game api - /user/sub-balance start
+
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            ResponseEntity<String> ret = HttpUtils.userSubBalance(gameServerUrl + "/user/sub-balance", member.getName(), withdrawAmount, apiKey);
-            if (ret.getStatusCode().value() == 200) {
-                JSONObject json = JSONObject.parseObject(ret.getBody().toString());
-
-                if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL)) {
-                    result.success("success!");
-                } else {
-                    result.error505("failed");
-                }
+            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL)) {
+                result.success("success!");
             } else {
                 result.error505("failed");
             }
-
         } catch (Exception e) {
             log.error("url: /log/moneywithdraw/accept --- method: moneyWithdrawAccept --- " + e.getMessage());
             result.error500("failed");
@@ -490,7 +483,7 @@ public class MoneyController {
                 result.error505("failed");
             }
         } catch (Exception e) {
-            log.error("url: /log/moneywithdraw/accept --- method: moneyWithdrawAccept --- " + e.getMessage());
+            log.error("url: /log/partnerMoneywithdraw/accept --- method: moneyWithdrawAccept --- " + e.getMessage());
             result.error500("failed");
         }
         return result;

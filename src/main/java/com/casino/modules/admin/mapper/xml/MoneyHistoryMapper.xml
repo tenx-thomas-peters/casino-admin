@@ -28,6 +28,8 @@
 		mu.nickname AS "member.nickname",
 		mu.color AS "member.color",
 		mu.account_holder AS "member.accountHolder",
+		mu.money_amount AS "member.moneyAmount",
+		mu.casino_money AS "member.casinoMoney",
 		mu.level_seq AS "member.levelSeq",
 		l.level_name AS "member.level",
 		mu.bank_name AS "member.bankName",
@@ -288,13 +290,12 @@
 			LEFT JOIN (
 				SELECT
 					DATE( bts.check_time ) AS dates,
-					SUM( bts.betting_amount ) AS slot_bet,
-					SUM( bts.winning_amount ) AS slot_win
+					IFNULL(SUM(bts.slot_betting_amount),0) AS slot_bet,
+					IFNULL(SUM(bts.slot_winning_amount),0) AS slot_win
 				FROM
 					betting_summary bts
 				WHERE
-					bts.type = #{slotType} <!-- slot type -->
-					AND DATE( bts.check_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+					DATE( bts.check_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
 				GROUP BY
 					DATE( bts.check_time )) AS bet1 ON cal.dates = bet1.dates
 				<!-- slot betting statistic end -->
@@ -302,8 +303,8 @@
 			LEFT JOIN (
 				SELECT
 					DATE( bts.check_time ) AS dates,
-					SUM( bts.betting_amount ) AS baccarat_bet,
-					SUM( bts.winning_amount ) AS baccarat_win
+					IFNULL(SUM(bts.baccarat_betting_amount),0) AS baccarat_bet,
+					IFNULL(SUM(bts.baccarat_winning_amount),0) AS baccarat_win
 				FROM
 					betting_summary bts
 				WHERE
@@ -486,24 +487,22 @@
     		  LEFT JOIN (
     		  	SELECT
     		  		DATE(bss.check_time) AS checkDate,
-    		  		COUNT(*) AS slotBettingNumber,
-    		  		SUM(bss.betting_amount) AS slotBettingAmount
+					IFNULL(SUM(bss.slot_bet_count),0)  AS slotBettingNumber,
+					IFNULL(SUM(bss.slot_betting_amount),0)  AS slotBettingAmount
    		  		FROM
    		  			betting_summary AS bss
 	  			WHERE
-	  				bss.type = #{slotType}
-	  				AND DATE(bss.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+	  				DATE(bss.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
   				GROUP BY DATE(bss.check_time)) AS tmp_bss ON tmp_bss.checkDate = cal.dates
 			  LEFT JOIN (
 			  	SELECT
 			  		DATE(bsb.check_time) AS checkDate,
-			  		COUNT(*) AS baccaratBettingNumber,
-			  		SUM(bsb.betting_amount) AS baccaratBettingAmount
+					IFNULL(SUM(bsb.baccarat_bet_count),0)  AS baccaratBettingNumber,
+					IFNULL(SUM(bsb.baccarat_betting_amount),0)  AS baccaratBettingAmount
 		  		FROM
 		  			betting_summary AS bsb
 	  			WHERE
-	  				bsb.type = #{baccaratType}
-	  				AND DATE(bsb.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+	  				DATE(bsb.check_time) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
   				GROUP BY DATE(bsb.check_time)) AS tmp_bsb ON tmp_bsb.checkDate = cal.dates
   			  ORDER BY cal.dates
 	</select>
