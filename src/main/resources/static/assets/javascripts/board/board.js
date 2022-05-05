@@ -2,10 +2,20 @@ $(document).ready(function(){
 	
 });
 
-$('.question').on('click', function() {
+$('.question-title').on('click', function() {
 	let seq = $(this).data('seq');
 	console.log(seq);
 	window.location.assign(CONTEXT_ROOT + 'board/getQuestionBySeq?seq=' + seq);
+});
+
+$('.question-nickname').on('click', function() {
+	let memberSeq = $(this).data('mseq');
+	console.log(memberSeq);
+
+	let detailWindow = window.open(CONTEXT_ROOT + 'member/popup_detail?idx=' + memberSeq, 'Member Detail', features);
+	detailWindow.onbeforeunload = function () {
+		window.location.reload();
+	}
 });
 
 $('.edit').on('click', function() {

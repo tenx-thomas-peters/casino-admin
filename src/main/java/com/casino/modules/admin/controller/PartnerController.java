@@ -933,6 +933,9 @@ public class PartnerController {
             mQw.eq("user_type", CommonConstant.USER_TYPE_SUB_HEADQUARTER);
             List<Member> subHeadquarterList = memberService.list(mQw);
 
+			System.out.println("memberForm");
+			System.out.println(memberForm);
+
             model.addAttribute("memberForm", memberForm);
             model.addAttribute("storeList", storeList);
             model.addAttribute("distributorList", distributorList);

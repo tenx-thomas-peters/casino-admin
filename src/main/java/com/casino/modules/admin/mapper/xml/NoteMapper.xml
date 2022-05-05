@@ -19,9 +19,17 @@
 	</sql>
 		
 	<select id="getNoteList" resultType="com.casino.modules.admin.common.entity.Note">
-		SELECT n.*, m.nickname, m.account_holder, m.id AS "mId"
+		SELECT n.*, m.nickname, m.account_holder, m.id AS mId, m.user_type as userType, m.seq AS mSeq
 		FROM note n
-		LEFT JOIN member m ON m.seq = n.receiver
+		<choose>
+			<when test="form.sendType == 0">
+				LEFT JOIN member m ON m.seq = n.receiver
+			</when>
+			<when test="form.sendType == 1">
+				LEFT JOIN member m ON m.seq = n.sender
+			</when>
+		</choose>
+
 		<where>
 			1=1
 			<if test="form.type != null">

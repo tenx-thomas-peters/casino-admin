@@ -5,6 +5,40 @@ function allCheck(){
 		checkArray[i].checked = allCheck;
 	}
 };
+$(document).on('click', '.pInboxTitle', function(e){
+	let closed = $(this).attr("data-closed");
+	if (closed == 0) {
+		$(this).attr("data-closed", 1);
+		let title = $(this).text();
+		let content = $(this).data("content").replace(',<p>', '').replace('<p>', '');
+
+		let detailTr = getDetailTr(title, content);
+		$(this).parent().after(detailTr);
+	}
+	else{
+		$(this).attr("data-closed", 0);
+		$(this).parent().next().remove();
+	}
+})
+
+function getDetailTr(title, content){
+	return $('<tr class="detailTd"></tr>')
+		.append($("<td colspan='20'></td>")
+			.append(
+				$("<div class='note-inbox-detail'></div>")
+					.append(
+						$("<div class='row note-content'></div>")
+							.append("<div class='col-md-1'>" + titleStr + " : </div>")
+							.append("<div class='col-md-11 note-content-body'>" + title +"</div class='row'></div>")
+					)
+					.append(
+						$("<div class='row note-content'></div>")
+							.append("<div class='col-md-1'>" + contentStr + " : </div>")
+							.append("<div class='col-md-11 note-content-body'>" + content + "</div>")
+					)
+			)
+		);
+}
 
 $(document).on('click', '.noteTitle', function(e){
 	let closed = $(this).attr("data-closed");
@@ -13,22 +47,7 @@ $(document).on('click', '.noteTitle', function(e){
 		let title = $(this).data("title");
 		let content = $(this).data("content").replace(',<p>', '').replace('<p>', '');
 		 
-		let detailTr = $('<tr class="detailTd"></tr>')
-						.append($("<td colspan='20'></td>")
-							.append(
-								$("<div class='note-inbox-detail'></div>")
-									.append(
-										$("<div class='row note-content'></div>")
-											.append("<div class='col-md-1'>" + titleStr + " : </div>")
-											.append("<div class='col-md-11 note-content-body'>" + title +"</div class='row'></div>")
-									)
-									.append(
-										$("<div class='row note-content'></div>")
-											.append("<div class='col-md-1'>" + contentStr + " : </div>")
-											.append("<div class='col-md-11 note-content-body'>" + content + "</div>")
-									)
-							)
-						);
+		let detailTr = getDetailTr(title, content);
 		$(this).after(detailTr);
 	} else {
 		$(this).attr("data-closed", 0);
@@ -93,3 +112,32 @@ function batchDelete() {
 		});
 	}
 }
+
+$('.sender-nickname').on('click', function() {
+	let memberSeq = $(this).data('mseq');
+	let userType = $(this).data('utype');
+	let url = "";
+	if(userType == 1){
+		url = CONTEXT_ROOT + 'partner2/memberDetailsStore?idx='
+	}
+	else if(userType == 2){
+		url = CONTEXT_ROOT + 'partner2/memberDetails?idx='
+	}
+	else if(userType == 3){
+		url = CONTEXT_ROOT + 'partner2/memberDetailsTop?idx='
+	}
+
+	let detailWindow = window.open(url + memberSeq, 'Member Detail', features);
+	detailWindow.onbeforeunload = function () {
+		window.location.reload();
+	}
+});
+
+$('.answerbtn').on('click', function() {
+	let memberSeq = $(this).data('mseq');
+
+	let detailWindow = window.open(CONTEXT_ROOT + 'partner2/getMemo?seq=' + memberSeq, 'Member Detail', features);
+	detailWindow.onbeforeunload = function () {
+		window.location.reload();
+	}
+});
