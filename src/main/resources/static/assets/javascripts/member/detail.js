@@ -274,4 +274,23 @@ $(document).ready(function () {
             window.location.reload();
         }
     });
+
+    $('.btn_update_money').click(function (){
+        let memberSeq = $('input[name=seq]').val();
+        $.ajax({
+            url: CONTEXT_ROOT + '/api/syncCasinoMoney',
+            type: 'GET',
+            data: {userSeq: memberSeq},
+            dataType: 'json',
+            success: function (res) {
+                if (res.success) {
+                    let member = res.result;
+                    $('.member-site-money').text(member.moneyAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                    console.log(member.moneyAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                    $('.member-casino-money').text(member.casinoMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                    console.log(member.casinoMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                }
+            }
+        })
+    })
 });
