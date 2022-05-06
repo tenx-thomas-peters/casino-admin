@@ -205,6 +205,9 @@ public class MemberController {
     public Result<Member> updateMemberAjax(@ModelAttribute("member") Member member, HttpServletRequest request) {
         Result<Member> result = new Result<>();
         try {
+            System.out.println("changed money");
+            System.out.println(member.getMoneyAmount() + member.getChangeMoney());
+            member.setMoneyAmount(member.getMoneyAmount() + member.getChangeMoney());
             if (memberService.updateById(member)) {
                 result.success("success");
             } else {
@@ -213,6 +216,7 @@ public class MemberController {
         } catch (Exception e) {
             log.error("url: /member/update_ajax --- method: updateMemberAjax --- message: " + e.toString());
             result.error500("Internal Server Error");
+            e.printStackTrace();
         }
         return result;
     }
