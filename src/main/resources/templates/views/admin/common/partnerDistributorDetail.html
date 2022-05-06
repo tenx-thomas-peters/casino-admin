@@ -128,7 +128,9 @@
 							    [[#{admin.common.holdingMoney}]]
 							</label>
 							<div class="col-md-4 col-sm-6 form-container">
-							    <input type="text" class="form-control" name="moneyAmount" th:value="${#numbers.formatDecimal(memberForm.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}" />
+                                <p class="control-label mr-sm" th:text="${#numbers.formatDecimal(memberForm.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
+                                <input type="hidden" name="moneyAmount" class="form-control" th:value="${memberForm.moneyAmount}">
+                                <input type="text" name="changeMoney" class="form-control" placeholder="변동금액">
 							</div>
                            
 							<label class="col-md-2 col-sm-6 control-label">
@@ -174,7 +176,7 @@
                          <div class="form-group">
 	                         <label class="col-md-2 col-sm-6 control-label">
 								    <i class="fa fa-plus-square text-primary"></i>
-                                 [[#{admin.common.settlementmemberId}]]
+                                 [[#{admin.common.settlementMemberId}]]
 							</label>
 							<div class="col-md-4 col-sm-6 form-container">
 							    <input type="text" class="form-control" name="settlementMemberId" />
