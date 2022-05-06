@@ -136,7 +136,7 @@
 					INNER JOIN member m ON m.seq = al.member_seq
 				WHERE m.user_type = 2
 				  AND al.admin_read_status = 0
-			), 0) AS distributor_login
+			), 0) AS distributor_login,
 			IFNULL((
 			   SELECT COUNT(mh.seq)
 			   FROM money_history mh
