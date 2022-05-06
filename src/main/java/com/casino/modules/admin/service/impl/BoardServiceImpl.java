@@ -74,7 +74,7 @@ public class BoardServiceImpl extends ServiceImpl<BoardMapper, Note> implements 
 	}
 
 	@Override
-	public boolean changeAdminReadStatusAll(Integer type, Integer classification) {
-		return boardMapper.changeAdminReadStatusAll(type, classification);
+	public boolean changeAdminReadStatusAll(Integer type, Integer classification, Integer userType) {
+		return boardMapper.changeAdminReadStatusAll(type, classification, userType);
 	}
 }

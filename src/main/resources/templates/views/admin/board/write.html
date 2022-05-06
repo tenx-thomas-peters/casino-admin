@@ -78,73 +78,7 @@
 	                                                        </select>
 	                                                    </div>
 	                                                </div>
-	                                                <div class="col-sm-2">
-	                                                    <div class="d-inline-block">
-	                                                        <select id="site" name="site" class="form-control">
-	                                                        	<option th:value="#{admin.common.siteSelection}" th:text="#{admin.common.siteSelection}"></option>
-	                                                        </select>
-	                                                    </div>
-	                                                </div>
 	                                            </div>
-											</td>
-										</tr>
-										<tr>
-											<th width="15%">
-												<div class="demo-icon-hover mb-sm mt-sm">
-													<i class="fa fa-plus-square text-primary"></i>&nbsp;
-													<span th:text="#{admin.common.writer}"></span>:
-												</div>
-											</th>
-											<td>
-												<div class="row">
-                                                    <div class="col-sm-3">
-                                                        <input type="text" class="form-control" name="sender" th:value="${note.sender}" required/>
-                                                    </div>
-                                                </div>
-											</td>
-										</tr>
-										<tr>
-											<th width="15%">
-												<div class="demo-icon-hover mb-sm mt-sm">
-													<i class="fa fa-plus-square text-primary"></i>&nbsp;
-													<span th:text="#{admin.common.date}"></span>:
-												</div>
-											</th>
-											<td>
-												<input type="text" class="form-control" name="sendTime"  th:value="${#dates.format(note.sendTime, 'yyyy-MM-dd')}" required />
-											</td>
-										</tr>
-										<tr>
-											<th width="15%">
-												<div class="demo-icon-hover mb-sm mt-sm">
-													<i class="fa fa-plus-square text-primary"></i>&nbsp;
-													<span th:text="#{admin.common.lookup}"></span>:
-												</div>
-											</th>
-											<td>
-												<input id="lookUp" name="lookUp" type="number" th:value="${note.lookUp}" class="form-control" min="0"/>
-											</td>
-										</tr>
-										<tr>
-											<th width="15%">
-												<div class="demo-icon-hover mb-sm mt-sm">
-													<i class="fa fa-plus-square text-primary"></i>&nbsp;
-													<span th:text="#{admin.write.suggestion}"></span>:
-												</div>
-											</th>
-											<td>
-												<div class="row">
-                                                    <div class="col-sm-1 radio-custom radio-primary notRecommended">
-                                                        <input id="notRecommendStatus" name="recommendStatus" type="radio" value="0" 
-                                                        	th:checked="${note.recommendStatus == 0 ? true : false}">
-                                                        <label for="notRecommendStatus" th:text="#{admin.write.notRecommended}"></label>
-                                                    </div>
-                                                    <div class="col-sm-1 radio-custom radio-primary">
-                                                        <input id="recommendStatus" name="recommendStatus" type="radio" value="1" 
-                                                        	th:checked="${note.recommendStatus == 1 ? true : false}">
-                                                        <label for="recommendStatus" th:text="#{admin.write.recommendation}"></label>
-                                                    </div>
-                                                </div>
 											</td>
 										</tr>
 										<tr>

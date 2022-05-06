@@ -70,8 +70,8 @@
 			                                <td th:text="${entity.subHeadquarter}"></td>
 			                                <td th:text="${entity.id}"></a></td>
 											<td class="distributor-nickname" th:text="${entity.nickname}"></td>
-											<td th:text="${entity.storeCount}"></td>
-											<td th:text="${entity.memberCount}"></td>
+											<td><a class="headquarter-storeCount" th:text="${entity.storeCount}"></a></td>
+											<td><a class="headquarter-memberCount" th:text="${entity.memberCount}"></a></td>
 											<td th:text="${entity.depositMemberCount}"></td>
 											<td>
 												<span th:text="${#numbers.formatDecimal(entity.depositMemberAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span><br/>

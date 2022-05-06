@@ -60,7 +60,7 @@ public class PartnerController {
 			@RequestParam(name = "column", defaultValue = "create_date") String column,
 			@RequestParam(name = "order", defaultValue = "1") Integer order,
 			@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
+			@RequestParam(name = "pageSize", defaultValue = "100") Integer pageSize, HttpServletRequest request) {
 
 		try {
 			if(StringUtils.isBlank(headquarter.getFromApplicationTime())) {
@@ -201,7 +201,7 @@ public class PartnerController {
 			@RequestParam(name = "column", defaultValue = "id") String column,
 			@RequestParam(name = "order", defaultValue = "1") Integer order,
 			@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(name = "pageSize", defaultValue = "15") Integer pageSize, HttpServletRequest request) {
+			@RequestParam(name = "pageSize", defaultValue = "100") Integer pageSize, HttpServletRequest request) {
 
 		try {
 			
@@ -342,7 +342,7 @@ public class PartnerController {
 			@RequestParam(name = "column", defaultValue = "create_date") String column,
 			@RequestParam(name = "order", defaultValue = "1") Integer order,
 			@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
+			@RequestParam(name = "pageSize", defaultValue = "100") Integer pageSize, HttpServletRequest request) {
 		try {
 			if(StringUtils.isBlank(store.getFromApplicationTime())) {
 				store.setFromApplicationTime(null);

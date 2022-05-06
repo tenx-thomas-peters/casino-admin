@@ -34,5 +34,5 @@ public interface BoardMapper extends BaseMapper<Note> {
 
 	Note getQuestionBySeq(@Param("seq") String seq);
 
-	boolean changeAdminReadStatusAll(@Param("type") Integer type, @Param("classification") Integer classification);
+	boolean changeAdminReadStatusAll(@Param("type") Integer type, @Param("classification") Integer classification, @Param("userType") Integer userType);
 }

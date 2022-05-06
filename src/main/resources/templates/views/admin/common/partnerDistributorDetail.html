@@ -36,6 +36,7 @@
                             		<option th:each="subHeadquarter : ${subHeadquarterList}" th:text="${subHeadquarter.id}"
                             			th:value="${subHeadquarter.seq}"  th:selected="${subHeadquarter.seq == subHeadquarterSeq}" th:inline="text"></option>
                             	</select>
+                                <input type="hidden" th:value="*{subHeadquarterSeq}" name="headquarterSeq">
                             </div>
                         </div>
                         <div class="form-group">
@@ -66,11 +67,11 @@
                              [[#{admin.common.settlement}]][[#{admin.common.rate}]] </label>
                              <div class="col-sm-4 form-container">
                              	<label th:text="#{admin.common.slot}"></label>
-                                 <input type="number" name="slotRate" class="form-control" th:value="${#numbers.formatDecimal(memberForm.slotRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"
+                                 <input type="number" name="slotRate" class="form-control slotRateField" th:value="${#numbers.formatDecimal(memberForm.slotRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"
                                  	style="width:70px; display:inline-block;" required>
                                  <span>%</span>
                                  <label th:text="#{admin.common.baccarat}"></label>
-                                 <input type="number" name="baccaratRate" class="form-control" style="width:70px; display:inline-block;" th:value="${#numbers.formatDecimal(memberForm.baccaratRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"  required="">
+                                 <input type="number" name="baccaratRate" class="form-control baccaratRateField" style="width:70px; display:inline-block;" th:value="${#numbers.formatDecimal(memberForm.baccaratRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"  required="">
                                  <span>%</span>
                              </div>
                          </div>
@@ -128,7 +129,9 @@
 							    [[#{admin.common.holdingMoney}]]
 							</label>
 							<div class="col-md-4 col-sm-6 form-container">
-							    <input type="text" class="form-control" name="moneyAmount" th:value="${#numbers.formatDecimal(memberForm.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}" />
+                                <p class="control-label mr-sm" th:text="${#numbers.formatDecimal(memberForm.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
+                                <input type="hidden" name="moneyAmount" class="form-control" th:value="${memberForm.moneyAmount}">
+                                <input type="text" name="changeMoney" class="form-control" placeholder="변동금액">
 							</div>
                            
 							<label class="col-md-2 col-sm-6 control-label">
@@ -174,7 +177,7 @@
                          <div class="form-group">
 	                         <label class="col-md-2 col-sm-6 control-label">
 								    <i class="fa fa-plus-square text-primary"></i>
-                                 [[#{admin.common.settlementmemberId}]]
+                                 [[#{admin.common.settlementMemberId}]]
 							</label>
 							<div class="col-md-4 col-sm-6 form-container">
 							    <input type="text" class="form-control" name="settlementMemberId" />
@@ -220,6 +223,8 @@
 </section>
 <script type="text/javascript" th:inline="javascript">
         var url = [[${url}]];
+        var subHeadquarterList = [[${subHeadquarterList}]];
+        var memberForm = [[${memberForm}]];
 </script>
 
 <script th:replace="template :: scripts"></script>

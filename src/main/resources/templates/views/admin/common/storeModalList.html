@@ -69,7 +69,7 @@
 	                                   	<td th:text="${entity.distributor}"></td>
 	                                   	<td th:text="${entity.id}"></td>
 										<td th:text="${entity.nickname}"></td>
-										<td th:text="${entity.memberCount}" th:data-key="${entity.id}"></td>
+										<td><a class="store-memberCount" th:text="${entity.memberCount}"></a></td>
 										<td th:text="${entity.depositMemberCount}"></td>
 										<td>
 											<span th:text="${#numbers.formatDecimal(entity.depositMemberAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span><br/>
@@ -100,34 +100,34 @@
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.betAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+												<span th:text="${ #numbers.formatDecimal(entity.slotBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') }"></span>
 											</p>
 											<p class="bg-white-grey">
-												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.betAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+												<span th:text="${ #numbers.formatDecimal(entity.baccaratBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') }"></span>
 											</p>
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+												<span th:text="${ #numbers.formatDecimal(entity.slotWinningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') }"></span>
 											</p>
 											<p class="bg-white-grey">
-												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+												<span th:text="${ #numbers.formatDecimal(entity.baccaratWinningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') }"></span>
 											</p>
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.lostAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+												<span th:text="${ #numbers.formatDecimal(entity.slotLostAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') }"></span>
 											</p>
 											<p class="bg-white-grey">
-												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.lostAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+												<span th:text="${ #numbers.formatDecimal(entity.baccaratLostAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') }"></span>
 											</p>
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
-												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.batRolling, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+												<span th:text="${ #numbers.formatDecimal(entity.slotStoreRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') }"></span>
 											</p>
 											<p class="bg-white-grey">
-												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.batRolling, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+												<span th:text="${ #numbers.formatDecimal(entity.baccaratStoreRollingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 											</p>
 										</td>
 										<td>

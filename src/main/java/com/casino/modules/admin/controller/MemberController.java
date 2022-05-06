@@ -205,6 +205,17 @@ public class MemberController {
     public Result<Member> updateMemberAjax(@ModelAttribute("member") Member member, HttpServletRequest request) {
         Result<Member> result = new Result<>();
         try {
+
+            String strChangeMoney = member.getChangeMoney();
+            if(!strChangeMoney.equals("")){
+                System.out.println("changed money");
+
+                float floatChangeMoney = Float.parseFloat(strChangeMoney);
+                System.out.println(floatChangeMoney);
+                System.out.println(member.getMoneyAmount() + floatChangeMoney);
+                member.setMoneyAmount(member.getMoneyAmount() + floatChangeMoney);
+            }
+
             if (memberService.updateById(member)) {
                 result.success("success");
             } else {
@@ -213,6 +224,7 @@ public class MemberController {
         } catch (Exception e) {
             log.error("url: /member/update_ajax --- method: updateMemberAjax --- message: " + e.toString());
             result.error500("Internal Server Error");
+            e.printStackTrace();
         }
         return result;
     }

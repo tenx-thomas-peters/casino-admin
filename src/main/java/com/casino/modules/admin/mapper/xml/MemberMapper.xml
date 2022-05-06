@@ -1175,6 +1175,8 @@
 			SUM(IFNULL(bs.baccarat_winning_amount, 0)) AS baccaratWinningAmount,
 			SUM(IFNULL(bs.slot_lost_amount, 0)) AS slotLostAmount,
 			SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount,
+			SUM(IFNULL(bs.slot_store_rolling_amount, 0)) AS slotStoreRollingAmount,
+			SUM(IFNULL(bs.baccarat_store_rolling_amount, 0)) AS baccaratStoreRollingAmount,
 			IFNULL(bs.bat_rolling, 0) AS batRolling,
 			bs.type AS gameType
 		FROM

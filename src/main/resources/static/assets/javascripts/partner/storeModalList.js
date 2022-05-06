@@ -6,3 +6,14 @@ $(document).on('click', '.progress-bet', function (e) {
         window.location.reload();
     }
 });
+
+let today = moment().format('YYYY-MM-DD');
+
+$(document).on('click', '.store-memberCount', function (e) {
+    e.preventDefault();
+    let storeSeq = $(this).parents('tr').find('.store-seq').data('key');
+    let detailWindow = window.open('./Member?seq=' + storeSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 1, '', partnerFeatures);
+    detailWindow.onbeforeunload = function () {
+        window.location.reload();
+    }
+});

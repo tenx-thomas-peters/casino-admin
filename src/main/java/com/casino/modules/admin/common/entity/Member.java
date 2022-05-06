@@ -139,6 +139,9 @@ public class Member implements Serializable {
     private Member headQuarter;
 
     @TableField(exist = false)
+    private String changeMoney;
+
+    @TableField(exist = false)
     private Member distributor;
 
     @TableField(exist = false)

@@ -3,7 +3,26 @@ $('.erase-color').click(function () {
     $('#partnerDistributorDetail').find('input[name=color]').val('#000000');
 });
 
+
 $(document).on('click', '.update-partner-distributor-member', function () {
+
+    // check slot rate and baccarat rate are higher than parent rate====================== <
+    let myParent = subHeadquarterList.filter(function(el) {
+        return el.seq ===  memberForm.subHeadquarterSeq
+    })
+    let slotRateField = $(".slotRateField").val();
+    let baccaratRateField = $(".baccaratRateField").val();
+    if(slotRateField > myParent[0].slotRate){
+        alert("슬롯 요율이 상부보다 높을수 없습니다");
+        return;
+    }
+    if(baccaratRateField > myParent[0].baccaratRate){
+        alert("바카라 요율이 상부보다 높을수 없습니다");
+        return;
+    }
+    // check slot rate and baccarat rate are higher than parent rate====================== />
+
+
     let form = $('#partner-distributor-update-form');
     let formData = new FormData(form[0]);
     let today = moment().format('YYYY-MM-DD HH:mm:ss');

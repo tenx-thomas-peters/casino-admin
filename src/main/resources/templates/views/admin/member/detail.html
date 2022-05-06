@@ -65,16 +65,17 @@
                                 <div class="col-md-4 col-sm-6 form-container">
                                     <div>
                                         <p class="control-label member-money" style="display: inline-block; width: auto; cursor: pointer;">
-                                            [[*{#numbers.formatDecimal(moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
-                                            <span class="text-danger">[</span>
-                                            <span class="text-danger"
-                                                  th:text="*{#numbers.formatDecimal(casinoMoney, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
-                                            <span class="text-danger">]</span>
+                                            <span class="member-site-money">
+                                                [[*{#numbers.formatDecimal(moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]
+                                            </span>
+                                            <span class="text-danger">
+                                                [ <span class="member-casino-money">[[*{#numbers.formatDecimal(casinoMoney, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]] </span>]
+                                            </span>
                                         </p>
                                         &nbsp;/&nbsp;
                                         <p class="control-label member-money" style="display: inline-block; width: auto; cursor: pointer;"
                                            th:text="*{#numbers.formatDecimal(mileageAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
-                                        <a class="btn  custom-btn">[[#{admin.member.moneyRenewal}]]</a>
+                                        <a class="btn custom-btn btn_update_money">[[#{admin.member.moneyRenewal}]]</a>
                                     </div>
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">

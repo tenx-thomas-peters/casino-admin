@@ -52,7 +52,7 @@ $(document).ready(function() {
 	$(document).on('click', '.headquarter-distributorCount', function (e) {
 	    e.preventDefault();
 	    let headquarterSeq = $(this).parents('tr').find('.headquarter-seq').data('key');
-	    let detailWindow = window.open('./chongMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today, 'Sub-Distributor List', features);
+	    let detailWindow = window.open('./chongMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today, 'Sub-Distributor List', partnerFeatures);
 	    detailWindow.onbeforeunload = function () {
             window.location.reload();
         }
@@ -61,7 +61,7 @@ $(document).ready(function() {
 	$(document).on('click', '.headquarter-storeCount', function (e) {
 	    e.preventDefault();
 	    let headquarterSeq = $(this).parents('tr').find('.headquarter-seq').data('key');
-	    let detailWindow = window.open('./shopMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 3, 'Sub-Store List', features);
+	    let detailWindow = window.open('./shopMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 3, 'Sub-Store List', partnerFeatures);
 	    detailWindow.onbeforeunload = function () {
             window.location.reload();
         }
@@ -70,7 +70,7 @@ $(document).ready(function() {
 	$(document).on('click', '.headquarter-memberCount', function (e) {
 	    e.preventDefault();
 	    let headquarterSeq = $(this).parents('tr').find('.headquarter-seq').data('key');
-	    let detailWindow = window.open('./Member?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 3, 'Sub-Member List', features);
+	    let detailWindow = window.open('./Member?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 3, 'Sub-Member List', partnerFeatures);
 	    detailWindow.onbeforeunload = function () {
             window.location.reload();
         }

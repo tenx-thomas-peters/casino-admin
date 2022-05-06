@@ -68,13 +68,13 @@ let today = moment().format('YYYY-MM-DD');
 $(document).on('click', '.headquarter-storeCount', function (e) {
     e.preventDefault();
     let headquarterSeq = $(this).parents('tr').find('.distributor-seq').data('key');
-    window.open('./shopMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 2, 'Sub-Store List', 'width='+screen.availWidth+',height=900');
+    window.open('./shopMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 2, 'Sub-Store List', partnerFeatures);
 });
 
 $(document).on('click', '.headquarter-memberCount', function (e) {
     e.preventDefault();
     let headquarterSeq = $(this).parents('tr').find('.distributor-seq').data('key');
-    window.open('./Member?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 2, 'Sub-Store List', features);
+    window.open('./Member?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 2, 'Sub-Store List', partnerFeatures);
 });
 
 function changeStatus(seq) {
