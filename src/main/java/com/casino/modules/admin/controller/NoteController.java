@@ -108,7 +108,7 @@ public class NoteController {
 			form.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
 			IPage<Note> pageList = noteService.getNoteList(page, form);
 
-			boardService.changeAdminReadStatusAll(CommonConstant.TYPE_P_NOTE, 0);
+			boardService.changeAdminReadStatusAll(CommonConstant.TYPE_P_NOTE, 0, CommonConstant.PARTNER_OR_MEMBER_PARTNER);
 
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);

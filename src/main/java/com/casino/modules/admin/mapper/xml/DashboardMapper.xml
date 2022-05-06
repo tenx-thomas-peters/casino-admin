@@ -66,39 +66,12 @@
 	
 	<select id="getAccessData" resultType="java.util.Map">
 		SELECT 
-			member_judge_login,
-			member_login,
-			store_login,
-			distributor_login,
 			IFNULL(member_deposit_sum,0) AS member_deposit_sum,
 			IFNULL(member_withdraw_sum,0) AS member_withdraw_sum,
 			IFNULL(partner_deposit_sum,0) AS partner_deposit_sum,
 			IFNULL(partner_withdraw_sum,0) AS partner_withdraw_sum
 		FROM (SELECT DATE(NOW()) AS today) AS cal
-		LEFT JOIN (
-			SELECT COUNT(al.seq) AS member_judge_login, DATE(NOW()) AS today
-			FROM access_log al
-			INNER JOIN member m ON m.seq = al.member_seq 
-			WHERE m.user_type = 0 AND m.status = 3 AND DATE(al.connection_date) = DATE(NOW())) AS memJudgeLogin ON cal.today = memJudgeLogin.today
-		
-		LEFT JOIN (
-			SELECT COUNT(al.seq) AS member_login, DATE(NOW()) AS today
-			FROM access_log al
-			INNER JOIN member m ON m.seq = al.member_seq 
-			WHERE m.user_type = 0 AND DATE(al.connection_date) = DATE(NOW())) AS memLogin ON cal.today = memLogin.today
-		
-		LEFT JOIN (
-			SELECT COUNT(al.seq) AS store_login, DATE(NOW()) AS today
-			FROM access_log al
-			INNER JOIN member m ON m.seq = al.member_seq 
-			WHERE m.user_type = 1 AND DATE(al.connection_date) = DATE(NOW())) AS storeLogin ON cal.today = storeLogin.today
-			
-		LEFT JOIN (
-			SELECT COUNT(al.seq) AS distributor_login, DATE(NOW()) AS today
-			FROM access_log al
-			INNER JOIN member m ON m.seq = al.member_seq 
-			WHERE m.user_type = 2 AND DATE(al.connection_date) = DATE(NOW())) AS distributorLogin ON cal.today = distributorLogin.today
-		
+
 		LEFT JOIN (
 			SELECT SUM(mh.variable_amount) AS member_deposit_sum, DATE(NOW()) AS today
 			FROM money_history mh
@@ -136,6 +109,34 @@
 
 	<select id="getApplicationCount" resultType="java.util.Map">
 		SELECT
+			IFNULL((
+				SELECT COUNT(al.seq)
+				FROM access_log al
+					INNER JOIN member m ON m.seq = al.member_seq
+				WHERE m.user_type = 0
+			    AND al.admin_read_status = 0
+			), 0) AS member_login,
+			IFNULL((
+				SELECT COUNT(al.seq)
+				FROM access_log al
+					INNER JOIN member m ON m.seq = al.member_seq
+				WHERE m.user_type = 0 AND m.status = 3
+				  AND al.admin_read_status = 0
+			), 0) AS member_judge_login,
+			IFNULL((
+				SELECT COUNT(al.seq)
+				FROM access_log al
+					INNER JOIN member m ON m.seq = al.member_seq
+				WHERE m.user_type = 1
+				  AND al.admin_read_status = 0
+			), 0) AS store_login,
+			IFNULL((
+				SELECT COUNT(al.seq)
+				FROM access_log al
+					INNER JOIN member m ON m.seq = al.member_seq
+				WHERE m.user_type = 2
+				  AND al.admin_read_status = 0
+			), 0) AS distributor_login
 			IFNULL((
 			   SELECT COUNT(mh.seq)
 			   FROM money_history mh
@@ -195,7 +196,7 @@
 				SELECT COUNT(n.seq)
 				FROM note n
 				INNER JOIN member m ON n.sender = m.seq
-				WHERE  n.type = 2 AND n.classification = 4 AND m.user_type = 0 AND n.admin_read_status = 0
+				WHERE n.send_type = 1 AND n.type = 2 AND m.user_type = 0 AND n.classification = 4 AND n.admin_read_status = 0
 			), 0) As m_customer_service,
 			IFNULL((
 				SELECT COUNT(n.seq)
