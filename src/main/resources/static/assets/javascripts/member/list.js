@@ -241,7 +241,7 @@ $(document).ready(function() {
             e.preventDefault();
             let memberSeq = $(this).parents('tr').find('.checkboxes').data('key');
 
-            let detailWindow = window.open(CONTEXT_ROOT + 'member/popup_detail?idx=' + memberSeq, 'Member Detail', features);
+            let detailWindow = window.open(CONTEXT_ROOT + 'member/popup_detail?idx=' + memberSeq, '', features);
             detailWindow.onbeforeunload = function () {
                 window.location.reload();
             }
