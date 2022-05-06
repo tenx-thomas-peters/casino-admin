@@ -192,7 +192,7 @@ public class BoardController {
 
 		try {
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
-			boardService.changeAdminReadStatusAll(CommonConstant.TYPE_POST, CommonConstant.CLASSIFICATION_CUSTOMER);
+			boardService.changeAdminReadStatusAll(CommonConstant.TYPE_POST, CommonConstant.CLASSIFICATION_CUSTOMER, CommonConstant.USER_TYPE_NORMAL);
 			IPage<Note> pageList = boardService.getQuestionPageList(page, form);
 
 			model.addAttribute("pageList", pageList);
