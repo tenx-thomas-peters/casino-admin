@@ -397,6 +397,7 @@ public class ApiController {
 
     @GetMapping(value = "getNoteList")
     public Result<IPage<Note>> getNoteList(
+            @RequestParam(name = "sender", defaultValue = "0") String sender,
             @RequestParam(name = "type", defaultValue = "0") Integer type,
             @RequestParam(name = "classification", defaultValue = "0") Integer classification,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
@@ -404,7 +405,9 @@ public class ApiController {
         Result<IPage<Note>> result = new Result<>();
         try {
             QueryWrapper<Note> qw = new QueryWrapper<>();
+            qw.eq("sender", sender);
             qw.eq("type", type);
+            qw.eq("send_type", 1);
             qw.eq("classification", classification);
             Page<Note> page = new Page<Note>(pageNo, pageSize);
             IPage<Note> pageList = noteService.page(page, qw);
@@ -632,6 +635,7 @@ public class ApiController {
     public Result<Note> postSupportForm(@RequestBody Note note) {
         Result<Note> result = new Result<>();
         try {
+            note.setSendType(1);
             note.setSeq(UUIDGenerator.generate());
 
             if (noteService.save(note)) {

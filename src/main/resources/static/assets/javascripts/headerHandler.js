@@ -42,6 +42,7 @@ $(document).ready(function() {
 					if(res.data.member_withdraw_cnt) $('.header-context-info.m-withdraw').addClass("c-yellow");
 					if(res.data.m_post) $('.header-context-info.m-posts').addClass("c-yellow");
 					if(res.data.bs) $('.header-context-info.m-betting-summary').addClass("c-yellow");
+					if(res.data.m_customer_service) $('.header-context-info.m-customer-service').addClass("c-yellow");
 					if(res.data.distributor_login) $('.header-context-info.p-distributor').addClass("c-yellow");
 					if(res.data.store_login) $('.header-context-info.p-store').addClass("c-yellow");
 					if(res.data.partner_deposit_cnt) $('.header-context-info.p-deposit').addClass("c-yellow");
