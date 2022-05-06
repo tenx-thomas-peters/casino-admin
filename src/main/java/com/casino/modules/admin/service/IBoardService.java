@@ -26,5 +26,5 @@ public interface IBoardService extends IService<Note> {
 
 	Note getQuestionBySeq(String seq);
 
-	boolean changeAdminReadStatusAll(Integer type, Integer classification);
+	boolean changeAdminReadStatusAll(Integer type, Integer classification, Integer userType);
 }
