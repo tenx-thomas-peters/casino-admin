@@ -139,7 +139,7 @@ public class Member implements Serializable {
     private Member headQuarter;
 
     @TableField(exist = false)
-    private float changeMoney;
+    private String changeMoney;
 
     @TableField(exist = false)
     private Member distributor;

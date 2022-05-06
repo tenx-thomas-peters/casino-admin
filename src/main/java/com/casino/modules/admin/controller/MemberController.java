@@ -205,9 +205,17 @@ public class MemberController {
     public Result<Member> updateMemberAjax(@ModelAttribute("member") Member member, HttpServletRequest request) {
         Result<Member> result = new Result<>();
         try {
-            System.out.println("changed money");
-            System.out.println(member.getMoneyAmount() + member.getChangeMoney());
-            member.setMoneyAmount(member.getMoneyAmount() + member.getChangeMoney());
+
+            String strChangeMoney = member.getChangeMoney();
+            if(!strChangeMoney.equals("")){
+                System.out.println("changed money");
+
+                float floatChangeMoney = Float.parseFloat(strChangeMoney);
+                System.out.println(floatChangeMoney);
+                System.out.println(member.getMoneyAmount() + floatChangeMoney);
+                member.setMoneyAmount(member.getMoneyAmount() + floatChangeMoney);
+            }
+
             if (memberService.updateById(member)) {
                 result.success("success");
             } else {
