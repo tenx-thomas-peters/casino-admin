@@ -12,11 +12,11 @@ let today = moment().format('YYYY-MM-DD');
 $(document).on('click', '.headquarter-storeCount', function (e) {
     e.preventDefault();
     let headquarterSeq = $(this).parents('tr').find('.distributor-seq').data('key');
-    window.open('./shopMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 2, 'Sub-Store List', partnerFeatures);
+    window.open('./shopMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 2, '', partnerFeatures);
 });
 
 $(document).on('click', '.headquarter-memberCount', function (e) {
     e.preventDefault();
     let headquarterSeq = $(this).parents('tr').find('.distributor-seq').data('key');
-    window.open('./Member?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 2, 'Sub-Store List', partnerFeatures);
+    window.open('./Member?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 2, '', partnerFeatures);
 });
