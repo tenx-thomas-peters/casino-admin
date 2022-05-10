@@ -117,6 +117,8 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
                     totalBettingAmount.setLostAmount();
 
+                    float slot_rolling_amount = 0;
+                    float baccarat_rolling_amount = 0;
                     float slot_store_rolling_amount = 0;
                     float baccarat_store_rolling_amount = 0;
                     float slot_distributor_rolling_amount = 0;
@@ -127,15 +129,24 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     float slot_distributor_rate_amount = 0;
                     float baccarat_distributor_rate_amount = 0;
 
+                    float slot_store_rate_amount = 0;
+                    float baccarat_store_rate_amount = 0;
+
+                    slot_rolling_amount = this.calulateRate(totalBettingAmount.slotBettingAmount, member.getSlotRate());
+                    baccarat_rolling_amount = this.calulateRate(totalBettingAmount.baccaratBettingAmount, member.getBaccaratRate());
+
+
                     //-------- get store
                     if(member.getStoreSeq() !=null && !member.getStoreSeq().equals("")){
 
                         Member store_member = memberService.getById(member.getStoreSeq());
                         System.out.println("IScheduleService==saveBettingSummary========store_member:" + store_member);
 
-                        slot_store_rolling_amount = this.calulateRate(totalBettingAmount.slotBettingAmount, store_member.getSlotRate());
-                        baccarat_store_rolling_amount = this.calulateRate(totalBettingAmount.baccaratBettingAmount, store_member.getBaccaratRate());
+                        slot_store_rate_amount = this.calulateRate(totalBettingAmount.slotBettingAmount, store_member.getSlotRate());
+                        baccarat_store_rate_amount = this.calulateRate(totalBettingAmount.baccaratBettingAmount, store_member.getBaccaratRate());
 
+                        slot_store_rolling_amount = slot_store_rate_amount - slot_rolling_amount;
+                        baccarat_store_rolling_amount = baccarat_store_rate_amount - baccarat_rolling_amount;
                         float store_variableAmount = slot_store_rolling_amount + baccarat_store_rolling_amount;
 
                         System.out.println("IScheduleService==saveBettingSummary========store rolling data" +
@@ -283,6 +294,8 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
                     member.setCasinoMoney(member.getCasinoMoney() + variableAmount);
 
+                    float variableMileage = slot_rolling_amount + baccarat_rolling_amount;
+
 //                    Thomas 2022.04.27 add log money history of betting result
 //                    if(memberService.updateMemberHoldingMoney(
 //                            member.getSeq(),
@@ -298,6 +311,37 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 //                            reason,
 //                            0
 //                    )){
+
+                    if(variableMileage > 0){
+                        System.out.println("IScheduleService==saveBettingSummary========give mileage==");
+                        System.out.println("=====mileage amount===");
+                        System.out.println("\tslot rolling amount:" + slot_rolling_amount);
+                        System.out.println("\tbaccarat rolling amount:" + baccarat_rolling_amount);
+                        System.out.println("\t=====Total amount:" + variableMileage);
+
+                        String mileageReason =
+                                "배팅롤링금 포인트: " +
+                                "[슬롯:" + member.getSlotRate() + "% | " +
+                                "바카라:"+ member.getBaccaratRate() + "%]";
+
+                        // set mileage
+                        memberService.updateMemberHoldingMoney(
+                                member.getSeq(),
+                                member.getCasinoMoney(),
+                                member.getMileageAmount(),
+                                variableMileage,
+                                Math.abs(variableMileage),
+                                member.getMileageAmount() + variableMileage,
+                                1,
+                                0,
+                                CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+                                reasonType,
+                                mileageReason,
+                                0
+                        );
+                    }
+
+                    member.setMileageAmount(member.getMileageAmount() + variableMileage);
 
                     if(memberService.updateById(member)){
                         System.out.println("\tIScheduleService==saveBettingSummary======== member rolling data save success");
@@ -322,6 +366,8 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     bettingSummary.setStoreSeq(member.getStoreSeq() != null ? member.getStoreSeq() : "");
                     bettingSummary.setDistributorSeq(member.getDistributorSeq() != null ? member.getDistributorSeq() : "");
                     bettingSummary.setHeadquarterSeq(member.getSubHeadquarterSeq() != null ? member.getSubHeadquarterSeq() : "");
+                    bettingSummary.setSlotRollingAmount(slot_rolling_amount);
+                    bettingSummary.setBaccaratRollingAmount(baccarat_rolling_amount);
                     bettingSummary.setSlotStoreRollingAmount(slot_store_rolling_amount);
                     bettingSummary.setBaccaratStoreRollingAmount(baccarat_store_rolling_amount);
                     bettingSummary.setSlotDistributorRollingAmount(slot_distributor_rolling_amount);

@@ -101,6 +101,7 @@
 	<select id="getTotalMoneyInfo" resultType="java.util.Map">
 		SELECT 
 		IFNULL(SUM(money_amount), 0) AS total_money,
+		IFNULL(SUM(casino_money), 0) AS total_casino_money,
 		IFNULL(SUM(mileage_amount), 0) AS total_mileage,
 		(SELECT IFNULL(SUM(money_amount), 0) FROM member where user_type > 0) AS ptotal_money
 		FROM member

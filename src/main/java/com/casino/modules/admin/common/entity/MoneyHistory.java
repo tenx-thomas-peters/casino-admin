@@ -106,6 +106,9 @@ public class MoneyHistory implements Serializable {
 	@TableField(value = "create_by")
 	private String createBy;
 
+	@TableField(value = "first_charge")
+	private Integer firstCharge;
+
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@TableField(value = "create_time")

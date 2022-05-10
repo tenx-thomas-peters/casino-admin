@@ -50,8 +50,11 @@ public class BettingSummary implements Serializable {
     @TableField(value = "baccarat_lost_amount")
     private Float baccaratLostAmount;
 
-    @TableField(value = "bat_rolling")
-    private Float batRolling;
+    @TableField(value = "slot_rolling_amount")
+    private Float slotRollingAmount;
+
+    @TableField(value = "baccarat_rolling_amount")
+    private Float baccaratRollingAmount;
 
     @TableField(value = "slot_bet_count")
     private Integer slotBetCount;

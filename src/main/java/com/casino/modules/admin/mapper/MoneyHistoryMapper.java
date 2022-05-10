@@ -1,6 +1,7 @@
 package com.casino.modules.admin.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -72,6 +73,9 @@ public interface MoneyHistoryMapper extends BaseMapper<MoneyHistory> {
 	        @Param("status") Integer status,
             @Param("operationType") Integer operationType,
             @Param("moneyOrPoint") Integer moneyOrPoint);
+
+    Map<String, Number> getTodayFirstMoneyHistory(
+            @Param("userSeq") String userSeq);
 
 	IPage<MoneyHistory> getMonthMoneyLogByMemberSeq(Page<MoneyHistory> page, 
 			@Param("memberSeq") String memberSeq, @Param("operationType") Integer operationType);

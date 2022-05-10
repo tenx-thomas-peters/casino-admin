@@ -2,6 +2,7 @@ package com.casino.modules.admin.service;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,7 +33,7 @@ public interface IMoneyHistoryService extends IService<MoneyHistory> {
 
 	Float getTotalAmountByDateRange(MoneyHistory moneyHistory);
 	
-	Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType);
+	Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge);
 
 	// for api
 	List<MoneyHistory> getTodayMoneyHistory(Integer status, Integer operationType, Integer moneyOrPoint);
@@ -43,4 +44,5 @@ public interface IMoneyHistoryService extends IService<MoneyHistory> {
 
 	boolean changeAdminReadStatusAll(Integer operationType, Integer userType);
 
+	Map<String, Number> getTodayFirstMoneyHistory(String userSeq);
 }
