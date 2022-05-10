@@ -628,4 +628,17 @@
 				AND mh.operation_type > #{operationType}
 			</if>
 	</update>
+
+	<select id="getTodayFirstMoneyHistory" resultType="java.util.Map">
+		SELECT
+		IFNULL(SUM(mh.first_charge), 0) AS total_first_charge
+		FROM
+		money_history mh
+		INNER JOIN member m ON mh.receiver = m.seq
+		WHERE
+			DATE(mh.application_time) = DATE(NOW())
+			AND mh.receiver = #{userSeq}
+			AND mh.operation_type = 0
+		GROUP BY mh.receiver
+	</select>
 </mapper>
