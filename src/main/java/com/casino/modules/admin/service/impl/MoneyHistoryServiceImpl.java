@@ -2,10 +2,7 @@ package com.casino.modules.admin.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -123,7 +120,7 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 
 	@Override
 	@Transactional(readOnly = false)
-	public Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType) {
+	public Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge) {
 		MoneyHistory moneyHistory = moneyHistoryMapper.selectById(seq);
 		Member member = memberService.getById(moneyHistory.getReceiver());
 		moneyHistory.setPrevAmount(member.getMoneyAmount() == null  ? 0f : member.getMoneyAmount());
@@ -158,6 +155,9 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 		String reason = messageSource.getMessage(reasonStrKey, params.toArray(), Locale.ENGLISH);
 		moneyHistory.setReason(reason);
 		moneyHistory.setProcessTime(new Date());
+
+		// set first charge flag
+		moneyHistory.setFirstCharge(firstCharge);
 		member.setMoneyAmount(moneyHistory.getFinalAmount());
 		
 		if(this.updateById(moneyHistory)) {
@@ -220,5 +220,12 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 	@Override
 	public boolean changeAdminReadStatusAll(Integer operationType, Integer userType) {
 		return moneyHistoryMapper.changeAdminReadStatusAll(operationType, userType);
+	}
+
+	@Override
+	public Map<String, Number> getTodayFirstMoneyHistory(String userSeq) {
+		System.out.println("userSeq");
+		System.out.println(userSeq);
+		return moneyHistoryMapper.getTodayFirstMoneyHistory(userSeq);
 	}
 }
