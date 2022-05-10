@@ -52,8 +52,9 @@ public class DistributorForm {
 	private Float slotLostAmount;
 	private Float baccaratLostAmount;
 
-	private Float batRolling;
-	
+	private Float slotRollingAmount;
+	private Float baccaratRollingAmount;
+
 	private Float settlementRate;
 	
 	private Float slotRate;

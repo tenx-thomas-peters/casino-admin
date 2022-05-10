@@ -448,8 +448,6 @@
 			IFNULL(SUM(bs.baccarat_lost_amount),0)  AS baccaratLostAmount,
 			IFNULL(SUM(bs.slot_store_rolling_amount),0)  AS slotStoreRollingAmount,
 			IFNULL(SUM(bs.baccarat_store_rolling_amount),0)  AS baccaratStoreRollingAmount,
-
-			IFNULL(bs.bat_rolling, 0) AS batRolling,
 			bs.type AS gameType
 		FROM
 			member m
@@ -624,8 +622,6 @@
 			IFNULL(SUM(bs.baccarat_lost_amount),0)  AS baccaratLostAmount,
 			IFNULL(SUM(bs.slot_distributor_rolling_amount),0)  AS slotDistributorRollingAmount,
 			IFNULL(SUM(bs.baccarat_distributor_rolling_amount),0)  AS baccaratDistributorRollingAmount,
-
-			IFNULL(bs.bat_rolling, 0) AS batRolling,
 			bs.type AS gameType
 		FROM
 			member m
@@ -686,8 +682,7 @@
 		SUM(IFNULL(bs.slot_winning_amount, 0)) AS slotWinningAmount,
 		SUM(IFNULL(bs.baccarat_winning_amount, 0)) AS baccaratWinningAmount,
 		SUM(IFNULL(bs.slot_lost_amount, 0)) AS slotLostAmount,
-		SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount,
-		IFNULL(bs.bat_rolling, 0) AS batRolling
+		SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount
 		FROM
 		member m1
 		LEFT JOIN LEVEL ON level.seq = m1.level_seq
@@ -804,7 +799,6 @@
 			SUM(IFNULL(bs.baccarat_winning_amount, 0)) AS baccaratWinningAmount,
 			SUM(IFNULL(bs.slot_lost_amount, 0)) AS slotLostAmount,
 			SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount,
-			IFNULL(bs.bat_rolling, 0) AS batRolling,
 			level.seq AS levelSeq,
 			level.level_name AS levelName,
 			( SELECT count(*) FROM member m WHERE m.user_type = #{entity.userTypeDistributor} AND m.sub_headquarter_seq = m1.seq ) AS distributorCount,
@@ -1011,8 +1005,7 @@
 			SUM(IFNULL(bs.slot_winning_amount, 0)) AS slotWinningAmount,
 			SUM(IFNULL(bs.baccarat_winning_amount, 0)) AS baccaratWinningAmount,
 			SUM(IFNULL(bs.slot_lost_amount, 0)) AS slotLostAmount,
-			SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount,
-			IFNULL(bs.bat_rolling, 0) AS batRolling,
+			SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount
 			bs.type AS gameType
 		FROM
 			member m
@@ -1177,7 +1170,6 @@
 			SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount,
 			SUM(IFNULL(bs.slot_store_rolling_amount, 0)) AS slotStoreRollingAmount,
 			SUM(IFNULL(bs.baccarat_store_rolling_amount, 0)) AS baccaratStoreRollingAmount,
-			IFNULL(bs.bat_rolling, 0) AS batRolling,
 			bs.type AS gameType
 		FROM
 			member m
@@ -1215,7 +1207,6 @@
 		SUM(IFNULL(bs.baccarat_winning_amount, 0)) AS baccaratWinningAmount,
 		SUM(IFNULL(bs.slot_lost_amount, 0)) AS slotLostAmount,
 		SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount,
-		IFNULL(bs.bat_rolling, 0) AS batRolling,
 		bs.type AS gameType,
 		m1.status,
 		m1.register_date,
