@@ -785,4 +785,32 @@ public class ApiController {
         }
         return result;
     }
+
+    @GetMapping(value = "exchangePoint")
+    public Result<Member> exchangePoint(@RequestParam("userSeq") String userSeq) {
+        Result<Member> result = new Result<>();
+        try {
+            Member member = memberService.getById(userSeq);
+
+            System.out.println("ApiController==exchangePoint API==");
+            System.out.println("*************** request exchange api ***************");
+            System.out.println("\t*** member seq : "+member.getSeq());
+            System.out.println("\t*** member MoneyAmount : "+member.getMoneyAmount());
+            System.out.println("\t*** member MileageAmount : "+member.getMileageAmount());
+            System.out.println("\t*******************************************");
+
+            member.setMoneyAmount(member.getMoneyAmount() + member.getMileageAmount());
+            member.setMileageAmount(0f);
+
+            memberService.updateById(member);
+            result.success("success");
+            result.setResult(member);
+        }
+        catch (Exception e) {
+            result.error500("Internal Server Error");
+            log.error("url: /api/exchangePoint --- method: syncCasinoMoney --- message: " + e.toString());
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
