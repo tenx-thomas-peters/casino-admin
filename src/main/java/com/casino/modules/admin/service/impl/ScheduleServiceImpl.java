@@ -293,7 +293,8 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                             "reason:" + reason);
 
                     member.setCasinoMoney(member.getCasinoMoney() + variableAmount);
-                    member.setMileageAmount(member.getMileageAmount() + slot_rolling_amount + baccarat_rolling_amount);
+
+                    float variableMileage = slot_rolling_amount + baccarat_rolling_amount;
 
 //                    Thomas 2022.04.27 add log money history of betting result
 //                    if(memberService.updateMemberHoldingMoney(
@@ -310,6 +311,37 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 //                            reason,
 //                            0
 //                    )){
+
+                    if(variableMileage > 0){
+                        System.out.println("IScheduleService==saveBettingSummary========give mileage==");
+                        System.out.println("=====mileage amount===");
+                        System.out.println("\tslot rolling amount:" + slot_rolling_amount);
+                        System.out.println("\tbaccarat rolling amount:" + baccarat_rolling_amount);
+                        System.out.println("\t=====Total amount:" + variableMileage);
+
+                        String mileageReason =
+                                "배팅롤링금 포인트: " +
+                                "[슬롯:" + member.getSlotRate() + "% | " +
+                                "바카라:"+ member.getBaccaratRate() + "%]";
+
+                        // set mileage
+                        memberService.updateMemberHoldingMoney(
+                                member.getSeq(),
+                                member.getCasinoMoney(),
+                                member.getMileageAmount(),
+                                variableMileage,
+                                Math.abs(variableMileage),
+                                member.getMileageAmount() + variableMileage,
+                                1,
+                                0,
+                                CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+                                reasonType,
+                                mileageReason,
+                                0
+                        );
+                    }
+
+                    member.setMileageAmount(member.getMileageAmount() + variableMileage);
 
                     if(memberService.updateById(member)){
                         System.out.println("\tIScheduleService==saveBettingSummary======== member rolling data save success");
