@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.casino.common.utils.HttpUtils;
+import com.casino.modules.admin.common.entity.Level;
+import com.casino.modules.admin.service.ILevelService;
 import com.casino.modules.admin.service.impl.MoneyHistoryServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,9 @@ public class MoneyController {
 
     @Autowired
     private IMemberService memberService;
+
+    @Autowired
+    private ILevelService levelService;
 
     @RequestMapping(value = "/moneyloglist", method = {RequestMethod.GET, RequestMethod.POST})
     public String moneyLoglist(Model model,
@@ -402,7 +407,58 @@ public class MoneyController {
             HttpServletRequest request) {
         Result<MoneyHistory> result = new Result<>();
         try {
-            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT)) {
+
+            // member user is first charge ============================================= <
+            Member member = memberService.getById(moneyHistoryService.getById(seq).getReceiver());
+            Map<String, Number> firstdepositCount = moneyHistoryService.getTodayFirstMoneyHistory(member.getSeq());
+
+            int firstChargeFlag = 0;
+            float firstChargeAmount = 0f;
+            int total_first_charge = 1;
+            if(firstdepositCount==null || firstdepositCount.get("total_first_charge").equals(0)) total_first_charge=0;
+            if(total_first_charge == 0){
+                firstChargeFlag = 1;
+
+                System.out.println(member.getLevelSeq());
+                System.out.println(member.getLevelSeq());
+
+                Level level = levelService.getById(member.getLevelSeq());
+                if(level.getFirstInsect() > 0){
+
+                    firstChargeAmount = level.getFirstInsect() * depositAmount / 100;
+                    member.setMileageAmount(member.getMileageAmount() + firstChargeAmount);
+                    memberService.updateById(member);
+
+                    System.out.println("MoneyController==moneyDepositAccept==");
+                    System.out.println("\tfirst charge deposit *******************************************");
+                    System.out.println("\t*** first charge rate: " + level.getFirstInsect());
+                    System.out.println("\t*** deposit Amount: " + depositAmount);
+                    System.out.println("\t*** first charge mileage Amount: " + firstChargeAmount);
+                    System.out.println("\t*******************************************");
+
+                    String mileageReason =
+                            "첫충 입금 -> 레벨 " + level.getLevelName();
+
+                    // set mileage
+                    memberService.updateMemberHoldingMoney(
+                            member.getSeq(),
+                            member.getCasinoMoney(),
+                            member.getMileageAmount(),
+                            firstChargeAmount,
+                            Math.abs(firstChargeAmount),
+                            member.getMileageAmount() + firstChargeAmount,
+                            1,
+                            0,
+                            CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+                            CommonConstant.MONEY_REASON_CHARGE,
+                            mileageReason,
+                            0
+                    );
+                }
+            }
+            // member user is first charge ============================================= />
+
+            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, firstChargeFlag)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -410,6 +466,7 @@ public class MoneyController {
         } catch (Exception e) {
             log.error("url: /log/moneydeposit/accept --- method: moneyDepositAccept --- " + e.getMessage());
             result.error500("failed");
+            e.printStackTrace();
         }
         return result;
     }
@@ -425,7 +482,7 @@ public class MoneyController {
 
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL)) {
+            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -452,14 +509,14 @@ public class MoneyController {
             Member member = memberService.getById(history.getReceiver());
             Float amount = depositAmount + depositAmount * bonus;
 
-            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT)) {
+            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, 0)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
             }
 
         } catch (Exception e) {
-            log.error("url: /log/moneydeposit/accept --- method: moneyDepositAccept --- " + e.getMessage());
+            log.error("url: /log/partnerMoneydeposit/accept --- method: moneyDepositAccept --- " + e.getMessage());
             result.error500("failed");
         }
         return result;
@@ -477,7 +534,7 @@ public class MoneyController {
             // game api - /user/sub-balance start
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL)) {
+            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
