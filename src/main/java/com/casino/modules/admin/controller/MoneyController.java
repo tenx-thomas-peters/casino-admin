@@ -439,6 +439,7 @@ public class MoneyController {
                     String mileageReason =
                             "첫충 입금 -> 레벨 " + level.getLevelName();
 
+                    bonus = firstChargeAmount;
                     // set mileage
                     memberService.updateMemberHoldingMoney(
                             member.getSeq(),
