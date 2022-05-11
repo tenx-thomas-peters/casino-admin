@@ -458,10 +458,13 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 }
 
 .daily-note{
-    margin-right: 30px;
+    margin-right: 10px;
 }
 .daily-note textarea.note{
-    width: 500px;
+    width: 540px;
+    height: 55px;
+    padding: 2px;
+    font-size: 14px;
 }
 
 .b-yellow{
