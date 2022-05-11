@@ -67,7 +67,7 @@
 	                                   	<td th:text="${entity.partnerId}"></td>
 	                                   	<td th:text="${entity.partnerNickname}"></td>
 										<td th:text="${entity.partnerLevel}"></td>
-										<td th:text="${entity.id}"></td>
+										<td class="member-id" th:text="${entity.id}" style="cursor: pointer"></td>
 										<td th:text="${entity.nickname}"></td>
 										<td> 
 											[[${#numbers.formatDecimal(entity.moneyAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}]]

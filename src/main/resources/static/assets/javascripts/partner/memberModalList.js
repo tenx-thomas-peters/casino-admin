@@ -6,3 +6,13 @@ $(document).on('click', '.progress-bet', function (e) {
         window.location.reload();
     }
 });
+
+$(document).on('click', '.member-id', function (e) {
+    e.preventDefault();
+    let memberSeq = $(this).parents('tr').find('.member-seq').data('key');
+
+    let detailWindow = window.open(CONTEXT_ROOT + 'member/popup_detail?idx=' + memberSeq, '', features);
+    detailWindow.onbeforeunload = function () {
+        window.location.reload();
+    }
+});
