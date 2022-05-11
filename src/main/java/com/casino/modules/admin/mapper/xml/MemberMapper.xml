@@ -90,6 +90,15 @@
 			AND DATE(#{store.toApplicationTime}) >= DATE(bs_partner.check_time)
 		</if>
 	</sql>
+
+	<sql id="storeMhDateWhere">
+		<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
+			AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
+		</if>
+		<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
+			AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
+		</if>
+	</sql>
 	
 	<sql id="distributorWhere">
 		<if test="distributor.userType != null">
@@ -419,12 +428,7 @@
 			mh.operation_type = #{moneyHistoryOperationTypeDeposit}
 			AND m1.user_type = #{userTypeNormal}
 			AND mh.money_or_point = #{store.isMoney}
-			<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
-				AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
-			</if>
-			<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
-				AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
-			</if>
+			<include refid = "storeMhDateWhere" />
 			GROUP BY mh.receiver ) as mmm WHERE mmm.store_seq = m.seq
 			) AS depositMemberCount,
 			IFNULL((
@@ -439,12 +443,7 @@
 				AND m1.user_type = #{userTypeNormal}
 				AND mh.money_or_point = #{store.isMoney}
 				AND mh.status = #{moneyHistoryStatusComplete}
-				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
-				</if>
-				<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
-					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
+				<include refid = "storeMhDateWhere" />
 			), 0) AS depositMemberAmount,
 			IFNULL((
 			SELECT
@@ -456,14 +455,9 @@
 				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
 				AND ( m1.store_seq = m.seq OR m1.seq = m.seq ) 
 				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
-				AND mh.money_or_point = #{store.isMoney} 
+				AND mh.money_or_point = #{store.isMoney}
 				AND mh.status = #{moneyHistoryStatusComplete}
-				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
-				</if>
-				<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
-					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
-				</if> 
+				<include refid = "storeMhDateWhere" />
 			), 0) AS depositPartnerAmount,
 			IFNULL((
 			SELECT
@@ -478,12 +472,7 @@
 				AND m1.user_type = #{userTypeStore} 
 				AND mh.money_or_point = #{store.isMoney}
 				AND m2.user_type = #{userTypeNormal}
-				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' "> 
-					AND	DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
-				</if>
-				<if test="store.toApplicationTime != null and store.toApplicationTime != '' "> 
-					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
-				</if> 
+				<include refid = "storeMhDateWhere" />
 			), 0) AS depositPayment,
 			IFNULL((
 			SELECT
@@ -497,12 +486,7 @@
 				AND m1.user_type = #{userTypeNormal}
 				AND mh.money_or_point = #{store.isMoney} 
 				AND mh.status = #{moneyHistoryStatusComplete}
-				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
-				</if>
-				<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
-					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
-				</if>  
+				<include refid = "storeMhDateWhere" />
 			), 0) AS withdrawalMemberAmount,
 			IFNULL((
 			SELECT
@@ -516,12 +500,7 @@
 				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
 				AND mh.money_or_point = #{store.isMoney}
 				AND mh.status = #{moneyHistoryStatusComplete}
-				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
-				</if>
-				<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
-					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
-				</if>  
+				<include refid = "storeMhDateWhere" />
 			), 0) AS withdrawalPartnerAmount,
 			IFNULL((
 			SELECT
@@ -536,12 +515,7 @@
 				AND m1.user_type = #{userTypeStore} 
 				AND mh.money_or_point = #{store.isMoney}
 				AND m2.user_type = #{userTypeNormal}
-				<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' "> 
-					AND	DATE(mh.application_time) >= DATE(#{store.fromApplicationTime})
-				</if>
-				<if test="store.toApplicationTime != null and store.toApplicationTime != '' "> 
-					AND DATE(#{store.toApplicationTime}) >= DATE(mh.application_time)
-				</if> 
+				<include refid = "storeMhDateWhere" />
 			), 0) AS withdrawalPayment,
 			IFNULL(m.slot_rate, 0) AS slotRate,
 			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
@@ -1234,13 +1208,8 @@
 				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
 				AND m1.store_seq = m.seq
 				AND m1.user_type = #{userTypeNormal}
-				AND mh.money_or_point = #{entity.isMoney}
-				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
-				</if>
-				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
-					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
+				AND mh.money_or_point = #{store.isMoney}
+				<include refid = "storeMhDateWhere" />
 			)AS depositMemberCount,
 			IFNULL((
 			SELECT
@@ -1252,14 +1221,9 @@
 				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
 				AND m1.store_seq = m.seq
 				AND m1.user_type = #{userTypeNormal}
-				AND mh.money_or_point = #{entity.isMoney}
+				AND mh.money_or_point = #{store.isMoney}
 				AND mh.status = #{moneyHistoryStatusComplete}
-				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
-				</if>
-				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
-					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
+				<include refid = "storeMhDateWhere" />
 			), 0) AS depositMemberAmount,
 			IFNULL((
 			SELECT
@@ -1271,14 +1235,9 @@
 				mh.operation_type = #{moneyHistoryOperationTypeDeposit} 
 				AND ( m1.store_seq = m.seq OR m1.seq = m.seq ) 
 				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
-				AND mh.money_or_point = #{entity.isMoney} 
+				AND mh.money_or_point = #{store.isMoney}
 				AND mh.status = #{moneyHistoryStatusComplete}
-				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
-				</if>
-				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
-					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
+				<include refid = "storeMhDateWhere" />
 			), 0) AS depositPartnerAmount,
 			IFNULL((
 			SELECT
@@ -1291,14 +1250,9 @@
 				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
 				AND m1.seq = m.seq
 				AND m1.user_type = #{userTypeStore} 
-				AND mh.money_or_point = #{entity.isMoney}
+				AND mh.money_or_point = #{store.isMoney}
 				AND m2.user_type = #{userTypeNormal}
-				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
-				</if>
-				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
-					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
+				<include refid = "storeMhDateWhere" />
 			), 0) AS depositPayment,
 			IFNULL((
 			SELECT
@@ -1310,14 +1264,9 @@
 				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
 				AND m1.store_seq = m.seq
 				AND m1.user_type = #{userTypeNormal}
-				AND mh.money_or_point = #{entity.isMoney} 
+				AND mh.money_or_point = #{store.isMoney}
 				AND mh.status = #{moneyHistoryStatusComplete}
-				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
-				</if>
-				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
-					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
+				<include refid = "storeMhDateWhere" />
 			), 0) AS withdrawalMemberAmount,
 			IFNULL((
 			SELECT
@@ -1329,14 +1278,9 @@
 				mh.operation_type = #{moneyHistoryOperationTypeWithdrawal} 
 				AND ( m1.store_seq = m.seq OR m1.seq = m.seq )
 				AND (m1.user_type = #{userTypeSubHeadquarter} OR m1.user_type = #{userTypeDistributor} OR m1.user_type = #{userTypeStore})
-				AND mh.money_or_point = #{entity.isMoney} 
+				AND mh.money_or_point = #{store.isMoney}
 				AND mh.status = #{moneyHistoryStatusComplete}
-				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
-				</if>
-				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
-					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
+				<include refid = "storeMhDateWhere" />
 			), 0) AS withdrawalPartnerAmount,
 			IFNULL((
 			SELECT
@@ -1349,39 +1293,87 @@
 				mh.operation_type = #{moneyHistoryOperationTypeTransferIn} 
 				AND m1.seq = m.seq
 				AND m1.user_type = #{userTypeStore} 
-				AND mh.money_or_point = #{entity.isMoney}
+				AND mh.money_or_point = #{store.isMoney}
 				AND m2.user_type = #{userTypeNormal}
-				<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != '' ">
-					AND DATE(mh.application_time) >= DATE(#{entity.fromApplicationTime})
-				</if>
-				<if test="entity.toApplicationTime != null and entity.toApplicationTime != '' ">
-					AND DATE(#{entity.toApplicationTime}) >= DATE(mh.application_time)
-				</if>
+				<include refid = "storeMhDateWhere" />
 			), 0) AS withdrawalPayment,
 			IFNULL(m.slot_rate, 0) AS slotRate,
 			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
 			m.status AS status,
-			SUM(IFNULL(bs.slot_betting_amount, 0)) AS slotBettingAmount,
-			SUM(IFNULL(bs.baccarat_betting_amount, 0)) AS baccaratBettingAmount,
-			SUM(IFNULL(bs.slot_winning_amount, 0)) AS slotWinningAmount,
-			SUM(IFNULL(bs.baccarat_winning_amount, 0)) AS baccaratWinningAmount,
-			SUM(IFNULL(bs.slot_lost_amount, 0)) AS slotLostAmount,
-			SUM(IFNULL(bs.baccarat_lost_amount, 0)) AS baccaratLostAmount,
-			SUM(IFNULL(bs.slot_store_rolling_amount, 0)) AS slotStoreRollingAmount,
-			SUM(IFNULL(bs.baccarat_store_rolling_amount, 0)) AS baccaratStoreRollingAmount,
+			IFNULL((
+			SELECT SUM(bs_partner.slot_betting_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotBettingAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_betting_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratBettingAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.slot_winning_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotWinningAmount,
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_winning_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratWinningAmount,
+			IFNULL((
+			SELECT SUM(bs_partner.slot_lost_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotLostAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_lost_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratLostAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.slot_store_rolling_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotStoreRollingAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_store_rolling_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratStoreRollingAmount,
 			bs.type AS gameType
 		FROM
 			member m
 		LEFT JOIN betting_summary bs ON bs.member_seq = m.seq			
 		<where>
-			<if test="entity.userType != null">
-				AND m.user_type = #{entity.userType}
+			<if test="store.userType != null">
+				AND m.user_type = #{store.userType}
 			</if>
-			<if test="entity.headquarterSeq != null and entity.headquarterSeq != ''">
-				AND m.sub_headquarter_seq = #{entity.headquarterSeq}
+			<if test="store.headquarterSeq != null and store.headquarterSeq != ''">
+				AND m.sub_headquarter_seq = #{store.headquarterSeq}
 			</if>
-			<if test="entity.distributorSeq != null and entity.distributorSeq != ''">
-				AND m.distributor_seq = #{entity.distributorSeq}
+			<if test="store.distributorSeq != null and store.distributorSeq != ''">
+				AND m.distributor_seq = #{store.distributorSeq}
 			</if>
 		</where>
 		GROUP BY m.seq

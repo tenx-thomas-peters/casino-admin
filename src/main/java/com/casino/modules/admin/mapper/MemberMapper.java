@@ -103,7 +103,7 @@ public interface MemberMapper extends BaseMapper<Member> {
             @Param("moneyHistoryStatusComplete")Integer moneyHistoryStatusComplete,
             @Param("isMoney")Integer isMoney);
 
-	List<StoreForm> getStoreListModal(@Param("entity")StoreForm store,
+	List<StoreForm> getStoreListModal(@Param("store")StoreForm store,
 			@Param("userTypeSubHeadquarter")Integer userTypeSubHeadquarter,
             @Param("userTypeDistributor")Integer userTypeDistributor, 
             @Param("userTypeStore")Integer userTypeStore, 
