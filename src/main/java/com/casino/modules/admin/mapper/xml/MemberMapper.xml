@@ -36,6 +36,51 @@
 			</otherwise>
 		</choose>
 	</sql>
+
+	<sql id="headquarterBattingAmountDateFrom">
+		member m_partner
+		LEFT JOIN betting_summary bs_partner ON bs_partner.headquarter_seq = m_partner.seq
+	</sql>
+
+	<sql id="headquarterBattingAmountDateWhere">
+		m_partner.seq = m.seq
+		<if test="headquarter.fromApplicationTime != null and headquarter.fromApplicationTime != '' ">
+			AND	DATE(bs_partner.check_time) >= DATE(#{headquarter.fromApplicationTime})
+		</if>
+		<if test="headquarter.toApplicationTime != null and headquarter.toApplicationTime != '' ">
+			AND DATE(#{headquarter.toApplicationTime}) >= DATE(bs_partner.check_time)
+		</if>
+	</sql>
+
+	<sql id="distributorBattingAmountDateFrom">
+		member m_partner
+		LEFT JOIN betting_summary bs_partner ON bs_partner.distributor_seq = m_partner.seq
+	</sql>
+
+	<sql id="distributorBattingAmountDateWhere">
+		m_partner.seq = m.seq
+		<if test="distributor.fromApplicationTime != null and distributor.fromApplicationTime != '' ">
+			AND	DATE(bs_partner.check_time) >= DATE(#{distributor.fromApplicationTime})
+		</if>
+		<if test="distributor.toApplicationTime != null and distributor.toApplicationTime != '' ">
+			AND DATE(#{distributor.toApplicationTime}) >= DATE(bs_partner.check_time)
+		</if>
+	</sql>
+
+	<sql id="storeBattingAmountDateFrom">
+		member m_partner
+		LEFT JOIN betting_summary bs_partner ON bs_partner.store_seq = m_partner.seq
+	</sql>
+
+	<sql id="storeBattingAmountDateWhere">
+		m_partner.seq = m.seq
+		<if test="store.fromApplicationTime != null and store.fromApplicationTime != '' ">
+			AND	DATE(bs_partner.check_time) >= DATE(#{store.fromApplicationTime})
+		</if>
+		<if test="store.toApplicationTime != null and store.toApplicationTime != '' ">
+			AND DATE(#{store.toApplicationTime}) >= DATE(bs_partner.check_time)
+		</if>
+	</sql>
 	
 	<sql id="distributorWhere">
 		<if test="distributor.userType != null">
@@ -123,7 +168,7 @@
 			m.id AS id,
 			m.nickname AS nickname,
 			IFNULL(m.money_amount, 0) AS moneyAmount,
-		IFNULL(m.casino_money, 0) AS casinoMoney,
+			IFNULL(m.casino_money, 0) AS casinoMoney,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeDistributor} AND m1.sub_headquarter_seq = m.seq ) AS distributorCount,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeStore} AND m1.sub_headquarter_seq = m.seq ) AS storeCount,
 			( SELECT count(*) FROM member m1 WHERE m1.user_type = #{userTypeNormal} AND m1.sub_headquarter_seq = m.seq ) AS memberCount,
@@ -267,14 +312,67 @@
 			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
 			m.status AS status,
 
-		IFNULL(SUM(bs.slot_betting_amount),0)  AS slotBettingAmount,
-		IFNULL(SUM(bs.baccarat_betting_amount),0)  AS baccaratBettingAmount,
-		IFNULL(SUM(bs.slot_winning_amount),0)  AS slotWinningAmount,
-		IFNULL(SUM(bs.baccarat_winning_amount),0)  AS baccaratWinningAmount,
-		IFNULL(SUM(bs.slot_lost_amount),0)  AS slotLostAmount,
-		IFNULL(SUM(bs.baccarat_lost_amount),0)  AS baccaratLostAmount,
-		IFNULL(SUM(bs.slot_headquarter_rolling_amount),0)  AS slotHeadquarterRollingAmount,
-		IFNULL(SUM(bs.baccarat_headquarter_rolling_amount),0)  AS baccaratHeadquarterRollingAmount,
+		IFNULL((
+			SELECT SUM(bs_partner.slot_betting_amount)
+			FROM <include refid = "headquarterBattingAmountDateFrom" />
+			<where>
+				<include refid="headquarterBattingAmountDateWhere"/>
+			</where>
+		), 0) AS slotBettingAmount,
+
+		IFNULL((
+		SELECT SUM(bs_partner.baccarat_betting_amount)
+		FROM <include refid = "headquarterBattingAmountDateFrom" />
+		<where>
+			<include refid="headquarterBattingAmountDateWhere"/>
+		</where>
+		), 0) AS baccaratBettingAmount,
+
+		IFNULL((
+			SELECT SUM(bs_partner.slot_winning_amount)
+			FROM <include refid = "headquarterBattingAmountDateFrom" />
+			<where>
+				<include refid="headquarterBattingAmountDateWhere"/>
+			</where>
+		), 0) AS slotWinningAmount,
+		IFNULL((
+			SELECT SUM(bs_partner.baccarat_winning_amount)
+			FROM <include refid = "headquarterBattingAmountDateFrom" />
+			<where>
+				<include refid="headquarterBattingAmountDateWhere"/>
+			</where>
+		), 0) AS baccaratWinningAmount,
+		IFNULL((
+			SELECT SUM(bs_partner.slot_lost_amount)
+			FROM <include refid = "headquarterBattingAmountDateFrom" />
+			<where>
+				<include refid="headquarterBattingAmountDateWhere"/>
+			</where>
+		), 0) AS slotLostAmount,
+
+		IFNULL((
+			SELECT SUM(bs_partner.baccarat_lost_amount)
+			FROM <include refid = "headquarterBattingAmountDateFrom" />
+			<where>
+				<include refid="headquarterBattingAmountDateWhere"/>
+			</where>
+		), 0) AS baccaratLostAmount,
+
+		IFNULL((
+			SELECT SUM(bs_partner.slot_headquarter_rolling_amount)
+			FROM <include refid = "headquarterBattingAmountDateFrom" />
+			<where>
+				<include refid="headquarterBattingAmountDateWhere"/>
+			</where>
+		), 0) AS slotHeadquarterRollingAmount,
+
+		IFNULL((
+			SELECT SUM(bs_partner.baccarat_headquarter_rolling_amount)
+			FROM <include refid = "headquarterBattingAmountDateFrom" />
+			<where>
+				<include refid="headquarterBattingAmountDateWhere"/>
+			</where>
+		), 0) AS baccaratHeadquarterRollingAmount,
 
 			bs.type AS gameType
 		FROM
@@ -440,14 +538,67 @@
 			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
 			m.status AS status,
 
-			IFNULL(SUM(bs.slot_betting_amount),0)  AS slotBettingAmount,
-			IFNULL(SUM(bs.baccarat_betting_amount),0)  AS baccaratBettingAmount,
-			IFNULL(SUM(bs.slot_winning_amount),0)  AS slotWinningAmount,
-			IFNULL(SUM(bs.baccarat_winning_amount),0)  AS baccaratWinningAmount,
-			IFNULL(SUM(bs.slot_lost_amount),0)  AS slotLostAmount,
-			IFNULL(SUM(bs.baccarat_lost_amount),0)  AS baccaratLostAmount,
-			IFNULL(SUM(bs.slot_store_rolling_amount),0)  AS slotStoreRollingAmount,
-			IFNULL(SUM(bs.baccarat_store_rolling_amount),0)  AS baccaratStoreRollingAmount,
+			IFNULL((
+			SELECT SUM(bs_partner.slot_betting_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotBettingAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_betting_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratBettingAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.slot_winning_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotWinningAmount,
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_winning_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratWinningAmount,
+			IFNULL((
+			SELECT SUM(bs_partner.slot_lost_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotLostAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_lost_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratLostAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.slot_store_rolling_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotStoreRollingAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_store_rolling_amount)
+			FROM <include refid = "storeBattingAmountDateFrom" />
+			<where>
+				<include refid="storeBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratStoreRollingAmount,
 			bs.type AS gameType
 		FROM
 			member m
@@ -614,14 +765,68 @@
 			IFNULL(m.baccarat_rate, 0) AS baccaratRate,
 			m.status AS status,
 
-			IFNULL(SUM(bs.slot_betting_amount),0)  AS slotBettingAmount,
-			IFNULL(SUM(bs.baccarat_betting_amount),0)  AS baccaratBettingAmount,
-			IFNULL(SUM(bs.slot_winning_amount),0)  AS slotWinningAmount,
-			IFNULL(SUM(bs.baccarat_winning_amount),0)  AS baccaratWinningAmount,
-			IFNULL(SUM(bs.slot_lost_amount),0)  AS slotLostAmount,
-			IFNULL(SUM(bs.baccarat_lost_amount),0)  AS baccaratLostAmount,
-			IFNULL(SUM(bs.slot_distributor_rolling_amount),0)  AS slotDistributorRollingAmount,
-			IFNULL(SUM(bs.baccarat_distributor_rolling_amount),0)  AS baccaratDistributorRollingAmount,
+			IFNULL((
+			SELECT SUM(bs_partner.slot_betting_amount)
+			FROM <include refid = "distributorBattingAmountDateFrom" />
+			<where>
+				<include refid="distributorBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotBettingAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_betting_amount)
+			FROM <include refid = "distributorBattingAmountDateFrom" />
+			<where>
+				<include refid="distributorBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratBettingAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.slot_winning_amount)
+			FROM <include refid = "distributorBattingAmountDateFrom" />
+			<where>
+				<include refid="distributorBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotWinningAmount,
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_winning_amount)
+			FROM <include refid = "distributorBattingAmountDateFrom" />
+			<where>
+				<include refid="distributorBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratWinningAmount,
+			IFNULL((
+			SELECT SUM(bs_partner.slot_lost_amount)
+			FROM <include refid = "distributorBattingAmountDateFrom" />
+			<where>
+				<include refid="distributorBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotLostAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_lost_amount)
+			FROM <include refid = "distributorBattingAmountDateFrom" />
+			<where>
+				<include refid="distributorBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratLostAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.slot_distributor_rolling_amount)
+			FROM <include refid = "distributorBattingAmountDateFrom" />
+			<where>
+				<include refid="distributorBattingAmountDateWhere"/>
+			</where>
+			), 0) AS slotDistributorRollingAmount,
+
+			IFNULL((
+			SELECT SUM(bs_partner.baccarat_distributor_rolling_amount)
+			FROM <include refid = "distributorBattingAmountDateFrom" />
+			<where>
+				<include refid="distributorBattingAmountDateWhere"/>
+			</where>
+			), 0) AS baccaratDistributorRollingAmount,
+
 			bs.type AS gameType
 		FROM
 			member m
