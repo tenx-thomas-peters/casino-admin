@@ -28,7 +28,7 @@ public interface IMemberService extends IService<Member> {
 
     List<Map<String, String>> getSiteList();
 
-    List<DistributorForm> getDistributorListModal(String seq, String fromApplicationTime, String toApplicationTime);
+    List<DistributorForm> getDistributorListModal(String seq, DistributorForm distributor);
 
     List<StoreForm> getStoreListModal(StoreForm store);
 

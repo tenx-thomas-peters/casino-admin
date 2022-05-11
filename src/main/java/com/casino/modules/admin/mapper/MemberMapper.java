@@ -90,9 +90,8 @@ public interface MemberMapper extends BaseMapper<Member> {
     List<Map<String, String>> getSiteList();
     
 	List<DistributorForm> getDistributorListModal(
-			@Param("seq")String seq, 
-			@Param("fromApplicationTime")String fromApplicationTime,
-			@Param("toApplicationTime")String toApplicationTime, 
+			@Param("seq")String seq,
+            @Param("distributor")DistributorForm distributor,
 			@Param("userTypeSubHeadquarter")Integer userTypeSubHeadquarter,
             @Param("userTypeDistributor")Integer userTypeDistributor, 
             @Param("userTypeStore")Integer userTypeStore, 

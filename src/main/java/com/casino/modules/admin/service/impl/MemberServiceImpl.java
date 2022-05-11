@@ -115,8 +115,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 	}
 
 	@Override
-	public List<DistributorForm> getDistributorListModal(String seq, String fromApplicationTime, String toApplicationTime) {
-		return memberMapper.getDistributorListModal(seq, fromApplicationTime, toApplicationTime,
+	public List<DistributorForm> getDistributorListModal(String seq, DistributorForm distributor) {
+		return memberMapper.getDistributorListModal(seq,
+				distributor,
 				CommonConstant.USER_TYPE_SUB_HEADQUARTER,
 				CommonConstant.USER_TYPE_DISTRIBUTOR,
 				CommonConstant.USER_TYPE_STORE,
