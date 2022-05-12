@@ -32,7 +32,7 @@ $(document).ready(function() {
 	$(document).on('click', '.headquarter-nickname', function (e) {
 	    e.preventDefault();
 	    let headquarterSeq = $(this).parents('tr').find('.headquarter-seq').data('key');
-	    let detailWindow = window.open('./memberDetailsTop?idx=' + headquarterSeq, 'Deputy Headquarter Details', 'width='+screen.availWidth *2 / 3+',height=600');
+	    let detailWindow = window.open('./memberDetailsTop?idx=' + headquarterSeq, '', 'width='+screen.availWidth *2 / 3+',height=600');
 	    detailWindow.onbeforeunload = function () {
             window.location.reload();
         }
@@ -52,7 +52,7 @@ $(document).ready(function() {
 	$(document).on('click', '.headquarter-distributorCount', function (e) {
 	    e.preventDefault();
 	    let headquarterSeq = $(this).parents('tr').find('.headquarter-seq').data('key');
-	    let detailWindow = window.open('./chongMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today, 'Sub-Distributor List', partnerFeatures);
+	    let detailWindow = window.open('./chongMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today, '', partnerFeatures);
 	    detailWindow.onbeforeunload = function () {
             window.location.reload();
         }
@@ -61,7 +61,7 @@ $(document).ready(function() {
 	$(document).on('click', '.headquarter-storeCount', function (e) {
 	    e.preventDefault();
 	    let headquarterSeq = $(this).parents('tr').find('.headquarter-seq').data('key');
-	    let detailWindow = window.open('./shopMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 3, 'Sub-Store List', partnerFeatures);
+	    let detailWindow = window.open('./shopMember?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 3, '', partnerFeatures);
 	    detailWindow.onbeforeunload = function () {
             window.location.reload();
         }
@@ -70,7 +70,7 @@ $(document).ready(function() {
 	$(document).on('click', '.headquarter-memberCount', function (e) {
 	    e.preventDefault();
 	    let headquarterSeq = $(this).parents('tr').find('.headquarter-seq').data('key');
-	    let detailWindow = window.open('./Member?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 3, 'Sub-Member List', partnerFeatures);
+	    let detailWindow = window.open('./Member?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 3, '', partnerFeatures);
 	    detailWindow.onbeforeunload = function () {
             window.location.reload();
         }
