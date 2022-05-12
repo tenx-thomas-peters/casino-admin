@@ -139,7 +139,7 @@
 											</p>
 										</td>
 										<td>0%-0%</td>
-										<td th:text="${entity.batRolling}"></td>
+										<td th:text="${entity.slotStoreRollingAmount + entity.baccaratStoreRollingAmount}"></td>
 										<td th:if="${entity.status == 0}" th:text="#{admin.common.normal}"></td>
 										<td th:if="${entity.status == 1}" th:text="#{admin.common.stop}"></td>
 									</tr>

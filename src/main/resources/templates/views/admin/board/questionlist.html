@@ -125,7 +125,7 @@
 														<td th:text="${question.nickname}"></td>
 														<td th:text="${(question.sendTime != null ? #dates.format(question.sendTime, 'yyyy-MM-dd hh:mm:ss') : '')}"></td>
 														<td>
-															<span th:if="${question.answerStatus == 0}" th:text="#{admin.status.new}"> </span>
+															<span th:if="${question.answerStatus == 0}" th:text="#{admin.status.new}"  class="c-red"> </span>
 															<span th:if="${question.answerStatus == 1}" th:text="#{admin.status.replied}"> </span>
 														</td>
 														<td>

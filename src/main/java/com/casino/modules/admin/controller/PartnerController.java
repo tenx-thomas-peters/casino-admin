@@ -587,7 +587,9 @@ public class PartnerController {
 			@RequestParam("fromApplicationTime") String fromApplicationTime,
 			@RequestParam("toApplicationTime") String toApplicationTime) {
 		try {
-			List<DistributorForm> distributorList = memberService.getDistributorListModal(seq, fromApplicationTime, toApplicationTime);
+			distributor.setFromApplicationTime(fromApplicationTime);
+			distributor.setToApplicationTime(toApplicationTime);
+			List<DistributorForm> distributorList = memberService.getDistributorListModal(seq, distributor);
 			
 			Double storeCountSum = distributorList.stream().mapToDouble(temp->temp.getStoreCount()).sum();
 			Double memberCountSum = distributorList.stream().mapToDouble(temp->temp.getMemberCount()).sum();
