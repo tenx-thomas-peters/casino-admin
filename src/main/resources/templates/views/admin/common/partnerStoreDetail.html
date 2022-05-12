@@ -66,10 +66,10 @@
                              [[#{admin.common.settlement}]][[#{admin.common.rate}]] </label>
                              <div class="col-sm-4 form-container">
                              	<label th:text="#{admin.common.slot}"></label>
-                                <input type="number" name="slotRate" class="form-control" style="width:70px; display:inline-block;" th:value="${#numbers.formatDecimal(memberForm.slotRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}" required="">
+                                <input type="number" name="slotRate" class="form-control slotRateField" style="width:70px; display:inline-block;" th:value="${#numbers.formatDecimal(memberForm.slotRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}" required="">
                                 <span>%</span>
                                 <label th:text="#{admin.common.baccarat}"></label>
-                                <input type="number" name="baccaratRate" class="form-control" style="width:70px; display:inline-block;" th:value="${#numbers.formatDecimal(memberForm.baccaratRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"  required="">
+                                <input type="number" name="baccaratRate" class="form-control baccaratRateField" style="width:70px; display:inline-block;" th:value="${#numbers.formatDecimal(memberForm.baccaratRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"  required="">
                                 <span>%</span>
                              </div>
                          </div>
@@ -221,6 +221,8 @@
 </section>
 <script type="text/javascript" th:inline="javascript">
         var url = [[${url}]];
+        var distributorList = [[${distributorList}]];
+        var memberForm = [[${memberForm}]];
 </script>
 
 <script th:replace="template :: scripts"></script>

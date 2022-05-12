@@ -1028,7 +1028,7 @@ public class PartnerController {
             model.addAttribute("storeList", storeList);
             model.addAttribute("distributorList", distributorList);
             model.addAttribute("subHeadquarterList", subHeadquarterList);
-            model.addAttribute("url", "/partner2/memberDetails");
+            model.addAttribute("url", "/partner2/memberDetailsStore");
         } catch (Exception e) {
             log.error("url: /member/memberDetailsStore --- method: memberDetailsStore --- message: " + e.toString());
         }
