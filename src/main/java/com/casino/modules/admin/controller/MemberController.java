@@ -143,6 +143,7 @@ public class MemberController {
             model.addAttribute("url", "member/list");
         } catch (Exception e) {
             log.error("url: /member/list --- method: getList --- message: " + e.toString());
+            e.printStackTrace();
         }
 
         return "views/admin/member/list";

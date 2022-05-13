@@ -755,7 +755,13 @@
             </if>
         </where>
 		GROUP BY m1.seq
-		ORDER BY m1.${column}
+		ORDER BY
+		<if test="column =='holding_amount'">
+			(m1.money_amount + m1.casino_money)
+		</if>
+		<if test="column !='holding_amount'">
+			m1.${column}
+		</if>
 		<choose>
 			<when test="order == 1">
 				 DESC
