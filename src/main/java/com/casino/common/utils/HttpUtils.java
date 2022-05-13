@@ -3,6 +3,7 @@ package com.casino.common.utils;
 import com.casino.modules.admin.common.entity.Member;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.*;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -141,10 +142,17 @@ public class HttpUtils {
             System.out.println("HttpUtils==userSubBalance========== api success");
             System.out.println(response);
             return response;
-        } catch (Exception e) {
+        } catch (HttpStatusCodeException e) {
+            ResponseEntity<String> responseError = ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
+                    .body(e.getResponseBodyAsString());
+
             System.out.println("HttpUtils==userAddBalance==========Exception :");
+            System.out.println("\tHttp URL:" + url);
+            System.out.println("\tError response====>");
+            System.out.println(responseError);
+            System.out.println("\t************************************************");
             e.printStackTrace();
-            return new ResponseEntity<>("Error!, Please try again", HttpStatus.INTERNAL_SERVER_ERROR);
+            return responseError;
         }
     }
 

@@ -1,5 +1,6 @@
 package com.casino.modules.admin.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -33,8 +34,11 @@ import com.casino.common.utils.UUIDGenerator;
 import com.casino.common.vo.Result;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static org.junit.Assert.assertEquals;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -406,9 +410,7 @@ public class ApiController {
         Result<IPage<Note>> result = new Result<>();
         try {
             QueryWrapper<Note> qw = new QueryWrapper<>();
-            qw.eq("sender", sender);
             qw.eq("type", type);
-            qw.eq("send_type", 1);
             qw.eq("classification", classification);
             Page<Note> page = new Page<Note>(pageNo, pageSize);
             IPage<Note> pageList = noteService.page(page, qw);
@@ -770,17 +772,21 @@ public class ApiController {
                     member.setMoneyAmount(0.0F);
 
                     memberService.updateById(member);
+                    result.success("success");
+                    result.setResult(member);
                 }
                 else {
-                    result.error505("sub -balance api failed");
+                    String rawString = ret.getBody();
+                    byte[] bytes = rawString.getBytes(StandardCharsets.UTF_8);
+
+                    String utf8EncodedString = new String(bytes, StandardCharsets.UTF_8);
+
+                    assertEquals(rawString, utf8EncodedString);
+                    result.errorMsg(ret.getBody(), ret.getStatusCode().value());
                 }
             }
-
-            result.success("success");
-            result.setResult(member);
         }
-        catch (Exception e) {
-            result.error500("Internal Server Error");
+        catch (HttpStatusCodeException e) {
             log.error("url: /api/syncCasinoMoney --- method: syncCasinoMoney --- message: " + e.toString());
         }
         return result;

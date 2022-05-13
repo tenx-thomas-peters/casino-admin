@@ -304,14 +304,14 @@
                                     [[#{admin.member.slotRatePoints}]]
                                 </label>
                                 <div class="col-md-4 col-sm-6 form-container">
-                                    <input type="number" class="form-control" th:field="*{slotRate}" style="display: inline-block; width: auto;" required />%
+                                    <input type="number" class="form-control slotRateField" th:field="*{slotRate}" style="display: inline-block; width: auto;" required />%
                                 </div>
                                 <label class="col-md-2 col-sm-6 control-label">
                                     <i class="fa fa-plus-square text-primary"></i>
                                     [[#{admin.member.baccaratRatePoints}]]
                                 </label>
                                 <div class="col-md-4 col-sm-6 form-container">
-                                    <input type="number" class="form-control" th:field="*{baccaratRate}" style="display: inline-block; width: auto;" required />%
+                                    <input type="number" class="form-control baccaratRateField" th:field="*{baccaratRate}" style="display: inline-block; width: auto;" required />%
                                 </div>
                             </div>
                             <div class="form-group">
@@ -412,6 +412,10 @@
     <script type="text/javascript" th:inline="javascript">
         var url = [[${url}]];
         var partnerList = [[${partnerList}]];
+        var storeList = [[${storeList}]];
+        var distributorList = [[${distributorList}]];
+        var subHeadquarterList = [[${subHeadquarterList}]];
+        var memberForm = [[${memberForm}]];
     </script>
 
     <script th:replace="template :: scripts"></script>

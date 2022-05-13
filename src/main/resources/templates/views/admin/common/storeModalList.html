@@ -67,7 +67,7 @@
 		                           	<tr th:each="entity, stat : ${storeList}">
 		                           		<input type="hidden" class="store-seq" th:data-key="${entity.seq}"/>
 	                                   	<td th:text="${entity.distributor}"></td>
-	                                   	<td th:text="${entity.id}"></td>
+										<td><a class="partner-store-detail" th:data-key="${entity.seq}" th:text="${entity.id}"></a></td>
 										<td th:text="${entity.nickname}"></td>
 										<td><a class="store-memberCount" th:text="${entity.memberCount}"></a></td>
 										<td th:text="${entity.depositMemberCount}"></td>

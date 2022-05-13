@@ -17,3 +17,12 @@ $(document).on('click', '.store-memberCount', function (e) {
         window.location.reload();
     }
 });
+
+$(document).on('click', '.partner-store-detail', function (e) {
+    e.preventDefault();
+    let storeSeq = $(this).data('key');
+    let detailWindow = window.open('./memberDetails?idx=' + storeSeq, '', 'width='+screen.availWidth *2 / 3+',height=600');
+    detailWindow.onbeforeunload = function () {
+        window.location.reload();
+    }
+});

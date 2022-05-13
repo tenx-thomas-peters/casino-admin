@@ -3,6 +3,7 @@ package com.casino.common.vo;
 import java.io.Serializable;
 
 import com.casino.common.constant.CommonConstant;
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 @Data
@@ -36,6 +37,12 @@ public class Result<T> implements Serializable {
     public void error505(String message) {
         this.msg = message;
         this.code = CommonConstant.SC_NORMAL_ERROR_505;
+        this.success = false;
+    }
+
+    public void errorMsg(String message, int errorCode) {
+        this.msg = message;
+        this.code = errorCode;
         this.success = false;
     }
 

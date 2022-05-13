@@ -20,3 +20,12 @@ $(document).on('click', '.headquarter-memberCount', function (e) {
     let headquarterSeq = $(this).parents('tr').find('.distributor-seq').data('key');
     window.open('./Member?seq=' + headquarterSeq + '&fromApplicationTime=' + today + '&toApplicationTime=' + today + '&userType=' + 2, '', partnerFeatures);
 });
+
+$(document).on('click', '.partner-distributor-detail', function (e) {
+    e.preventDefault();
+    let storeSeq = $(this).data('key');
+    let detailWindow = window.open('./memberDetails?idx=' + storeSeq, '', 'width='+screen.availWidth *2 / 3+',height=600');
+    detailWindow.onbeforeunload = function () {
+        window.location.reload();
+    }
+});

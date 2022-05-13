@@ -935,9 +935,6 @@ public class PartnerController {
             mQw.eq("user_type", CommonConstant.USER_TYPE_SUB_HEADQUARTER);
             List<Member> subHeadquarterList = memberService.list(mQw);
 
-			System.out.println("memberForm");
-			System.out.println(memberForm);
-
             model.addAttribute("memberForm", memberForm);
             model.addAttribute("storeList", storeList);
             model.addAttribute("distributorList", distributorList);
@@ -1028,7 +1025,7 @@ public class PartnerController {
             model.addAttribute("storeList", storeList);
             model.addAttribute("distributorList", distributorList);
             model.addAttribute("subHeadquarterList", subHeadquarterList);
-            model.addAttribute("url", "/partner2/memberDetails");
+            model.addAttribute("url", "/partner2/memberDetailsStore");
         } catch (Exception e) {
             log.error("url: /member/memberDetailsStore --- method: memberDetailsStore --- message: " + e.toString());
         }

@@ -68,7 +68,7 @@
 		                           		<tr th:each="entity, stat : ${distributorList}">
 		                           			<input type="hidden" class="distributor-seq" th:data-key="${entity.seq}"/>
 			                                <td th:text="${entity.subHeadquarter}"></td>
-			                                <td th:text="${entity.id}"></a></td>
+			                                <td><a class="partner-distributor-detail" th:data-key="${entity.seq}" th:text="${entity.id}"></a></td>
 											<td class="distributor-nickname" th:text="${entity.nickname}"></td>
 											<td><a class="headquarter-storeCount" th:text="${entity.storeCount}"></a></td>
 											<td><a class="headquarter-memberCount" th:text="${entity.memberCount}"></a></td>

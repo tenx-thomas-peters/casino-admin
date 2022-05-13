@@ -80,6 +80,23 @@ $(document).ready(function() {
 	}
 });
 
+function textClick(){
+	$('#textall').height(700);
+}
+
+function textClick2(){
+	$('#textall').height(55);
+}
+
+function textClick3(){
+	var frm05=document.frm05;
+	var result = confirm('정말로 저장 하시겠습니까?');
+	if(result)
+	{
+		frm05.submit();
+		return false;
+	}
+}
 
 $(document).on('click', '.login-member-link', function() {
 	let today = moment().format('YYYY-MM-DD');

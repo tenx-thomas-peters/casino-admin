@@ -48,6 +48,7 @@ form.validate({
                     });
 
                     setTimeout(function() {
+                        window.location.reload();
                         window.close();
                     }, 1000);
                 } else {
@@ -74,6 +75,8 @@ form.validate({
                 });
             }
         });
+
+
     }
 });
 
