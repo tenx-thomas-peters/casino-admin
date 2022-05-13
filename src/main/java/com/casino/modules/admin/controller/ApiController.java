@@ -410,9 +410,7 @@ public class ApiController {
         Result<IPage<Note>> result = new Result<>();
         try {
             QueryWrapper<Note> qw = new QueryWrapper<>();
-            qw.eq("sender", sender);
             qw.eq("type", type);
-            qw.eq("send_type", 1);
             qw.eq("classification", classification);
             Page<Note> page = new Page<Note>(pageNo, pageSize);
             IPage<Note> pageList = noteService.page(page, qw);
