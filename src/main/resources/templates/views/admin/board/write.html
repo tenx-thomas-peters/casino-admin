@@ -100,19 +100,6 @@
                                     <button class="btn btn-default enroll" th:text="#{admin.write.enrollment}"></button>
                                     <a th:href="@{/board/write}" class="btn btn-default" th:text="#{admin.write.format}"></a>
                                 </div>
-                                <div class="row mt-sm" id="comment" th:each="comment : ${commentList}">
-                                    <input type="hidden" th:value="${comment.seq}" name="seq" id="commentSeq"/>
-                                    <div class="col-md-1" style="vertical-align: middle">
-                                    	<span th:text="${comment.nickname}" class="text-primary ml-sm mb-sm"></span><br/>
-                                    </div>
-                                    <div class="col-md-8 ml-sm">
-                                        <textarea th:text="${comment.content}" style="width: 100%; background-color:white;border-radius:4px;" disabled></textarea>
-                                    </div>
-                                    <div class="col-md-2 mt-sm">
-                                        <a class="update-memo" th:text="#{admin.common.edit}" style="cursor:pointer;text-decoration:none"></a>
-                                        <a class="delete-memo" data-toggle="modal" data-target="#deleteModal" th:text="#{admin.common.delete}" style="cursor:pointer; text-decoration:none;"></a>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="myModalLabel"
