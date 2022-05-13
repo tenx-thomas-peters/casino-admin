@@ -465,6 +465,8 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     height: 55px;
     padding: 2px;
     font-size: 14px;
+    position: absolute;
+    right: 549px;
 }
 
 .b-yellow{
