@@ -290,6 +290,30 @@ $(document).ready(function () {
                     $('.member-casino-money').text(member.casinoMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                     console.log(member.casinoMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                 }
+                else{
+                    console.log("asdfd");
+                    new PNotify({
+                        title: res.code + ' Error!',
+                        // text: res.message,
+                        text: "에이젠시에 잔고가 부족합니다",
+                        type: 'error',
+                        buttons: {
+                            closer: true,
+                            sticker: false
+                        }
+                    });
+                }
+            },
+            error: function(err) {
+                new PNotify({
+                    title: 'Error!',
+                    text: err.message,
+                    type: 'error',
+                    buttons: {
+                        closer: true,
+                        sticker: false
+                    }
+                });
             }
         })
     })
