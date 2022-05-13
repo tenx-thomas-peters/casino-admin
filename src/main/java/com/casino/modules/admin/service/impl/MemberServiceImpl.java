@@ -213,23 +213,28 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 
 			member.setMoneyAmount(finalAmount);
 
+			System.out.println("charge money");
 			if (moneyHistoryService.save(moneyHistory) && updateById(member)) {
 				ret = true;
 			}
 		} else {
 			MileageHistory mileageHistory = new MileageHistory();
+
+			float finalMileageAmount = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
+					? prevMileageAmount + variableAmount
+					: prevMileageAmount - variableAmount;
 			mileageHistory.setSeq(seq);
 			mileageHistory.setMemberSeq(memberSeq);
 			mileageHistory.setProcessTime(new Date());
 			mileageHistory.setPrevAmount(prevMileageAmount);
 			mileageHistory.setVariableAmount(variableAmount);
-			mileageHistory.setFinalAmount(finalAmount);
+			mileageHistory.setFinalAmount(finalMileageAmount);
 			mileageHistory.setReasonType(reasonType);
 			mileageHistory.setReason(reason);
 			mileageHistory.setOperationType(transactionClassification);
 
-			member.setMileageAmount(finalAmount);
-
+			member.setMileageAmount(finalMileageAmount);
+			System.out.println("charge mileage");
 			if (mileageHistoryService.save(mileageHistory) && updateById(member)) {
 				ret = true;
 			}
