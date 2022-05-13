@@ -127,6 +127,45 @@ $(document).ready(function () {
     });
 
     $('.update-member').click(function () {
+
+        // check slot rate and baccarat rate are higher than parent rate====================== <
+
+        let myParent;
+        console.log(memberForm);
+
+        if(memberForm.storeSeq != null && memberForm.storeSeq !== ""){
+            console.log(memberForm.storeSeq);
+            myParent = storeList.filter(function(el) {
+                return el.seq ===  memberForm.storeSeq
+            })
+        }
+        else{
+            if(memberForm.distributorSeq != null && memberForm.distributorSeq !== ""){
+                console.log(memberForm.distributorSeq);
+                myParent = distributorList.filter(function(el) {
+                    return el.seq ===  memberForm.distributorSeq
+                })
+            }
+            else{
+                console.log(memberForm.subHeadquarterSeq);
+                myParent = subHeadquarterList.filter(function(el) {
+                    return el.seq ===  memberForm.subHeadquarterSeq
+                })
+            }
+        }
+
+        let slotRateField = $(".slotRateField").val();
+        let baccaratRateField = $(".baccaratRateField").val();
+        if(slotRateField > myParent[0].slotRate){
+            alert("슬롯 요율이 상부보다 높을수 없습니다");
+            return;
+        }
+        if(baccaratRateField > myParent[0].baccaratRate){
+            alert("바카라 요율이 상부보다 높을수 없습니다");
+            return;
+        }
+        // check slot rate and baccarat rate are higher than parent rate====================== />
+
         let form = $('#member-update-form');
         let formData = new FormData(form[0]);
         formData.append('storeSeq', $('.storeSeq').data('key') !== undefined ? $('.storeSeq').data('key') : '');
