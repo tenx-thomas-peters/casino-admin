@@ -135,8 +135,9 @@ $('.sender-nickname').on('click', function() {
 
 $('.answerbtn').on('click', function() {
 	let memberSeq = $(this).data('mseq');
+	let noteSeq = $(this).data('noteseq');
 
-	let detailWindow = window.open(CONTEXT_ROOT + 'partner2/getMemo?seq=' + memberSeq, 'Member Detail', features);
+	let detailWindow = window.open(CONTEXT_ROOT + 'partner2/getMemo?seq=' + memberSeq + '&note_seq=' + noteSeq, 'Member Detail', features);
 	detailWindow.onbeforeunload = function () {
 		window.location.reload();
 	}

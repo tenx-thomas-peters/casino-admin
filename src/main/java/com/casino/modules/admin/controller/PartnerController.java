@@ -532,12 +532,21 @@ public class PartnerController {
 	}
 	
 	@GetMapping(value = "/getMemo")
-	public String getMemo(@RequestParam("seq") String seq, Model model) {
+	public String getMemo(
+			@RequestParam("seq") String seq,
+			@RequestParam(name = "note_seq", defaultValue = "") String noteSeq,
+			Model model
+	) {
 		try {
 			Member member = memberService.getById(seq);
 
+			String noteTitle = "";
+			if(!noteSeq.equals(""))noteTitle = "쪽지답장";
+
 			BasicSetting basicSetting = basicSettingService.getById(123);
 			model.addAttribute("member", member);
+			model.addAttribute("note_seq", noteSeq);
+			model.addAttribute("note_title", noteTitle);
 			model.addAttribute("basicSetting", basicSetting);
 			model.addAttribute("url", "partner2/getMemo");
 		}
@@ -553,6 +562,13 @@ public class PartnerController {
 		Result<Note> result = new Result<>();
 		try {
 			if (note != null) {
+
+				if(!note.getReplyNoteSeq().equals("")) {
+					Note replyNote = noteService.getById(note.getReplyNoteSeq());
+					replyNote.setReadStatus(1);
+					noteService.updateById(replyNote);
+				}
+
 				note.setSeq(UUIDGenerator.generate());
 				note.setReadStatus(CommonConstant.STATUS_UN_READ);
 				note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
