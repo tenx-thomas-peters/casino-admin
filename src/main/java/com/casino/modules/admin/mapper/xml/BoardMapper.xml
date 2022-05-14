@@ -126,7 +126,9 @@
 		WHERE
 			n.send_type = 1
 		  	AND n.type = #{type}
-			AND m.user_type = #{userType}
+		    <if test="type == 0">
+				AND m.user_type = #{userType}
+			</if>
 			<if test="type == 2">
 				AND n.classification = #{classification}
 			</if>
