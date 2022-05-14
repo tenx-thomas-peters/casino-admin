@@ -10,9 +10,11 @@ public class DepositWithdrawStatisticForm {
 	Date dates;
 	Float slotBet;
 	Float slotWin;
+	Float slotLost;
 	Float baccaratBet;
 	Float baccaratWin;
-	
+	Float baccaratLost;
+
 	Float deposit;
 	Integer depositCount;
 	Float withdraw;

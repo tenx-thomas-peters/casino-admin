@@ -82,10 +82,16 @@
 										</td>
 										<td th:text="${#numbers.formatDecimal(entity.slotBet, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td th:text="${#numbers.formatDecimal(entity.slotWin, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
-										<td class="text-primary" th:text="${#numbers.formatDecimal((entity.slotBet - entity.slotWin), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="text-primary">
+											<span th:if="${entity.slotLost > 0}" th:text="${#numbers.formatDecimal((entity.slotLost), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											<span th:if="${entity.slotLost < 0}" th:text="${#numbers.formatDecimal((entity.slotLost), 1, 'COMMA', 2, 'POINT').replace('.00', '')}" style="color: red"></span>
+										</td>
 										<td th:text="${#numbers.formatDecimal(entity.baccaratBet, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td th:text="${#numbers.formatDecimal(entity.baccaratWin, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
-										<td class="text-primary" th:text="${#numbers.formatDecimal((entity.baccaratBet - entity.baccaratWin), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td class="text-primary">
+											<span th:if="${entity.baccaratLost > 0}" th:text="${#numbers.formatDecimal((entity.baccaratLost), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											<span th:if="${entity.baccaratLost < 0}" th:text="${#numbers.formatDecimal((entity.baccaratLost), 1, 'COMMA', 2, 'POINT').replace('.00', '')}" style="color: red"></span>
+										</td>
 										<td class="memberDeposit detail" th:text="${#numbers.formatDecimal(entity.deposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td class="memberWithdraw detail" th:text="${#numbers.formatDecimal(entity.withdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td class="distributorDeposit detail" th:text="${#numbers.formatDecimal(entity.distributorDeposit, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
