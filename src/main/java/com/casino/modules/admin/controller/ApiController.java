@@ -785,8 +785,10 @@ public class ApiController {
                     result.errorMsg(ret.getBody(), ret.getStatusCode().value());
                 }
             }
-        }
-        catch (HttpStatusCodeException e) {
+            else{
+                result.error500("갱신할 머니가 없습니다");
+            }
+        } catch (HttpStatusCodeException e) {
             log.error("url: /api/syncCasinoMoney --- method: syncCasinoMoney --- message: " + e.toString());
         }
         return result;
