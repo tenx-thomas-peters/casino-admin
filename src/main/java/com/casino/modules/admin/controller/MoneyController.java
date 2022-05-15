@@ -414,8 +414,7 @@ public class MoneyController {
 
             int firstChargeFlag = 0;
             float firstChargeAmount = 0f;
-            int total_first_charge = 1;
-            if(firstdepositCount==null || firstdepositCount.get("total_first_charge").equals(0)) total_first_charge=0;
+            int total_first_charge = firstdepositCount.get("total_first_charge").intValue();
             if(total_first_charge == 0){
                 firstChargeFlag = 1;
 

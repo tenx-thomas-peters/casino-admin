@@ -129,7 +129,7 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 		moneyHistory.setBonus(bonus);
 		Integer reasonType = 0;
 		if(operationType == CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT) {
-			moneyHistory.setFinalAmount(moneyHistory.getPrevAmount() + moneyHistory.getActualAmount() + moneyHistory.getActualAmount() * (moneyHistory.getBonus()==null?0:moneyHistory.getBonus()) * 0.01f);
+			moneyHistory.setFinalAmount(moneyHistory.getPrevAmount() + moneyHistory.getActualAmount());
 			if(member.getUserType() == CommonConstant.USER_TYPE_NORMAL) {
 				reasonType = CommonConstant.MONEY_REASON_CHARGE;
 			}else {

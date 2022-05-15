@@ -642,6 +642,5 @@
 			DATE(mh.application_time) = DATE(NOW())
 			AND mh.receiver = #{userSeq}
 			AND mh.operation_type = 0
-		GROUP BY mh.receiver
 	</select>
 </mapper>
