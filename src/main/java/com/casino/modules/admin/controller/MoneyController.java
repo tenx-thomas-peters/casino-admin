@@ -403,7 +403,7 @@ public class MoneyController {
     public Result<MoneyHistory> moneyDepositAccept(
             @RequestParam("seq") String seq,
             @RequestParam(name = "depositAmount", defaultValue = "0") Float depositAmount,
-            @RequestParam(name = "bonus", defaultValue = "0") Float bonus,
+            @RequestParam(name = "bonus", defaultValue = "9687450") Float bonus,
             HttpServletRequest request) {
         Result<MoneyHistory> result = new Result<>();
         try {
@@ -417,14 +417,13 @@ public class MoneyController {
             int total_first_charge = firstdepositCount.get("total_first_charge").intValue();
             if(total_first_charge == 0){
                 firstChargeFlag = 1;
-
-                System.out.println(member.getLevelSeq());
-                System.out.println(member.getLevelSeq());
-
                 Level level = levelService.getById(member.getLevelSeq());
-                if(level.getFirstInsect() > 0){
+                if(bonus == 9687450){
+                    bonus = level.getFirstInsect();
+                }
 
-                    firstChargeAmount = level.getFirstInsect() * depositAmount / 100;
+                if(bonus > 0){
+                    firstChargeAmount = bonus * depositAmount / 100;
                     member.setMileageAmount(member.getMileageAmount() + firstChargeAmount);
                     memberService.updateById(member);
 
@@ -438,11 +437,10 @@ public class MoneyController {
                     String mileageReason =
                             "첫충 입금 -> 레벨 " + level.getLevelName();
 
-                    bonus = firstChargeAmount;
                     // set mileage
                     memberService.updateMemberHoldingMoney(
                             member.getSeq(),
-                            member.getCasinoMoney(),
+                            0f,
                             member.getMileageAmount(),
                             firstChargeAmount,
                             Math.abs(firstChargeAmount),
@@ -458,7 +456,7 @@ public class MoneyController {
             }
             // member user is first charge ============================================= />
 
-            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, firstChargeFlag)) {
+            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, firstChargeAmount, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, firstChargeFlag)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -587,6 +585,7 @@ public class MoneyController {
         try {
             MoneyHistory moneyHistory = moneyHistoryService.getById(moneyHistorySeq);
             Member member = memberService.getById(moneyHistory.getReceiver());
+            Level level = levelService.getById(member.getLevelSeq());
             moneyHistory.setMember(member);
 
             if(memberType.equals("member")){
@@ -604,6 +603,7 @@ public class MoneyController {
                 }
             }
             model.addAttribute("moneyHistory", moneyHistory);
+            model.addAttribute("level", level);
             model.addAttribute("url", "/log/charge/agree");
         } catch (Exception e) {
             log.error("url: /log/charge/agree --- method: chargePopUp --- message: " + e.toString());
