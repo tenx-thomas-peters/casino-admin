@@ -424,6 +424,30 @@ public class ApiController {
         return result;
     }
 
+    @GetMapping(value = "getSupportList")
+    public Result<IPage<Note>> getSupportList(
+            @RequestParam(name = "sender", defaultValue = "0") String sender,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
+        Result<IPage<Note>> result = new Result<>();
+        try {
+            QueryWrapper<Note> qw = new QueryWrapper<>();
+            qw.eq("sender", sender);
+            qw.eq("type", CommonConstant.TYPE_POST);
+            qw.eq("classification", CommonConstant.CLASSIFICATION_CUSTOMER);
+            qw.eq("remove_status", CommonConstant.STATUS_UNREMOVED);
+            Page<Note> page = new Page<Note>(pageNo, pageSize);
+            IPage<Note> pageList = noteService.page(page, qw);
+
+            result.success("Success");
+            result.setResult(pageList);
+        } catch (Exception e) {
+            result.error500("Internal Server Error");
+            log.error("url: /api/getNoteList --- method: getNoteList --- message: " + e.toString());
+        }
+        return result;
+    }
+
     @GetMapping(value = "getNoticeDetail")
     public Result<Note> getNoticeDetail(
             @RequestParam("seq") String seq) {
@@ -641,7 +665,6 @@ public class ApiController {
     public Result<Note> postSupportForm(@RequestBody Note note) {
         Result<Note> result = new Result<>();
         try {
-            note.setSendType(1);
             note.setSeq(UUIDGenerator.generate());
 
             if (noteService.save(note)) {
