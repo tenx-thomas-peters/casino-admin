@@ -85,31 +85,32 @@
 												</tr>
 											</thead>
 											<tbody>
-											<tr class="noteTitle"  data-closed="0" style="cursor: pointer"
-												th:if="${not #lists.isEmpty(pageList.records)}"
-												th:each="entity : ${pageList.records}"
-												th:data-title="${entity.title}"
-												th:data-content="${entity.content}"
-											>
-													<td>
-														<div class="checkbox-custom checkbox-default checkbox-inline">
-															<input class="checkboxes" type="checkbox" th:name="${entity.seq}"><label></label>
-														</div>
-					                                </td>
-													<td th:text="${entity.mId}"></td>
-													<td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd hh:mm:ss') : '')}"></td>
-													<td th:text="${entity.title}"></td>
-													<td>
-														<span th:if="${entity.readStatus == 0}" th:text="#{admin.status.unread}" style="color: red"></span>
-														<span th:if="${entity.readStatus == 1}" th:text="#{admin.common.read}"></span>
-													</td>
-													<td>
-														<a class="btn btn-default">삭제</a>
-													</td>
-												</tr>
-												<tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">
-					                                <td colspan="10" th:text="#{admin.common.noData}"></td>
-					                            </tr>
+											<tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}" >
+												<td>
+													<div class="checkbox-custom checkbox-default checkbox-inline">
+														<input class="checkboxes" type="checkbox" th:name="${entity.seq}"><label></label>
+													</div>
+												</td>
+												<input type="hidden" th:value="${entity.seq}" name="seq"/>
+												<td th:text="${entity.mId}"></td>
+												<td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd hh:mm:ss') : '')}"></td>
+												<td
+													class="noteTitle"
+													th:text="${entity.title}"
+													th:data-content="${entity.content}"
+													data-closed="0"
+													style="cursor: pointer"></td>
+												<td>
+													<span th:if="${entity.readStatus == 0}" th:text="#{admin.status.unread}" style="color: red"></span>
+													<span th:if="${entity.readStatus == 1}" th:text="#{admin.common.read}"></span>
+												</td>
+												<td>
+													<button type="button" class="btn btn-default deletebtn" th:data-seq="${entity.seq}" th:text="#{admin.common.delete}"></button>
+												</td>
+											</tr>
+											<tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">
+												<td colspan="10" th:text="#{admin.common.noData}"></td>
+											</tr>
 											</tbody>
 										</table>
 									</div>
@@ -138,6 +139,37 @@
 				                </div>
 				            </div>
 							<a class="btn btn-default modal-member-delete" data-toggle="modal" href="#batchDelete" th:text="#{admin.common.selectDelete}"></a>
+						</div>
+					</div>
+					<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+						<!-- Change class .modal-sm to change the size of the modal -->
+
+						<div class="modal-dialog modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" th:text="#{admin.common.delete}"></h4>
+								</div>
+								<div class="modal-body">
+									<div class="container">
+										<div id="message" class="row">
+											<div class="input-item-div col-xs-12 message">
+												<span th:text="#{admin.common.deleteMsg}"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer text-center">
+									<button class="btn btn-primary" type="button" data-dismiss="modal" onclick="deleteById();">
+										<span class="d-table-cell align-middle" th:text="#{admin.common.confirm}"></span>
+									</button>
+									<button class="btn btn-default" type="button" data-dismiss="modal">
+										<span class="d-table-cell align-middle" th:text="#{admin.common.cancel}"></span>
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</section>

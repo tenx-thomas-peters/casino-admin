@@ -59,6 +59,7 @@
                                                     <input class="checkboxes" type="checkbox" th:name="${entity.seq}"><label></label>
                                                 </div>
                                             </td>
+                                            <input type="hidden" th:value="${entity.seq}" name="seq"/>
                                             <td class="sender-nickname mouse-pointer" th:text="${entity.mId}" th:data-mseq="${entity.mSeq}" th:data-utype="${entity.userType}"></td>
                                             <td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd hh:mm:ss') : '')}"></td>
                                             <td th:text="${entity.title}"
@@ -71,7 +72,7 @@
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-default answerbtn" th:data-mseq="${entity.mSeq}" th:data-noteseq="${entity.seq}" th:text="#{admin.common.answer}"></button>
-                                                <button type="submit" class="btn btn-default" data-toggle="modal" data-target="#deleteModal" th:text="#{admin.common.delete}"></button>
+                                                <button type="button" class="btn btn-default deletebtn" th:data-seq="${entity.seq}" th:text="#{admin.common.delete}"></button>
                                             </td>
                                         </tr>
                                         <tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">
