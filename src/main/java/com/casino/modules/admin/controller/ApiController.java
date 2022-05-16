@@ -435,6 +435,7 @@ public class ApiController {
             qw.eq("sender", sender);
             qw.eq("type", CommonConstant.TYPE_POST);
             qw.eq("classification", CommonConstant.CLASSIFICATION_CUSTOMER);
+            qw.eq("send_type", CommonConstant.TYPE_RECEIVE_NOTE);
             qw.eq("remove_status", CommonConstant.STATUS_UNREMOVED);
             Page<Note> page = new Page<Note>(pageNo, pageSize);
             IPage<Note> pageList = noteService.page(page, qw);
@@ -646,9 +647,6 @@ public class ApiController {
             receiverMoneyHistory.setMoneyOrPoint(CommonConstant.MONEY_OR_POINT_MONEY);
             receiverMoneyHistory.setNote(moneyHistory.getNote());
 
-
-
-
             if (moneyHistoryService.save(receiverMoneyHistory)) {
                 result.success("apply charge success");
             } else {
@@ -665,6 +663,7 @@ public class ApiController {
     public Result<Note> postSupportForm(@RequestBody Note note) {
         Result<Note> result = new Result<>();
         try {
+            note.setSendType(1);
             note.setSeq(UUIDGenerator.generate());
 
             if (noteService.save(note)) {
