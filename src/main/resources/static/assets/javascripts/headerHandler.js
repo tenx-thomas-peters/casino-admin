@@ -5,6 +5,7 @@ $(document).ready(function() {
 	var mCustomerService = 0;
 	
 	getHeaderInfo();
+	getAdminMemo();
 	
 	window.setInterval(getHeaderInfo,5000);
 	
@@ -78,6 +79,21 @@ $(document).ready(function() {
             }
         });
 	}
+
+	function getAdminMemo(){
+		$.ajax({
+			url: CONTEXT_ROOT + 'dashboard/adminmemo',
+			type: 'get',
+			success: function (res) {
+				if(res.code === 200){
+					$("#textall").text(res.data.adminMemo);
+				}
+				else{
+
+				}
+			}
+		})
+	}
 });
 
 function textClick(){
@@ -89,12 +105,32 @@ function textClick2(){
 }
 
 function textClick3(){
-	var frm05=document.frm05;
 	var result = confirm('정말로 저장 하시겠습니까?');
+	var textall = $("#textall").val();
+	console.log(textall);
 	if(result)
 	{
-		frm05.submit();
-		return false;
+		$.ajax({
+			url: CONTEXT_ROOT + 'dashboard/savememo',
+			type: 'POST',
+			data: { memo: textall },
+			success: function (res) {
+				if(res.code === 200){
+					new PNotify({
+						title: 'Success!',
+						text: res.message,
+						type: 'success',
+						buttons: {
+							closer: true,
+							sticker: false
+						}
+					});
+				}
+				else{
+
+				}
+			}
+		})
 	}
 }
 
