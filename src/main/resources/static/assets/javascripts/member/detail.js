@@ -340,17 +340,9 @@ $(document).ready(function () {
                     });
                 }
                 else{
-                    let errorTxt = "";
-                    if(res.code === 403){
-                        errorTxt = "에이젠시에 잔고가 부족합니다"
-                    }
-                    else{
-                        errorTxt = res.message;
-                    }
                     new PNotify({
                         title: res.code + ' Error!',
-                        // text: res.message,
-                        text: errorTxt,
+                        text: res.message,
                         type: 'error',
                         buttons: {
                             closer: true,

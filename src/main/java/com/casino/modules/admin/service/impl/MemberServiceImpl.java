@@ -235,6 +235,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 
 			member.setMileageAmount(finalMileageAmount);
 			System.out.println("charge mileage");
+			System.out.println("mileage updated Member:" + member);
+			System.out.println(finalMileageAmount);
 			if (mileageHistoryService.save(mileageHistory) && updateById(member)) {
 				ret = true;
 			}

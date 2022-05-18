@@ -804,11 +804,23 @@ public class ApiController {
                     String utf8EncodedString = new String(bytes, StandardCharsets.UTF_8);
 
                     assertEquals(rawString, utf8EncodedString);
-                    result.errorMsg(ret.getBody(), ret.getStatusCode().value());
+//                    result.errorMsg(ret.getBody(), ret.getStatusCode().value());
+                    result.errorMsg("에이젠시에 잔고가 부족합니다", ret.getStatusCode().value());
                 }
             }
             else{
-                result.error500("갱신할 머니가 없습니다");
+                String url = gameServerUrl + "/user?username=" + member.getId();
+                ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
+
+                if (res.getStatusCode().value() == 200) {
+                    APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
+
+                    member.setCasinoMoney(memberForms.getBalance());
+                    memberService.updateById(member);
+                    result.success("success");
+                    result.setResult(member);
+                }
+                else {result.error505("/user api failed");}
             }
         } catch (HttpStatusCodeException e) {
             log.error("url: /api/syncCasinoMoney --- method: syncCasinoMoney --- message: " + e.toString());
