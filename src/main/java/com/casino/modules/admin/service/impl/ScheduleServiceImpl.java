@@ -185,9 +185,8 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
                         slot_distributor_rate_amount = this.calulateRate(totalBettingAmount.slotBettingAmount, distributor_member.getSlotRate());
                         baccarat_distributor_rate_amount =  this.calulateRate(totalBettingAmount.baccaratBettingAmount, distributor_member.getBaccaratRate());
-
-                        slot_distributor_rolling_amount = slot_distributor_rate_amount - slot_store_rolling_amount;
-                        baccarat_distributor_rolling_amount = baccarat_distributor_rate_amount - baccarat_store_rolling_amount;
+                        slot_distributor_rolling_amount = slot_distributor_rate_amount - slot_store_rate_amount;
+                        baccarat_distributor_rolling_amount = baccarat_distributor_rate_amount - baccarat_store_rate_amount;
 
                         float distributor_variableAmount = slot_distributor_rolling_amount + baccarat_distributor_rolling_amount;
 
