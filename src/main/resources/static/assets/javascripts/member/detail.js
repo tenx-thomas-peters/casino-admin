@@ -131,38 +131,38 @@ $(document).ready(function () {
         // check slot rate and baccarat rate are higher than parent rate====================== <
 
         let myParent;
-        console.log(memberForm);
 
+        let parentFlag = false;
         if(memberForm.storeSeq != null && memberForm.storeSeq !== ""){
-            console.log(memberForm.storeSeq);
+            parentFlag = true;
             myParent = storeList.filter(function(el) {
                 return el.seq ===  memberForm.storeSeq
             })
         }
-        else{
-            if(memberForm.distributorSeq != null && memberForm.distributorSeq !== ""){
-                console.log(memberForm.distributorSeq);
+        else if(memberForm.distributorSeq != null && memberForm.distributorSeq !== ""){
+                parentFlag = true;
                 myParent = distributorList.filter(function(el) {
                     return el.seq ===  memberForm.distributorSeq
                 })
             }
-            else{
-                console.log(memberForm.subHeadquarterSeq);
-                myParent = subHeadquarterList.filter(function(el) {
-                    return el.seq ===  memberForm.subHeadquarterSeq
-                })
-            }
+        else if(memberForm.subHeadquarterSeq != null && memberForm.subHeadquarterSeq !== ""){
+            parentFlag = true;
+            myParent = subHeadquarterList.filter(function(el) {
+                return el.seq ===  memberForm.subHeadquarterSeq
+            })
         }
 
-        let slotRateField = $(".slotRateField").val();
-        let baccaratRateField = $(".baccaratRateField").val();
-        if(slotRateField > myParent[0].slotRate){
-            alert("슬롯 요율이 상부보다 높을수 없습니다");
-            return;
-        }
-        if(baccaratRateField > myParent[0].baccaratRate){
-            alert("바카라 요율이 상부보다 높을수 없습니다");
-            return;
+        if(parentFlag){
+            let slotRateField = $(".slotRateField").val();
+            let baccaratRateField = $(".baccaratRateField").val();
+            if(slotRateField > myParent[0].slotRate){
+                alert("슬롯 요율이 상부보다 높을수 없습니다");
+                return;
+            }
+            if(baccaratRateField > myParent[0].baccaratRate){
+                alert("바카라 요율이 상부보다 높을수 없습니다");
+                return;
+            }
         }
         // check slot rate and baccarat rate are higher than parent rate====================== />
 
@@ -328,13 +328,21 @@ $(document).ready(function () {
                     console.log(member.moneyAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                     $('.member-casino-money').text(member.casinoMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                     console.log(member.casinoMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+                    new PNotify({
+                        title: 'Success!',
+                        text: "머니가 성공적으로 갱신되였습니다.",
+                        type: 'success',
+                        buttons: {
+                            closer: true,
+                            sticker: false
+                        }
+                    });
                 }
                 else{
-                    console.log("asdfd");
                     new PNotify({
                         title: res.code + ' Error!',
-                        // text: res.message,
-                        text: "에이젠시에 잔고가 부족합니다",
+                        text: res.message,
                         type: 'error',
                         buttons: {
                             closer: true,

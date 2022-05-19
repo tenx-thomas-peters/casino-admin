@@ -247,8 +247,10 @@
 			COALESCE(ws.withdraw_count, 0) AS "withdrawCount",
 			COALESCE(bet1.slot_bet, 0) AS "slotBet",
 			COALESCE(bet1.slot_win, 0) AS "slotWin",
+			COALESCE(bet1.slot_lost, 0) AS "slotLost",
 			COALESCE(bet2.baccarat_bet, 0) AS "baccaratBet",
 			COALESCE(bet2.baccarat_win, 0) AS "baccaratWin",
+			COALESCE(bet2.baccarat_lost, 0) AS "baccaratLost",
 			COALESCE(dds.distributor_deposit, 0) AS "distributorDeposit",
 			COALESCE(dws.distributor_withdraw, 0) AS "distributorWithdraw",
 			COALESCE(mds.manager_deposit, 0) AS "managerDeposit",
@@ -291,7 +293,8 @@
 				SELECT
 					DATE( bts.check_time ) AS dates,
 					IFNULL(SUM(bts.slot_betting_amount),0) AS slot_bet,
-					IFNULL(SUM(bts.slot_winning_amount),0) AS slot_win
+					IFNULL(SUM(bts.slot_winning_amount),0) AS slot_win,
+					IFNULL(SUM(bts.slot_lost_amount),0) AS slot_lost
 				FROM
 					betting_summary bts
 				WHERE
@@ -304,12 +307,12 @@
 				SELECT
 					DATE( bts.check_time ) AS dates,
 					IFNULL(SUM(bts.baccarat_betting_amount),0) AS baccarat_bet,
-					IFNULL(SUM(bts.baccarat_winning_amount),0) AS baccarat_win
+					IFNULL(SUM(bts.baccarat_winning_amount),0) AS baccarat_win,
+					IFNULL(SUM(bts.baccarat_lost_amount),0) AS baccarat_lost
 				FROM
 					betting_summary bts
 				WHERE
-					bts.type = #{baccaratType} <!-- baccarat type -->
-					AND DATE( bts.check_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
+					DATE( bts.check_time ) BETWEEN DATE(#{startDate}) AND DATE(#{endDate})
 				GROUP BY
 					DATE( bts.check_time )) AS bet2 ON cal.dates = bet2.dates
 				<!-- baccarat betting statistic end -->
@@ -639,6 +642,5 @@
 			DATE(mh.application_time) = DATE(NOW())
 			AND mh.receiver = #{userSeq}
 			AND mh.operation_type = 0
-		GROUP BY mh.receiver
 	</select>
 </mapper>

@@ -223,7 +223,7 @@ public class BoardController {
 	public Result<Note> questionSendAnswer(@ModelAttribute("note") Note note){
 		Result<Note> result = new Result<Note>();
 		try {
-			if(note !=null) {
+			if(note.getRemoveStatus() != 1) {
 				note.setReadStatus(CommonConstant.STATUS_UN_READ);
 				note.setAnswerStatus(CommonConstant.STATUS_ANSWER);
 				note.setType(CommonConstant.TYPE_POST);
@@ -233,9 +233,13 @@ public class BoardController {
 					result.error500("operation fail");
 				}
 			}
+			else{
+				result.error500("고객이 삭제한 문의입니다");
+			}
 		}catch(Exception e) {
 			log.error("url: /board/questionSendAnswer --- method: questionSendAnswer --- error: " + e.toString());
 			result.error500("operation fail");
+			e.printStackTrace();
 		}
 		
 		return result;

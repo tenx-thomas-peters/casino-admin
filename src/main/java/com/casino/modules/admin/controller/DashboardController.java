@@ -5,13 +5,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.casino.modules.admin.common.entity.BasicSetting;
+import com.casino.modules.admin.service.IBasicSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,7 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 public class DashboardController {
 	@Autowired
     private IDashboardService dashboardService;
-	
+
+	@Autowired
+	private IBasicSettingService basicSettingService;
 	
 	@RequestMapping(value = "/index")
     public String index(Model model, 
@@ -81,6 +82,37 @@ public class DashboardController {
 			log.error("url: /dashboard/headerinfo --- method: headerInfo --- error: " + e.toString());
 		}
 		
+		return result;
+	}
+
+	@GetMapping(value = "/adminmemo")
+	@ResponseBody
+	public Result<BasicSetting> adminmemo() {
+		Result<BasicSetting> result = new Result<>();
+		try {
+			BasicSetting basicSetting = basicSettingService.getById(123);
+			result.setData(basicSetting);
+			result.success("success");
+		} catch (Exception e) {
+			log.error("url: /dashboard/headerinfo --- method: headerInfo --- error: " + e.toString());
+		}
+
+		return result;
+	}
+
+	@PostMapping(value = "/savememo")
+	@ResponseBody
+	public Result<Map<String, Number>> savememo(@RequestParam(name = "memo") String adminMemo, HttpServletRequest request) {
+		Result<Map<String, Number>> result = new Result<>();
+		try {
+			BasicSetting basicSetting = basicSettingService.getById(123);
+			basicSetting.setAdminMemo(adminMemo);
+			basicSettingService.updateById(basicSetting);
+			result.success("success");
+		} catch (Exception e) {
+			log.error("url: /dashboard/headerinfo --- method: headerInfo --- error: " + e.toString());
+		}
+
 		return result;
 	}
 }

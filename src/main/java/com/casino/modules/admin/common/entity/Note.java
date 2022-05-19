@@ -111,4 +111,7 @@ public class Note implements Serializable {
 	
 	@TableField(exist=false)
 	private String color;
+
+	@TableField(exist=false)
+	private String replyNoteSeq;
 }

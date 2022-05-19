@@ -44,16 +44,90 @@ $(document).on('click', '.noteTitle', function(e){
 	let closed = $(this).attr("data-closed");
 	if (closed == 0) {
 		$(this).attr("data-closed", 1);
-		let title = $(this).data("title");
+		let title = $(this).text();
 		let content = $(this).data("content").replace(',<p>', '').replace('<p>', '');
 		 
 		let detailTr = getDetailTr(title, content);
-		$(this).after(detailTr);
+		$(this).parent().after(detailTr);
 	} else {
 		$(this).attr("data-closed", 0);
-		$(this).next().remove();
+		$(this).parent().next().remove();
 	}
 });
+$('.deletebtn').on('click', function() {
+	let seq = $(this).data('seq');
+	if (confirm("정말 삭제하시겠습니까?") == true) {
+		$.ajax({
+			url: CONTEXT_ROOT + "board/delete",
+			type: "POST",
+			data: { ids: seq },
+			success: function(response) {
+				new PNotify({
+					title: 'Success!',
+					text: response.message,
+					type: 'success',
+					buttons: {
+						closer: true,
+						sticker: false
+					}
+				});
+
+				setTimeout(function() {
+					window.location.reload();
+				}, 1000);
+			},
+			error: function(err) {
+				new PNotify({
+					title: 'Error!',
+					text: err.message,
+					type: 'error',
+					buttons: {
+						closer: true,
+						sticker: false
+					}
+				});
+			}
+		});
+	}
+})
+
+function deleteById() {
+	let seq = $(this).data('seq');
+	// var id = $('input[name=seq]').val();
+	console.log(seq);
+
+	// $.ajax({
+	// 	url: CONTEXT_ROOT + "board/delete",
+	// 	type: "POST",
+	// 	data: { ids: seq },
+	// 	success: function(response) {
+	// 		new PNotify({
+	// 			title: 'Success!',
+	// 			text: response.message,
+	// 			type: 'success',
+	// 			buttons: {
+	// 				closer: true,
+	// 				sticker: false
+	// 			}
+	// 		});
+	//
+	// 		setTimeout(function() {
+	// 			window.location.reload();
+	// 		}, 1000);
+	// 	},
+	// 	error: function(err) {
+	// 		new PNotify({
+	// 			title: 'Error!',
+	// 			text: err.message,
+	// 			type: 'error',
+	// 			buttons: {
+	// 				closer: true,
+	// 				sticker: false
+	// 			}
+	// 		});
+	// 	}
+	// });
+}
 
 function batchDelete() {
 	var checkArray = document.getElementsByClassName("checkboxes");
@@ -135,8 +209,9 @@ $('.sender-nickname').on('click', function() {
 
 $('.answerbtn').on('click', function() {
 	let memberSeq = $(this).data('mseq');
+	let noteSeq = $(this).data('noteseq');
 
-	let detailWindow = window.open(CONTEXT_ROOT + 'partner2/getMemo?seq=' + memberSeq, 'Member Detail', features);
+	let detailWindow = window.open(CONTEXT_ROOT + 'partner2/getMemo?seq=' + memberSeq + '&note_seq=' + noteSeq, 'Member Detail', features);
 	detailWindow.onbeforeunload = function () {
 		window.location.reload();
 	}

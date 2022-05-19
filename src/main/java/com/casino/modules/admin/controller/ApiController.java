@@ -424,6 +424,31 @@ public class ApiController {
         return result;
     }
 
+    @GetMapping(value = "getSupportList")
+    public Result<IPage<Note>> getSupportList(
+            @RequestParam(name = "sender", defaultValue = "0") String sender,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
+        Result<IPage<Note>> result = new Result<>();
+        try {
+            QueryWrapper<Note> qw = new QueryWrapper<>();
+            qw.eq("sender", sender);
+            qw.eq("type", CommonConstant.TYPE_POST);
+            qw.eq("classification", CommonConstant.CLASSIFICATION_CUSTOMER);
+            qw.eq("send_type", CommonConstant.TYPE_RECEIVE_NOTE);
+            qw.eq("remove_status", CommonConstant.STATUS_UNREMOVED);
+            Page<Note> page = new Page<Note>(pageNo, pageSize);
+            IPage<Note> pageList = noteService.page(page, qw);
+
+            result.success("Success");
+            result.setResult(pageList);
+        } catch (Exception e) {
+            result.error500("Internal Server Error");
+            log.error("url: /api/getNoteList --- method: getNoteList --- message: " + e.toString());
+        }
+        return result;
+    }
+
     @GetMapping(value = "getNoticeDetail")
     public Result<Note> getNoticeDetail(
             @RequestParam("seq") String seq) {
@@ -622,9 +647,6 @@ public class ApiController {
             receiverMoneyHistory.setMoneyOrPoint(CommonConstant.MONEY_OR_POINT_MONEY);
             receiverMoneyHistory.setNote(moneyHistory.getNote());
 
-
-
-
             if (moneyHistoryService.save(receiverMoneyHistory)) {
                 result.success("apply charge success");
             } else {
@@ -782,11 +804,25 @@ public class ApiController {
                     String utf8EncodedString = new String(bytes, StandardCharsets.UTF_8);
 
                     assertEquals(rawString, utf8EncodedString);
-                    result.errorMsg(ret.getBody(), ret.getStatusCode().value());
+//                    result.errorMsg(ret.getBody(), ret.getStatusCode().value());
+                    result.errorMsg("에이젠시에 잔고가 부족합니다", ret.getStatusCode().value());
                 }
             }
-        }
-        catch (HttpStatusCodeException e) {
+            else{
+                String url = gameServerUrl + "/user?username=" + member.getId();
+                ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
+
+                if (res.getStatusCode().value() == 200) {
+                    APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
+
+                    member.setCasinoMoney(memberForms.getBalance());
+                    memberService.updateById(member);
+                    result.success("success");
+                    result.setResult(member);
+                }
+                else {result.error505("/user api failed");}
+            }
+        } catch (HttpStatusCodeException e) {
             log.error("url: /api/syncCasinoMoney --- method: syncCasinoMoney --- message: " + e.toString());
         }
         return result;

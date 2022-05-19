@@ -99,4 +99,7 @@ public class BasicSetting implements Serializable {
     @TableField(value = "cc_repayment_information")
     private String ccRepaymentInformation;
 
+    @TableField(value = "admin_memo")
+    private String adminMemo;
+
 }

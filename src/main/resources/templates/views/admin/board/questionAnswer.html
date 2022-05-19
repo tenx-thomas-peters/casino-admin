@@ -42,6 +42,7 @@
 								<div id="write" class="tab-pane active">
 									<form id="questionAnswerForm" th:object="${note}" name="questionAnswerForm" class="form-horizontal" >
 										<input type="hidden" name="seq" th:value="${note.seq}">
+										<input type="hidden" name="removeStatus" th:value="${note.removeStatus}">
 										<table class="table table-customer">
 											<tr>
 												<th width="15%">
