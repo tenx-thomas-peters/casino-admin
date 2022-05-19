@@ -1,46 +1,46 @@
 $("#saveGlobalconfig").click(function(){
 			var baccarat_check_json = {};
     			baccarat_check_json = {
-    				"evolution": 	$("input[name='evolution']:checked").val(),
-    				"olvet": 	 	$("input[name='olvet']:checked").val(),
-    				"dreamGaming":  $("input[name='dreamGaming']:checked").val(),
-    				"microgaming":  $("input[name='microgaming']:checked").val(),
-    				"sexygaming":   $("input[name='sexygaming']:checked").val(),
-    				"asiaGaming":   $("input[name='asiaGaming']:checked").val(),
-    				"orientalPlus": $("input[name='orientalPlus']:checked").val(),
-    				"bbin":         $("input[name='bbin']:checked").val(),
-    				"vivoGaming":   $("input[name='vivoGaming']:checked").val(),
-    				"pragmatic":    $("input[name='pragmatic']:checked").val(),
-    				"taishan":      $("input[name='taishan']:checked").val(),
-    				"lotus":        $("input[name='lotus']:checked").val(),
-    				"vmCasino":     $("input[name='vmCasino']:checked").val()
+    				"baccarat_evolution": 	$("input[name='baccarat_evolution']:checked").val(),
+    				"baccarat_allbet": 	 	$("input[name='baccarat_allbet']:checked").val(),
+    				"baccarat_dreamgame":  $("input[name='baccarat_dreamgame']:checked").val(),
+    				"baccarat_microgaming":  $("input[name='baccarat_microgaming']:checked").val(),
+    				"sexygaming_vivo":   $("input[name='sexygaming_vivo']:checked").val(),
+    				"baccarat_asiagaming":   $("input[name='baccarat_asiagaming']:checked").val(),
+    				"baccarat_oriental": $("input[name='baccarat_oriental']:checked").val(),
+    				"baccarat_bbin":         $("input[name='baccarat_bbin']:checked").val(),
+    				"baccarat_vivo":   $("input[name='baccarat_vivo']:checked").val(),
+    				"baccarat_pragmatic":    $("input[name='baccarat_pragmatic']:checked").val(),
+    				"baccarat_taishan":      $("input[name='baccarat_taishan']:checked").val(),
+    				"baccarat_lotus":        $("input[name='baccarat_lotus']:checked").val(),
+    				"baccarat_vmcasino":     $("input[name='baccarat_vmcasino']:checked").val()
     			}
 			$("input[name='baccaratCheck']").val(JSON.stringify(baccarat_check_json));
 
 			var slot_check_json = {};
     			slot_check_json = {
-    				"vmCasino2": 		$("input[name='vmCasino2']:checked").val(),
-    				"programmaticPlay": $("input[name='programmaticPlay']:checked").val(),
-    				"booungo": 			$("input[name='booungo']:checked").val(),
-    				"realTimeGaming":   $("input[name='realTimeGaming']:checked").val(),
-    				"bbTech":  			$("input[name='bbTech']:checked").val(),
-    				"microgaming1":     $("input[name='microgaming1']:checked").val(),
-    				"asiaGaming1":      $("input[name='asiaGaming1']:checked").val(),
-    				"habanero":         $("input[name='habanero']:checked").val(),
-    				"evoplay":   		$("input[name='evoplay']:checked").val(),
-    				"playstar":   		$("input[name='playstar']:checked").val(),
-    				"gameart":     		$("input[name='gameart']:checked").val(),
-    				"genesis":       	$("input[name='genesis']:checked").val(),
-    				"topTrend":     	$("input[name='topTrend']:checked").val(),
-    				"stargame":     	$("input[name='stargame']:checked").val(),
-    				"nonGaming":    	$("input[name='nonGaming']:checked").val(),
-    				"dreamTech":    	$("input[name='dreamTech']:checked").val(),
-    				"benesoft":    		$("input[name='benesoft']:checked").val(),
-    				"fijiSoft":    		$("input[name='fijiSoft']:checked").val(),
-    				"tpg":    			$("input[name='tpg']:checked").val(),
-    				"playengo":     	$("input[name='playengo']:checked").val(),
-    				"aritocrat":    	$("input[name='aritocrat']:checked").val(),
-    				"playson":     		$("input[name='playson']:checked").val()
+    				"slot_vmcasino2": 		$("input[name='slot_vmcasino2']:checked").val(),
+    				"slot_pragmatic": $("input[name='slot_pragmatic']:checked").val(),
+    				"slot_booongo": 			$("input[name='slot_booongo']:checked").val(),
+    				"slot_realtime":   $("input[name='slot_realtime']:checked").val(),
+    				"slot_bbtech":  			$("input[name='slot_bbtech']:checked").val(),
+    				"slot_microgaming":     $("input[name='slot_microgaming']:checked").val(),
+    				"slot_asiagaming":      $("input[name='slot_asiagaming']:checked").val(),
+    				"slot_habanero":         $("input[name='slot_habanero']:checked").val(),
+    				"slot_evoplay":   		$("input[name='slot_evoplay']:checked").val(),
+    				"slot_playstar":   		$("input[name='slot_playstar']:checked").val(),
+    				"slot_gameart":     		$("input[name='slot_gameart']:checked").val(),
+    				"slot_genesis":       	$("input[name='slot_genesis']:checked").val(),
+    				"slot_toptrend":     	$("input[name='slot_toptrend']:checked").val(),
+    				"slot_stargame":     	$("input[name='slot_stargame']:checked").val(),
+    				"slot_bgame":    	$("input[name='slot_bgame']:checked").val(),
+    				"slot_dreamtech":    	$("input[name='slot_dreamtech']:checked").val(),
+    				"slot_betsoft":    		$("input[name='slot_betsoft']:checked").val(),
+    				"slot_pgsoft":    		$("input[name='slot_pgsoft']:checked").val(),
+    				"slot_tpg":    			$("input[name='slot_tpg']:checked").val(),
+    				"slot_cq9":     	$("input[name='slot_cq9']:checked").val(),
+    				"slot_aritocrat":    	$("input[name='slot_aritocrat']:checked").val(),
+    				"slot_playson":     		$("input[name='slot_playson']:checked").val()
 
     			}
 			$("input[name='slotCheck']").val(JSON.stringify(slot_check_json));
@@ -60,43 +60,43 @@ $("#saveGlobalconfig").click(function(){
 
 		$(document).ready(function(){
 			var baccaratCheckObj = JSON.parse($("input[name='baccaratCheck']").val());
-					$("input[name='evolution'][value='" + baccaratCheckObj.evolution + "']").attr("checked", "checked");
-					$("input[name='olvet'][value='" + baccaratCheckObj.olvet + "']").attr("checked", "checked");
-					$("input[name='dreamGaming'][value='" + baccaratCheckObj.dreamGaming + "']").attr("checked", "checked");
-					$("input[name='microgaming'][value='" + baccaratCheckObj.microgaming + "']").attr("checked", "checked");
-					$("input[name='sexygaming'][value='" + baccaratCheckObj.sexygaming + "']").attr("checked", "checked");
-					$("input[name='asiaGaming'][value='" + baccaratCheckObj.asiaGaming + "']").attr("checked", "checked");
-					$("input[name='orientalPlus'][value='" + baccaratCheckObj.orientalPlus + "']").attr("checked", "checked");
-					$("input[name='bbin'][value='" + baccaratCheckObj.bbin + "']").attr("checked", "checked");
-					$("input[name='vivoGaming'][value='" + baccaratCheckObj.vivoGaming + "']").attr("checked", "checked");
-					$("input[name='pragmatic'][value='" + baccaratCheckObj.pragmatic + "']").attr("checked", "checked");
-					$("input[name='taishan'][value='" + baccaratCheckObj.taishan + "']").attr("checked", "checked");
-					$("input[name='lotus'][value='" + baccaratCheckObj.lotus + "']").attr("checked", "checked");
-					$("input[name='vmCasino'][value='" + baccaratCheckObj.vmCasino + "']").attr("checked", "checked");
+					$("input[name='baccarat_evolution'][value='" + baccaratCheckObj.baccarat_evolution + "']").attr("checked", "checked");
+					$("input[name='baccarat_allbet'][value='" + baccaratCheckObj.baccarat_allbet + "']").attr("checked", "checked");
+					$("input[name='baccarat_dreamgame'][value='" + baccaratCheckObj.baccarat_dreamgame + "']").attr("checked", "checked");
+					$("input[name='baccarat_microgaming'][value='" + baccaratCheckObj.baccarat_microgaming + "']").attr("checked", "checked");
+					$("input[name='sexygaming_vivo'][value='" + baccaratCheckObj.sexygaming_vivo + "']").attr("checked", "checked");
+					$("input[name='baccarat_asiagaming'][value='" + baccaratCheckObj.baccarat_asiagaming + "']").attr("checked", "checked");
+					$("input[name='baccarat_oriental'][value='" + baccaratCheckObj.baccarat_oriental + "']").attr("checked", "checked");
+					$("input[name='baccarat_bbin'][value='" + baccaratCheckObj.baccarat_bbin + "']").attr("checked", "checked");
+					$("input[name='baccarat_vivo'][value='" + baccaratCheckObj.baccarat_vivo + "']").attr("checked", "checked");
+					$("input[name='baccarat_pragmatic'][value='" + baccaratCheckObj.baccarat_pragmatic + "']").attr("checked", "checked");
+					$("input[name='baccarat_taishan'][value='" + baccaratCheckObj.baccarat_taishan + "']").attr("checked", "checked");
+					$("input[name='baccarat_lotus'][value='" + baccaratCheckObj.baccarat_lotus + "']").attr("checked", "checked");
+					$("input[name='baccarat_vmcasino'][value='" + baccaratCheckObj.baccarat_vmcasino + "']").attr("checked", "checked");
 
 			var slotCheckObj = JSON.parse($("input[name='slotCheck']").val());
-					$("input[name='vmCasino2'][value='" + slotCheckObj.vmCasino2 + "']").attr("checked", "checked");
-					$("input[name='programmaticPlay'][value='" + slotCheckObj.programmaticPlay + "']").attr("checked", "checked");
-					$("input[name='booungo'][value='" + slotCheckObj.booungo + "']").attr("checked", "checked");
-					$("input[name='realTimeGaming'][value='" + slotCheckObj.realTimeGaming + "']").attr("checked", "checked");
-					$("input[name='bbTech'][value='" + slotCheckObj.bbTech + "']").attr("checked", "checked");
-					$("input[name='microgaming1'][value='" + slotCheckObj.microgaming1 + "']").attr("checked", "checked");
-					$("input[name='asiaGaming1'][value='" + slotCheckObj.asiaGaming1 + "']").attr("checked", "checked");
-					$("input[name='habanero'][value='" + slotCheckObj.habanero + "']").attr("checked", "checked");
-					$("input[name='evoplay'][value='" + slotCheckObj.evoplay + "']").attr("checked", "checked");
-					$("input[name='playstar'][value='" + slotCheckObj.playstar + "']").attr("checked", "checked");
-					$("input[name='gameart'][value='" + slotCheckObj.gameart + "']").attr("checked", "checked");
-					$("input[name='genesis'][value='" + slotCheckObj.genesis + "']").attr("checked", "checked");
-					$("input[name='topTrend'][value='" + slotCheckObj.topTrend + "']").attr("checked", "checked");
-					$("input[name='stargame'][value='" + slotCheckObj.stargame + "']").attr("checked", "checked");
-					$("input[name='nonGaming'][value='" + slotCheckObj.nonGaming + "']").attr("checked", "checked");
-					$("input[name='dreamTech'][value='" + slotCheckObj.dreamTech + "']").attr("checked", "checked");
-					$("input[name='benesoft'][value='" + slotCheckObj.benesoft + "']").attr("checked", "checked");
-					$("input[name='fijiSoft'][value='" + slotCheckObj.fijiSoft + "']").attr("checked", "checked");
-					$("input[name='tpg'][value='" + slotCheckObj.tpg + "']").attr("checked", "checked");
-					$("input[name='playengo'][value='" + slotCheckObj.playengo + "']").attr("checked", "checked");
-					$("input[name='aritocrat'][value='" + slotCheckObj.aritocrat + "']").attr("checked", "checked");
-					$("input[name='playson'][value='" + slotCheckObj.playson + "']").attr("checked", "checked");
+					$("input[name='slot_vmcasino2'][value='" + slotCheckObj.slot_vmcasino2 + "']").attr("checked", "checked");
+					$("input[name='slot_pragmatic'][value='" + slotCheckObj.slot_pragmatic + "']").attr("checked", "checked");
+					$("input[name='slot_booongo'][value='" + slotCheckObj.slot_booongo + "']").attr("checked", "checked");
+					$("input[name='slot_realtime'][value='" + slotCheckObj.slot_realtime + "']").attr("checked", "checked");
+					$("input[name='slot_bbtech'][value='" + slotCheckObj.slot_bbtech + "']").attr("checked", "checked");
+					$("input[name='slot_microgaming'][value='" + slotCheckObj.slot_microgaming + "']").attr("checked", "checked");
+					$("input[name='slot_asiagaming'][value='" + slotCheckObj.slot_asiagaming + "']").attr("checked", "checked");
+					$("input[name='slot_habanero'][value='" + slotCheckObj.slot_habanero + "']").attr("checked", "checked");
+					$("input[name='slot_evoplay'][value='" + slotCheckObj.slot_evoplay + "']").attr("checked", "checked");
+					$("input[name='slot_playstar'][value='" + slotCheckObj.slot_playstar + "']").attr("checked", "checked");
+					$("input[name='slot_gameart'][value='" + slotCheckObj.slot_gameart + "']").attr("checked", "checked");
+					$("input[name='slot_genesis'][value='" + slotCheckObj.slot_genesis + "']").attr("checked", "checked");
+					$("input[name='slot_toptrend'][value='" + slotCheckObj.slot_toptrend + "']").attr("checked", "checked");
+					$("input[name='slot_stargame'][value='" + slotCheckObj.slot_stargame + "']").attr("checked", "checked");
+					$("input[name='slot_bgame'][value='" + slotCheckObj.slot_bgame + "']").attr("checked", "checked");
+					$("input[name='slot_dreamtech'][value='" + slotCheckObj.slot_dreamtech + "']").attr("checked", "checked");
+					$("input[name='slot_betsoft'][value='" + slotCheckObj.slot_betsoft + "']").attr("checked", "checked");
+					$("input[name='slot_pgsoft'][value='" + slotCheckObj.slot_pgsoft + "']").attr("checked", "checked");
+					$("input[name='slot_tpg'][value='" + slotCheckObj.slot_tpg + "']").attr("checked", "checked");
+					$("input[name='slot_cq9'][value='" + slotCheckObj.slot_cq9 + "']").attr("checked", "checked");
+					$("input[name='slot_aritocrat'][value='" + slotCheckObj.slot_aritocrat + "']").attr("checked", "checked");
+					$("input[name='slot_playson'][value='" + slotCheckObj.slot_playson + "']").attr("checked", "checked");
 					$("input[name='serviceInspection'][value='" + $("input[name='serviceInspectionCheck']").val() + "']").attr("checked", "checked");
 					$("input[name='inputRequired'][value='" + $("input[name='recommenderAtTheTimeOfMemberRegistration']").val() + "']").attr("checked", "checked");
 
