@@ -214,6 +214,8 @@ public class ApiController {
         Float houseMoney = 0.0f;
         Float jackpotAmount = 0.0f;
         String inlineNotice = "";
+        String baccaratCheck = "";
+        String slotCheck = "";
         List<PopupSetting> popupSettingList = new ArrayList<>();
 
         Map<String, Object> topRanking = new HashMap<>();
@@ -255,6 +257,8 @@ public class ApiController {
                 houseMoney = basicSetting.getHouseMoney();
                 jackpotAmount = basicSetting.getJackpotAmount();
                 inlineNotice = basicSetting.getMemberLineAdvertisement();
+                baccaratCheck = basicSetting.getBaccaratCheck();
+                slotCheck = basicSetting.getSlotCheck();
 
                 topRanking.put("topMember", basicSetting.getWeeklyWithdrawalRankingTop1Id());
                 topRanking.put("moneyAmount", basicSetting.getWeeklyWithdrawalRankingTop1Money());
@@ -270,6 +274,8 @@ public class ApiController {
             jsonObject.put("topRanking", topRanking);
             jsonObject.put("inlineNotice", inlineNotice);
             jsonObject.put("popupNotice", popupSettingList);
+            jsonObject.put("baccaratCheck", baccaratCheck);
+            jsonObject.put("slotCheck", slotCheck);
 
             result.success("Success");
             result.setResult(jsonObject);
