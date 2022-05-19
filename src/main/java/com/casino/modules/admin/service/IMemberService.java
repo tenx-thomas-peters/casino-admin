@@ -14,7 +14,7 @@ import com.casino.modules.admin.common.form.StoreForm;
 
 public interface IMemberService extends IService<Member> {
 
-    IPage<MemberForm> getMemberList(Page<MemberForm> page, MemberForm memberForm, String column, Integer order);
+    IPage<MemberForm> getMemberList(Page<MemberForm> page, MemberForm memberForm, String column, Integer order, Integer loginStatus);
 
     MemberForm getMemberBySeq(MemberForm memberForm);
 

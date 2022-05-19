@@ -159,6 +159,10 @@ public class ApiController {
                     obj.put("userInfo", member);
                     result.setResult(obj);
 
+                    member.setToken(token);
+                    member.setLoginStatus(1);
+                    memberService.updateById(member);
+
                     result.success("Login Success!");
                 } else {
                     accessLog.setStatus(CommonConstant.ACCESS_LOG_SUCCESS);

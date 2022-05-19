@@ -130,6 +130,12 @@ public class Member implements Serializable {
     @TableField(value = "update_by")
     private String updateBy;
 
+    @TableField(value = "token")
+    private String token;
+
+    @TableField(value = "login_status")
+    private Integer loginStatus;
+
     @TableField(value = "update_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

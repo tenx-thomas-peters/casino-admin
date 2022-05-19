@@ -111,11 +111,10 @@
 	<select id="getApplicationCount" resultType="java.util.Map">
 		SELECT
 			IFNULL((
-				SELECT COUNT(al.seq)
-				FROM access_log al
-					INNER JOIN member m ON m.seq = al.member_seq
+				SELECT COUNT(m.seq)
+				FROM member m
 				WHERE m.user_type = 0
-			    AND al.admin_read_status = 0
+			    AND m.login_status = 1
 			), 0) AS member_login,
 			IFNULL((
 				SELECT COUNT(al.seq)

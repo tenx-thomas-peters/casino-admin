@@ -753,6 +753,9 @@
                     #{item}
                 </foreach>
             </if>
+			<if test="loginStatus != 3">
+				AND m1.login_status = ${loginStatus}
+			</if>
         </where>
 		GROUP BY m1.seq
 		ORDER BY

@@ -19,12 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -96,17 +91,18 @@ public class MemberController {
     @Autowired
     private ISysUserService sysUserService;
 
-    @RequestMapping(value = "list")
+    @RequestMapping(value = "list", method = {RequestMethod.GET, RequestMethod.POST})
     public String memberList(@ModelAttribute("memberForm") MemberForm memberForm,
                              @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                              @RequestParam(value = "pageSize", defaultValue = "150") Integer pageSize,
                              @RequestParam(value = "order", defaultValue = "1") Integer order,
                              @RequestParam(value = "column", defaultValue = "create_date") String column,
+                             @RequestParam(value = "loginStatus", defaultValue = "3") Integer loginStatus,
                              Model model, HttpServletRequest request) {
         try {
             Page<MemberForm> page = new Page<>(pageNo, pageSize);
             memberForm.setUserType(CommonConstant.USER_TYPE_NORMAL);
-            IPage<MemberForm> pageList = memberService.getMemberList(page, memberForm, column, order);
+            IPage<MemberForm> pageList = memberService.getMemberList(page, memberForm, column, order, loginStatus);
 
             QueryWrapper<Dict> dictQw = new QueryWrapper<>();
             dictQw.eq("dict_key", "MEMBER_STATUS");

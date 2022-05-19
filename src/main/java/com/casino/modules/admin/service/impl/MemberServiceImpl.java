@@ -45,8 +45,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 	}
 
 	@Override
-	public IPage<MemberForm> getMemberList(Page<MemberForm> page, MemberForm memberForm, String column, Integer order) {
-		return memberMapper.getMemberList(page, memberForm, column, order,
+	public IPage<MemberForm> getMemberList(Page<MemberForm> page, MemberForm memberForm, String column, Integer order, Integer loginStatus) {
+		return memberMapper.getMemberList(page, memberForm, column, order, loginStatus,
 				CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT,
 				CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
 				CommonConstant.MONEY_HISTORY_STATUS_COMPLETE);
