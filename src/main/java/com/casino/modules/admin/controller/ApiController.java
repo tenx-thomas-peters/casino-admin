@@ -112,6 +112,28 @@ public class ApiController {
         return result;
     }
 
+    @GetMapping(value = "auth/signout")
+    public Result<String> signOut(
+            HttpServletRequest request,
+            @RequestParam("userSeq") String userSeq){
+
+        Result<String> result = new Result<>();
+        try{
+            Member member = memberService.getById(userSeq);
+            member.setLoginStatus(0);
+            if(memberService.updateById(member)){
+                result.success("Success");
+            }
+            else{
+                result.error500("Couldn't log out Database Server Error");
+            }
+        } catch (Exception e) {
+            result.error500("Internal Server Error");
+            log.error("url: /api/getNoticeDetail --- method: getNoticeDetail --- message: " + e.toString());
+        }
+        return result;
+    }
+
     @GetMapping(value = "auth/signin")
     public Result<JSONObject> signIn(
             HttpServletRequest request,
