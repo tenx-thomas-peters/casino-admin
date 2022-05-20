@@ -204,7 +204,7 @@ public class MemberController {
         try {
 
             String strChangeMoney = member.getChangeMoney();
-            if(!strChangeMoney.equals("")){
+            if( member.getChangeMoney() !=null && !strChangeMoney.equals("") ){
                 System.out.println("changed money");
 
                 float floatChangeMoney = Float.parseFloat(strChangeMoney);
@@ -404,13 +404,17 @@ public class MemberController {
             qw.eq("dict_value", CommonConstant.MONEY_REASON_ADMINEDIT);
             List<Dict> reasonList = dictService.list(qw);
             String reasonStrKey = reasonList.get(0).getStrValue();
+
             reason = messageSource.getMessage(reasonStrKey, null, Locale.ENGLISH);
 
+            reason = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
+                    ? "관리자 충진 ["+variableAmount + "]"
+                    : "관리자 환전 [ -"+variableAmount + "]";
             float actualAmount = variableAmount;
             Float finalAmount = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
                     ? prevMoneyAmount + variableAmount
                     : prevMoneyAmount - variableAmount;
-            Integer status = CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT;
+            Integer status = CommonConstant.MONEY_HISTORY_STATUS_COMPLETE;
             Integer reasonType = CommonConstant.MONEY_REASON_ADMINEDIT;
             Integer chargeCount = 0;
             if (memberService.updateMemberHoldingMoney(

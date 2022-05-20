@@ -33,7 +33,7 @@ public interface IMoneyHistoryService extends IService<MoneyHistory> {
 
 	Float getTotalAmountByDateRange(MoneyHistory moneyHistory);
 	
-	Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge);
+	Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge, String reason);
 
 	// for api
 	List<MoneyHistory> getTodayMoneyHistory(Integer status, Integer operationType, Integer moneyOrPoint);

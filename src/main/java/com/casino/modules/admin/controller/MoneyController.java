@@ -456,7 +456,8 @@ public class MoneyController {
             }
             // member user is first charge ============================================= />
 
-            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, firstChargeAmount, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, firstChargeFlag)) {
+            String reason = "회원 입금 [" + depositAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, firstChargeAmount, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, firstChargeFlag, reason)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -480,7 +481,8 @@ public class MoneyController {
 
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0)) {
+            String reason = "회원 출금 [" + withdrawAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0, reason)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -507,7 +509,8 @@ public class MoneyController {
             Member member = memberService.getById(history.getReceiver());
             Float amount = depositAmount + depositAmount * bonus;
 
-            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, 0)) {
+            String reason = "파트너 입금 [" + depositAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, 0, reason)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -532,7 +535,8 @@ public class MoneyController {
             // game api - /user/sub-balance start
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0)) {
+            String reason = "파트너 출금 [" + withdrawAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0, reason)) {
                 result.success("success!");
             } else {
                 result.error505("failed");

@@ -115,11 +115,12 @@ public class ApiController {
     @GetMapping(value = "auth/signout")
     public Result<String> signOut(
             HttpServletRequest request,
-            @RequestParam("userSeq") String userSeq){
+            @RequestParam("seq") String seq,
+            @RequestParam("force") String force){
 
         Result<String> result = new Result<>();
         try{
-            Member member = memberService.getById(userSeq);
+            Member member = memberService.getById(seq);
             member.setLoginStatus(0);
             if(memberService.updateById(member)){
                 result.success("Success");
