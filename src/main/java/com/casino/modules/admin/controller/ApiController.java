@@ -312,6 +312,29 @@ public class ApiController {
         return result;
     }
 
+    @GetMapping(value = "/popup_list")
+    public Result<JSONObject> popupList(@RequestParam("memberSeq") String memberSeq) {
+        Result<JSONObject> result = new Result<>();
+        JSONObject jsonObject = new JSONObject();
+        List<PopupSetting> popupSettingList = new ArrayList<>();
+
+        try{
+            QueryWrapper<PopupSetting> popQw = new QueryWrapper<>();
+            popQw.ne("expiration_start", new Date());
+            popQw.ge("expiration_end", new Date());
+            popupSettingList = popupSettingService.list(popQw);
+
+            jsonObject.put("popupNotice", popupSettingList);
+            result.success("Success");
+            result.setResult(jsonObject);
+        }
+        catch (Exception e){
+            result.error500("Internal Server Error");
+            log.error("url: /popup_list --- method: getMemberInfo() --- message: " + e.toString());
+        }
+        return result;
+    }
+
     public Result<Member> getCaisnoMoeny(String member_id){
 
         Result<Member> result = new Result<>();
