@@ -112,17 +112,21 @@ public class ApiController {
         return result;
     }
 
-    @GetMapping(value = "auth/signout")
-    public Result<String> signOut(
+    @PostMapping(value = "auth/signout")
+    public Result<String> signout(
             HttpServletRequest request,
-            @RequestParam("seq") String seq,
-            @RequestParam("force") String force){
+            @RequestBody Member member){
+        System.out.println("token");
+        System.out.println(member.getToken());
 
         Result<String> result = new Result<>();
         try{
-            Member member = memberService.getById(seq);
-            member.setLoginStatus(0);
-            if(memberService.updateById(member)){
+            QueryWrapper<Member> qw = new QueryWrapper<>();
+            qw.eq("token", member.getToken());
+
+            Member member1 = memberService.getOne(qw);
+            member1.setLoginStatus(0);
+            if(memberService.updateById(member1)){
                 result.success("Success");
             }
             else{
@@ -130,7 +134,8 @@ public class ApiController {
             }
         } catch (Exception e) {
             result.error500("Internal Server Error");
-            log.error("url: /api/getNoticeDetail --- method: getNoticeDetail --- message: " + e.toString());
+            log.error("url: /auth/signout --- method: getNoticeDetail --- message: " + e.toString());
+            e.printStackTrace();
         }
         return result;
     }
@@ -243,7 +248,6 @@ public class ApiController {
         String inlineNotice = "";
         String baccaratCheck = "";
         String slotCheck = "";
-        List<PopupSetting> popupSettingList = new ArrayList<>();
 
         Map<String, Object> topRanking = new HashMap<>();
 
@@ -274,6 +278,7 @@ public class ApiController {
                 jsonObject.put("moneyAmount", member.getMoneyAmount());
                 jsonObject.put("casinoMoney", member.getCasinoMoney());
                 jsonObject.put("mileageAmount", member.getMileageAmount());
+                jsonObject.put("token", member.getToken());
             }
 
             // get house money
@@ -291,16 +296,10 @@ public class ApiController {
                 topRanking.put("moneyAmount", basicSetting.getWeeklyWithdrawalRankingTop1Money());
             }
 
-            QueryWrapper<PopupSetting> popQw = new QueryWrapper<>();
-            popQw.ne("expiration_start", new Date());
-            popQw.ge("expiration_end", new Date());
-            popupSettingList = popupSettingService.list(popQw);
-
             jsonObject.put("houseMoney", houseMoney);
             jsonObject.put("jackpotAmount", jackpotAmount);
             jsonObject.put("topRanking", topRanking);
             jsonObject.put("inlineNotice", inlineNotice);
-            jsonObject.put("popupNotice", popupSettingList);
             jsonObject.put("baccaratCheck", baccaratCheck);
             jsonObject.put("slotCheck", slotCheck);
 
