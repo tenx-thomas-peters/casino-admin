@@ -1276,5 +1276,11 @@
 		GROUP BY m1.seq
 		ORDER BY m1.create_date DESC
     </select>
+
+	<update id="changeAdminReadStatusAll">
+		UPDATE member
+		SET admin_read_status = 1
+		WHERE user_type = ${userType}
+	</update>
     
 </mapper>

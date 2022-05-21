@@ -388,4 +388,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 		return ret;
 	}
 
+	@Override
+	public boolean changeAdminReadStatusAll(Integer userType) {
+		return memberMapper.changeAdminReadStatusAll(userType);
+	}
+
 }

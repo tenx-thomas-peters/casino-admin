@@ -66,4 +66,6 @@ public interface IMemberService extends IService<Member> {
 
     boolean updateMember(Member member);
 
+    boolean changeAdminReadStatusAll(Integer userType);
+
 }

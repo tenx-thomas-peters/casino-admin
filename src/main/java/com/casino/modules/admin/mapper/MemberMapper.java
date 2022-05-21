@@ -119,4 +119,6 @@ public interface MemberMapper extends BaseMapper<Member> {
 									    @Param("MONEY_HISTORY_OPERATION_TYPE_DEPOSIT") Integer MONEY_HISTORY_OPERATION_TYPE_DEPOSIT,
 										@Param("MONEY_HISTORY_STATUS_PARTNER_PAYMENT") Integer MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
 
+    boolean changeAdminReadStatusAll(@Param("userType")Integer userType);
+
 }

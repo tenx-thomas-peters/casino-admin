@@ -97,12 +97,19 @@ public class MemberController {
                              @RequestParam(value = "pageSize", defaultValue = "150") Integer pageSize,
                              @RequestParam(value = "order", defaultValue = "1") Integer order,
                              @RequestParam(value = "column", defaultValue = "create_date") String column,
+                             @RequestParam(value = "newMember", defaultValue = "0") Integer newMember,
                              @RequestParam(value = "loginStatus", defaultValue = "3") Integer loginStatus,
                              Model model, HttpServletRequest request) {
         try {
             Page<MemberForm> page = new Page<>(pageNo, pageSize);
             memberForm.setUserType(CommonConstant.USER_TYPE_NORMAL);
+            if(newMember !=0 ){
+                List<String> stateList = new ArrayList<>();
+                stateList.add("3");
+                memberForm.setState(stateList);
+            }
             IPage<MemberForm> pageList = memberService.getMemberList(page, memberForm, column, order, loginStatus);
+            memberService.changeAdminReadStatusAll(CommonConstant.USER_TYPE_NORMAL);
 
             QueryWrapper<Dict> dictQw = new QueryWrapper<>();
             dictQw.eq("dict_key", "MEMBER_STATUS");

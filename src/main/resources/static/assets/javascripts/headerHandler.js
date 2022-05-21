@@ -163,7 +163,7 @@ $(document).on('click', '.m-today-withdraw', function (e) {
 
 $(document).on('click', '.m-login-member', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'member/list?loginStatus=1';
+    window.location.href = CONTEXT_ROOT + 'member/list?newMember=1';
 });
 
 $(document).on('click', '.m-deposit', function (e) {

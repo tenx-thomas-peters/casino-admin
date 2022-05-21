@@ -114,7 +114,8 @@
 				SELECT COUNT(m.seq)
 				FROM member m
 				WHERE m.user_type = 0
-			    AND m.login_status = 1
+			    AND m.status = 3
+			    AND m.admin_read_status = 0
 			), 0) AS member_login,
 			IFNULL((
 				SELECT COUNT(al.seq)
