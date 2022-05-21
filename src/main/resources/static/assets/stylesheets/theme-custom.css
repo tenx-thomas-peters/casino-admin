@@ -468,6 +468,11 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     position: absolute;
     right: 549px;
 }
+@media only screen and (min-width: 1760px) {
+    .daily-note textarea.note{
+        width: 450px;
+    }
+}
 
 .b-yellow{
     background-color: #f9fa0f;
