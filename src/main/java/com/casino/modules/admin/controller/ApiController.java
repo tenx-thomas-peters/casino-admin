@@ -212,15 +212,15 @@ public class ApiController {
     @GetMapping(value = "auth/me")
     public Result<JSONObject> me(
             @RequestParam("token") String token,
-            @RequestParam("name") String name,
+            @RequestParam("loginID") String loginID,
             @RequestParam("password") String password) {
         Result<JSONObject> result = new Result<>();
         JSONObject obj = new JSONObject();
         try {
-            if (JwtUtil.verify(token, name, password)) {
+            if (JwtUtil.verify(token, loginID, password)) {
                 QueryWrapper<Member> qw = new QueryWrapper<>();
                 qw.eq("user_type", CommonConstant.USER_TYPE_NORMAL);
-                qw.eq("name", name);
+                qw.eq("id", loginID);
                 Member member = memberService.getOne(qw);
 
                 obj = memberInfo(member.getSeq());
