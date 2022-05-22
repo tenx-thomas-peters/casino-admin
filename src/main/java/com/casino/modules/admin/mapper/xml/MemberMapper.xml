@@ -806,6 +806,7 @@
 			m1.memo,
 			m1.slot_rate,
 			m1.baccarat_rate,
+			m1.login_status,
 			m2.seq AS StoreSeq,
 			m2.id AS StoreId,
 			m3.seq AS DistributorSeq,

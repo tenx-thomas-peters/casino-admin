@@ -684,7 +684,33 @@ public class MemberController {
         }
         return "views/admin/member/loginMember";
     }
-    
+
+    @GetMapping(value = "forceLogout")
+    @ResponseBody
+    public Result<Member> forceLogout(
+            @RequestParam("userSeq") String userSeq, HttpServletRequest request) {
+        Result<Member> result = new Result<>();
+
+        System.out.println("userSeq");
+        System.out.println(userSeq);
+        try {
+            Member member = memberService.getById(userSeq);
+            member.setToken("000");
+            member.setLoginStatus(0);
+            if(memberService.updateById(member)) {
+                result.success("success");
+                result.setResult(member);
+            } else {
+                result.error505("update failed");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            log.error("url: /member/forceLogout --- method: popupSimulList --- message: " + e.toString());
+        }
+        return result;
+    }
+
     
     @RequestMapping(value = "password_manage")
     public String passwordManage() {

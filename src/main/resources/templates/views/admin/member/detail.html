@@ -295,7 +295,9 @@
                                     [[#{admin.common.logout}]]
                                 </label>
                                 <div class="col-md-4 col-sm-6 form-container">
-                                    <a class="text-danger" th:text="#{admin.common.logout}"></a>
+                                    <div th:if="*{loginStatus == '1'}">
+                                        <a class="text-danger force-logout mouse-pointer" th:text="#{admin.common.logout}"></a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
