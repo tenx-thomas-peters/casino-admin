@@ -252,22 +252,22 @@ public class ApiController {
         Map<String, Object> topRanking = new HashMap<>();
 
         try {
-            Member member = memberService.getById(memberSeq);
-            String url = gameServerUrl + "/user?username=" + member.getId();
-            ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
+            if(!memberSeq.equals("")){
+                Member member = memberService.getById(memberSeq);
+                String url = gameServerUrl + "/user?username=" + member.getId();
+                ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
 
-            if (res.getStatusCode().value() == 200) {
-                APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
-                member.setCasinoMoney(memberForms.getBalance());
-                if (!memberService.updateById(member))
-                    result.error505("===  update casino money failed");
-            }
-            else {result.error505("/user api failed");}
+                if (res.getStatusCode().value() == 200) {
+                    APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
+                    member.setCasinoMoney(memberForms.getBalance());
+                    if (!memberService.updateById(member))
+                        result.error505("===  update casino money failed");
+                }
+                else {result.error505("/user api failed");}
 
-            Session session = SecurityUtils.getSubject().getSession();
-            String token = (String) session.getAttribute("user_token");
+                Session session = SecurityUtils.getSubject().getSession();
+                String token = (String) session.getAttribute("user_token");
 
-            if (member != null) {
                 // get note counts
                 QueryWrapper<Note> noteQw = new QueryWrapper<>();
                 noteQw.eq("receiver", memberSeq);
@@ -280,7 +280,6 @@ public class ApiController {
                 jsonObject.put("mileageAmount", member.getMileageAmount());
                 jsonObject.put("token", member.getToken());
             }
-
             // get house money
             BasicSetting basicSetting = new BasicSetting();
             List<BasicSetting> list = basicSettingService.list();
