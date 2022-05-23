@@ -2,6 +2,7 @@ package com.casino.modules.admin.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,8 +37,14 @@ public class StatisticsController {
         try {
         	List<DepositWithdrawStatisticForm> list = new ArrayList<>();
         	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			// get one month ago
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.MONTH, -1);
+			Date month_ago = cal.getTime();
+
         	if(StringUtils.isBlank(searchForm.getStartDate()) && StringUtils.isBlank(searchForm.getEndDate())) {
-        		searchForm.setStartDate(sdf.format(new Date()));
+        		searchForm.setStartDate(sdf.format(month_ago));
         		searchForm.setEndDate(sdf.format(new Date()));
         	}
     		list = moneyHistoryService.depositWithdrawStatistic(searchForm);
