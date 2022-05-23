@@ -239,7 +239,7 @@ public class ApiController {
     }
 
     @GetMapping(value = "/memberInfo")
-    public Result<JSONObject> getMemberInfo(@RequestParam("memberSeq") String memberSeq) {
+    public Result<JSONObject> getMemberInfo(@RequestParam("memberSeq") String memberSeq, HttpServletRequest request) {
         Result<JSONObject> result = new Result<>();
         JSONObject jsonObject = new JSONObject();
         Integer noteCounts = 0;
@@ -312,17 +312,38 @@ public class ApiController {
     }
 
     @GetMapping(value = "/popup_list")
-    public Result<JSONObject> popupList(@RequestParam("memberSeq") String memberSeq) {
+    public Result<JSONObject> popupList() {
         Result<JSONObject> result = new Result<>();
         JSONObject jsonObject = new JSONObject();
         List<PopupSetting> popupSettingList = new ArrayList<>();
 
         try{
             QueryWrapper<PopupSetting> popQw = new QueryWrapper<>();
-            popQw.ne("expiration_start", new Date());
-            popQw.ge("expiration_end", new Date());
-            popupSettingList = popupSettingService.list(popQw);
+            popQw.ne("today_show", new Date());
+//            popQw.ge("expiration_end", new Date());
+            popupSettingList = popupSettingService.list();
+            jsonObject.put("popupNotice", popupSettingList);
+            result.success("Success");
+            result.setResult(jsonObject);
+        }
+        catch (Exception e){
+            result.error500("Internal Server Error");
+            log.error("url: /popup_list --- method: getMemberInfo() --- message: " + e.toString());
+        }
+        return result;
+    }
 
+    @GetMapping(value = "/set_popup_today_show")
+    public Result<JSONObject> setPopupTodayShow() {
+        Result<JSONObject> result = new Result<>();
+        JSONObject jsonObject = new JSONObject();
+        List<PopupSetting> popupSettingList = new ArrayList<>();
+
+        try{
+            QueryWrapper<PopupSetting> popQw = new QueryWrapper<>();
+            popQw.ne("today_show", new Date());
+//            popQw.ge("expiration_end", new Date());
+            popupSettingList = popupSettingService.list(popQw);
             jsonObject.put("popupNotice", popupSettingList);
             result.success("Success");
             result.setResult(jsonObject);
@@ -759,7 +780,7 @@ public class ApiController {
                 } else {
                     if(member.getMoneyAmount() < reqAmount){
                         float restAmount = reqAmount - member.getMoneyAmount();
-                        ResponseEntity<String> ret = HttpUtils.userSubBalance(gameServerUrl + "/user/sub-balance", member.getName(), restAmount, apiKey);
+                        ResponseEntity<String> ret = HttpUtils.userSubBalance(gameServerUrl + "/user/sub-balance", member.getId(), restAmount, apiKey);
                         if (ret.getStatusCode().value() == 200) {
 
                             // save money history for trasfer money from casino to site money --------------- <
@@ -835,7 +856,7 @@ public class ApiController {
 
             if(member.getMoneyAmount() > 0){
 
-                ResponseEntity<String> ret = HttpUtils.userAddBalance(gameServerUrl + "/user/add-balance", member.getName(), member.getMoneyAmount(), apiKey);
+                ResponseEntity<String> ret = HttpUtils.userAddBalance(gameServerUrl + "/user/add-balance", member.getId(), member.getMoneyAmount(), apiKey);
 
                 if (ret.getStatusCode().value() == 200) {
 
