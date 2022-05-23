@@ -67,7 +67,7 @@ $('.answer-btn').on('click', function() {
                     }
                 });
     			setTimeout(function() {
-                    window.location.reload();
+                    window.location.replace(CONTEXT_ROOT + "/board/questionlist");
                 }, 1000);
     		},
     		error: function(err) {
