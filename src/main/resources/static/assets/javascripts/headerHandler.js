@@ -39,8 +39,6 @@ $(document).ready(function() {
                 		audio.play();
                 	}
 
-					console.log(res.data.total_casino_money);
-
 					if(res.data.member_deposit_cnt) $('.header-context-info.m-deposit').addClass("c-yellow");
 					if(res.data.member_withdraw_cnt) $('.header-context-info.m-withdraw').addClass("c-yellow");
 					if(res.data.m_post) $('.header-context-info.m-posts').addClass("c-yellow");

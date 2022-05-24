@@ -1,10 +1,8 @@
 package com.casino.modules.admin.controller;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -402,11 +400,13 @@ public class MoneyController {
     @ResponseBody
     public Result<MoneyHistory> moneyDepositAccept(
             @RequestParam("seq") String seq,
-            @RequestParam(name = "depositAmount", defaultValue = "0") Float depositAmount,
+            @RequestParam(name = "depositAmount", defaultValue = "0") String strDepositAmount,
             @RequestParam(name = "bonus", defaultValue = "9687450") Float bonus,
             HttpServletRequest request) {
         Result<MoneyHistory> result = new Result<>();
         try {
+            NumberFormat format = NumberFormat.getInstance(Locale.US);
+            float depositAmount = format.parse(strDepositAmount).floatValue();
 
             // member user is first charge ============================================= <
             Member member = memberService.getById(moneyHistoryService.getById(seq).getReceiver());
@@ -606,8 +606,14 @@ public class MoneyController {
                     returnUrl = "views/admin/money/partnerWithdrawPopUp";
                 }
             }
+
+            Map<String, Number> firstdepositCount = moneyHistoryService.getTodayFirstMoneyHistory(member.getSeq());
+
+            int total_first_charge = firstdepositCount.get("total_first_charge").intValue();
+
             model.addAttribute("moneyHistory", moneyHistory);
             model.addAttribute("level", level);
+            model.addAttribute("firstCharge", total_first_charge);
             model.addAttribute("url", "/log/charge/agree");
         } catch (Exception e) {
             log.error("url: /log/charge/agree --- method: chargePopUp --- message: " + e.toString());
