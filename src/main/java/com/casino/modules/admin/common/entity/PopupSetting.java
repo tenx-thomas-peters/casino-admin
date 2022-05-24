@@ -49,7 +49,17 @@ public class PopupSetting implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@TableField(value = "expiration_end")
 	private Date expirationEnd;
-	
-	
+
+	@TableField(exist=false)
+	private String xaxios;
+
+	@TableField(exist=false)
+	private String yaxios;
+
+	@TableField(exist=false)
+	private String width;
+
+	@TableField(exist=false)
+	private String height;
 
 }

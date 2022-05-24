@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.casino.common.utils.HttpUtils;
 import com.casino.modules.admin.common.entity.*;
 import com.casino.modules.admin.common.form.APIUserForm;
+import com.casino.modules.admin.common.form.BettingLogForm;
 import com.casino.modules.admin.service.*;
 import com.casino.modules.shiro.authc.util.JwtUtil;
 import org.apache.commons.lang.StringUtils;
@@ -316,13 +317,36 @@ public class ApiController {
         Result<JSONObject> result = new Result<>();
         JSONObject jsonObject = new JSONObject();
         List<PopupSetting> popupSettingList = new ArrayList<>();
+        List<PopupSetting> convertPopupSettingList = new ArrayList<>();
 
         try{
             QueryWrapper<PopupSetting> popQw = new QueryWrapper<>();
             popQw.ne("today_show", new Date());
 //            popQw.ge("expiration_end", new Date());
             popupSettingList = popupSettingService.list();
-            jsonObject.put("popupNotice", popupSettingList);
+
+            for (PopupSetting temp_item : popupSettingList) {
+
+                String location = temp_item.getLocation();
+
+                String[] splitString = location.split(",");
+
+                String[] xAxios = splitString[0].split(":");
+                String[] yAxios = splitString[1].split(":");
+                String[] width = splitString[2].split(":");
+                String[] height = splitString[3].split(":");
+                temp_item.setXaxios(xAxios[1]);
+                temp_item.setYaxios(yAxios[1]);
+                temp_item.setWidth(width[1]);
+                temp_item.setHeight(height[1]);
+
+                convertPopupSettingList.add(temp_item);
+            }
+
+            System.out.println("convertPopupSettingList");
+            System.out.println(convertPopupSettingList);
+
+            jsonObject.put("popupNotice", convertPopupSettingList);
             result.success("Success");
             result.setResult(jsonObject);
         }
