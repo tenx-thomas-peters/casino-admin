@@ -43,7 +43,9 @@
                                     <td class="text-center">0</td>
                                     <td class="text-center" th:text="${item.connectionIp}"></td>
                                     <td class="text-center" th:text="${item.connectionDomain}"></td>
-                                    <td class="text-center" th:text="#{admin.common.logout}"></td>
+                                    <td class="text-center" >
+                                        <a class="force-logout" th:text="#{admin.common.logout}" th:data-memberseq="${item.memberSeq}"> </a>
+                                    </td>
                                 </tr>
                                 <tr th:if="${#lists.isEmpty(pageList.records)}">
                                     <td class="text-center" colspan="18" style="padding: 20px;" th:text="#{admin.common.noData}"></td>
@@ -68,6 +70,10 @@
 
     <script type="text/javascript" th:inline="javascript">
         createPagenation(page, url);
+    </script>
+
+    <script>
+
     </script>
 </body>
 </html>

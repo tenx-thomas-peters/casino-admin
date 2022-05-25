@@ -53,6 +53,7 @@
             <if test="checkStatus != null and checkStatus == 0">
             	AND DATE(accessLog.connection_date) = CURRENT_DATE()
             </if>
+			AND current_login_status = 1
         </where>
         ORDER BY accessLog.${column}
         <if test="order == 1">
@@ -75,4 +76,8 @@
 		</where>
 	</update>
 
+	<update id="changeAdminReadStatusAll">
+		UPDATE access_log
+		SET admin_read_status = 1
+	</update>
 </mapper>

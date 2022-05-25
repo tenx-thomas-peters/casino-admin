@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.casino.common.utils.HttpUtils;
 import com.casino.modules.admin.common.entity.*;
 import com.casino.modules.admin.common.form.APIUserForm;
+import com.casino.modules.admin.common.form.BettingLogForm;
 import com.casino.modules.admin.service.*;
 import com.casino.modules.shiro.authc.util.JwtUtil;
 import org.apache.commons.lang.StringUtils;
@@ -112,6 +113,48 @@ public class ApiController {
         return result;
     }
 
+    @PostMapping(value = "auth/signout")
+    public Result<String> signout(
+            HttpServletRequest request,
+            @RequestBody Member member){
+
+        Result<String> result = new Result<>();
+        try{
+            System.out.println("member");
+            System.out.println(member);
+            if(member.getSeq() != null){
+                QueryWrapper<Member> qw = new QueryWrapper<>();
+                qw.eq("token", member.getToken());
+
+                Member member1 = memberService.getOne(qw);
+                member1.setToken("000");
+                member1.setLoginStatus(0);
+                if(memberService.updateById(member1)){
+                    result.success("Success");
+
+                    QueryWrapper<AccessLog> access_qw = new QueryWrapper<>();
+                    access_qw.eq("member_token", member.getToken());
+
+                    AccessLog accessLog = accessLogService.getOne(access_qw);
+                    accessLog.setCurrentLoginStatus(CommonConstant.CURRENT_LOGOUT);
+                    accessLog.setMemberToken("");
+                    accessLogService.updateById(accessLog);
+                }
+                else{
+                    result.error500("Couldn't log out Database Server Error");
+                }
+            }
+            else{
+                result.success("Success");
+            }
+        } catch (Exception e) {
+            result.error500("Internal Server Error");
+            log.error("url: /auth/signout --- method: getNoticeDetail --- message: " + e.toString());
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @GetMapping(value = "auth/signin")
     public Result<JSONObject> signIn(
             HttpServletRequest request,
@@ -154,10 +197,17 @@ public class ApiController {
                     String token = JwtUtil.sign(loginID, password);
 
                     accessLog.setStatus(CommonConstant.ACCESS_LOG_SUCCESS);
+                    accessLog.setCurrentLoginStatus(CommonConstant.CURRENT_LOGIN);
+                    accessLog.setMemberToken(token);
+
                     obj = memberInfo(member.getSeq());
                     obj.put("token", token);
                     obj.put("userInfo", member);
                     result.setResult(obj);
+
+                    member.setToken(token);
+                    member.setLoginStatus(1);
+                    memberService.updateById(member);
 
                     result.success("Login Success!");
                 } else {
@@ -180,15 +230,15 @@ public class ApiController {
     @GetMapping(value = "auth/me")
     public Result<JSONObject> me(
             @RequestParam("token") String token,
-            @RequestParam("name") String name,
+            @RequestParam("loginID") String loginID,
             @RequestParam("password") String password) {
         Result<JSONObject> result = new Result<>();
         JSONObject obj = new JSONObject();
         try {
-            if (JwtUtil.verify(token, name, password)) {
+            if (JwtUtil.verify(token, loginID, password)) {
                 QueryWrapper<Member> qw = new QueryWrapper<>();
                 qw.eq("user_type", CommonConstant.USER_TYPE_NORMAL);
-                qw.eq("name", name);
+                qw.eq("id", loginID);
                 Member member = memberService.getOne(qw);
 
                 obj = memberInfo(member.getSeq());
@@ -207,34 +257,35 @@ public class ApiController {
     }
 
     @GetMapping(value = "/memberInfo")
-    public Result<JSONObject> getMemberInfo(@RequestParam("memberSeq") String memberSeq) {
+    public Result<JSONObject> getMemberInfo(@RequestParam("memberSeq") String memberSeq, HttpServletRequest request) {
         Result<JSONObject> result = new Result<>();
         JSONObject jsonObject = new JSONObject();
         Integer noteCounts = 0;
         Float houseMoney = 0.0f;
         Float jackpotAmount = 0.0f;
         String inlineNotice = "";
-        List<PopupSetting> popupSettingList = new ArrayList<>();
+        String baccaratCheck = "";
+        String slotCheck = "";
 
         Map<String, Object> topRanking = new HashMap<>();
 
         try {
-            Member member = memberService.getById(memberSeq);
-            String url = gameServerUrl + "/user?username=" + member.getId();
-            ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
+            if(!memberSeq.equals("")){
+                Member member = memberService.getById(memberSeq);
+                String url = gameServerUrl + "/user?username=" + member.getId();
+                ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
 
-            if (res.getStatusCode().value() == 200) {
-                APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
-                member.setCasinoMoney(memberForms.getBalance());
-                if (!memberService.updateById(member))
-                    result.error505("===  update casino money failed");
-            }
-            else {result.error505("/user api failed");}
+                if (res.getStatusCode().value() == 200) {
+                    APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
+                    member.setCasinoMoney(memberForms.getBalance());
+                    if (!memberService.updateById(member))
+                        result.error505("===  update casino money failed");
+                }
+                else {result.error505("/user api failed");}
 
-            Session session = SecurityUtils.getSubject().getSession();
-            String token = (String) session.getAttribute("user_token");
+                Session session = SecurityUtils.getSubject().getSession();
+                String token = (String) session.getAttribute("user_token");
 
-            if (member != null) {
                 // get note counts
                 QueryWrapper<Note> noteQw = new QueryWrapper<>();
                 noteQw.eq("receiver", memberSeq);
@@ -245,8 +296,8 @@ public class ApiController {
                 jsonObject.put("moneyAmount", member.getMoneyAmount());
                 jsonObject.put("casinoMoney", member.getCasinoMoney());
                 jsonObject.put("mileageAmount", member.getMileageAmount());
+                jsonObject.put("token", member.getToken());
             }
-
             // get house money
             BasicSetting basicSetting = new BasicSetting();
             List<BasicSetting> list = basicSettingService.list();
@@ -255,27 +306,92 @@ public class ApiController {
                 houseMoney = basicSetting.getHouseMoney();
                 jackpotAmount = basicSetting.getJackpotAmount();
                 inlineNotice = basicSetting.getMemberLineAdvertisement();
+                baccaratCheck = basicSetting.getBaccaratCheck();
+                slotCheck = basicSetting.getSlotCheck();
 
                 topRanking.put("topMember", basicSetting.getWeeklyWithdrawalRankingTop1Id());
                 topRanking.put("moneyAmount", basicSetting.getWeeklyWithdrawalRankingTop1Money());
             }
 
-            QueryWrapper<PopupSetting> popQw = new QueryWrapper<>();
-            popQw.ne("expiration_start", new Date());
-            popQw.ge("expiration_end", new Date());
-            popupSettingList = popupSettingService.list(popQw);
-
             jsonObject.put("houseMoney", houseMoney);
             jsonObject.put("jackpotAmount", jackpotAmount);
             jsonObject.put("topRanking", topRanking);
             jsonObject.put("inlineNotice", inlineNotice);
-            jsonObject.put("popupNotice", popupSettingList);
+            jsonObject.put("baccaratCheck", baccaratCheck);
+            jsonObject.put("slotCheck", slotCheck);
 
             result.success("Success");
             result.setResult(jsonObject);
         } catch (Exception e) {
             result.error500("Internal Server Error");
             log.error("url: /auth/memberInfo --- method: getMemberInfo() --- message: " + e.toString());
+        }
+        return result;
+    }
+
+    @GetMapping(value = "/popup_list")
+    public Result<JSONObject> popupList() {
+        Result<JSONObject> result = new Result<>();
+        JSONObject jsonObject = new JSONObject();
+        List<PopupSetting> popupSettingList = new ArrayList<>();
+        List<PopupSetting> convertPopupSettingList = new ArrayList<>();
+
+        try{
+            QueryWrapper<PopupSetting> popQw = new QueryWrapper<>();
+            popQw.ne("today_show", new Date());
+//            popQw.ge("expiration_end", new Date());
+            popupSettingList = popupSettingService.list();
+
+            for (PopupSetting temp_item : popupSettingList) {
+
+                String location = temp_item.getLocation();
+
+                String[] splitString = location.split(",");
+
+                String[] xAxios = splitString[0].split(":");
+                String[] yAxios = splitString[1].split(":");
+                String[] width = splitString[2].split(":");
+                String[] height = splitString[3].split(":");
+                temp_item.setXaxios(xAxios[1]);
+                temp_item.setYaxios(yAxios[1]);
+                temp_item.setWidth(width[1]);
+                temp_item.setHeight(height[1]);
+
+                convertPopupSettingList.add(temp_item);
+            }
+
+            System.out.println("convertPopupSettingList");
+            System.out.println(convertPopupSettingList);
+
+            jsonObject.put("popupNotice", convertPopupSettingList);
+            result.success("Success");
+            result.setResult(jsonObject);
+        }
+        catch (Exception e){
+            result.error500("Internal Server Error");
+            log.error("url: /popup_list --- method: getMemberInfo() --- message: " + e.toString());
+        }
+        return result;
+    }
+
+    @GetMapping(value = "/set_popup_today_show")
+    public Result<JSONObject> setPopupTodayShow() {
+        Result<JSONObject> result = new Result<>();
+        JSONObject jsonObject = new JSONObject();
+        List<PopupSetting> popupSettingList = new ArrayList<>();
+
+        try{
+            QueryWrapper<PopupSetting> popQw = new QueryWrapper<>();
+            popQw.ne("today_show", new Date());
+//            popQw.ge("expiration_end", new Date());
+            popupSettingList = popupSettingService.list(popQw);
+            jsonObject.put("popupNotice", popupSettingList);
+            result.success("Success");
+            result.setResult(jsonObject);
+        }
+        catch (Exception e){
+            result.error500("Internal Server Error");
+            log.error("url: /popup_list --- method: getMemberInfo() --- message: " + e.toString());
         }
         return result;
     }
@@ -705,7 +821,7 @@ public class ApiController {
                 } else {
                     if(member.getMoneyAmount() < reqAmount){
                         float restAmount = reqAmount - member.getMoneyAmount();
-                        ResponseEntity<String> ret = HttpUtils.userSubBalance(gameServerUrl + "/user/sub-balance", member.getName(), restAmount, apiKey);
+                        ResponseEntity<String> ret = HttpUtils.userSubBalance(gameServerUrl + "/user/sub-balance", member.getId(), restAmount, apiKey);
                         if (ret.getStatusCode().value() == 200) {
 
                             // save money history for trasfer money from casino to site money --------------- <
@@ -781,7 +897,7 @@ public class ApiController {
 
             if(member.getMoneyAmount() > 0){
 
-                ResponseEntity<String> ret = HttpUtils.userAddBalance(gameServerUrl + "/user/add-balance", member.getName(), member.getMoneyAmount(), apiKey);
+                ResponseEntity<String> ret = HttpUtils.userAddBalance(gameServerUrl + "/user/add-balance", member.getId(), member.getMoneyAmount(), apiKey);
 
                 if (ret.getStatusCode().value() == 200) {
 

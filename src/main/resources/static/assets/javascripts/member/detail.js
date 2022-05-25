@@ -313,6 +313,43 @@ $(document).ready(function () {
             window.location.reload();
         }
     });
+    $('.force-logout').click(function (){
+        let memberSeq = $('input[name=seq]').val();
+        $.ajax({
+            url: CONTEXT_ROOT + '/member/forceLogout',
+            type: 'GET',
+            data: {userSeq: memberSeq},
+            dataType: 'json',
+            success: function (res) {
+                if (res.success) {
+                    new PNotify({
+                        title: 'Success!',
+                        text: "회원이 로그아웃되였습니다",
+                        type: 'success',
+                        buttons: {
+                            closer: true,
+                            sticker: false
+                        }
+                    });
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                }
+                else{
+                    new PNotify({
+                        title: res.code + ' Error!',
+                        text: res.message,
+                        type: 'error',
+                        buttons: {
+                            closer: true,
+                            sticker: false
+                        }
+                    });
+                }
+            }
+        });
+    })
+
 
     $('.btn_update_money').click(function (){
         let memberSeq = $('input[name=seq]').val();

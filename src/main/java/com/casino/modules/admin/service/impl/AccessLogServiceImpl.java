@@ -35,6 +35,9 @@ public class AccessLogServiceImpl extends ServiceImpl<AccessLogMapper, AccessLog
 	public boolean batchDelete(List<String> ids) {
 		return accessLogMapper.batchDelete(ids);
 	}
-	
 
+	@Override
+	public boolean changeAdminReadStatusAll() {
+		return accessLogMapper.changeAdminReadStatusAll();
+	}
 }

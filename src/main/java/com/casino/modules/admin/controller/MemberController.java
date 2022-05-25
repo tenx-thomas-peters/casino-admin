@@ -19,12 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -96,17 +91,25 @@ public class MemberController {
     @Autowired
     private ISysUserService sysUserService;
 
-    @RequestMapping(value = "list")
+    @RequestMapping(value = "list", method = {RequestMethod.GET, RequestMethod.POST})
     public String memberList(@ModelAttribute("memberForm") MemberForm memberForm,
                              @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                              @RequestParam(value = "pageSize", defaultValue = "150") Integer pageSize,
                              @RequestParam(value = "order", defaultValue = "1") Integer order,
                              @RequestParam(value = "column", defaultValue = "create_date") String column,
+                             @RequestParam(value = "newMember", defaultValue = "0") Integer newMember,
+                             @RequestParam(value = "loginStatus", defaultValue = "3") Integer loginStatus,
                              Model model, HttpServletRequest request) {
         try {
             Page<MemberForm> page = new Page<>(pageNo, pageSize);
             memberForm.setUserType(CommonConstant.USER_TYPE_NORMAL);
-            IPage<MemberForm> pageList = memberService.getMemberList(page, memberForm, column, order);
+            if(newMember !=0 ){
+                List<String> stateList = new ArrayList<>();
+                stateList.add("3");
+                memberForm.setState(stateList);
+            }
+            IPage<MemberForm> pageList = memberService.getMemberList(page, memberForm, column, order, loginStatus);
+            memberService.changeAdminReadStatusAll(CommonConstant.USER_TYPE_NORMAL);
 
             QueryWrapper<Dict> dictQw = new QueryWrapper<>();
             dictQw.eq("dict_key", "MEMBER_STATUS");
@@ -208,7 +211,7 @@ public class MemberController {
         try {
 
             String strChangeMoney = member.getChangeMoney();
-            if(!strChangeMoney.equals("")){
+            if( member.getChangeMoney() !=null && !strChangeMoney.equals("") ){
                 System.out.println("changed money");
 
                 float floatChangeMoney = Float.parseFloat(strChangeMoney);
@@ -408,13 +411,17 @@ public class MemberController {
             qw.eq("dict_value", CommonConstant.MONEY_REASON_ADMINEDIT);
             List<Dict> reasonList = dictService.list(qw);
             String reasonStrKey = reasonList.get(0).getStrValue();
+
             reason = messageSource.getMessage(reasonStrKey, null, Locale.ENGLISH);
 
+            reason = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
+                    ? "관리자 충진 ["+variableAmount + "]"
+                    : "관리자 환전 [ -"+variableAmount + "]";
             float actualAmount = variableAmount;
             Float finalAmount = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
                     ? prevMoneyAmount + variableAmount
                     : prevMoneyAmount - variableAmount;
-            Integer status = CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT;
+            Integer status = CommonConstant.MONEY_HISTORY_STATUS_COMPLETE;
             Integer reasonType = CommonConstant.MONEY_REASON_ADMINEDIT;
             Integer chargeCount = 0;
             if (memberService.updateMemberHoldingMoney(
@@ -668,6 +675,7 @@ public class MemberController {
             IPage<AccessLog> pageList = accessLogService.getAccessLogList(page, accessLog, checkStatus, hour, column, order);
 
 
+            accessLogService.changeAdminReadStatusAll();
             model.addAttribute("pageList", pageList);
             model.addAttribute("pageNo", pageNo);
             model.addAttribute("pageSize", pageSize);
@@ -677,7 +685,39 @@ public class MemberController {
         }
         return "views/admin/member/loginMember";
     }
-    
+
+    @GetMapping(value = "forceLogout")
+    @ResponseBody
+    public Result<Member> forceLogout(
+            @RequestParam("userSeq") String userSeq, HttpServletRequest request) {
+        Result<Member> result = new Result<>();
+
+        try {
+            Member member = memberService.getById(userSeq);
+
+            QueryWrapper<AccessLog> access_qw = new QueryWrapper<>();
+            access_qw.eq("member_token", member.getToken());
+
+            AccessLog accessLog = accessLogService.getOne(access_qw);
+            accessLog.setCurrentLoginStatus(CommonConstant.CURRENT_LOGOUT);
+            accessLog.setMemberToken("");
+
+            member.setToken("000");
+            member.setLoginStatus(0);
+            if(memberService.updateById(member) && accessLogService.updateById(accessLog)) {
+                result.success("success");
+                result.setResult(member);
+            } else {
+                result.error505("update failed");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            log.error("url: /member/forceLogout --- method: popupSimulList --- message: " + e.toString());
+        }
+        return result;
+    }
+
     
     @RequestMapping(value = "password_manage")
     public String passwordManage() {

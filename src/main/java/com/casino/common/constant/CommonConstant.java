@@ -126,4 +126,7 @@ public interface CommonConstant {
 	public static final Integer ACCESS_LOG_PASSWORD_ERROR = 1;
 	public static final Integer ACCESS_LOG_USER_ID_ERROR = 2;
 
+	public static final Integer CURRENT_LOGIN = 1;
+	public static final Integer CURRENT_LOGOUT = 0;
+
 }

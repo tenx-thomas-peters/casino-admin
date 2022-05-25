@@ -28,6 +28,7 @@ public class MemberForm {
     private Integer userType;
     private String storeSeq;
     private String storeID;
+    private String loginStatus;
     private String storeNickname;
     private String storeLevel;
     private String distributorSeq;

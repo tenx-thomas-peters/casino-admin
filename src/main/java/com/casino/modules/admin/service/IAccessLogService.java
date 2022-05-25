@@ -14,4 +14,6 @@ public interface IAccessLogService extends IService<AccessLog> {
 	boolean deleteBySeq(String deleteSeq);
 	
 	boolean batchDelete(List<String> ids);
+
+	boolean changeAdminReadStatusAll();
 }

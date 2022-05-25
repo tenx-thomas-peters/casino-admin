@@ -3,6 +3,7 @@ package com.casino.modules.admin.common.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -16,8 +17,7 @@ import lombok.Data;
 public class AccessLog implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
-	@TableField(value = "seq")
+	@TableId(value = "seq")
 	private String seq;
 	
 	@TableField(value = "site")
@@ -52,6 +52,12 @@ public class AccessLog implements Serializable {
 	
 	@TableField(value = "distributor")
 	private String distributor;
+
+	@TableField(value = "member_token")
+	private String memberToken;
+
+	@TableField(value = "current_login_status")
+	private Integer currentLoginStatus;
 
 	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")

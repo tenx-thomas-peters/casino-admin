@@ -39,19 +39,18 @@ $(document).ready(function() {
                 		audio.play();
                 	}
 
-					console.log(res.data.total_casino_money);
-
-					if(res.data.member_deposit_cnt) $('.header-context-info.m-deposit').addClass("c-yellow");
-					if(res.data.member_withdraw_cnt) $('.header-context-info.m-withdraw').addClass("c-yellow");
-					if(res.data.m_post) $('.header-context-info.m-posts').addClass("c-yellow");
-					if(res.data.bs) $('.header-context-info.m-betting-summary').addClass("c-yellow");
-					if(res.data.m_customer_service) $('.header-context-info.m-customer-service').addClass("c-yellow");
-					if(res.data.distributor_login) $('.header-context-info.p-distributor').addClass("c-yellow");
-					if(res.data.store_login) $('.header-context-info.p-store').addClass("c-yellow");
-					if(res.data.partner_deposit_cnt) $('.header-context-info.p-deposit').addClass("c-yellow");
-					if(res.data.partner_withdraw_cnt) $('.header-context-info.p-withdraw').addClass("c-yellow");
-					if(res.data.partner_send_collect_cnt) $('.header-context-info.p-send-collect').addClass("c-yellow");
-					if(res.data.p_note) $('.header-context-info.p-note').addClass("c-yellow");
+					(res.data.member_deposit_cnt)? $('.header-context-info.m-deposit').addClass("c-yellow"):$('.header-context-info.m-deposit').removeClass("c-yellow")
+					(res.data.member_withdraw_cnt)? $('.header-context-info.m-withdraw').addClass("c-yellow"):$('.header-context-info.m-withdraw').removeClass("c-yellow")
+					(res.data.m_post)? $('.header-context-info.m-posts').addClass("c-yellow"):$('.header-context-info.m-posts').removeClass("c-yellow")
+					(res.data.bs)? $('.header-context-info.m-betting-summary').addClass("c-yellow"):$('.header-context-info.m-betting-summary').removeClass("c-yellow")
+					(res.data.m_customer_service)? $('.header-context-info.m-customer-service').addClass("c-yellow"):$('.header-context-info.m-customer-service').removeClass("c-yellow")
+					(res.data.distributor_login)? $('.header-context-info.p-distributor').addClass("c-yellow"):$('.header-context-info.p-distributor').removeClass("c-yellow")
+					(res.data.store_login)? $('.header-context-info.p-store').addClass("c-yellow"):$('.header-context-info.p-store').removeClass("c-yellow")
+					(res.data.partner_deposit_cnt)? $('.header-context-info.p-deposit').addClass("c-yellow"):$('.header-context-info.p-deposit').removeClass("c-yellow")
+					(res.data.partner_withdraw_cnt)? $('.header-context-info.p-withdraw').addClass("c-yellow"):$('.header-context-info.p-withdraw').removeClass("c-yellow")
+					(res.data.partner_send_collect_cnt)? $('.header-context-info.p-send-collect').addClass("c-yellow"):$('.header-context-info.p-send-collect').removeClass("c-yellow")
+					(res.data.p_note)? $('.header-context-info.p-note').addClass("c-yellow"):$('.header-context-info.p-note').removeClass("c-yellow")
+					(res.data.member_judge_login)? $('.header-context-info.login-member-link').addClass("c-yellow"):$('.header-context-info.login-member-link').removeClass("c-yellow")
 
                 	$('span.m-login-member').html(Number(parseFloat(res.data.member_login).toFixed(0)).toLocaleString('en'));
                 	$('span.m-deposit').html(Number(parseFloat(res.data.member_deposit_cnt).toFixed(0)).toLocaleString('en'));
@@ -69,7 +68,7 @@ $(document).ready(function() {
                 	$('span.m-today-withdraw').html(Number(parseFloat(res.data.member_withdraw_sum).toFixed(0)).toLocaleString('en'));
                 	$('span.m-total-money').html(Number(parseFloat(res.data.total_money + res.data.total_casino_money).toFixed(0)).toLocaleString('en'));
                 	$('span.m-total-point').html(Number(parseFloat(res.data.total_mileage).toFixed(0)).toLocaleString('en'));
-                	$('span.login-member-link').html(Number(parseFloat(res.data.member_login).toFixed(0)).toLocaleString('en'));
+                	$('span.login-member-link').html(Number(parseFloat(res.data.member_judge_login).toFixed(0)).toLocaleString('en'));
                 	$('span.p-today-deposit').html(Number(parseFloat(res.data.partner_deposit_sum).toFixed(0)).toLocaleString('en'));
                 	$('span.p-today-withdraw').html(Number(parseFloat(res.data.partner_withdraw_sum).toFixed(0)).toLocaleString('en'));
                 	$('span.p-total-money').html(Number(parseFloat(res.data.ptotal_money).toFixed(0)).toLocaleString('en'));
@@ -163,7 +162,7 @@ $(document).on('click', '.m-today-withdraw', function (e) {
 
 $(document).on('click', '.m-login-member', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'member/list';
+    window.location.href = CONTEXT_ROOT + 'member/list?newMember=1';
 });
 
 $(document).on('click', '.m-deposit', function (e) {

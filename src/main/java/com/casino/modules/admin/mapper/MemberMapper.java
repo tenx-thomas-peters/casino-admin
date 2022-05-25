@@ -20,6 +20,7 @@ public interface MemberMapper extends BaseMapper<Member> {
                                     @Param("entity") MemberForm memberForm,
                                     @Param("column") String column,
                                     @Param("order") Integer order,
+                                    @Param("loginStatus") Integer loginStatus,
                                     @Param("MONEY_HISTORY_OPERATION_TYPE_DEPOSIT") Integer MONEY_HISTORY_OPERATION_TYPE_DEPOSIT,
                                     @Param("MONEY_HISTORY_STATUS_PARTNER_PAYMENT") Integer MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
                                     @Param("MONEY_HISTORY_STATUS_COMPLETE") Integer MONEY_HISTORY_STATUS_COMPLETE);
@@ -117,5 +118,7 @@ public interface MemberMapper extends BaseMapper<Member> {
 	List<MemberForm> getMemberListModal(@Param("entity")MemberForm member,
 									    @Param("MONEY_HISTORY_OPERATION_TYPE_DEPOSIT") Integer MONEY_HISTORY_OPERATION_TYPE_DEPOSIT,
 										@Param("MONEY_HISTORY_STATUS_PARTNER_PAYMENT") Integer MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
+
+    boolean changeAdminReadStatusAll(@Param("userType")Integer userType);
 
 }

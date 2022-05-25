@@ -120,7 +120,7 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 
 	@Override
 	@Transactional(readOnly = false)
-	public Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge) {
+	public Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge, String reason) {
 		MoneyHistory moneyHistory = moneyHistoryMapper.selectById(seq);
 		Member member = memberService.getById(moneyHistory.getReceiver());
 		moneyHistory.setPrevAmount(member.getMoneyAmount() == null  ? 0f : member.getMoneyAmount());
@@ -128,7 +128,7 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 		moneyHistory.setActualAmount(amount);
 		moneyHistory.setBonus(bonus);
 		Integer reasonType = 0;
-		if(operationType == CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT) {
+		if(operationType.equals(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT)) {
 			moneyHistory.setFinalAmount(moneyHistory.getPrevAmount() + moneyHistory.getActualAmount());
 			if(member.getUserType() == CommonConstant.USER_TYPE_NORMAL) {
 				reasonType = CommonConstant.MONEY_REASON_CHARGE;
@@ -144,15 +144,18 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 				reasonType = CommonConstant.MONEY_REASON_PARTNER_PAYMENT;
 			}
 		}
-		
-		QueryWrapper<Dict> qw = new QueryWrapper<>();
-		qw.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
-		qw.eq("dict_value", reasonType);
-		List<Dict> reasonList = dictService.list(qw);
-		String reasonStrKey = reasonList.get(0).getStrValue();
-		List<String> params = new ArrayList<String>();
-		params.add(String.valueOf(amount));
-		String reason = messageSource.getMessage(reasonStrKey, params.toArray(), Locale.ENGLISH);
+	// Thomas 2022.05.19
+//		set reason manually
+
+//		QueryWrapper<Dict> qw = new QueryWrapper<>();
+//		qw.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
+//		qw.eq("dict_value", reasonType);
+//		List<Dict> reasonList = dictService.list(qw);
+//		String reasonStrKey = reasonList.get(0).getStrValue();
+//		List<String> params = new ArrayList<String>();
+//		params.add(String.valueOf(amount));
+//		String reason = messageSource.getMessage(reasonStrKey, params.toArray(), Locale.ENGLISH);
+
 		moneyHistory.setReason(reason);
 		moneyHistory.setProcessTime(new Date());
 

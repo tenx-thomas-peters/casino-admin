@@ -461,12 +461,24 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
     margin-right: 10px;
 }
 .daily-note textarea.note{
-    width: 540px;
+    width: 400px;
     height: 55px;
     padding: 2px;
     font-size: 14px;
     position: absolute;
-    right: 549px;
+    right: 360px;
+}
+@media only screen and (min-width: 1760px) {
+    .daily-note textarea.note{
+        width: 600px;
+    }
+}
+
+.header-save-btn{
+    font-size: 12px;
+    padding: 18px 25px;
+    float: right;
+    margin-right: 10px;
 }
 
 .b-yellow{

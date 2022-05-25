@@ -1,10 +1,8 @@
 package com.casino.modules.admin.controller;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -402,11 +400,13 @@ public class MoneyController {
     @ResponseBody
     public Result<MoneyHistory> moneyDepositAccept(
             @RequestParam("seq") String seq,
-            @RequestParam(name = "depositAmount", defaultValue = "0") Float depositAmount,
+            @RequestParam(name = "depositAmount", defaultValue = "0") String strDepositAmount,
             @RequestParam(name = "bonus", defaultValue = "9687450") Float bonus,
             HttpServletRequest request) {
         Result<MoneyHistory> result = new Result<>();
         try {
+            NumberFormat format = NumberFormat.getInstance(Locale.US);
+            float depositAmount = format.parse(strDepositAmount).floatValue();
 
             // member user is first charge ============================================= <
             Member member = memberService.getById(moneyHistoryService.getById(seq).getReceiver());
@@ -456,7 +456,8 @@ public class MoneyController {
             }
             // member user is first charge ============================================= />
 
-            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, firstChargeAmount, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, firstChargeFlag)) {
+            String reason = "회원 입금 [" + depositAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, firstChargeAmount, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, firstChargeFlag, reason)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -480,7 +481,8 @@ public class MoneyController {
 
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0)) {
+            String reason = "회원 출금 [" + withdrawAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0, reason)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -507,7 +509,8 @@ public class MoneyController {
             Member member = memberService.getById(history.getReceiver());
             Float amount = depositAmount + depositAmount * bonus;
 
-            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, 0)) {
+            String reason = "파트너 입금 [" + depositAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, 0, reason)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -532,7 +535,8 @@ public class MoneyController {
             // game api - /user/sub-balance start
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0)) {
+            String reason = "파트너 출금 [" + withdrawAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0, reason)) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -602,8 +606,14 @@ public class MoneyController {
                     returnUrl = "views/admin/money/partnerWithdrawPopUp";
                 }
             }
+
+            Map<String, Number> firstdepositCount = moneyHistoryService.getTodayFirstMoneyHistory(member.getSeq());
+
+            int total_first_charge = firstdepositCount.get("total_first_charge").intValue();
+
             model.addAttribute("moneyHistory", moneyHistory);
             model.addAttribute("level", level);
+            model.addAttribute("firstCharge", total_first_charge);
             model.addAttribute("url", "/log/charge/agree");
         } catch (Exception e) {
             log.error("url: /log/charge/agree --- method: chargePopUp --- message: " + e.toString());
