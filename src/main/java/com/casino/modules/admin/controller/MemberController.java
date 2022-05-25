@@ -675,6 +675,7 @@ public class MemberController {
             IPage<AccessLog> pageList = accessLogService.getAccessLogList(page, accessLog, checkStatus, hour, column, order);
 
 
+            accessLogService.changeAdminReadStatusAll();
             model.addAttribute("pageList", pageList);
             model.addAttribute("pageNo", pageNo);
             model.addAttribute("pageSize", pageSize);
@@ -691,13 +692,19 @@ public class MemberController {
             @RequestParam("userSeq") String userSeq, HttpServletRequest request) {
         Result<Member> result = new Result<>();
 
-        System.out.println("userSeq");
-        System.out.println(userSeq);
         try {
             Member member = memberService.getById(userSeq);
+
+            QueryWrapper<AccessLog> access_qw = new QueryWrapper<>();
+            access_qw.eq("member_token", member.getToken());
+
+            AccessLog accessLog = accessLogService.getOne(access_qw);
+            accessLog.setCurrentLoginStatus(CommonConstant.CURRENT_LOGOUT);
+            accessLog.setMemberToken("");
+
             member.setToken("000");
             member.setLoginStatus(0);
-            if(memberService.updateById(member)) {
+            if(memberService.updateById(member) && accessLogService.updateById(accessLog)) {
                 result.success("success");
                 result.setResult(member);
             } else {

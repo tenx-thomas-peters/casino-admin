@@ -117,21 +117,35 @@ public class ApiController {
     public Result<String> signout(
             HttpServletRequest request,
             @RequestBody Member member){
-        System.out.println("token");
-        System.out.println(member.getToken());
 
         Result<String> result = new Result<>();
         try{
-            QueryWrapper<Member> qw = new QueryWrapper<>();
-            qw.eq("token", member.getToken());
+            System.out.println("member");
+            System.out.println(member);
+            if(member.getSeq() != null){
+                QueryWrapper<Member> qw = new QueryWrapper<>();
+                qw.eq("token", member.getToken());
 
-            Member member1 = memberService.getOne(qw);
-            member1.setLoginStatus(0);
-            if(memberService.updateById(member1)){
-                result.success("Success");
+                Member member1 = memberService.getOne(qw);
+                member1.setToken("000");
+                member1.setLoginStatus(0);
+                if(memberService.updateById(member1)){
+                    result.success("Success");
+
+                    QueryWrapper<AccessLog> access_qw = new QueryWrapper<>();
+                    access_qw.eq("member_token", member.getToken());
+
+                    AccessLog accessLog = accessLogService.getOne(access_qw);
+                    accessLog.setCurrentLoginStatus(CommonConstant.CURRENT_LOGOUT);
+                    accessLog.setMemberToken("");
+                    accessLogService.updateById(accessLog);
+                }
+                else{
+                    result.error500("Couldn't log out Database Server Error");
+                }
             }
             else{
-                result.error500("Couldn't log out Database Server Error");
+                result.success("Success");
             }
         } catch (Exception e) {
             result.error500("Internal Server Error");
@@ -183,6 +197,9 @@ public class ApiController {
                     String token = JwtUtil.sign(loginID, password);
 
                     accessLog.setStatus(CommonConstant.ACCESS_LOG_SUCCESS);
+                    accessLog.setCurrentLoginStatus(CommonConstant.CURRENT_LOGIN);
+                    accessLog.setMemberToken(token);
+
                     obj = memberInfo(member.getSeq());
                     obj.put("token", token);
                     obj.put("userInfo", member);
