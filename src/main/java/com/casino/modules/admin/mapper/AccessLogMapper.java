@@ -21,4 +21,5 @@ public interface AccessLogMapper extends BaseMapper<AccessLog> {
 	
 	Boolean batchDelete(@Param("ids") List<String> ids);
 
+	boolean changeAdminReadStatusAll();
 }

@@ -94,7 +94,7 @@ public class DashboardController {
 			result.setData(basicSetting);
 			result.success("success");
 		} catch (Exception e) {
-			log.error("url: /dashboard/headerinfo --- method: headerInfo --- error: " + e.toString());
+			log.error("url: /adminmemo --- method: headerInfo --- error: " + e.toString());
 		}
 
 		return result;
@@ -110,7 +110,7 @@ public class DashboardController {
 			basicSettingService.updateById(basicSetting);
 			result.success("success");
 		} catch (Exception e) {
-			log.error("url: /dashboard/headerinfo --- method: headerInfo --- error: " + e.toString());
+			log.error("url: /dashboard/savememo --- method: headerInfo --- error: " + e.toString());
 		}
 
 		return result;
