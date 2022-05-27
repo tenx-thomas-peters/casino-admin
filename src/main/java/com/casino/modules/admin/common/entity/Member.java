@@ -148,6 +148,12 @@ public class Member implements Serializable {
     private String changeMoney;
 
     @TableField(exist = false)
+    private String referralCode;
+
+    @TableField(exist = false)
+    private String withdrawPassword;
+
+    @TableField(exist = false)
     private Member distributor;
 
     @TableField(exist = false)
