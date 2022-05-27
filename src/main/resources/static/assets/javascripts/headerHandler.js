@@ -39,17 +39,17 @@ $(document).ready(function() {
                 		audio.play();
                 	}
 
-					(res.data.member_deposit_cnt)? $('.header-context-info.m-deposit').addClass("c-yellow"):$('.header-context-info.m-deposit').removeClass("c-yellow")
-					(res.data.member_withdraw_cnt)? $('.header-context-info.m-withdraw').addClass("c-yellow"):$('.header-context-info.m-withdraw').removeClass("c-yellow")
-					(res.data.m_post)? $('.header-context-info.m-posts').addClass("c-yellow"):$('.header-context-info.m-posts').removeClass("c-yellow")
-					(res.data.bs)? $('.header-context-info.m-betting-summary').addClass("c-yellow"):$('.header-context-info.m-betting-summary').removeClass("c-yellow")
-					(res.data.m_customer_service)? $('.header-context-info.m-customer-service').addClass("c-yellow"):$('.header-context-info.m-customer-service').removeClass("c-yellow")
-					(res.data.distributor_login)? $('.header-context-info.p-distributor').addClass("c-yellow"):$('.header-context-info.p-distributor').removeClass("c-yellow")
-					(res.data.store_login)? $('.header-context-info.p-store').addClass("c-yellow"):$('.header-context-info.p-store').removeClass("c-yellow")
-					(res.data.partner_deposit_cnt)? $('.header-context-info.p-deposit').addClass("c-yellow"):$('.header-context-info.p-deposit').removeClass("c-yellow")
-					(res.data.partner_withdraw_cnt)? $('.header-context-info.p-withdraw').addClass("c-yellow"):$('.header-context-info.p-withdraw').removeClass("c-yellow")
-					(res.data.partner_send_collect_cnt)? $('.header-context-info.p-send-collect').addClass("c-yellow"):$('.header-context-info.p-send-collect').removeClass("c-yellow")
-					(res.data.p_note)? $('.header-context-info.p-note').addClass("c-yellow"):$('.header-context-info.p-note').removeClass("c-yellow")
+					if(res.data.member_deposit_cnt) $('.header-context-info.m-deposit').addClass("c-yellow");
+					if(res.data.member_withdraw_cnt) $('.header-context-info.m-withdraw').addClass("c-yellow");
+					if(res.data.m_post) $('.header-context-info.m-posts').addClass("c-yellow");
+					if(res.data.bs) $('.header-context-info.m-betting-summary').addClass("c-yellow");
+					if(res.data.m_customer_service) $('.header-context-info.m-customer-service').addClass("c-yellow");
+					if(res.data.distributor_login) $('.header-context-info.p-distributor').addClass("c-yellow");
+					if(res.data.store_login) $('.header-context-info.p-store').addClass("c-yellow");
+					if(res.data.partner_deposit_cnt) $('.header-context-info.p-deposit').addClass("c-yellow");
+					if(res.data.partner_withdraw_cnt) $('.header-context-info.p-withdraw').addClass("c-yellow");
+					if(res.data.partner_send_collect_cnt) $('.header-context-info.p-send-collect').addClass("c-yellow");
+					if(res.data.p_note) $('.header-context-info.p-note').addClass("c-yellow");
 					(res.data.member_judge_login)? $('.header-context-info.login-member-link').addClass("c-yellow"):$('.header-context-info.login-member-link').removeClass("c-yellow")
 
                 	$('span.m-login-member').html(Number(parseFloat(res.data.member_login).toFixed(0)).toLocaleString('en'));
