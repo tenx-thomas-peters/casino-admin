@@ -83,19 +83,39 @@ public class ApiController {
             QueryWrapper<Member> qw = new QueryWrapper<>();
             qw.eq("name", member.getName());
             List<Member> memberList = memberService.list(qw);
+
+            // set partner id from referralCode
+            QueryWrapper<Member> partner_qw = new QueryWrapper<>();
+            partner_qw.eq("id", member.getReferralCode());
+            partner_qw.ne("user_type", CommonConstant.USER_TYPE_NORMAL);
+            Member partnerMember = memberService.getOne(partner_qw);
+
             if (!memberList.isEmpty()) {
-                result.error505("Username already exists!");
-            } else {
+                result.error505("아이디가 같은 회원이 존재합니다");
+            } 
+            else {
                 member.setSeq(UUIDGenerator.generate());
                 member.setUserType(CommonConstant.USER_TYPE_NORMAL);
-//                member.setName(member.getAccountHolder());
+                member.setName(member.getAccountHolder());
 
                 member.setSignupIp(ipAddress);
                 member.setSiteDomain(domain);
                 member.setSiteName(domain);
 
+                // referralCode is partner id
+                // set partner id
+                if(partnerMember != null){
+                    if(partnerMember.getUserType().equals(CommonConstant.USER_TYPE_STORE)){
+                        member.setStoreSeq(partnerMember.getSeq());
+                    }else if(partnerMember.getUserType().equals(CommonConstant.USER_TYPE_DISTRIBUTOR)){
+                        member.setDistributorSeq(partnerMember.getSeq());
+                    }else if(partnerMember.getUserType().equals(CommonConstant.USER_TYPE_SUB_HEADQUARTER)){
+                        member.setSubHeadquarterSeq(partnerMember.getSeq());
+                    }
+                }
+
                 if (memberService.save(member)) {
-                    String token = JwtUtil.sign(member.getName(), member.getPassword());
+                    String token = JwtUtil.sign(member.getId(), member.getPassword());
 
                     obj.put("token", token);
                     obj.put("userInfo", member);
@@ -114,9 +134,7 @@ public class ApiController {
     }
 
     @PostMapping(value = "auth/signout")
-    public Result<String> signout(
-            HttpServletRequest request,
-            @RequestBody Member member){
+    public Result<String> signout(@RequestBody Member member, HttpServletRequest request ){
 
         Result<String> result = new Result<>();
         try{
@@ -359,9 +377,6 @@ public class ApiController {
 
                 convertPopupSettingList.add(temp_item);
             }
-
-            System.out.println("convertPopupSettingList");
-            System.out.println(convertPopupSettingList);
 
             jsonObject.put("popupNotice", convertPopupSettingList);
             result.success("Success");
