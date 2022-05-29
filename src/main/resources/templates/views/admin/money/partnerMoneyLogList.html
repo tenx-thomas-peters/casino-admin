@@ -91,7 +91,7 @@
 										<td class="text-center" th:text="${entity.member.nickname}"></td>
 										<td class="text-center" th:text="${entity.partnerName}"></td>
 										<td class="text-center" th:text="${#numbers.formatDecimal(entity.prevAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
-										<td th:class="${entity.operationType==3?'text-primary text-center':'text-danger text-center'}" th:text="${(entity.operationType==3?'':entity.variableAmount!=0?'-':'') + #numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:class="${entity.operationType==0?'text-primary text-center':'text-danger text-center'}" th:text="${(entity.operationType==0?'':entity.variableAmount!=0?'-':'') + #numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td class="text-center" th:text="${#numbers.formatDecimal(entity.finalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td class="text-center" th:text="${entity.reason}"></td>
 									</tr>

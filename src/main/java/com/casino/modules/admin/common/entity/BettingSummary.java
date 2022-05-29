@@ -23,6 +23,9 @@ public class BettingSummary implements Serializable {
     @TableField(value = "check_time")
     private String checkTime;
 
+    @TableField(value = "check_time_duration")
+    private String checkTimeDuration;
+
     @TableField(value = "member_seq")
     private String memberSeq;
 

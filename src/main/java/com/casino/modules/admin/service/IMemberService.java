@@ -46,21 +46,16 @@ public interface IMemberService extends IService<Member> {
             Integer status,
             Integer reasonType,
             String reason,
-            Integer chargeCount);
+            Integer chargeCount,
+            String note);
 
     boolean updatePartnerMemberHoldingMoney(
-            String memberSeq,
-            Float prevMoneyAmount,
-            Float prevMileageAmount,
+            Member member,
             Float variableAmount,
-            Float actualAmount,
-            Float finalAmount,
-            Integer classification,
             Integer transactionClassification,
             Integer status,
             Integer reasonType,
-            String reason,
-            Integer chargeCount);
+            String reason);
 
     boolean stopMember(List<String> memberSeqList);
 

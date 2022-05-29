@@ -400,21 +400,13 @@ public class MemberController {
             @RequestParam(value = "variableAmount") Float variableAmount,
             @RequestParam(value = "classification", defaultValue = "0") Integer classification,
             @RequestParam(value = "transactionClassification", defaultValue = "0") Integer transactionClassification,
-            @RequestParam(value = "reason", defaultValue = "") String reason) {
+            @RequestParam(value = "note", defaultValue = "") String note) {
         Result<JSONObject> result = new Result<>();
         try {
 
             System.out.println("MemberController==updateMemberHoldingMoney==>");
 
-            QueryWrapper<Dict> qw = new QueryWrapper<>();
-            qw.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
-            qw.eq("dict_value", CommonConstant.MONEY_REASON_ADMINEDIT);
-            List<Dict> reasonList = dictService.list(qw);
-            String reasonStrKey = reasonList.get(0).getStrValue();
-
-            reason = messageSource.getMessage(reasonStrKey, null, Locale.ENGLISH);
-
-            reason = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
+            String reason = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
                     ? "관리자 충진 ["+variableAmount + "]"
                     : "관리자 환전 [ -"+variableAmount + "]";
             float actualAmount = variableAmount;
@@ -422,7 +414,7 @@ public class MemberController {
                     ? prevMoneyAmount + variableAmount
                     : prevMoneyAmount - variableAmount;
             Integer status = CommonConstant.MONEY_HISTORY_STATUS_COMPLETE;
-            Integer reasonType = CommonConstant.MONEY_REASON_ADMINEDIT;
+            Integer reasonType = CommonConstant.MONEY_REASON_ADMIN;
             Integer chargeCount = 0;
             if (memberService.updateMemberHoldingMoney(
                     memberSeq,
@@ -436,7 +428,8 @@ public class MemberController {
                     status,
                     reasonType,
                     reason,
-                    chargeCount
+                    chargeCount,
+                    note
             )) {
                 result.success("success");
                 System.out.println("MemberController==update Member Holding Money ==> success");

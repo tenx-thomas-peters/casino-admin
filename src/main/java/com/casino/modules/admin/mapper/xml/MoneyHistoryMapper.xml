@@ -34,6 +34,7 @@
 		l.level_name AS "member.level",
 		mu.bank_name AS "member.bankName",
 		mu.bank_number AS "member.bankNumber",
+		mu.charge_count AS "member.chargeCount",
 		mh.seq AS "member.headQuarter.seq",
 		mh.id AS "member.headQuarter.id",
 		mh.nickname AS "member.headQuarter.nickname",
@@ -564,6 +565,9 @@
 			<if test="entity.operationType != null">
 				AND mon.operation_type = #{entity.operationType}
 			</if>
+			<if test="entity.reasonType != null">
+				AND mon.reason_type = #{entity.reasonType}
+			</if>
 		</where>
 	</select>
 
@@ -606,6 +610,9 @@
 			<if test="operationType != null">
 				AND mh.operation_type = #{operationType}
 			</if>
+			<if test="reasonType != null">
+				AND mh.reason_type = #{reasonType}
+			</if>
 		</where>
 		ORDER BY mh.application_time DESC
 	</select>
@@ -642,5 +649,6 @@
 			DATE(mh.application_time) = DATE(NOW())
 			AND mh.receiver = #{userSeq}
 			AND mh.operation_type = 0
+			AND mh.reason_type = 0
 	</select>
 </mapper>

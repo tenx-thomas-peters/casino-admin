@@ -79,6 +79,9 @@ public class Member implements Serializable {
 
     @TableField(value = "site_domain")
     private String siteDomain;
+
+    @TableField(value = "charge_count")
+    private Integer chargeCount;
     
     @TableField(value = "site_name")
     private String siteName;

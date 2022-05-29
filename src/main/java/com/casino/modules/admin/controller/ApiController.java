@@ -720,11 +720,12 @@ public class ApiController {
     public Result<IPage<MoneyHistory>> getMonthMoneyHistory(@RequestParam("memberSeq") String memberSeq,
                                                             @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                            @RequestParam(name = "operationType", defaultValue = "0") Integer operationType) {
+                                                            @RequestParam(name = "operationType", defaultValue = "0") Integer operationType,
+                                                            @RequestParam(name = "reasonType", defaultValue = "0") Integer reasonType) {
         Result<IPage<MoneyHistory>> result = new Result<>();
         try {
             Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
-            IPage<MoneyHistory> pageList = moneyHistoryService.getMonthMoneyLogByMemberSeq(page, memberSeq, operationType);
+            IPage<MoneyHistory> pageList = moneyHistoryService.getMonthMoneyLogByMemberSeq(page, memberSeq, operationType, reasonType);
             result.success("success");
             result.setResult(pageList);
         } catch (Exception e) {
@@ -775,6 +776,7 @@ public class ApiController {
             receiverMoneyHistory.setVariableAmount(Float.valueOf(moneyHistory.getActualAmount()));
             receiverMoneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_IN_PROGRESS);
             receiverMoneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT);
+            receiverMoneyHistory.setReasonType(CommonConstant.MONEY_REASON_DEPOSIT);
             receiverMoneyHistory.setMoneyOrPoint(CommonConstant.MONEY_OR_POINT_MONEY);
             receiverMoneyHistory.setNote(moneyHistory.getNote());
 
@@ -879,6 +881,7 @@ public class ApiController {
                     moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_IN_PROGRESS);
                     moneyHistory.setApplicationTime(new Date());
                     moneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL);
+                    moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
 
                     if (moneyHistoryService.saveOrUpdate(moneyHistory)) {
                         result.success("success");

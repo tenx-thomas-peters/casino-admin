@@ -202,12 +202,12 @@ $(document).on('click', '.p-store', function (e) {
 
 $(document).on('click', '.p-deposit,.p-today-deposit', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'log/partner/depositloglist?status=0';
+    window.location.href = CONTEXT_ROOT + 'log/partner/depositloglist';
 });
 
 $(document).on('click', '.p-withdraw,.p-today-withdraw', function (e) {
     e.preventDefault();
-    window.location.href = CONTEXT_ROOT + 'log/partner/withdrawloglist?status=0';
+    window.location.href = CONTEXT_ROOT + 'log/partner/withdrawloglist';
 });
 
 $(document).on('click', '.p-send-collect', function (e) {

@@ -26,7 +26,7 @@ $(document).on('click', '.update-headquarter-member', function () {
         return;
 
     $.ajax({
-        url: CONTEXT_ROOT + '/member/update_ajax',
+        url: CONTEXT_ROOT + '/partner2/update_ajax',
         type: 'post',
         data: formData,
         processData: false,

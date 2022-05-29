@@ -44,7 +44,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
     private MessageSource messageSource;
 
     @Override
-    public boolean saveBettingSummary(List<BettingLogForm> bettingLogList) {
+    public boolean saveBettingSummary(List<BettingLogForm> bettingLogList, long start_time) {
 
         System.out.println("IScheduleService==saveBettingSummary==");
         System.out.println("*************** param info ***************");
@@ -77,14 +77,16 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
         //Convert date form from 2022-04-03T10:08:000000Z to 2022-04-03 10:08:000000 ----------------- <
         SimpleDateFormat destination_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat duration_format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         SimpleDateFormat first_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-        Date origin_date = null;
-        try {
-            origin_date = first_format.parse(bettingLogList.get(0).getProcessedAt());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String checktime = destination_format.format(origin_date);
+        Date start_time_date = new Date(start_time);
+//        try {
+//            origin_date = first_format.parse(bettingLogList.get(0).getProcessedAt());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        String checktime = destination_format.format(start_time_date);
+        String checkTimeDuration = duration_format.format(start_time_date) + " ~ 30";
         //----------------------------------------------------------------------------------------------/>
 
         List<BettingSummary> bettingSummaryList = new ArrayList<>();
@@ -159,18 +161,12 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                                 "finalAmount:" + (store_member.getMoneyAmount() + store_variableAmount));
 
                         if(memberService.updatePartnerMemberHoldingMoney(
-                                store_member.getSeq(),
-                                store_member.getMoneyAmount(),
-                                0f,
+                                store_member,
                                 store_variableAmount,
-                                Math.abs(store_variableAmount),
-                                store_member.getMoneyAmount() + store_variableAmount,
-                                0,
-                                0,
+                                CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
                                 CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
                                 2,
-                                "store",
-                                0
+                                "롤링금(매장)"
                         )){
                             System.out.println("\tIScheduleService==saveBettingSummary======== store rolling data save success");
                         }else{
@@ -199,18 +195,12 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                                 "finalAmount:" + (distributor_member.getMoneyAmount() + distributor_variableAmount) );
 
                         if(memberService.updatePartnerMemberHoldingMoney(
-                                distributor_member.getSeq(),
-                                distributor_member.getMoneyAmount(),
-                                0f,
+                                distributor_member,
                                 distributor_variableAmount,
-                                Math.abs(distributor_variableAmount),
-                                distributor_member.getMoneyAmount() + distributor_variableAmount,
-                                0,
-                                0,
+                                CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
                                 CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
                                 2,
-                                "partner",
-                                0
+                                "롤링금(총판)"
                             )){
                                 System.out.println("\tIScheduleService==saveBettingSummary======== distributor rolling data save success");
                             }else{
@@ -239,18 +229,12 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                                 "finalAmount:" + (headquarter_member.getMoneyAmount() + headquarter_variableAmount) );
 
                         if(memberService.updatePartnerMemberHoldingMoney(
-                                headquarter_member.getSeq(),
-                                headquarter_member.getMoneyAmount(),
-                                0f,
+                                headquarter_member,
                                 headquarter_variableAmount,
-                                Math.abs(headquarter_variableAmount),
-                                headquarter_member.getMoneyAmount() + headquarter_variableAmount,
-                                0,
-                                0,
+                                CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
                                 CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
                                 2,
-                                "Headquarter",
-                                0
+                                "롤링금(부본)"
                         )){
                             System.out.println("\tIScheduleService==saveBettingSummary======== headquarter rolling data save success");
                         }else{
@@ -262,26 +246,13 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     float variableAmount = totalBettingAmount.getVariableAmount();
 
                     // set Reason of money transfer--------------------------------------- <
-                    Integer reasonType = 0;
-                    QueryWrapper<Dict> qwe = new QueryWrapper<>();
-                    qwe.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
 
                     //  When the result of game is winning status
-                    if(totalBettingAmount.isTotalWinning()){
-                        qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER_WINNING);
-                        reasonType = CommonConstant.MONEY_REASON_TRANSFER_WINNING;
-                    }
-                    else{
-                        qwe.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER);
-                        reasonType = CommonConstant.MONEY_REASON_TRANSFER;
-                    }
-
-                    List<Dict> reasonList = dictService.list(qwe);
-                    List<String> params = new ArrayList<String>();
-                    params.add(String.valueOf(variableAmount));
-                    String reason = messageSource.getMessage(reasonList.get(0).getStrValue(), params.toArray(), Locale.ENGLISH);
+                    Integer reasonType = (totalBettingAmount.isTotalWinning())?
+                            CommonConstant.MONEY_REASON_GAME_DEPOSIT
+                            :CommonConstant.MONEY_REASON_GAME_WITHDRAW;
+                    String reason = "롤링금(회원)";
                     // set Reason of money transfer--------------------------------------- />
-
 
                     System.out.println("IScheduleService==saveBettingSummary========distributor rolling data\t" +
                             "seq:"+member.getSeq() +
@@ -337,7 +308,8 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                                 CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
                                 reasonType,
                                 mileageReason,
-                                0
+                                0,
+                                ""
                         )){
                             System.out.println("\tIScheduleService==saveBettingSummary======== member rolling data save success");
                         }
@@ -358,6 +330,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     bettingSummary.setBaccaratBetCount(totalBettingAmount.baccaratBetCount);
                     bettingSummary.setPlayingGame(totalBettingAmount.playing_game);
                     bettingSummary.setCheckTime(checktime);
+                    bettingSummary.setCheckTimeDuration(checkTimeDuration);
                     bettingSummary.setType(0);
                     bettingSummary.setMemberSeq(member.getSeq());
                     bettingSummary.setStoreSeq(member.getStoreSeq() != null ? member.getStoreSeq() : "");
@@ -428,7 +401,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                 if(game_detail_id.equals(item.getDetails().getGame().getId())){ // filter by game id
                     totalBettingAmount.status_play = true;
 
-                    if(item.getDetails().getGame().getType().equals("slots")){ // separate game type
+                    if(item.getDetails().getGame().getType().equals("slot")){ // separate game type
                         if(item.getType().equals("bet")){
                             totalBettingAmount.slotBettingAmount += Math.abs( item.getAmount() );
                             totalBettingAmount.slotBetCount++;

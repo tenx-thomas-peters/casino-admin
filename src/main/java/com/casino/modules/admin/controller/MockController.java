@@ -99,9 +99,9 @@ public class MockController {
 			Member member = memberService.getById(memberSeq);
 			Integer reasonType = 0;
 			if(member.getUserType() == CommonConstant.USER_TYPE_NORMAL) {
-				reasonType = CommonConstant.MONEY_REASON_CHARGE;
+				reasonType = CommonConstant.MONEY_REASON_DEPOSIT;
 			}else {
-				reasonType = CommonConstant.MONEY_REASON_PARTNER_RECOVERY;
+				reasonType = CommonConstant.MONEY_REASON_PARTNER_DEPOSIT;
 			}
 			mockService.updateMemberMoney(member, moneyAmount, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, reasonType, note);
 			result.success("success");
@@ -122,9 +122,9 @@ public class MockController {
 			Member member = memberService.getById(memberSeq);
 			Integer reasonType = 0;
 			if(member.getUserType() == CommonConstant.USER_TYPE_NORMAL) {
-				reasonType = CommonConstant.MONEY_REASON_EXCHANGE;
+				reasonType = CommonConstant.MONEY_REASON_WITHDRAW;
 			}else {
-				reasonType = CommonConstant.MONEY_REASON_PARTNER_PAYMENT;
+				reasonType = CommonConstant.MONEY_REASON_PARTNER_WITHDRAW;
 			}
 			mockService.updateMemberMoney(member, moneyAmount, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, reasonType, note);
 			result.success("success");

@@ -166,7 +166,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			Integer status,
 			Integer reasonType,
 			String reason,
-			Integer chargeCount
+			Integer chargeCount,
+			String note
 	) {
 		System.out.println("MemberServiceImpl==updateMemberHoldingMoney==");
 		System.out.println("*************** save param info ***************");
@@ -206,14 +207,18 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			moneyHistory.setStatus(status);
 			moneyHistory.setReasonType(reasonType);
 			moneyHistory.setReason(reason);
+			moneyHistory.setNote(note);
 
 			if(!chargeCount.equals(0)){
 				moneyHistory.setChargeCount(chargeCount);
 			}
 
+			if(transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT) && reasonType.equals(CommonConstant.MONEY_REASON_DEPOSIT))
+					member.setChargeCount(member.getChargeCount() + 1);
 			member.setMoneyAmount(finalAmount);
 
 			System.out.println("charge money");
+			System.out.println(member.getChargeCount());
 			if (moneyHistoryService.save(moneyHistory) && updateById(member)) {
 				ret = true;
 			}
@@ -248,37 +253,27 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 	@Override
 	@Transactional(readOnly = false)
 	public boolean updatePartnerMemberHoldingMoney(
-			String memberSeq,
-			Float prevMoneyAmount,
-			Float prevMileageAmount,
+			Member member,
 			Float variableAmount,
-			Float actualAmount,
-			Float finalAmount,
-			Integer classification,
 			Integer transactionClassification,
 			Integer status,
 			Integer reasonType,
-			String reason,
-			Integer chargeCount
+			String reason
 	) {
 		String seq = UUIDGenerator.generate();
-		Member member = getById(memberSeq);
 		boolean ret = false;
+		Float finalAmount = member.getMoneyAmount() + variableAmount;
 
-		if (classification.equals(CommonConstant.CLASSIFICATION_MONEY)) {
+		if(variableAmount != 0 ){
 			MoneyHistory moneyHistory = new MoneyHistory();
 			moneyHistory.setSeq(seq);
-			moneyHistory.setReceiver(memberSeq);
+			moneyHistory.setReceiver(member.getSeq());
 			moneyHistory.setApplicationTime(new Date());
 			moneyHistory.setProcessTime(new Date());
-			moneyHistory.setPrevAmount(prevMoneyAmount);
-			moneyHistory.setVariableAmount(variableAmount);
-			moneyHistory.setActualAmount(actualAmount);
+			moneyHistory.setPrevAmount(member.getMoneyAmount());
+			moneyHistory.setVariableAmount(Math.abs(variableAmount));
+			moneyHistory.setActualAmount(Math.abs(variableAmount));
 			moneyHistory.setFinalAmount(finalAmount);
-
-			// classification = ku bun
-			// 0: money, 1: point
-			moneyHistory.setMoneyOrPoint(classification);
 
 			//transactionClassification = ke rea ku bun
 			// 0: increase, 1: decrease
@@ -287,34 +282,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			moneyHistory.setReasonType(reasonType);
 			moneyHistory.setReason(reason);
 
-			if(!chargeCount.equals(0)){
-				moneyHistory.setChargeCount(chargeCount);
-			}
-
 			member.setMoneyAmount(finalAmount);
 
-			if (moneyHistoryService.save(moneyHistory) && updateById(member)) {
-				ret = true;
-			}
-		} else {
-			MileageHistory mileageHistory = new MileageHistory();
-			mileageHistory.setSeq(seq);
-			mileageHistory.setMemberSeq(memberSeq);
-			mileageHistory.setProcessTime(new Date());
-			mileageHistory.setPrevAmount(prevMileageAmount);
-			mileageHistory.setVariableAmount(variableAmount);
-			mileageHistory.setFinalAmount(finalAmount);
-			mileageHistory.setReasonType(reasonType);
-			mileageHistory.setReason(reason);
-			mileageHistory.setOperationType(transactionClassification);
-
-			member.setMileageAmount(finalAmount);
-
-			if (mileageHistoryService.save(mileageHistory) && updateById(member)) {
-				ret = true;
-			}
+			moneyHistoryService.save(moneyHistory);
 		}
-
+		if (updateById(member)) ret = true;
 		return ret;
 	}
 

@@ -154,6 +154,7 @@ public class MoneyController {
             Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             moneyHistory.setPartnerOrMember(CommonConstant.PARTNER_OR_MEMBER_MEMBER);
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_DEPOSIT);
             moneyHistory.setSearchType(moneyHistory.getSearchTypeMember());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             if (StringUtils.isBlank(moneyHistory.getFromProcessTime()) && StringUtils.isBlank(moneyHistory.getToProcessTime())) {
@@ -171,8 +172,10 @@ public class MoneyController {
             model.addAttribute("storeList", storeList);
 
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_DEPOSIT);
             Float totalDeposit = moneyHistoryService.getTotalAmountByDateRange(moneyHistory);
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
             Float totalWithdraw = moneyHistoryService.getTotalAmountByDateRange(moneyHistory);
 
             model.addAttribute("totalDeposit", totalDeposit);
@@ -208,6 +211,7 @@ public class MoneyController {
             Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             moneyHistory.setPartnerOrMember(CommonConstant.PARTNER_OR_MEMBER_MEMBER);
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
             moneyHistory.setSearchType(moneyHistory.getSearchTypeMember());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             if (StringUtils.isBlank(moneyHistory.getFromProcessTime()) && StringUtils.isBlank(moneyHistory.getToProcessTime())) {
@@ -224,8 +228,10 @@ public class MoneyController {
             model.addAttribute("storeList", storeList);
 
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_DEPOSIT);
             Float totalDeposit = moneyHistoryService.getTotalAmountByDateRange(moneyHistory);
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
             Float totalWithdraw = moneyHistoryService.getTotalAmountByDateRange(moneyHistory);
 
             model.addAttribute("totalDeposit", totalDeposit);
@@ -264,6 +270,7 @@ public class MoneyController {
             Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             moneyHistory.setPartnerOrMember(CommonConstant.PARTNER_OR_MEMBER_PARTNER);
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_DEPOSIT);
             moneyHistory.setSearchType(moneyHistory.getSearchTypeMember());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             if (StringUtils.isBlank(moneyHistory.getFromProcessTime()) && StringUtils.isBlank(moneyHistory.getToProcessTime())) {
@@ -276,8 +283,10 @@ public class MoneyController {
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_DEPOSIT);
             Float totalDeposit = moneyHistoryService.getTotalAmountByDateRange(moneyHistory);
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
             Float totalWithdraw = moneyHistoryService.getTotalAmountByDateRange(moneyHistory);
 
             model.addAttribute("totalDeposit", totalDeposit);
@@ -307,6 +316,7 @@ public class MoneyController {
             Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             moneyHistory.setPartnerOrMember(CommonConstant.PARTNER_OR_MEMBER_PARTNER);
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
             moneyHistory.setSearchType(moneyHistory.getSearchTypeMember());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             if (StringUtils.isBlank(moneyHistory.getFromProcessTime()) && StringUtils.isBlank(moneyHistory.getToProcessTime())) {
@@ -319,8 +329,10 @@ public class MoneyController {
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_DEPOSIT);
             Float totalDeposit = moneyHistoryService.getTotalAmountByDateRange(moneyHistory);
             moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
+            moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
             Float totalWithdraw = moneyHistoryService.getTotalAmountByDateRange(moneyHistory);
 
             model.addAttribute("totalDeposit", totalDeposit);
@@ -424,8 +436,6 @@ public class MoneyController {
 
                 if(bonus > 0){
                     firstChargeAmount = bonus * depositAmount / 100;
-                    member.setMileageAmount(member.getMileageAmount() + firstChargeAmount);
-                    memberService.updateById(member);
 
                     System.out.println("MoneyController==moneyDepositAccept==");
                     System.out.println("\tfirst charge deposit *******************************************");
@@ -448,16 +458,25 @@ public class MoneyController {
                             1,
                             0,
                             CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
-                            CommonConstant.MONEY_REASON_CHARGE,
+                            CommonConstant.MONEY_REASON_DEPOSIT,
                             mileageReason,
-                            0
+                            0,
+                            ""
                     );
                 }
             }
             // member user is first charge ============================================= />
 
             String reason = "회원 입금 [" + depositAmount + "]";
-            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, firstChargeAmount, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, firstChargeFlag, reason)) {
+            if (moneyHistoryService.acceptMoneyHistory(
+                    seq,
+                    depositAmount,
+                    firstChargeAmount,
+                    CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT,
+                    firstChargeFlag,
+                    reason,
+                    CommonConstant.MONEY_REASON_DEPOSIT
+            )) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -481,8 +500,16 @@ public class MoneyController {
 
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            String reason = "회원 출금 [" + withdrawAmount + "]";
-            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0, reason)) {
+            String reason = "회원 출금 [-" + withdrawAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(
+                    seq,
+                    withdrawAmount,
+                    null,
+                    CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL,
+                    0,
+                    reason,
+                    CommonConstant.MONEY_REASON_WITHDRAW
+            )) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -510,7 +537,15 @@ public class MoneyController {
             Float amount = depositAmount + depositAmount * bonus;
 
             String reason = "파트너 입금 [" + depositAmount + "]";
-            if (moneyHistoryService.acceptMoneyHistory(seq, depositAmount, bonus, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, 0, reason)) {
+            if (moneyHistoryService.acceptMoneyHistory(
+                    seq,
+                    depositAmount,
+                    bonus,
+                    CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT,
+                    0,
+                    reason,
+                    CommonConstant.MONEY_REASON_DEPOSIT
+            )) {
                 result.success("success!");
             } else {
                 result.error505("failed");
@@ -535,8 +570,16 @@ public class MoneyController {
             // game api - /user/sub-balance start
             MoneyHistory history = moneyHistoryService.getById(seq);
             Member member = memberService.getById(history.getReceiver());
-            String reason = "파트너 출금 [" + withdrawAmount + "]";
-            if (moneyHistoryService.acceptMoneyHistory(seq, withdrawAmount, null, CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, 0, reason)) {
+            String reason = "파트너 출금 [-" + withdrawAmount + "]";
+            if (moneyHistoryService.acceptMoneyHistory(
+                    seq,
+                    withdrawAmount,
+                    null,
+                    CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL,
+                    0,
+                    reason,
+                    CommonConstant.MONEY_REASON_WITHDRAW
+            )) {
                 result.success("success!");
             } else {
                 result.error505("failed");

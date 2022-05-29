@@ -957,10 +957,60 @@ public class PartnerController {
             model.addAttribute("subHeadquarterList", subHeadquarterList);
             model.addAttribute("url", "/partner2/memberDetailsTop");
         } catch (Exception e) {
-            log.error("url: /member/memberDetailsTop --- method: memberDetailsTop --- message: " + e.toString());
+            log.error("url: /partner2/memberDetailsTop --- method: memberDetailsTop --- message: " + e.toString());
         }
         return "views/admin/common/deputyHeadquarterDetail";
     }
+
+	@PostMapping(value = "update_ajax")
+	@ResponseBody
+	public Result<Member> updateMemberAjax(@ModelAttribute("member") Member member, HttpServletRequest request) {
+		Result<Member> result = new Result<>();
+		try {
+
+			String strChangeMoney = member.getChangeMoney();
+			float floatChangeMoney = 0;
+			if( member.getChangeMoney() !=null && !strChangeMoney.equals("") )
+				floatChangeMoney = Float.parseFloat(strChangeMoney);
+
+			if((member.getMoneyAmount() + floatChangeMoney) < 0){
+				result.error505("보유금액이 부족합니다");
+			}else{
+				System.out.println("PartnerController==updateMemberAjax==");
+				System.out.println("\tUpdate Partner Profile **********************************");
+				System.out.println("\t*** floatChangeMoney: " + floatChangeMoney);
+				System.out.println(member.getMoneyAmount() + floatChangeMoney);
+				System.out.println("\t*******************************************");
+
+				Integer transactionClassification = (floatChangeMoney < 0)?
+						CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW
+						:CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT;
+
+				String reason = transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)
+						? "관리자 머니변동(충진) ["+floatChangeMoney + "]"
+						: "관리자 머니변동(환전) [ "+floatChangeMoney + "]";
+
+				if (memberService.updatePartnerMemberHoldingMoney(
+						member,
+						floatChangeMoney,
+						transactionClassification,
+						CommonConstant.MONEY_HISTORY_STATUS_COMPLETE,
+						CommonConstant.MONEY_REASON_ADMIN,
+						reason
+				)) {
+					result.success("success");
+				} else {
+					result.error505("fail");
+				}
+			}
+
+		} catch (Exception e) {
+			log.error("url: /partner2/update_ajax --- method: updateMemberAjax --- message: " + e.toString());
+			result.error500("Internal Server Error");
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	@GetMapping(value = "memberDetails")
     public String memberDetails(@RequestParam("idx") String memberSeq, Model model, HttpServletRequest request) {

@@ -33,12 +33,12 @@ public interface IMoneyHistoryService extends IService<MoneyHistory> {
 
 	Float getTotalAmountByDateRange(MoneyHistory moneyHistory);
 	
-	Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge, String reason);
+	Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge, String reason, Integer reasonType);
 
 	// for api
 	List<MoneyHistory> getTodayMoneyHistory(Integer status, Integer operationType, Integer moneyOrPoint);
 	
-	IPage<MoneyHistory> getMonthMoneyLogByMemberSeq(Page<MoneyHistory> page, String memberSeq, Integer operationType);
+	IPage<MoneyHistory> getMonthMoneyLogByMemberSeq(Page<MoneyHistory> page, String memberSeq, Integer operationType, Integer reasonType);
 
 	boolean updateMoneyHistory(MoneyHistory moneyHistoryParams);
 
