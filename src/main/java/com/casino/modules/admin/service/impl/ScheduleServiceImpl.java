@@ -160,13 +160,14 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                                 "actualAmount:" + Math.abs(store_variableAmount) +
                                 "finalAmount:" + (store_member.getMoneyAmount() + store_variableAmount));
 
+                        String headquarterReason = "매장정산[슬롯+바카라][슬롯:"+store_member.getSlotRate()+"%|바카라:"+store_member.getBaccaratRate()+"%]<-" + store_member.getId();
                         if(memberService.updatePartnerMemberHoldingMoney(
                                 store_member,
                                 store_variableAmount,
                                 CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
                                 CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
-                                2,
-                                "롤링금(매장)"
+                                CommonConstant.MONEY_REASON_GAME_DEPOSIT,
+                                headquarterReason
                         )){
                             System.out.println("\tIScheduleService==saveBettingSummary======== store rolling data save success");
                         }else{
@@ -194,13 +195,14 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                                 "actualAmount:" + Math.abs(distributor_variableAmount) +
                                 "finalAmount:" + (distributor_member.getMoneyAmount() + distributor_variableAmount) );
 
+                        String headquarterReason = "총판사정산[슬롯+바카라][슬롯:"+distributor_member.getSlotRate()+"%|바카라:"+distributor_member.getBaccaratRate()+"%]<-" + distributor_member.getId();
                         if(memberService.updatePartnerMemberHoldingMoney(
                                 distributor_member,
                                 distributor_variableAmount,
                                 CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
                                 CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
-                                2,
-                                "롤링금(총판)"
+                                CommonConstant.MONEY_REASON_GAME_DEPOSIT,
+                                headquarterReason
                             )){
                                 System.out.println("\tIScheduleService==saveBettingSummary======== distributor rolling data save success");
                             }else{
@@ -228,13 +230,14 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                                 "actualAmount:" + Math.abs(headquarter_variableAmount) +
                                 "finalAmount:" + (headquarter_member.getMoneyAmount() + headquarter_variableAmount) );
 
+                        String headquarterReason = "부본사정산[슬롯+바카라][슬롯:"+headquarter_member.getSlotRate()+"%|바카라:"+headquarter_member.getBaccaratRate()+"%]<-" + headquarter_member.getId();
                         if(memberService.updatePartnerMemberHoldingMoney(
                                 headquarter_member,
                                 headquarter_variableAmount,
                                 CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
                                 CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
-                                2,
-                                "롤링금(부본)"
+                                CommonConstant.MONEY_REASON_GAME_DEPOSIT,
+                                headquarterReason
                         )){
                             System.out.println("\tIScheduleService==saveBettingSummary======== headquarter rolling data save success");
                         }else{
