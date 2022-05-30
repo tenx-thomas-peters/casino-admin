@@ -209,10 +209,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			moneyHistory.setReason(reason);
 			moneyHistory.setNote(note);
 
-			if(!chargeCount.equals(0)){
-				moneyHistory.setChargeCount(chargeCount);
-			}
-
 			if(transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT) && reasonType.equals(CommonConstant.MONEY_REASON_DEPOSIT))
 					member.setChargeCount(member.getChargeCount() + 1);
 			member.setMoneyAmount(finalAmount);

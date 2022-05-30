@@ -100,6 +100,7 @@ public interface CommonConstant {
 	public static final Integer MONEY_REASON_GAME_DEPOSIT = 4;
 	public static final Integer MONEY_REASON_GAME_WITHDRAW = 5;
 	public static final Integer MONEY_REASON_ADMIN = 6;
+	public static final Integer MONEY_REASON_POINT = 7;
 
 	public static final Integer PARTNER_OR_MEMBER_MEMBER = 0;
 	public static final Integer PARTNER_OR_MEMBER_PARTNER = 1;

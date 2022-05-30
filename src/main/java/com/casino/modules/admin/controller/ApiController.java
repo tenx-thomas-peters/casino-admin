@@ -114,16 +114,26 @@ public class ApiController {
                     }
                 }
 
-                if (memberService.save(member)) {
-                    String token = JwtUtil.sign(member.getId(), member.getPassword());
+                //TODO
+                // game api - /user/create start
+                ResponseEntity<?> ret1 = HttpUtils.createUser(gameServerUrl + "/user/create", member.getId(), member.getNickname(), apiKey);
 
-                    obj.put("token", token);
-                    obj.put("userInfo", member);
-                    result.setResult(obj);
+                if (ret1.getStatusCode().value() == 200) {
 
-                    result.success("SignUp Success");
-                } else {
-                    result.error505("failed");
+                    if (memberService.save(member)) {
+                        String token = JwtUtil.sign(member.getId(), member.getPassword());
+
+                        obj.put("token", token);
+                        obj.put("userInfo", member);
+                        result.setResult(obj);
+
+                        result.success("SignUp Success");
+                    } else {
+                        result.error505("failed");
+                    }
+                }
+                else{
+                    result.error505("API request failed to create account in Game service");
                 }
             }
         } catch (Exception e) {
@@ -847,18 +857,24 @@ public class ApiController {
 
                             // previous Amount
                             moneyHistory1.setPrevAmount(member.getMoneyAmount());
-
                             // variable amount
                             moneyHistory1.setVariableAmount(restAmount);
-
                             // final amount
                             moneyHistory1.setFinalAmount(member.getMoneyAmount() + restAmount);
 
                             float casinoVariableAmount = member.getCasinoMoney() - restAmount;
-                            moneyHistory1.setReason("환전->머니이동->카지노머니["+ casinoVariableAmount  +"]");
+                            moneyHistory1.setReason("환전(머니이동 <- 카지노머니["+ casinoVariableAmount  +"])");
                             moneyHistory1.setStatus(CommonConstant.MONEY_HISTORY_STATUS_COMPLETE);
-                            moneyHistory1.setApplicationTime(new Date());
-                            moneyHistory1.setOperationType(2);
+
+                            // set after 1s
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Calendar date = Calendar.getInstance();
+                            long before_sec = date.getTimeInMillis() - 1000;
+                            Date before_sec_date = simpleDateFormat.parse(simpleDateFormat.format(new Date(before_sec)));
+
+                            moneyHistory1.setApplicationTime(before_sec_date);
+                            moneyHistory1.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
+                            moneyHistory1.setReasonType(CommonConstant.MONEY_REASON_GAME_DEPOSIT);
                             moneyHistoryService.save(moneyHistory1);
                             // save money history for trasfer money from casino to site money --------------- />
 
@@ -908,6 +924,7 @@ public class ApiController {
         Result<Member> result = new Result<>();
         try {
             Member member = memberService.getById(userSeq);
+            MoneyHistory moneyHistory1 = new MoneyHistory();
 
             // Thomas 2022.04.11
             // set sync casino money with game service and local money
@@ -923,6 +940,25 @@ public class ApiController {
                     if(member.getCasinoMoney() != null){
                         casino_money = member.getCasinoMoney();
                     }
+
+                    // save money history for trasfer money from casino to site money --------------- <
+                    moneyHistory1.setSeq(UUIDGenerator.generate());
+                    moneyHistory1.setReceiver(member.getSeq());
+                    // previous Amount
+                    moneyHistory1.setPrevAmount(member.getMoneyAmount());
+                    // variable amount
+                    moneyHistory1.setVariableAmount(member.getMoneyAmount());
+                    // final amount
+                    moneyHistory1.setFinalAmount(0.0F);
+
+                    moneyHistory1.setReason("머니이동 -> 카지노머니["+ member.getMoneyAmount()  +"]");
+                    moneyHistory1.setStatus(CommonConstant.MONEY_HISTORY_STATUS_COMPLETE);
+                    moneyHistory1.setApplicationTime(new Date());
+                    moneyHistory1.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
+                    moneyHistory1.setReasonType(CommonConstant.MONEY_REASON_GAME_WITHDRAW);
+                    moneyHistoryService.save(moneyHistory1);
+                    // save money history for trasfer money from casino to site money --------------- />
+
                     float update_casino_money = casino_money + member.getMoneyAmount();
                     member.setCasinoMoney(update_casino_money);
                     member.setMoneyAmount(0.0F);
@@ -975,10 +1011,44 @@ public class ApiController {
             System.out.println("\t*** member MileageAmount : "+member.getMileageAmount());
             System.out.println("\t*******************************************");
 
-            member.setMoneyAmount(member.getMoneyAmount() + member.getMileageAmount());
-            member.setMileageAmount(0f);
-
-            memberService.updateById(member);
+            String reason = "포인트["+ member.getMileageAmount() +"]->머니변환";
+            if (memberService.updateMemberHoldingMoney(
+                    member.getSeq(),
+                    member.getMoneyAmount(),
+                    member.getMileageAmount(),
+                    member.getMileageAmount(),
+                    member.getMileageAmount(),
+                    0f,
+                    CommonConstant.CLASSIFICATION_MILEAGE,
+                    CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW,
+                    CommonConstant.MONEY_HISTORY_STATUS_COMPLETE,
+                    CommonConstant.MONEY_REASON_POINT,
+                    reason,
+                    0,
+                    ""
+                ) &&
+                    memberService.updateMemberHoldingMoney(
+                    member.getSeq(),
+                    member.getMoneyAmount(),
+                    0f,
+                    member.getMileageAmount(),
+                    member.getMileageAmount(),
+                    member.getMoneyAmount() + member.getMileageAmount(),
+                    CommonConstant.CLASSIFICATION_MONEY,
+                    CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
+                    CommonConstant.MONEY_HISTORY_STATUS_COMPLETE,
+                    CommonConstant.MONEY_REASON_POINT,
+                    reason,
+                    0,
+                    ""
+                )
+            ) {
+                result.success("success");
+                System.out.println("MemberController==update Member Holding Money ==> success");
+            } else {
+                result.error505("fail");
+                System.out.println("MemberController==update Member Holding Money ==> failed");
+            }
             result.success("success");
             result.setResult(member);
         }
