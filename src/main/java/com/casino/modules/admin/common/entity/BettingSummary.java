@@ -41,6 +41,9 @@ public class BettingSummary implements Serializable {
     @TableField(value = "baccarat_betting_amount")
     private Float baccaratBettingAmount;
 
+    @TableField(value = "baccarat_virtual_betting_amount")
+    private Float baccaratVirtualBettingAmount;
+
     @TableField(value = "slot_winning_amount")
     private Float slotWinningAmount;
 

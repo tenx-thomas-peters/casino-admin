@@ -262,6 +262,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     bettingSummary.setSeq(UUIDGenerator.generate());
                     bettingSummary.setSlotBettingAmount(totalBettingAmount.slotBettingAmount);
                     bettingSummary.setBaccaratBettingAmount(totalBettingAmount.baccaratBettingAmount);
+                    bettingSummary.setBaccaratVirtualBettingAmount(totalBettingAmount.baccaratVirtualBettingAmount);
                     bettingSummary.setSlotWinningAmount(totalBettingAmount.slotWinningAmount);
                     bettingSummary.setBaccaratWinningAmount(totalBettingAmount.baccaratWinningAmount);
                     bettingSummary.setSlotLostAmount(totalBettingAmount.slotLostAmount);
@@ -445,10 +446,16 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     else{
                         if(item.getType().equals("bet")){
                             totalBettingAmount.baccaratBettingAmount += Math.abs( item.getAmount() );
+                            totalBettingAmount.baccaratVirtualBettingAmount += Math.abs(item.getAmount());
                             totalBettingAmount.baccaratBetCount++;
                         }
                         else{
-                            totalBettingAmount.baccaratWinningAmount += item.getAmount();
+                            String itemAround = item.getDetails().getGame().getRound();
+                            if(checkSameRound(bettingLogList, itemAround, Math.abs(item.getAmount()))){ // betting result is tier
+                                totalBettingAmount.baccaratBettingAmount -= Math.abs(item.getAmount());
+                            }else{
+                                totalBettingAmount.baccaratWinningAmount += item.getAmount();
+                            }
                         }
                     }
                     totalBettingAmount.playing_game = item.getDetails().getGame().getTitle();
@@ -476,12 +483,26 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
         return totalBettingAmount;
     }
+
+    public boolean checkSameRound(List<BettingLogForm> bettingLogList, String itemAround, float itemAmount){
+        boolean flag = false;
+
+        for (BettingLogForm betItem : bettingLogList) {
+            if(betItem.getType().equals("win")
+                    && betItem.getDetails().getGame().getRound().equals(itemAround)
+                    && Math.abs(betItem.getAmount()) == itemAmount){
+                flag = true;
+            }
+        }
+        return flag;
+    }
 }
 
 class TotalBettingAmount{
     boolean status_play;
     float slotBettingAmount;
     float baccaratBettingAmount;
+    float baccaratVirtualBettingAmount;
     float slotWinningAmount;
     float baccaratWinningAmount;
     float slotLostAmount;
@@ -494,6 +515,7 @@ class TotalBettingAmount{
         this.status_play = false;
         this.slotBettingAmount = 0;
         this.baccaratBettingAmount = 0;
+        this.baccaratVirtualBettingAmount = 0;
         this.slotWinningAmount = 0;
         this.baccaratWinningAmount = 0;
         this.slotLostAmount = 0;
