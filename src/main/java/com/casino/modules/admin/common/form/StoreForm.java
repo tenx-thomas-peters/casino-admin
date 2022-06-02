@@ -47,6 +47,7 @@ public class StoreForm {
 
 	private Float slotBettingAmount;
 	private Float baccaratBettingAmount;
+	private Float baccaratVirtualBettingAmount;
 
 	private Float slotWinningAmount;
 	private Float baccaratWinningAmount;
