@@ -1,5 +1,6 @@
 package com.casino.modules.admin.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +47,6 @@ public interface IMemberService extends IService<Member> {
             Integer status,
             Integer reasonType,
             String reason,
-            Integer chargeCount,
             String note);
 
     boolean updatePartnerMemberHoldingMoney(
@@ -55,7 +55,8 @@ public interface IMemberService extends IService<Member> {
             Integer transactionClassification,
             Integer status,
             Integer reasonType,
-            String reason);
+            String reason,
+            Date appSec);
 
     boolean stopMember(List<String> memberSeqList);
 

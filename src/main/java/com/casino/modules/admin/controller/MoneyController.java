@@ -460,7 +460,6 @@ public class MoneyController {
                             CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
                             CommonConstant.MONEY_REASON_DEPOSIT,
                             mileageReason,
-                            0,
                             ""
                     );
                 }

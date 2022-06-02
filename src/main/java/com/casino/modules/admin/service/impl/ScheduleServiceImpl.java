@@ -19,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,10 +102,16 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                 game_detail_list.add(temp_item.getDetails().getGame().getId());
         }
 
+        int sec = 0;
         for(String member_username : member_username_list){
             QueryWrapper<Member> qw = new QueryWrapper<>();
             qw.eq("id", member_username);
             Member member = memberService.getOne(qw);
+            sec++;
+
+            float store_variableAmount = 0;
+            float distributor_variableAmount = 0;
+            float headquarter_variableAmount = 0;
 
             for(String game_detail_id : game_detail_list){
 
@@ -150,29 +153,8 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
 
                         slot_store_rolling_amount = slot_store_rate_amount - slot_rolling_amount;
                         baccarat_store_rolling_amount = baccarat_store_rate_amount - baccarat_rolling_amount;
-                        float store_variableAmount = slot_store_rolling_amount + baccarat_store_rolling_amount;
 
-                        System.out.println("IScheduleService==saveBettingSummary========store rolling data" +
-                                "seq:"+store_member.getSeq() +
-                                "prevMoneyAmount:" + store_member.getMoneyAmount() +
-                                "prevMoneyAmount:" + store_member.getMoneyAmount() +
-                                "variableAmount:" + store_variableAmount +
-                                "actualAmount:" + Math.abs(store_variableAmount) +
-                                "finalAmount:" + (store_member.getMoneyAmount() + store_variableAmount));
-
-                        String headquarterReason = "매장정산[슬롯+바카라][슬롯:"+store_member.getSlotRate()+"%|바카라:"+store_member.getBaccaratRate()+"%]<-" + store_member.getId();
-                        if(memberService.updatePartnerMemberHoldingMoney(
-                                store_member,
-                                store_variableAmount,
-                                CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
-                                CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
-                                CommonConstant.MONEY_REASON_GAME_DEPOSIT,
-                                headquarterReason
-                        )){
-                            System.out.println("\tIScheduleService==saveBettingSummary======== store rolling data save success");
-                        }else{
-                            System.out.println("\tIScheduleService==saveBettingSummary======== store rolling data save fail ");
-                        }
+                        store_variableAmount += slot_store_rolling_amount + baccarat_store_rolling_amount;
                     }
 
                     //-------- get distributor
@@ -185,29 +167,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                         slot_distributor_rolling_amount = slot_distributor_rate_amount - slot_store_rate_amount;
                         baccarat_distributor_rolling_amount = baccarat_distributor_rate_amount - baccarat_store_rate_amount;
 
-                        float distributor_variableAmount = slot_distributor_rolling_amount + baccarat_distributor_rolling_amount;
-
-                        System.out.println("IScheduleService==saveBettingSummary========distributor rolling data\t" +
-                                "seq:"+distributor_member.getSeq() +
-                                "prevMoneyAmount:" + distributor_member.getMoneyAmount() +
-                                "prevMoneyAmount:" + distributor_member.getMoneyAmount() +
-                                "variableAmount:" + distributor_variableAmount +
-                                "actualAmount:" + Math.abs(distributor_variableAmount) +
-                                "finalAmount:" + (distributor_member.getMoneyAmount() + distributor_variableAmount) );
-
-                        String headquarterReason = "총판사정산[슬롯+바카라][슬롯:"+distributor_member.getSlotRate()+"%|바카라:"+distributor_member.getBaccaratRate()+"%]<-" + distributor_member.getId();
-                        if(memberService.updatePartnerMemberHoldingMoney(
-                                distributor_member,
-                                distributor_variableAmount,
-                                CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
-                                CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
-                                CommonConstant.MONEY_REASON_GAME_DEPOSIT,
-                                headquarterReason
-                            )){
-                                System.out.println("\tIScheduleService==saveBettingSummary======== distributor rolling data save success");
-                            }else{
-                                System.out.println("\tIScheduleService==saveBettingSummary======== distributor rolling data save fail ");
-                            }
+                        distributor_variableAmount += slot_distributor_rolling_amount + baccarat_distributor_rolling_amount;
                     }
 
                     //-------- get headquarter
@@ -220,29 +180,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                         baccarat_headquarter_rolling_amount =
                                 this.calulateRate(totalBettingAmount.baccaratBettingAmount, headquarter_member.getBaccaratRate()) - baccarat_distributor_rate_amount;
 
-                        float headquarter_variableAmount = slot_headquarter_rolling_amount + baccarat_headquarter_rolling_amount;
-
-                        System.out.println("IScheduleService==saveBettingSummary========Headquarter rolling data\t" +
-                                "seq:"+headquarter_member.getSeq() +
-                                "prevMoneyAmount:" + headquarter_member.getMoneyAmount() +
-                                "prevMoneyAmount:" + headquarter_member.getMoneyAmount() +
-                                "variableAmount:" + headquarter_variableAmount +
-                                "actualAmount:" + Math.abs(headquarter_variableAmount) +
-                                "finalAmount:" + (headquarter_member.getMoneyAmount() + headquarter_variableAmount) );
-
-                        String headquarterReason = "부본사정산[슬롯+바카라][슬롯:"+headquarter_member.getSlotRate()+"%|바카라:"+headquarter_member.getBaccaratRate()+"%]<-" + headquarter_member.getId();
-                        if(memberService.updatePartnerMemberHoldingMoney(
-                                headquarter_member,
-                                headquarter_variableAmount,
-                                CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
-                                CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
-                                CommonConstant.MONEY_REASON_GAME_DEPOSIT,
-                                headquarterReason
-                        )){
-                            System.out.println("\tIScheduleService==saveBettingSummary======== headquarter rolling data save success");
-                        }else{
-                            System.out.println("\tIScheduleService==saveBettingSummary======== headquarter rolling data save fail ");
-                        }
+                        headquarter_variableAmount += slot_headquarter_rolling_amount + baccarat_headquarter_rolling_amount;
                     }
 
                     //-------- get member
@@ -257,7 +195,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     String reason = "롤링금(회원)";
                     // set Reason of money transfer--------------------------------------- />
 
-                    System.out.println("IScheduleService==saveBettingSummary========distributor rolling data\t" +
+                    System.out.println("IScheduleService==saveBettingSummary========member rolling data\t" +
                             "seq:"+member.getSeq() +
                             "prevMoneyAmount:" + member.getCasinoMoney() +
                             "prevMileage: 0" +
@@ -311,7 +249,6 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                                 CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
                                 reasonType,
                                 mileageReason,
-                                0,
                                 ""
                         )){
                             System.out.println("\tIScheduleService==saveBettingSummary======== member rolling data save success");
@@ -352,6 +289,98 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                     // total amount of member
 //                    moneyHistory.setChargeCount(moneyHistory.getChargeCount() + 1);
                     bettingSummaryList.add(bettingSummary);
+                }
+            }
+
+            // set after 1s
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar date = Calendar.getInstance();
+            long after_sec = date.getTimeInMillis() + (sec * 1000L);
+            Date after_sec_date = new Date();
+            try {
+                after_sec_date = simpleDateFormat.parse(simpleDateFormat.format(new Date(after_sec)));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            //-------- get store
+            if(member.getStoreSeq() !=null && !member.getStoreSeq().equals("")){
+                Member store_member = memberService.getById(member.getStoreSeq());
+                System.out.println("IScheduleService==saveBettingSummary========store rolling data" +
+                        "seq:"+store_member.getSeq() +
+                        "prevMoneyAmount:" + store_member.getMoneyAmount() +
+                        "prevMoneyAmount:" + store_member.getMoneyAmount() +
+                        "variableAmount:" + store_variableAmount +
+                        "actualAmount:" + Math.abs(store_variableAmount) +
+                        "finalAmount:" + (store_member.getMoneyAmount() + store_variableAmount));
+
+                String headquarterReason = "매장정산[슬롯+바카라][슬롯:"+store_member.getSlotRate()+"%|바카라:"+store_member.getBaccaratRate()+"%]<-" + store_member.getId();
+                if(memberService.updatePartnerMemberHoldingMoney(
+                        store_member,
+                        store_variableAmount,
+                        CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
+                        CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+                        CommonConstant.MONEY_REASON_GAME_DEPOSIT,
+                        headquarterReason,
+                        after_sec_date
+                )){
+                    System.out.println("\tIScheduleService==saveBettingSummary======== store rolling data save success");
+                }else{
+                    System.out.println("\tIScheduleService==saveBettingSummary======== store rolling data save fail ");
+                }
+            }
+
+            //-------- get distributor
+            if(member.getDistributorSeq() !=null && !member.getDistributorSeq().equals("")){
+                Member distributor_member = memberService.getById(member.getDistributorSeq());
+                System.out.println("IScheduleService==saveBettingSummary========distributor rolling data\t" +
+                        "seq:"+distributor_member.getSeq() +
+                        "prevMoneyAmount:" + distributor_member.getMoneyAmount() +
+                        "prevMoneyAmount:" + distributor_member.getMoneyAmount() +
+                        "variableAmount:" + distributor_variableAmount +
+                        "actualAmount:" + Math.abs(distributor_variableAmount) +
+                        "finalAmount:" + (distributor_member.getMoneyAmount() + distributor_variableAmount) );
+
+                String headquarterReason = "총판사정산[슬롯+바카라][슬롯:"+distributor_member.getSlotRate()+"%|바카라:"+distributor_member.getBaccaratRate()+"%]<-" + distributor_member.getId();
+                if(memberService.updatePartnerMemberHoldingMoney(
+                        distributor_member,
+                        distributor_variableAmount,
+                        CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
+                        CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+                        CommonConstant.MONEY_REASON_GAME_DEPOSIT,
+                        headquarterReason,
+                        after_sec_date
+                )){
+                    System.out.println("\tIScheduleService==saveBettingSummary======== distributor rolling data save success");
+                }else{
+                    System.out.println("\tIScheduleService==saveBettingSummary======== distributor rolling data save fail ");
+                }
+            }
+
+            //-------- get headquarter
+            if(member.getSubHeadquarterSeq() !=null && !member.getSubHeadquarterSeq().equals("")){
+                Member headquarter_member = memberService.getById(member.getSubHeadquarterSeq());
+                System.out.println("IScheduleService==saveBettingSummary========Headquarter rolling data\t" +
+                        "seq:"+headquarter_member.getSeq() +
+                        "prevMoneyAmount:" + headquarter_member.getMoneyAmount() +
+                        "prevMoneyAmount:" + headquarter_member.getMoneyAmount() +
+                        "variableAmount:" + headquarter_variableAmount +
+                        "actualAmount:" + Math.abs(headquarter_variableAmount) +
+                        "finalAmount:" + (headquarter_member.getMoneyAmount() + headquarter_variableAmount) );
+
+                String headquarterReason = "부본사정산[슬롯+바카라][슬롯:"+headquarter_member.getSlotRate()+"%|바카라:"+headquarter_member.getBaccaratRate()+"%]<-" + headquarter_member.getId();
+                if(memberService.updatePartnerMemberHoldingMoney(
+                        headquarter_member,
+                        headquarter_variableAmount,
+                        CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
+                        CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT,
+                        CommonConstant.MONEY_REASON_GAME_DEPOSIT,
+                        headquarterReason,
+                        after_sec_date
+                )){
+                    System.out.println("\tIScheduleService==saveBettingSummary======== headquarter rolling data save success");
+                }else{
+                    System.out.println("\tIScheduleService==saveBettingSummary======== headquarter rolling data save fail ");
                 }
             }
         }

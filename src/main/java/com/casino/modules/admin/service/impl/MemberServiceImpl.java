@@ -166,7 +166,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			Integer status,
 			Integer reasonType,
 			String reason,
-			Integer chargeCount,
 			String note
 	) {
 		System.out.println("MemberServiceImpl==updateMemberHoldingMoney==");
@@ -254,7 +253,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			Integer transactionClassification,
 			Integer status,
 			Integer reasonType,
-			String reason
+			String reason,
+			Date appSec
 	) {
 		String seq = UUIDGenerator.generate();
 		boolean ret = false;
@@ -264,8 +264,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			MoneyHistory moneyHistory = new MoneyHistory();
 			moneyHistory.setSeq(seq);
 			moneyHistory.setReceiver(member.getSeq());
-			moneyHistory.setApplicationTime(new Date());
-			moneyHistory.setProcessTime(new Date());
+			moneyHistory.setApplicationTime(appSec);
+			moneyHistory.setProcessTime(appSec);
 			moneyHistory.setPrevAmount(member.getMoneyAmount());
 			moneyHistory.setVariableAmount(Math.abs(variableAmount));
 			moneyHistory.setActualAmount(Math.abs(variableAmount));

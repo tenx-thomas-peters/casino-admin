@@ -996,7 +996,8 @@ public class PartnerController {
 						transactionClassification,
 						CommonConstant.MONEY_HISTORY_STATUS_COMPLETE,
 						CommonConstant.MONEY_REASON_ADMIN,
-						reason
+						reason,
+						new Date()
 				)) {
 					result.success("success");
 				} else {

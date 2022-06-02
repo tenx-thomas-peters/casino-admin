@@ -415,7 +415,6 @@ public class MemberController {
                     : prevMoneyAmount - variableAmount;
             Integer status = CommonConstant.MONEY_HISTORY_STATUS_COMPLETE;
             Integer reasonType = CommonConstant.MONEY_REASON_ADMIN;
-            Integer chargeCount = 0;
             if (memberService.updateMemberHoldingMoney(
                     memberSeq,
                     prevMoneyAmount,
@@ -428,7 +427,6 @@ public class MemberController {
                     status,
                     reasonType,
                     reason,
-                    chargeCount,
                     note
             )) {
                 result.success("success");
