@@ -285,31 +285,28 @@ public class ApiController {
     }
 
     @GetMapping(value = "/memberInfo")
-    public Result<JSONObject> getMemberInfo(@RequestParam("memberSeq") String memberSeq, HttpServletRequest request) {
+    public Result<JSONObject> getMemberInfo(@RequestParam("memberSeq") String memberSeq, @RequestParam("count") String requestCount, HttpServletRequest request) {
         Result<JSONObject> result = new Result<>();
         JSONObject jsonObject = new JSONObject();
         Integer noteCounts = 0;
-        Float houseMoney = 0.0f;
-        Float jackpotAmount = 0.0f;
-        String inlineNotice = "";
-        String baccaratCheck = "";
-        String slotCheck = "";
 
-        Map<String, Object> topRanking = new HashMap<>();
-
+        int intRequestCount = Integer.parseInt(requestCount);
         try {
-            if(!memberSeq.equals("")){
-                Member member = memberService.getById(memberSeq);
-                String url = gameServerUrl + "/user?username=" + member.getId();
-                ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
+            Member member = memberService.getById(memberSeq);
+            String url = gameServerUrl + "/user?username=" + member.getId();
+            ResponseEntity<String> res = HttpUtils.getUserInfo(url, apiKey);
 
-                if (res.getStatusCode().value() == 200) {
-                    APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
+            if (res.getStatusCode().value() == 200) {
+                APIUserForm memberForms = JSON.parseObject(res.getBody().toString(), APIUserForm.class);
+
+                // update casino money and save history
+                // duration time - 5 min
+                if(intRequestCount%60==0 && !member.getCasinoMoney().equals(memberForms.getBalance())){
                     member.setCasinoMoney(memberForms.getBalance());
+                    this.updateCasinoMoneyStatus(member);
                     if (!memberService.updateById(member))
                         result.error505("===  update casino money failed");
                 }
-                else {result.error505("/user api failed");}
 
                 Session session = SecurityUtils.getSubject().getSession();
                 String token = (String) session.getAttribute("user_token");
@@ -322,39 +319,42 @@ public class ApiController {
 
                 jsonObject.put("noteCounts", noteCounts);
                 jsonObject.put("moneyAmount", member.getMoneyAmount());
-                jsonObject.put("casinoMoney", member.getCasinoMoney());
+                jsonObject.put("casinoMoney", memberForms.getBalance());
                 jsonObject.put("mileageAmount", member.getMileageAmount());
                 jsonObject.put("token", member.getToken());
+                result.success("Success");
+                result.setResult(jsonObject);
             }
-            // get house money
-            BasicSetting basicSetting = new BasicSetting();
-            List<BasicSetting> list = basicSettingService.list();
-            if (CollectionUtils.isNotEmpty(list)) {
-                basicSetting = list.get(0);
-                houseMoney = basicSetting.getHouseMoney();
-                jackpotAmount = basicSetting.getJackpotAmount();
-                inlineNotice = basicSetting.getMemberLineAdvertisement();
-                baccaratCheck = basicSetting.getBaccaratCheck();
-                slotCheck = basicSetting.getSlotCheck();
-
-                topRanking.put("topMember", basicSetting.getWeeklyWithdrawalRankingTop1Id());
-                topRanking.put("moneyAmount", basicSetting.getWeeklyWithdrawalRankingTop1Money());
-            }
-
-            jsonObject.put("houseMoney", houseMoney);
-            jsonObject.put("jackpotAmount", jackpotAmount);
-            jsonObject.put("topRanking", topRanking);
-            jsonObject.put("inlineNotice", inlineNotice);
-            jsonObject.put("baccaratCheck", baccaratCheck);
-            jsonObject.put("slotCheck", slotCheck);
-
-            result.success("Success");
-            result.setResult(jsonObject);
+            else {result.error505("/user api failed");}
         } catch (Exception e) {
             result.error500("Internal Server Error");
             log.error("url: /auth/memberInfo --- method: getMemberInfo() --- message: " + e.toString());
         }
         return result;
+    }
+
+    public boolean updateCasinoMoneyStatus(Member member){
+
+        String reason = "회원머니갱신["+member.getCasinoMoney()+"]";
+        if (memberService.updateMemberHoldingMoney(
+                member.getSeq(),
+                member.getMoneyAmount(),
+                member.getMileageAmount(),
+                0F,
+                0F,
+                member.getMoneyAmount(),
+                CommonConstant.MONEY_OR_POINT_MONEY,
+                CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT,
+                CommonConstant.MONEY_HISTORY_STATUS_COMPLETE,
+                CommonConstant.MONEY_REASON_CASINO_MONEY,
+                reason,
+                ""
+        )) {
+            System.out.println("MemberController==update Member Holding Money ==> success");
+        } else {
+            System.out.println("MemberController==update Member Holding Money ==> failed");
+        }
+        return true;
     }
 
     @GetMapping(value = "/popup_list")
@@ -471,17 +471,6 @@ public class ApiController {
             noteQw.eq("read_status", CommonConstant.STATUS_UN_READ);
             noteCounts = noteService.count(noteQw);
 
-            // get house money
-            BasicSetting basicSetting = new BasicSetting();
-            List<BasicSetting> list = basicSettingService.list();
-            if (CollectionUtils.isNotEmpty(list)) {
-                basicSetting = list.get(0);
-                houseMoney = basicSetting.getHouseMoney();
-                jackpotAmount = basicSetting.getJackpotAmount();
-                topRanking.put("topMember", basicSetting.getWeeklyWithdrawalRankingTop1Id());
-                topRanking.put("moneyAmount", basicSetting.getWeeklyWithdrawalRankingTop1Money());
-            }
-
             jsonObject.put("noteCounts", noteCounts);
             jsonObject.put("moneyAmount", member.getMoneyAmount());
             jsonObject.put("mileageAmount", member.getMileageAmount());
@@ -494,12 +483,20 @@ public class ApiController {
         return jsonObject;
     }
 
-    @GetMapping(value = "getHomeInfo")
+    @GetMapping(value = "getInitialData")
     public Result<JSONObject> getHomeInfo() {
         Result<JSONObject> result = new Result<>();
         JSONObject obj = new JSONObject();
         try {
             QueryWrapper<Note> qw = new QueryWrapper<>();
+
+            Float houseMoney = 0.0f;
+            Float jackpotAmount = 0.0f;
+            String inlineNotice = "";
+            String baccaratCheck = "";
+            String slotCheck = "";
+
+            Map<String, Object> topRanking = new HashMap<>();
 
             // get recent notice
             qw.eq("type", CommonConstant.TYPE_POST);
@@ -528,9 +525,31 @@ public class ApiController {
                     CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW,
                     CommonConstant.MONEY_OR_POINT_MONEY);
 
+            // get house money
+            BasicSetting basicSetting = new BasicSetting();
+            List<BasicSetting> list = basicSettingService.list();
+            if (CollectionUtils.isNotEmpty(list)) {
+                basicSetting = list.get(0);
+                houseMoney = basicSetting.getHouseMoney();
+                jackpotAmount = basicSetting.getJackpotAmount();
+                inlineNotice = basicSetting.getMemberLineAdvertisement();
+
+                topRanking.put("topMember", basicSetting.getWeeklyWithdrawalRankingTop1Id());
+                topRanking.put("moneyAmount", basicSetting.getWeeklyWithdrawalRankingTop1Money());
+
+                baccaratCheck = basicSetting.getBaccaratCheck();
+                slotCheck = basicSetting.getSlotCheck();
+            }
+
+            obj.put("houseMoney", houseMoney);
+            obj.put("jackpotAmount", jackpotAmount);
+            obj.put("inlineNotice", inlineNotice);
+            obj.put("topRanking", topRanking);
             obj.put("notice", notice);
             obj.put("event", event);
             obj.put("withdraw", historyList);
+            obj.put("baccaratCheck", baccaratCheck);
+            obj.put("slotCheck", slotCheck);
 
             result.success("Success");
             result.setResult(obj);
@@ -1024,7 +1043,6 @@ public class ApiController {
                     CommonConstant.MONEY_HISTORY_STATUS_COMPLETE,
                     CommonConstant.MONEY_REASON_POINT,
                     reason,
-                    0,
                     ""
                 ) &&
                     memberService.updateMemberHoldingMoney(
@@ -1039,7 +1057,6 @@ public class ApiController {
                     CommonConstant.MONEY_HISTORY_STATUS_COMPLETE,
                     CommonConstant.MONEY_REASON_POINT,
                     reason,
-                    0,
                     ""
                 )
             ) {
