@@ -451,11 +451,12 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
                         }
                         else{
                             String itemAround = item.getDetails().getGame().getRound();
-                            if(checkSameRound(bettingLogList, itemAround, Math.abs(item.getAmount()))){ // betting result is tier
-                                totalBettingAmount.baccaratBettingAmount -= Math.abs(item.getAmount());
-                            }else{
-                                totalBettingAmount.baccaratWinningAmount += item.getAmount();
+                            float betAmountSameRound = getBetAmountSameRound(bettingLogList, itemAround, Math.abs(item.getAmount()));
+                            if(betAmountSameRound != 0f){ // betting result is tier or pair
+                                totalBettingAmount.baccaratBettingAmount -= betAmountSameRound;
                             }
+
+                            totalBettingAmount.baccaratWinningAmount += item.getAmount();
                         }
                     }
                     totalBettingAmount.playing_game = item.getDetails().getGame().getTitle();
@@ -484,17 +485,21 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, BettingSumm
         return totalBettingAmount;
     }
 
-    public boolean checkSameRound(List<BettingLogForm> bettingLogList, String itemAround, float itemAmount){
-        boolean flag = false;
+    public float getBetAmountSameRound(List<BettingLogForm> bettingLogList, String itemAround, float winItemAmount){
+        float betAmount = 0f;
 
         for (BettingLogForm betItem : bettingLogList) {
-            if(betItem.getType().equals("win")
-                    && betItem.getDetails().getGame().getRound().equals(itemAround)
-                    && Math.abs(betItem.getAmount()) == itemAmount){
-                flag = true;
+            float betItemAmount = Math.abs(betItem.getAmount());
+
+            if (betItem.getType().equals("bet") && betItem.getDetails().getGame().getRound().equals(itemAround)){
+
+                if(betItemAmount == winItemAmount ||
+                    (betItemAmount*9 != winItemAmount && betItemAmount*2 < winItemAmount)){
+                    betAmount = betItemAmount;
+                }
             }
         }
-        return flag;
+        return betAmount;
     }
 }
 
