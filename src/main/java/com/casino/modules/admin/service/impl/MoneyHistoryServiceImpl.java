@@ -120,29 +120,18 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 
 	@Override
 	@Transactional(readOnly = false)
-	public Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge, String reason) {
+	public Boolean acceptMoneyHistory(String seq, Float amount, Float bonus, Integer operationType, Integer firstCharge, String reason, Integer reasonType) {
 		MoneyHistory moneyHistory = moneyHistoryMapper.selectById(seq);
 		Member member = memberService.getById(moneyHistory.getReceiver());
 		moneyHistory.setPrevAmount(member.getMoneyAmount() == null  ? 0f : member.getMoneyAmount());
 		moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_COMPLETE);
 		moneyHistory.setActualAmount(amount);
 		moneyHistory.setBonus(bonus);
-		Integer reasonType = 0;
 		if(operationType.equals(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT)) {
 			moneyHistory.setFinalAmount(moneyHistory.getPrevAmount() + moneyHistory.getActualAmount());
-			if(member.getUserType() == CommonConstant.USER_TYPE_NORMAL) {
-				reasonType = CommonConstant.MONEY_REASON_CHARGE;
-			}else {
-				reasonType = CommonConstant.MONEY_REASON_PARTNER_RECOVERY;
-			}
 		}
-		if(operationType == CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL) {
+		if(operationType.equals(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL)) {
 			moneyHistory.setFinalAmount(moneyHistory.getPrevAmount() - moneyHistory.getActualAmount());
-			if(member.getUserType() == CommonConstant.USER_TYPE_NORMAL) {
-				reasonType = CommonConstant.MONEY_REASON_EXCHANGE;
-			}else {
-				reasonType = CommonConstant.MONEY_REASON_PARTNER_PAYMENT;
-			}
 		}
 	// Thomas 2022.05.19
 //		set reason manually
@@ -161,6 +150,9 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 
 		// set first charge flag
 		moneyHistory.setFirstCharge(firstCharge);
+
+		if(operationType.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT) && reasonType.equals(CommonConstant.MONEY_REASON_DEPOSIT))
+			member.setChargeCount(member.getChargeCount() + 1);
 		member.setMoneyAmount(moneyHistory.getFinalAmount());
 		
 		if(this.updateById(moneyHistory)) {
@@ -177,8 +169,8 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 	}
 
 	@Override
-	public IPage<MoneyHistory> getMonthMoneyLogByMemberSeq(Page<MoneyHistory> page, String memberSeq, Integer operationType) {
-		return moneyHistoryMapper.getMonthMoneyLogByMemberSeq(page, memberSeq, operationType);
+	public IPage<MoneyHistory> getMonthMoneyLogByMemberSeq(Page<MoneyHistory> page, String memberSeq, Integer operationType, Integer reasonType) {
+		return moneyHistoryMapper.getMonthMoneyLogByMemberSeq(page, memberSeq, operationType, reasonType);
 	}
 
 	@Override

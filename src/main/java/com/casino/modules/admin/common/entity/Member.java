@@ -79,6 +79,9 @@ public class Member implements Serializable {
 
     @TableField(value = "site_domain")
     private String siteDomain;
+
+    @TableField(value = "charge_count")
+    private Integer chargeCount;
     
     @TableField(value = "site_name")
     private String siteName;
@@ -146,6 +149,12 @@ public class Member implements Serializable {
 
     @TableField(exist = false)
     private String changeMoney;
+
+    @TableField(exist = false)
+    private String referralCode;
+
+    @TableField(exist = false)
+    private String withdrawPassword;
 
     @TableField(exist = false)
     private Member distributor;

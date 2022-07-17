@@ -114,7 +114,10 @@
                                     </td>
                                     <td class="text-center">
                                         <p class="bg-white-yellow" th:text="${#numbers.formatDecimal(entity.slotBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
-                                        <p class="bg-white-grey" th:text="${#numbers.formatDecimal(entity.baccaratBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>
+                                        <p class="bg-white-grey">
+                                            <span th:text="${#numbers.formatDecimal(entity.baccaratBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span><br>
+                                            (<span th:text="${ #numbers.formatDecimal(entity.baccaratVirtualBettingAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}" style="color: #ff9e25;"></span>)
+                                        </p>
                                     </td>
                                     <td class="text-center">
                                         <p class="bg-white-yellow" th:text="${#numbers.formatDecimal(entity.slotWinningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></p>

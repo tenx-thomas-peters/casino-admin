@@ -25,6 +25,7 @@ public class BettingSummaryForm {
     private Integer type;
     private Float slotBettingAmount;
     private Float baccaratBettingAmount;
+    private Float baccaratVirtualBettingAmount;
     private Float slotWinningAmount;
     private Float baccaratWinningAmount;
     private Float slotLostAmount;

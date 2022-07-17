@@ -23,6 +23,9 @@ public class BettingSummary implements Serializable {
     @TableField(value = "check_time")
     private String checkTime;
 
+    @TableField(value = "check_time_duration")
+    private String checkTimeDuration;
+
     @TableField(value = "member_seq")
     private String memberSeq;
 
@@ -37,6 +40,9 @@ public class BettingSummary implements Serializable {
 
     @TableField(value = "baccarat_betting_amount")
     private Float baccaratBettingAmount;
+
+    @TableField(value = "baccarat_virtual_betting_amount")
+    private Float baccaratVirtualBettingAmount;
 
     @TableField(value = "slot_winning_amount")
     private Float slotWinningAmount;

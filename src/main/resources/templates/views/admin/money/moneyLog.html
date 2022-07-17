@@ -110,7 +110,7 @@
 													th:text="${(entity.operationType==0 || entity.operationType==2?'':entity.variableAmount!=0?'-':'') + #numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 													<td th:text="${#numbers.formatDecimal(entity.finalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 													<td th:text="${entity.reason}"></td>
-													<td th:text="${entity.chargeCount}"></td>
+													<td th:text="${entity.reasonType==0 && entity.operationType==0?entity.member.chargeCount:''}"></td>
 													<td th:text="${entity.note}"></td>
 												</tr>
 												<tr th:if="${#lists.isEmpty(page.records)}">

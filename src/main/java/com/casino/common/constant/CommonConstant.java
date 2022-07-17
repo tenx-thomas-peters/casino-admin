@@ -93,13 +93,15 @@ public interface CommonConstant {
 	public static final Integer MONEY_HISTORY_OPERATION_TYPE_TRANSFER_IN = 2;
 	public static final Integer MONEY_HISTORY_OPERATION_TYPE_TRANSFER_OUT = 3;
 
-	public static final Integer MONEY_REASON_CHARGE = 0;
-	public static final Integer MONEY_REASON_EXCHANGE = 1;
-	public static final Integer MONEY_REASON_PARTNER_RECOVERY = 2;
-	public static final Integer MONEY_REASON_PARTNER_PAYMENT = 3;
-	public static final Integer MONEY_REASON_TRANSFER = 4;
-	public static final Integer MONEY_REASON_TRANSFER_WINNING = 6;
-	public static final Integer MONEY_REASON_ADMINEDIT = 5;
+	public static final Integer MONEY_REASON_DEPOSIT = 0;
+	public static final Integer MONEY_REASON_WITHDRAW = 1;
+	public static final Integer MONEY_REASON_PARTNER_DEPOSIT = 2;
+	public static final Integer MONEY_REASON_PARTNER_WITHDRAW = 3;
+	public static final Integer MONEY_REASON_GAME_DEPOSIT = 4;
+	public static final Integer MONEY_REASON_GAME_WITHDRAW = 5;
+	public static final Integer MONEY_REASON_ADMIN = 6;
+	public static final Integer MONEY_REASON_POINT = 7;
+	public static final Integer MONEY_REASON_CASINO_MONEY = 8;
 
 	public static final Integer PARTNER_OR_MEMBER_MEMBER = 0;
 	public static final Integer PARTNER_OR_MEMBER_PARTNER = 1;

@@ -51,7 +51,7 @@ public class ScheduleController {
             long t, before_30_min;
             if (this.lastRequestTime == null) {
                 t = date.getTimeInMillis();
-                before_30_min = t - (5 * ONE_MINUTE_IN_MILLIS);
+                before_30_min = t - (30 * ONE_MINUTE_IN_MILLIS);
             } else {
                 before_30_min = this.lastRequestTime;
                 t = date.getTimeInMillis();
@@ -98,7 +98,7 @@ public class ScheduleController {
                         bettingLogList.addAll(bettingLogList1);
                     }
 
-                    if (scheduleService.saveBettingSummary(bettingLogList)) {
+                    if (scheduleService.saveBettingSummary(bettingLogList, before_30_min)) {
                         this.lastRequestTime = t;
                     }
                 }

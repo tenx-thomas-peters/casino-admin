@@ -69,7 +69,7 @@ public class MockServiceImpl  implements IMockService {
 	public void moneyTransfer(String payerSeq, String receiverSeq, String moneyAmount, String note) {
 		QueryWrapper<Dict> qw = new QueryWrapper<>();
 		qw.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
-		qw.eq("dict_value", CommonConstant.MONEY_REASON_TRANSFER);
+		qw.eq("dict_value", CommonConstant.MONEY_REASON_GAME_WITHDRAW);
 		List<Dict> reasonList = dictService.list(qw);
 		String reasonStrKey = reasonList.get(0).getStrValue();
 		List<String> params = new ArrayList<String>();
@@ -89,7 +89,7 @@ public class MockServiceImpl  implements IMockService {
 		payerMoneyHistory.setActualAmount(Float.valueOf(moneyAmount));
 		payerMoneyHistory.setFinalAmount(payerFinalAmount);
 		payerMoneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_COMPLETE);
-		payerMoneyHistory.setReasonType(CommonConstant.MONEY_REASON_TRANSFER);
+		payerMoneyHistory.setReasonType(CommonConstant.MONEY_REASON_GAME_WITHDRAW);
 		payerMoneyHistory.setReason(reason);
 		payerMoneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_TRANSFER_OUT);
 		payerMoneyHistory.setMoneyOrPoint(CommonConstant.MONEY_OR_POINT_MONEY);
@@ -110,7 +110,7 @@ public class MockServiceImpl  implements IMockService {
 		receiverMoneyHistory.setActualAmount(Float.valueOf(moneyAmount));
 		receiverMoneyHistory.setFinalAmount(receiverFinalAmount);
 		receiverMoneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_COMPLETE);
-		receiverMoneyHistory.setReasonType(CommonConstant.MONEY_REASON_TRANSFER);
+		receiverMoneyHistory.setReasonType(CommonConstant.MONEY_REASON_GAME_WITHDRAW);
 		receiverMoneyHistory.setReason(reason);
 		receiverMoneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_TRANSFER_IN);
 		receiverMoneyHistory.setMoneyOrPoint(CommonConstant.MONEY_OR_POINT_MONEY);

@@ -78,7 +78,7 @@ public interface MoneyHistoryMapper extends BaseMapper<MoneyHistory> {
             @Param("userSeq") String userSeq);
 
 	IPage<MoneyHistory> getMonthMoneyLogByMemberSeq(Page<MoneyHistory> page, 
-			@Param("memberSeq") String memberSeq, @Param("operationType") Integer operationType);
+			@Param("memberSeq") String memberSeq, @Param("operationType") Integer operationType, @Param("reasonType") Integer reasonType);
 
     boolean changeAdminReadStatusAll(@Param("operationType") Integer operationType, @Param("userType") Integer userType);
 }
